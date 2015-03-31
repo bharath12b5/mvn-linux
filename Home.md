@@ -2,5 +2,5 @@ This wiki is a collection of documents and tutorials to help you get open-source
 
 ## Recipes
 
-* [Building V8 JavaScript engine as libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-JavaScript-engine-as-libraries)
+* [Building V8 libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-libraries)
 * [Building MongoDB](https://github.com/ibm-linux-on-z/docs/wiki/Building-MongoDB)
