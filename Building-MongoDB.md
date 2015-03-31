@@ -2,23 +2,24 @@ We have successfully built [V8z](https://github.com/andrewlow/v8z/) and [MongoDB
 
 1. Build the 31-bit and 64-bit libv8.so, and install them into the normal system locations, usually under /usr/lib or /usr/lib64. See this article for instructions on building the library: [Building V8 libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-libraries).
 
-2. Clone the latest MongoDB fork for Power, which includes the changes for big-endian platforms.
+2. Building MongoDB requires SCons. Download scons-2.3.1-1.noarch.rpm from [SCons 2.3.1 Downloads](http://sourceforge.net/projects/scons/files/scons/2.3.1) and install it like this:
 
-        git clone https://github.com/ibmsoe/mongo
-        cd mongo
+        rpm -i scons-2.3.1-1.noarch.rpm
 
-3. As of March 2015, the work on the default v2.6.6-ppc branch is almost complete, and can be used for evaluation purposes. If you want to go back to the more stable 2.4.9 branch, execute these commands:
+3. Clone the latest MongoDB fork for Power, which includes the changes for big-endian platforms.
+
+        git clone https://github.com/ibmsoe/mongo mongo
+
+4. As of March 2015, the work on the default v2.6.6-ppc branch is almost complete, and can be used for evaluation purposes. If you want to go back to the more stable 2.4.9 branch, execute these commands in the mongo/ directory:
 
         git fetch
         git checkout r2.4.9-ppc
 
-4. Building MongoDB requires SCons. Download scons-2.3.1-1.noarch.rpm from [SCons 2.3.1 Downloads](http://sourceforge.net/projects/scons/files/scons/2.3.1) and install it like this:
+5. In order to use the V8 APIs in libv8.so, MongoDB requires the corresponding V8 headers. If you did not install the V8 header files in a system location (e.g. /usr/include/ or /usr/local/include/), copy them from the v8z/include directory into mongo/src/.
 
-        rpm -i scons-2.3.1-1.noarch.rpm
+        cp v8z/include/*.h mongo/src/
 
-5. If you did not install the V8 header files in a system location (e.g. /usr/include or /usr/local/include), copy them from the v8z/include directory into mongo/src. In order to use the V8 APIs in libv8.so, mongo requires the corresponding V8 headers.
-
-6. In the mongo directory, execute the following to build:
+6. In the mongo/ directory, execute the following to build:
 
   (31-bit)
 
@@ -36,6 +37,6 @@ We have successfully built [V8z](https://github.com/andrewlow/v8z/) and [MongoDB
                  mongoexport mongofiles mongoimport mongooplog \
                  mongoperf mongorestore mongos mongostat mongotop ; do
             strip $i
-            cp $i /usr/local/bin
+            cp $i /usr/local/bin/
             chmod 755 /usr/local/bin/$i
         done
