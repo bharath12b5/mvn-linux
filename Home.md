@@ -2,5 +2,5 @@ This wiki is a collection of documents and tutorials to help you get open-source
 
 ## Recipes
 
-* [How to build libv8.so](https://github.com/andrewlow/v8z/wiki/How-to-build-libv8.so)
-* [How to build MongoDB on Linux on System Z](https://github.com/andrewlow/v8z/wiki/How-to-build-MongoDB-on-Linux-on-System-Z)
+* [Building V8 JavaScript engine as libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-JavaScript-engine-as-libraries)
+* [Building MongoDB](https://github.com/ibm-linux-on-z/docs/wiki/Building-MongoDB)
