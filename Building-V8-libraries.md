@@ -1,11 +1,13 @@
 The V8 JavaScript engine is very popular and is included by many different projects. It can be built as a set of static libraries, or a single shared library. Many projects prefer linking V8 statically, while others might prefer linking multiple programs against a shared library, in the interest of footprint. The following instructions should produce both types of libraries on all Linux distributions.
 
-Start by cloning the V8z code from GitHub, and using the current stable release 3.14:
+Start by cloning the V8z code from GitHub, and using the current stable release 3.28:
 
     git clone https://github.com/andrewlow/v8z.git
     cd v8z
-    git checkout origin/3.14-s390 -b 3.14-s390
+    git checkout 3.28.73-s390
     make dependencies
+
+If you need to use the older stable branch 3.14 (e.g. for building [MongoDB](../Building MongoDB)), use the command `git checkout 3.14-s390` instead.
 
 ### Building the static libraries
 
