@@ -1,4 +1,4 @@
-The [oCaml 4.02.1 interpreter](https://ocaml.org/releases/4.02.html) can be built on SLES12 on IBM z System by following these instructions.
+The [oCaml 4.02.1 interpreter](https://ocaml.org/releases/4.02.html) can be built on SLES12/RHEL7 on IBM z System by following these instructions.
 
 1. Download latest tarball from [ocaml site](https://ocaml.org/releases/4.02.html)
 
