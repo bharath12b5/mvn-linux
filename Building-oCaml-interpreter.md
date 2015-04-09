@@ -31,4 +31,4 @@ The [oCaml 4.02.1 interpreter](https://ocaml.org/releases/4.02.html) can be buil
         cd testsuite
         make all
 
-[Known problem reported](http://caml.inria.fr/mantis/view.php?id=6630)
+P.S. [Known problem reported](http://caml.inria.fr/mantis/view.php?id=6630)
