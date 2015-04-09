@@ -7,3 +7,4 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [Building oCaml interpreter](https://github.com/linux-on-ibm-z/docs/wiki/Building-oCaml-interpreter)
 * [Building Erlang](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang)
 * [Building Ruby](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby)
+* [Building Python 2.7.9](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-2.7.9)
