@@ -1,6 +1,9 @@
-This recipe will cover recent Ruby release built on both SLES12 and RHEL 7.
-Ruby 2.1.2p95 is available for SLES 12. Ruby 2.0.0p598 is available for RHEL 7.
-if Ruby 2.1.2p95 or Ruby 2.0.0p598  is good enough, just do "zypper install ruby" on SLES or replace zypper with yum on RHEL. In this document, zypper will be used as an example, use yum on RHEL instead. Packages that use ruby may require a specific version, in particular, having [RubyGems](http://en.wikipedia.org/wikiRubyGems) is essential for large packages using Ruby (Ruby version >= 1.9)
+This recipe will cover recent Ruby release built on both SLES and RHEL.
+Ruby 2.1.2p95 is available for SLES 12. 
+Ruby 1.8.7p357 is available for SLES 11.3.
+Ruby 2.0.0p598 is available for RHEL 7.
+Ruby 1.8.7p374 is available for RHEL 6.5.
+if any above version is good enough, just do "zypper install ruby" on SLES or replace zypper with yum on RHEL. In this document, zypper will be used as an example, use yum on RHEL instead. Packages that use ruby may require a specific version, in particular, having [RubyGems](http://en.wikipedia.org/wikiRubyGems) is essential for large packages using Ruby (Ruby version >= 1.9)
 The authoritative source for most things "ruby" is [here](http://www.ruby-lang.org) for the latest "stable" Ruby version see [download link](http://www.ruby-lang.org/en/downloads)
 
 This recipe is for the current (2015-03-14) "stable" version (2.2.1p85).
