@@ -10,3 +10,4 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [Building Python 2.7.9](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-2.7.9)
 * [Building Python 3.4.3](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-3.4.3)
 * [Building CouchDB](https://github.com/linux-on-ibm-z/docs/wiki/Building-CouchDB)
+* [Building Erlang on RHEL7](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-RHEL7)
