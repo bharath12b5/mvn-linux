@@ -47,9 +47,8 @@ The [Erlang/OTP 17.4](http://www.erlang.org/download_release/27) can be built on
         ts:install(). % install the ts framework
         ts:run(). % to run all the test suites
 
-10. If no errors found in the smoke tests, as root, install Erlang:
+10. If no error is found in the smoke tests, install Erlang as root:
 
         make install
 
    You can now invoke the Erlang shell as `/usr/bin/erl` and EScript as `/usr/bin/escript`.
- 
