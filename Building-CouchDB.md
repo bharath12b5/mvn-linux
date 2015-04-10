@@ -1,8 +1,8 @@
 The [CouchDB 2.0 Developer Preview](https://couchdb.apache.org/developer-preview/2.0/) can be built on RHEL 7 on IBM z System by following these instructions.
 
-1. First, install Erlang according to the instructions in [Building Erlang](../Building-Erlang).
+1. First, install Erlang according to the instructions in [[Building Erlang on SLES12]].
 
-2. As root, add the RHEL 7 Server Optional repository to the yum repository list. This is required to get the js-devel package. See the instructions in [Adding RHEL Optional and Supplementary Repositories](../Adding-RHEL-Optional-and-Supplementary-Repositories).
+2. As root, add the RHEL 7 Server Optional repository to the yum repository list. This is required to get the js-devel package. See the instructions in [[Adding RHEL Optional and Supplementary Repositories]].
 
 3. As root, install all the build-time dependencies:
 
