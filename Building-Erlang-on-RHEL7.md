@@ -1,8 +1,9 @@
 The [Erlang/OTP 17.4](http://www.erlang.org/download_release/27) can be built on RHEL 7 on IBM z System by following these instructions.
 
-1. As root, add the RHEL 7 Server Optional repository to the yum repository list. This is required to get the IBM Java package. See the instructions in [Adding RHEL repositories](https://github.com/linux-on-ibm-z/docs/wiki/Adding-RHEL-Optional-and-Supplementary-Repositories).
+1. As root, add the RHEL 7 Server Optional repository to the yum repository list. This is required to get the IBM Java package. See the instructions in [[Adding RHEL Optional and Supplementary Repositories]].
 
 2. As root, install IBM JDK to build with the Java interface (jinterface):
+
         yum install java-1.7.1-ibm
 
 3. As root, install all the build-time dependencies:
@@ -27,9 +28,11 @@ The [Erlang/OTP 17.4](http://www.erlang.org/download_release/27) can be built on
 7. To verify the build, start the Erlang shell:
 
         $ERL_TOP/bin/erl
-    you should see a shell that looks like this:
-        Erlang/OTP 17 [erts-6.3] [source] [64-bit] [smp:2:2] [async-threads:10] [kernel-poll:false]
 
+   You should see a shell that looks like this:
+
+        Erlang/OTP 17 [erts-6.3] [source] [64-bit] [smp:2:2] [async-threads:10] [kernel-poll:false]
+        
         Eshell V6.3  (abort with ˆG)
         1>
 
@@ -39,7 +42,7 @@ The [Erlang/OTP 17.4](http://www.erlang.org/download_release/27) can be built on
         cd release/tests/test_server
         $ERL_TOP/bin/erl -s ts install -s ts smoke_test batch -s init stop
 
-9. **OPTIONAL** running the full functional verification test suites. This will take a long time (approximately 12 hours). In the Erlang shell (if configured with `--prefix=/usr` then start the shell at `/usr/bin/erl`):
+9. **OPTIONAL** Run the full functional verification test suites. This will take a long time (approximately 12 hours). In the Erlang shell (if configured with `--prefix=/usr` then start the shell with `/usr/bin/erl`):
 
         ts:install(). % install the ts framework
         ts:run(). % to run all the test suites
@@ -48,5 +51,5 @@ The [Erlang/OTP 17.4](http://www.erlang.org/download_release/27) can be built on
 
         make install
 
-You can now invoke the Erlang shell as `/usr/bin/erl` and EScript as `/usr/bin/escript`.
+   You can now invoke the Erlang shell as `/usr/bin/erl` and EScript as `/usr/bin/escript`.
  
