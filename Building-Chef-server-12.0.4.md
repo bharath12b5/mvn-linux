@@ -13,44 +13,57 @@ If so, make sure it's rwx by "other", plus any contents of that directory
 
 ##Prereqs
 + *ensure RHEL 6.5 is installed*  
-**cat /etc/redhat-release**  
+>         cat /etc/redhat-release  
+
 + *Install or verify gcc is installed:*   
-**rpm -qa | grep gcc**  
+>         rpm -qa | grep gcc  
+
 + *install various prereqs*    
-**yum install readline-devel.s390 readline-devel.s390x git svn fakeroot**  
-**yum install git**   
-+ *Install yaml*   
+>         yum install readline-devel.s390 readline-devel.s390x git svn fakeroot  
+>         yum install git   
+
++ *Get yaml*   
 *First, download http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz then*  
-**tar -xvf yaml-0.1.5.tar.gz**  
-*Build and install yaml:*  
-**cd yaml-0.1.5**  
-**./configure**  
-**make**  
-**make install**  
-+ *Install Ruby (Ruby 2.1.4, built from source from  https://www.ruby-lang.org/en/downloads)*  
+>         tar -xvf yaml-0.1.5.tar.gz  
+
++ *Build and install yaml:*  
+>         cd yaml-0.1.5  
+>         ./configure  
+>         make  
+>         make install     
+
++ *Get Ruby (Ruby 2.1.4, built from source from  https://www.ruby-lang.org/en/downloads)*  
 *Untar/Unzip:*  
-**wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.4.tar.gz**   
-**tar -xvf  ruby-2.1.4.tar.gz**   
-*Build and Install:*  
-**cd  ruby-2.1.4**  
-**./configure**  
-**make**  
-**make install**  
-*Verify Ruby is installed*    
-**ruby -v**  
-+ *Install Ruby Gems (gem 2.2.2 from source http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz)*    
+>         wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.4.tar.gz   
+>         tar -xvf  ruby-2.1.4.tar.gz  
+
++ *Build and Install Ruby:*  
+>         cd  ruby-2.1.4  
+>         ./configure  
+>         make  
+>         make install  
+
++ *Verify Ruby is installed*    
+>         ruby -v  
+
++ *Get Ruby Gems (gem 2.2.2 from source http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz)*    
 *Untar/Unzip:*  
-**tar -xvf  rubygems-2.2.2.tgz**   
-*Build and install*  
-**cd  rubygems-2.2.2**    
-**ruby setup.rb**    
-*Verify ruby gems installed*  
-**gem env**  
-**gem install bundler**  
+>         tar -xvf  rubygems-2.2.2.tgz     
+
++ *Build and install Ruby Gems*  
+>         cd  rubygems-2.2.2    
+>         ruby setup.rb    
+
++ *Verify Ruby Gems installed*  
+>         gem env  
+>         gem install bundler  
+
 + *Check that unzip and svn are installed*  
-**using rpm -qa | grep "unzip\|svn"**  
+>         using rpm -qa | grep "unzip\|svn"  
+
 + *install rake*  
-**gem install rake-compiler**  
+>         gem install rake-compiler  
+
 
 ---------------------------------
 ##Building chef server:
@@ -58,17 +71,17 @@ If so, make sure it's rwx by "other", plus any contents of that directory
 *Use git repository opscode-omnibus for server, (omnibus-chef is for the client)*
 *Note that omnibus-software (subdirectory config/software) is the repository for ruby files to update as noted below*  
   
-**git clone https://github.com/chef/opscode-omnibus**  
+>         git clone https://github.com/chef/opscode-omnibus  
   
 *for a specific version, like 12.0.4 you can also download and unzip*  
 *https://github.com/chef/opscode-omnibus/releases/tag/12.0.4*   
   
-**git clone https://github.com/chef/omnibus-software**  
+>         git clone https://github.com/chef/omnibus-software       
   
 *(NOTE: omnibus-software has no releases)*  
   
-**cd opscode-omnibus**  
-**bundle install --binstubs**  
+>         cd opscode-omnibus  
+>         bundle install --binstubs  
   
 ###You will need to change:
 1. one file in the recipes directory (opscode-solr4.rb)  
@@ -80,7 +93,8 @@ If so, make sure it's rwx by "other", plus any contents of that directory
 *The file is*  
     files/private-chef-cookbooks/private-chef/recipes/opscode-solr4.rb  
 *to change it execute this*  
-**sed -i 's/Xloggc/Xverbosegclog/g' opscode-omnibus/files/private-chef-cookbooks/private-chef/recipes/opscode-solr4.rb**  
+>     sed -i 's/Xloggc/Xverbosegclog/g' opscode-omnibus/files/private-chef-cookbooks/private-chef/recipes/opscode-solr4.rb  
+
 *otherwise ibm java doesn't understand Xloggc and won't start*   
 ####2. One file in the base directory needs to be changed: omnibus.rb  
 *turn off S3 caching (which will enable a full true build) by commenting out these lines in omnibus.rb*  
@@ -278,13 +292,15 @@ is just the IBM jre. server-jre.rb copies the jre into the right directories:*
 
 ###Kick off the build
 
-**bin/omnibus build chef-server --log-level=debug --override append_timestamp:false**    
+>     bin/omnibus build chef-server --log-level=debug --override append_timestamp:false    
 
 *This gives copious debugging information plus produces an rpm that doesn't have a timestamp*    
 *Cleaning up between builds is done with*    
-**bin/omnibus clean chef-server**    
+>     bin/omnibus clean chef-server    
+
 *or*    
-**bin/omnibus clean chef-server --purge**    
+>     bin/omnibus clean chef-server --purge    
+
 *for a total cleansing, including all the gzip files that had been downloaded*    
 
 *NOTE it is equivalent to use this command to build*    
@@ -336,9 +352,11 @@ bundle exec omnibus build chef-server --log-level=debug --override append_timest
 *After building, install the rpm to test it.*    
 *The server is controlled with the command chef-server-ctl*    
 *to start:*    
-**chef-server-ctl start**    
+>         chef-server-ctl start    
+
 *to test*    
-**chef-server-ctl test**    
+>         chef-server-ctl test    
+
 
  
 
