@@ -12,4 +12,5 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [[Building Python 3.4.3]]
 * [[Building Ruby]]
 * [[Building gccgo]]
+* [[Building Chef server 12.0.4]]
 
