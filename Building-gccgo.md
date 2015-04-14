@@ -6,14 +6,14 @@
 
    (SLES 12)
 
-      sudo zypper install gmp-devel binutils-devel mpfr-devel mpc-devel isl-devel
-      sudo zypper install flex subversion
+        sudo zypper install gmp-devel binutils-devel mpfr-devel mpc-devel isl-devel
+        sudo zypper install flex subversion
 
    (RHEL 7)
 
-      yum install gmp-devel binutils-devel mpfr-devel libmpc-devel
-      yum install flex subversion
-      wget ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.14.tar.bz2
+        yum install gmp-devel binutils-devel mpfr-devel libmpc-devel
+        yum install flex subversion
+        wget ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.14.tar.bz2
 
    RHEL 7 does not provide the ISL library as a installable package, so it needs to be downloaded in source form and built into GCC.
   
