@@ -14,4 +14,5 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [[Building gccgo]]
 * [[Building Chef server 12.0.4]]
 * [[Building Chef client 12.1.2]]
+* [[Building RabbitMQ on RHEL]]
 
