@@ -1,4 +1,4 @@
-#Building Chef server 12.0.4 on Z Linux REHL 6.5   
+#Building Chef server 12.0.4 on Linux on Z REHL 6.5   
 ##Before you begin   
 + Download Java from
 [IBM developerWorks](https://www.ibm.com/developerworks/java/jdk/linux/download.html) and put it in a local repository. As an example, for this recipe we'll use  
@@ -20,7 +20,6 @@ If so, make sure it's rwx by "other", plus any contents of that directory
 
 + *install various prereqs*    
 >         yum install readline-devel.s390 readline-devel.s390x git svn fakeroot  
->         yum install git   
 
 + *Get yaml*   
 *First, download http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz then*  
@@ -159,7 +158,7 @@ omnibus-software/config/software to opscode-omnibus/config/software
         NOTE: in the following, the line   
             env["LINK"]="g++"   
         is optional -- it's only needed if you are building into an nfs mounted filesystem
-        (without it in that circumstance, flock throws an error
+        (without it in that circumstance, flock throws an error)
     
 *Change the code in the body of nodejs.rb to the following*    
 >     name "nodejs"   
@@ -217,7 +216,7 @@ is just the IBM jre. server-jre.rb copies the jre into the right directories:*
 >     jre_dir = "#{install_dir}/embedded/jre"
 >     
 >     build do
->       command "wget http://tlbgsa.ibm.com/˜billo/public/ibm-java-jre-7.0-7.1-s390x.tgz"
+>       command "wget http://tlbgsa.ibm.com/˜example/public/ibm-java-jre-7.0-7.1-s390x.tgz"
 >       command "mkdir -p #{jre_dir}"
 >       command "tar xzf ibm-java-jre-7.0-7.1-s390x.tgz"
 >       command "#{install_dir}/embedded/bin/rsync -a ./jre #{install_dir}/embedded"
@@ -231,7 +230,7 @@ is just the IBM jre. server-jre.rb copies the jre into the right directories:*
 >     '--with-pcre-jit',<--- remove
 >     '--with-luajit', <--- remove
 
-####One file in  package-scripts/chef-server needs to be changed: postinst   
+####4. One file in  package-scripts/chef-server needs to be changed: postinst   
 *The file postinst needs to be changed to include some postinstall modifications of a couple files in the ohai package (cpu.rb and platform.rb)*   
 *The purpose of these modifications is to enable ohai to properly sense and report on the Z/390 platform*   
 *Just add the following lines just before the block of "next-step/welcome" messages in the postinst file*   
@@ -334,17 +333,8 @@ bundle exec omnibus build chef-server --log-level=debug --override append_timest
 >           /libfreetype\.so/,
 >           /libXau\.so/,
 >           /libexpat\.so/,
->           /libX11\.so/,
->           /libXrender\.so/,
 >           /libfontconfig\.so/,
->           /libXext\.so/,
 >           /libxcb\.so/,
->           /libXau\.so/,
->           /libX11\.so/,
->           /libxcb\.so/,
->           /libXau\.so/,
->           /libreadline\.so/,
->           /libhistory\.so/,
 >           /libreadline\.so/,
 >           /libhistory\.so/
 >         ].freeze
