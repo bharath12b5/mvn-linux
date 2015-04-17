@@ -23,3 +23,15 @@ The following instructions have been tested on RHEL 7.1.
                postgresql94-libs-9.4.1-1PGDG.el7.s390x.rpm
 
    Other RPMs in the same directory are optional and can be installed as well if you need them.
+
+5. The build process may have set the permissions on the directory /usr/pgsql-9.4/lib/ incorrectly. The permissions must be updated (as root) to allow users to read the PostgreSQL libraries:
+
+        chmod o+r /usr/pgsql-9.4/lib/
+
+6. Before starting the database server, you must initialize the cluster. This is done using a command line tool, which is designed for the RPMs. Run this command as root:
+
+        /usr/pgsql-9.4/bin/postgresql94-setup initdb
+
+7. Now, you can start up the server:
+
+        systemctl start postgresql-9.4.service
