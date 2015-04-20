@@ -5,6 +5,7 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [[Building CouchDB]]
 * [[Building V8 libraries]]
 * [[Building MongoDB]]
+* [[Building PostgreSQL 9.4 on RHEL6]]
 * [[Building PostgreSQL 9.4 on RHEL7]]
 * [[Building oCaml interpreter]]
 * [[Building Erlang on RHEL7]]
