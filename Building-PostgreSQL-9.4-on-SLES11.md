@@ -16,11 +16,11 @@ The following instructions have been tested on SLES 11 SP3.
                        libxslt-devel openldap2-devel openssl-devel pkg-config \
                        update-alternatives
 
-3. Install the postgresql-init package downloaded above:
+3. Install the postgresql-init package downloaded above (as root):
 
         rpm -i postgresql-init-9.4-46.2.noarch.rpm
 
-4. Rebuild the binary RPMs from the two downloaded source RPMs:
+4. Rebuild the binary RPMs from the two downloaded source RPMs (as root):
 
         rpmbuild --rebuild postgresql94-9.4.1-7.2.src.rpm
         rpmbuild --rebuild postgresql94-libs-9.4.1-7.2.src.rpm
