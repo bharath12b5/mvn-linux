@@ -41,6 +41,7 @@ The server can be build from a standalone tarball. Alternatively the [RabbitMQ u
 1. Download the source.
 
         wget https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.0/rabbitmq-server-3.5.0.tar.gz
+        tar xvzf rabbitmq-server-3.5.0.tar.gz
         cd rabbitmq-server-3.5.0
 
 2. The `all` target in the Makefile will build and test the server. A non-zero make return value indicates a failure. Unit test results will be output to the console.
