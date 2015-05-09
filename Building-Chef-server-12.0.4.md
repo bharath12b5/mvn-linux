@@ -1,71 +1,82 @@
-#Building Chef server 12.0.4 on Linux on Z REHL 6.5   
+#Building Chef server 12.0.4 on RHEL 6.5 on z Systems
 ##Before you begin   
-+ Download Java from
-[IBM developerWorks](https://www.ibm.com/developerworks/java/jdk/linux/download.html) and put it in a local repository. As an example, for this recipe we'll use  
-*http://tlbgsa.ibm.com/˜example/public/ibm-java-jre-7.0-7.1-s390x.tgz*
-Note, this step can't be automated because developerworks requires user info.
-+ If you don't have one, get a GitHub account from [Join Github](https://github.com/join).
-+ Register the server you are using with GitHub using these instructions
-[GitHub ssh-keys](https://help.github.com/articles/generating-ssh-keys/)
-+ Build as root, or be prepared to sudo many of the following commands
-+ If you've built before there may be a directory called .chef in your personal root directory.
-If so, make sure it's rwx by "other", plus any contents of that directory
++ Download the Java SDK from
+[IBM developerWorks](https://www.ibm.com/developerworks/java/jdk/linux/download.html) and put it in a local repository. As an example, for this recipe we will use this URL:
+
+   > http://tlbgsa.ibm.com/˜example/public/ibm-java-jre-7.0-7.1-s390x.tgz
+
+   Note that this step cannot be automated because developerWorks requires user information.
++ If you do not have a GitHub account, get one from [Join Github](https://github.com/join).
++ Register the server you are using with GitHub using these instructions: [GitHub ssh-keys](https://help.github.com/articles/generating-ssh-keys/).
++ Build as root, or be prepared to sudo many of the following commands.
++ If you have built Chef before, there may be a directory called .chef in your personal root directory.
+If so, make sure that the directory (plus any content underneath it) is world-writable
+
+        chmod -R o+rwx ~/.chef
 
 ##Prereqs
-+ *ensure RHEL 6.5 is installed*  
->         cat /etc/redhat-release  
++ Ensure RHEL 6.5 is installed:
 
-+ *Install or verify gcc is installed:*   
->         rpm -qa | grep gcc  
+        cat /etc/redhat-release  
 
-+ *install various prereqs*    
->         yum install readline-devel.s390 readline-devel.s390x git svn fakeroot  
++ Install or verify gcc is installed:
 
-+ *Get yaml*   
-*First, download http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz then*  
->         tar -xvf yaml-0.1.5.tar.gz  
+        rpm -qa | grep gcc
+        yum install gcc
 
-+ *Build and install yaml:*  
->         cd yaml-0.1.5  
->         ./configure  
->         make  
->         make install     
++ Install other pre-requisites:
 
-+ *Get Ruby (Ruby 2.1.4, built from source from  https://www.ruby-lang.org/en/downloads)*  
-*Untar/Unzip:*  
->         wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.4.tar.gz   
->         tar -xvf  ruby-2.1.4.tar.gz  
+        yum install readline-devel readline-devel git svn fakeroot unzip
 
-+ *Build and Install Ruby:*  
->         cd  ruby-2.1.4  
->         ./configure  
->         make  
->         make install  
++ Download and unpack yaml source code:
 
-+ *Verify Ruby is installed*    
->         ruby -v  
+        wget http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz
+        tar -xvf yaml-0.1.5.tar.gz  
 
-+ *Get Ruby Gems (gem 2.2.2 from source http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz)*    
-*Untar/Unzip:*  
->         tar -xvf  rubygems-2.2.2.tgz     
++ Build and install yaml:
 
-+ *Build and install Ruby Gems*  
->         cd  rubygems-2.2.2    
->         ruby setup.rb    
+        cd yaml-0.1.5
+        ./configure
+        make
+        make install
 
-+ *Verify Ruby Gems installed*  
->         gem env  
->         gem install bundler  
++ Download and unpack Ruby 2.1.4 (built from source from  https://www.ruby-lang.org/en/downloads):
 
-+ *Check that unzip and svn are installed*  
->         using rpm -qa | grep "unzip\|svn"  
+        wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.4.tar.gz   
+        tar -xvf ruby-2.1.4.tar.gz  
 
-+ *install rake*  
->         gem install rake-compiler  
++ Build and install Ruby:
 
+        cd  ruby-2.1.4  
+        ./configure  
+        make  
+        make install  
+
++ Verify Ruby is installed:
+
+        ruby -v
+
++ Download and unpack Ruby Gems 2.2.2:
+
+        wget http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz
+        tar -xvf  rubygems-2.2.2.tgz
+
++ Build and install Ruby Gems:
+
+        cd  rubygems-2.2.2    
+        ruby setup.rb    
+
++ Verify Ruby Gems are installed:
+
+        gem env  
+        gem install bundler  
+
++ Install rake:
+
+        gem install rake-compiler  
 
 ---------------------------------
-##Building chef server:
+##Building Chef server
 
 *Use git repository opscode-omnibus for server, (omnibus-chef is for the client)*
 *Note that omnibus-software (subdirectory config/software) is the repository for ruby files to update as noted below*  
@@ -346,9 +357,3 @@ bundle exec omnibus build chef-server --log-level=debug --override append_timest
 
 *to test*    
 >         chef-server-ctl test    
-
-
- 
-
-
-
