@@ -20,4 +20,5 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [[Building Chef client 12.1.2]]
 * [[Building RabbitMQ on RHEL]]
 * [[Building RabbitMQ on SLES]]
+* [[Building Doxygen]]
 
