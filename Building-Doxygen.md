@@ -22,6 +22,38 @@ The following build instructions have been tested with Doxygen 1.8.9.1 on RHEL7 
 *	python-xml
 *	libxml2-tools
 
+RHEL7:
+```
+	yum install -y git \
+		flex \
+		bison \
+		gcc \
+		gcc-c++ \
+		texlive-bibtex-bin \
+		make \
+		perl-Test-Simple.noarch \
+		openssl \
+		gmake \
+		GraphViz \
+		python-xml \
+		libxml2-tools
+```
+
+SLES12:
+```
+	zypper install -y git-core \
+		gmake \
+		GraphViz \
+		flex \
+		bison \
+		gcc \
+		gcc-c++ \
+		python-xml \
+		libxml2-tools \
+		texlive-bibtex-bin \
+		make \
+		perl-Test-Simple.noarch 
+```
 ###Section 2. Build and install Doxygen
 1. Re-install the ca certificates for openssl framework.
         yum reinstall -y ca-certificates
