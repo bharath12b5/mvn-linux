@@ -21,36 +21,30 @@ You may already have some of these packages installed - just install any that ar
 
         tar zxf js185-1.0.0.tar.gz && cd js-1.8.5/js/src
 
-5. Effect the following source code changes ( _NOTE: The given line numbers account for any previous action on the file._) :
-Edit file `/<source_root>/js-1.8.5/js/src/jsval.h`
-    Remove line 309 ( content: `jsuword        word;` )
-    Add a new line after line number `312` and insert the following string:
-        `jsuword        asWord;`
-    Add a new line after line number `322` and insert the following string:
-        `uint32         padding;`
-    Add a new line after line number `346` and insert the following string:
-        `uint32         padding;`
-    Add a new line after line number `355` and insert the following string:
-        `jsuword        asWord;`
-Save the file. For more info see http://hg.mozilla.org/mozilla-central/rev/6f2c0dbb88d3
-Edit file `/<source_root>/js-1.8.5/js/src/jsvalue.h`
-    Remove line 294 ( content: `JS_STATIC_ASSERT(offsetof(jsval_layout, s.payload) == 0);` )
-    Replace line 731 ( content: `return &data.s.payload.word;` )
-    with the following content:
-```c
+5. Edit file `/<source_root>/js-1.8.5/js/src/jsval.h`
+    * Remove line `309` ( content: `jsuword        word;` )
+    * Add a new line after line number `312` and insert the following string: `jsuword        asWord;`
+    * Add a new line after line number `322` and insert the following string: `uint32         padding;`
+    * Add a new line after line number `346` and insert the following string: `uint32         padding;`
+    * Add a new line after line number `355` and insert the following string: `jsuword        asWord;`
+    * Save the file. For more info see http://hg.mozilla.org/mozilla-central/rev/6f2c0dbb88d3
+
+6. Edit file `/<source_root>/js-1.8.5/js/src/jsvalue.h`
+    * Remove line 294 ( content: `JS_STATIC_ASSERT(offsetof(jsval_layout, s.payload) == 0);` )
+    * Replace line 731 ( content: `return &data.s.payload.word;` ) with the following content:
+    ```c
 #if JS_BITS_PER_WORD == 32
 return reinterpret_cast<const jsuword *>(&data.s.payload.word);
 #elif JS_BITS_PER_WORD == 64
 return reinterpret_cast<const jsuword *>(&data.asBits);
-#endif ```
-Save the file. For more info see https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff
-Edit file `/<source_root>/js-1.8.5/js/src/Makefile.in`
-    Change line number 385:
-    From:
-    `ifeq (,$(filter-out powerpc sparc,$(TARGET_CPU)))`
-    To:
-    `ifeq (,$(filter arm %86 x86_64,$(TARGET_CPU)))`
-Save the file. For more info see https://bugzilla.mozilla.org/attachment.cgi?id=520157&action=diff
+#endif 
+    ```
+    * Save the file. For more info see https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff  
+
+7. Edit file `/<source_root>/js-1.8.5/js/src/Makefile.in`  
+    * Change line number 385, from `ifeq (,$(filter-out powerpc sparc,$(TARGET_CPU)))` to `ifeq (,$(filter arm %86 x86_64,$(TARGET_CPU)))`
+    * Save the file. For more info see https://bugzilla.mozilla.org/attachment.cgi?id=520157&action=diff
+
 6. Prepare the src code using autoconf
 
         autoconf-2.13
