@@ -1,4 +1,4 @@
-# Building Ceilometer Client
+# Building Python Ceilometer Client
 The following build instructions have been tested with Ceilometer Client 1.0.13 on RHEL7 and SLES12 on IBM z Systems.
 
 ### Version
