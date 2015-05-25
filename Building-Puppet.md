@@ -1,4 +1,4 @@
-The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source) can be built on RHEL7/ RHEL 6 on IBM z System by following these instructions.
+The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source) can be built on RHEL7, RHEL 6, SLES 11 and SLES 12 on IBM z System by following these instructions.
 
 ## Puppet master installation
 
@@ -15,11 +15,13 @@ The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     If you do not have wget installed, perform
 
-    `$yum install wget`
+    `$yum install wget` for RHEL or
+
+    `$zypper install wget` for SLES
 
 2. Edit the environment variable:
 
-    ```$ vi ˜/.bash_profile```
+    ```$ vi ~/.bash_profile```
 
     append `PATH=$PATH:/usr/local/bin`, and save.
 
@@ -65,16 +67,18 @@ The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source
     $ puppet resource user puppet ensure=present gid=puppet shell='/sbin/nologin'
     ```
 
-9. Modify the `$condir/puppet.conf`. If we assume the hostname of the master machine is master.ibm.com, change the values of dns_alt/_names and server (both in the main or master section) as follows:
+9. Modify the `$condir/puppet.conf`. If we assume the hostname of the master machine is master.ibm.com, change the values of servers (either in the main or master section) as follows:
 
     ```
-    dns_alt_names = puppet,master.ibm.com
     server=master.ibm.com
+    ca_server=$server
+    report_server=$server
+    archive_file_server=$server
     ```
 
-    make sure the value of server is the hostname of the master machine and it is DNS resolvable to the agent machine.
+    make sure the values of all servers are DNS resolvable. Here we have assigned all the servers to be master.ibm.com, they could also be different servers.
 
-10. The Puppet master runs on TCP port 8140. This port needs to be open on your master’s firewall (and any intervening firewalls and network devices), and your client must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall:
+10. The Puppet master runs on TCP port 8140. This port needs to be open on your master’s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall:
 
     ```$ iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT```
 
@@ -93,11 +97,13 @@ The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     If you do not have wget installed, perform
 
-    ```$yum install wget```
+    `$yum install wget` for RHEL or
+
+    `$zypper install wget` for SLES
 
 2. Edit the environment variable:
 
-    ```$ vi ˜/.bash_profile```
+    ```$ vi ~/.bash_profile```
 
     append `PATH=$PATH:/usr/local/bin`, and save.
 
@@ -117,10 +123,7 @@ The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     ```
     $ puppet agent --genconfig > /etc/puppetlabs/puppet/puppet.conf
-    $ mkdir /etc/puppetlabs/puppet/modules
-    $ mkdir /etc/puppetlabs/puppet/manifests
     $ cd /etc/puppetlabs/puppet
-    $ wget https://raw.githubusercontent.com/puppetlabs/puppet/master/conf/auth.conf
     ```
 
 6. Create other necessary directories
@@ -138,14 +141,16 @@ The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     in vi, type "/configtimeout", press "n" to locate the setting "configtimeout" and input a "#" in front of it to comment it.
 
-8. Modify the `$condir/puppet.conf`. If we assume the hostname of the master machine is master.ibm.com, change the values of dns_alt_names and server (both in the main or master section) as follows:
+8. Modify the `$condir/puppet.conf`. If we assume the hostname of the master machine is master.ibm.com, change the values of servers (servers in the main or agent section) as follows:
 
     ```
-    dns_alt_names = puppet,master.ibm.com
     server=master.ibm.com
+    ca_server=$server
+    report_server=$server
+    archive_file_server=$server
     ```
 
-    make sure the server is the hostname of the master machine and the agent hostname is DNS resolvable to the master machine.
+    make sure the values of all servers are DNS resolvable to the agent machine. Here we have assigned all the servers to be master.ibm.com, they could also be different servers.
 
 9. Puppet runs on TCP port 8140.
 
@@ -173,7 +178,7 @@ The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     ```$ puppet cert sign agent.ibm.com```
 
-3. Restart both master and client, now they should connect.
+3. Restart both master and agent, now they should connect.
 
 4. If an error occurs, showing that
 
@@ -187,7 +192,7 @@ The [Open Source Puppet 4.0.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     This is because you don't have any plugins to syn yet, and the pluginsyn property is set to be true by default. So solutions are:
 
-    1). Disable the setting in the agent's config file: pluginsyn=false. Or
+    1). Disable the setting in the agent's config file by setting `pluginsyn=false`. Or
     2). Create at least one plugin.
 
 ## Reference
