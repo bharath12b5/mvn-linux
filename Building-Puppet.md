@@ -2,7 +2,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
 ## Puppet master installation
 
-1. Install ruby and ruby gem
+1. Install Ruby and RubyGems
 
     ```
     $ wget http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
@@ -21,7 +21,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
 2. Edit the environment variable:
 
-    ```$ vi ~/.bash_profile```
+    ```$ vi ˜/.bash_profile```
 
     append `PATH=$PATH:/usr/local/bin`, and save.
 
@@ -29,7 +29,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     ```$ gem install puppet```
 
-4. Locate the `$condir` by command
+4. Locate the `$confdir` by command
 
     ```$ puppet master --configprint confdir```
 
@@ -37,7 +37,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     ```$ mkdir -p /etc/puppetlabs/puppet```
 
-5. Create necessary directories and files in `$condir`
+5. Create necessary directories and files in `$confdir`
 
     ```
     $ puppet master --genconfig > /etc/puppetlabs/puppet/puppet.conf
@@ -54,7 +54,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
     $ mkdir -p /var/log/puppetlabs
     ```
 
-7. Comment the "configtimeout" setting in `$condir/puppet.conf`
+7. Comment the "configtimeout" setting in `$confdir/puppet.conf`
 
     ```$ vi /etc/puppetlabs/puppet/puppet.conf```
 
@@ -67,16 +67,16 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
     $ puppet resource user puppet ensure=present gid=puppet shell='/sbin/nologin'
     ```
 
-9. Modify the `$condir/puppet.conf`. If we assume the hostname of the master machine is master.ibm.com, change the values of servers (either in the main or master section) as follows:
+9. Modify the `$confdir/puppet.conf`. If we assume the hostname of the master machine is master.myhost.com, change the values of servers (either in the main or master section) as follows:
 
     ```
-    server=master.ibm.com
+    server=master.myhost.com
     ca_server=$server
     report_server=$server
     archive_file_server=$server
     ```
 
-    make sure the values of all servers are DNS resolvable. Here we have assigned all the servers to be master.ibm.com, they could also be different servers.
+    make sure the values of all servers are DNS resolvable. Here we have assigned all the servers to be master.myhost.com, they could also be different servers.
 
 10. The Puppet master runs on TCP port 8140. This port needs to be open on your master’s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall:
 
@@ -84,7 +84,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
 ## Puppet agent installation
 
-1. Install ruby and ruby gem
+1. Install Ruby and RubyGems
 
     ```
     $ wget http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
@@ -103,7 +103,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
 2. Edit the environment variable:
 
-    ```$ vi ~/.bash_profile```
+    ```$ vi ˜/.bash_profile```
 
     append `PATH=$PATH:/usr/local/bin`, and save.
 
@@ -111,7 +111,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     ```$ gem install puppet```
 
-4. Locate the `$condir` by command
+4. Locate the `$confdir` by command
 
     ```$ puppet agent --configprint confdir```
 
@@ -119,7 +119,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     ```$ mkdir -p /etc/puppetlabs/puppet```
 
-5. Create necessary directories and files in `$condir`
+5. Create necessary directories and files in `$confdir`
 
     ```
     $ puppet agent --genconfig > /etc/puppetlabs/puppet/puppet.conf
@@ -133,7 +133,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
     $ mkdir -p /var/log/puppetlabs
     ```
 
-7. Comment the "configtimeout" setting in `$condir/puppet.conf`
+7. Comment the "configtimeout" setting in `$confdir/puppet.conf`
 
     ````
     $ vi /etc/puppetlabs/puppet/puppet.conf
@@ -141,16 +141,16 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     in vi, type "/configtimeout", press "n" to locate the setting "configtimeout" and input a "#" in front of it to comment it.
 
-8. Modify the `$condir/puppet.conf`. If we assume the hostname of the master machine is master.ibm.com, change the values of servers (servers in the main or agent section) as follows:
+8. Modify the `$confdir/puppet.conf`. If we assume the hostname of the master machine is master.myhost.com, change the values of servers (servers in the main or agent section) as follows:
 
     ```
-    server=master.ibm.com
+    server=master.myhost.com
     ca_server=$server
     report_server=$server
     archive_file_server=$server
     ```
 
-    make sure the values of all servers are DNS resolvable to the agent machine. Here we have assigned all the servers to be master.ibm.com, they could also be different servers.
+    make sure the values of all servers are DNS resolvable to the agent machine. Here we have assigned all the servers to be master.myhost.com, they could also be different servers.
 
 9. Puppet runs on TCP port 8140.
 
@@ -158,25 +158,25 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
 ## Connecting the Master and Agent for the first time
 
-1. On the master machine (assuming with hostname master.ibm.com), run the master application:
+1. On the master machine (assuming with hostname master.myhost.com), run the master application:
 
     ```$ puppet master --verbose --no-daemonize```
 
     The --verbose option outputs verbose logging and the --no-daemonize option keeps the daemon in the foreground and redirects output to standard out. You can also add the --debug option to produce more verbose debug output from the daemon.
 
-  On the agent application (assuming the hostname of the agent is agent.ibm.com):
+  On the agent application (assuming the hostname of the agent is agent.myhost.com):
 
     ```$ puppet agent --test```
 
     You can see the output from our connection. The agent has created a certificate signing request and a private key to secure our connection. Puppet uses SSL certificates to authenticate connections between the master and the agent. The agent sends the certificate request to the master and waits for the master to sign and return the certificate. At this point, the agent has exited after sending in its Certificate Signing Request (CSR). The agent will need to be rerun to check in and run Puppet after the CSR has been signed by the CA. You can configure Puppet agent not to exit, but instead stay alive and poll periodically for the CSR to be signed. This configuration is called waitforcert and is generally only useful if you are also auto-signing certificates on the master.
 
-2. On the Master side. To complete the connection and authenticate our agent, we now need to sign the certificate the agent has sent to the master. We do this using puppet cert (or the puppetca binary) on the master:
+2. On the master machine, to complete the connection and authenticate our agent, we now need to sign the certificate the agent has sent to the master. We do this using puppet cert (or the puppetca binary) on the master:
 
     ```$ puppet cert list```
 
     The list option displays all the certificates waiting to be signed. We can then sign our certificate using the sign option:
 
-    ```$ puppet cert sign agent.ibm.com```
+    ```$ puppet cert sign agent.myhost.com```
 
 3. Restart both master and agent, now they should connect.
 
@@ -188,7 +188,7 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
 
     > Info: Retrieving plugin
 
-    > Error: /File[/opt/puppetlabs/puppet/cache/lib]: Could not evaluate: Could not retrieve information from environment production source(s) puppet://master.ibm.com/plugins
+    > Error: /File[/opt/puppetlabs/puppet/cache/lib]: Could not evaluate: Could not retrieve information from environment production source(s) puppet://master.myhost.com/plugins
 
     This is because you don't have any plugins to syn yet, and the pluginsyn property is set to be true by default. So solutions are:
 
