@@ -1,34 +1,63 @@
-The [oCaml 4.02.1 interpreter](https://ocaml.org/releases/4.02.html) can be built on SLES12/RHEL7 on IBM z System by following these instructions.
+The [oCaml 4.02.1 interpreter](https://ocaml.org/releases/4.02.html) can be built on RHEL 7.1/6.6 or SLES12/11 on IBM z System by following these instructions.
 
-1. Download latest tarball from [ocaml site](https://ocaml.org/releases/4.02.html)
+_**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._
 
-        wget http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.1.tar.gz
-        tar -zxvf ocaml-4.02.1.tar.gz
+1. Ensure you have the necessary dependencies in place  
 
-2. ocaml provided detail INSTALL [instruction]( http://caml.inria.fr/pub/distrib/ocaml-4.02/notes/INSTALL). From top directory e.g. ˜/ocaml-4.02.1. Configure the system.
+  RHEL 7.1 & 6.6
+  ```Shell
+  sudo yum install wget tar gcc make
+  ```
+  SLES 12 & 11
+  ```Shell
+  sudo zypper install wget tar gcc make
+  ```
+1. Download the tarball from [ocaml site](https://ocaml.org/releases/4.02.html)
 
-        ./configure
+  ```Shell
+  wget http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.1.tar.gz
+  tar -zxvf ocaml-4.02.1.tar.gz
+  ```
+2. Move to the expanded ocaml-4.02.1 directory and configure the system.
 
-3. Build oCaml bytecode compiler
+  ```Shell
+  cd ocaml-4.02.1
+  ./configure
+  ```
+  _**Note:** oCaml provides detailed [install instructions]( http://caml.inria.fr/pub/distrib/ocaml-4.02/notes/INSTALL), these steps are a reduced version of them._
 
-        make world
+3. Build the oCaml bytecode compiler
 
-4. Recompile all OCaml sources with the newly created compiler.
+  ```shell
+  make world
+  ```
 
-        make bootstrap
+4. Optional: Recompile all oCaml sources with the newly created compiler - this compares the newly created oCaml bytecode compiler against reference bytecode so you must check that bootstrap passes
 
-5. Insall oCaml, from the top directory, become superuser
+  ```shell
+  make bootstrap
+  ```
+  _If bootstrap passes you'll see the message `Fixpoint reached, bootstrap succeeded.`_
 
-        umask 022
-        make install
+5. Switch to root (or other superuser), move to the expanded ocaml-4.02.1 directory, and install
 
-6. Verify the build manually 
+  ```shell
+  cd ocaml-4.02.1
+  umask 022
+  make install
+  ```
 
-        ocaml
+6. Exit the root user (or other superuser), verify the build manually 
+
+  ```shell
+  ocaml
+  ```
+  _**Note:** to quit the oCaml interpreter type `exit 0;;`_
 
 7. Verify the build by running the provided testsuite, from top directory
 
-        cd testsuite
-        make all
-
-P.S. [Known problem reported](http://caml.inria.fr/mantis/view.php?id=6630)
+  ```Shell
+  cd testsuite
+  make all
+  ```
+  [One known test problem reported - two files fail](http://caml.inria.fr/mantis/view.php?id=6630)
