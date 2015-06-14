@@ -40,7 +40,25 @@
               --static-libstdc++ --disable-warnings-as-errors --opt \
               --use-system-v8 --allocator=system --variant-dir=z all
 
-   You can replace "all" with specific targets you are interested in building, e.g. mongo, mongod, etc.
+## Testing (Optional)
+
+1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo on RHEL 6 or SLES 11, build the driver from source:
+
+        git clone git://github.com/mongodb/mongo-python-driver.git pymongo
+        cd pymongo
+        python setup.py install
+
+2. To run the C++ unit tests, re-run the build command but replace the target `all` with `smokeCppUnittests`:
+
+        scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
+              --static-libstdc++ --disable-warnings-as-errors --opt \
+              --use-system-v8 --allocator=system --variant-dir=z smokeCppUnittests
+              
+   To run the server smoke tests, re-run the build command with `--smokedbprefix=/tmp smoke`:
+
+        scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
+              --static-libstdc++ --disable-warnings-as-errors --opt \
+              --use-system-v8 --allocator=system --variant-dir=z smokeCppUnittests
 
 ## Building MongoDB tools
 
