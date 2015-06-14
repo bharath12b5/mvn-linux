@@ -58,7 +58,8 @@
 
         scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
               --static-libstdc++ --disable-warnings-as-errors --opt \
-              --use-system-v8 --allocator=system --variant-dir=z smokeCppUnittests
+              --use-system-v8 --allocator=system --variant-dir=z \
+              --smokedbprefix=/tmp smoke
 
 ## Building MongoDB tools
 
