@@ -7,15 +7,17 @@
    (SLES 12)
 
       sudo zypper install gmp-devel binutils-devel mpfr-devel mpc-devel isl-devel
-      sudo zypper install flex
+      sudo zypper install flex subversion
 
    (RHEL 7)
 
       sudo yum install gmp-devel binutils-devel mpfr-devel libmpc-devel
-      sudo yum install flex
+      sudo yum install flex subversion
       wget ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.14.tar.bz2
 
    RHEL 7.1 does not provide the ISL library as an RPM  package, so it needs to be downloaded in source form and built into GCC.
+
+   Subversion is only required if you plan to build the latest development source code.
 
    If you are running an older version of Linux (e.g. RHEL 6 or SLES 11), the gmp, isl, mpc, and mpfr dependencies can be downloaded into the GCC source tree with a script; see step 3 below.
 
@@ -56,7 +58,7 @@
 
 5. Install the GCC binaries into /opt/gccgo/:
 
-        make install
+        sudo make install
 
 ## Compiling and running Go programs with gccgo
 
