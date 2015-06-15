@@ -9,6 +9,12 @@ Start by cloning the V8z code from GitHub, and using the current stable release 
 
 If you need to use the older stable branch 3.14 (e.g. for building [MongoDB](../Building MongoDB)), use the command `git checkout 3.14-s390` instead.
 
+If you are building V8z on SLES 11 SP3, issue this command after running "make dependencies":
+
+    sed -i "s/crsT/crs/g" build/gyp/pylib/gyp/generator/make.py
+
+This will prevent the `ar` command from failing when creating libraries during the build process.
+
 ### Building the static libraries
 
 Execute:
