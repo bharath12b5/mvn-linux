@@ -4,7 +4,7 @@ Start by cloning the V8z code from GitHub, and using the current stable release 
 
     git clone https://github.com/andrewlow/v8z.git
     cd v8z
-    git checkout 3.28.73-s390
+    git checkout 3.28-s390
     make dependencies
 
 If you need to use the older stable branch 3.14 (e.g. for building [MongoDB](../Building MongoDB)), use the command `git checkout 3.14-s390` instead.
