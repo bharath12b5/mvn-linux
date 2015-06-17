@@ -1,8 +1,16 @@
-[Snappy-Java](https://github.com/xerial/snappy-java) is a library that provides Java bindings for the popular [snappy](http://code.google.com/p/snappy/) compression engine from Google. It has been patched to enable it to be built on Linux on z Systems. The following build instructions have been tested on SLES 11 SP3.
+[Snappy-Java](https://github.com/xerial/snappy-java) is a library that provides Java bindings for the popular [snappy](http://code.google.com/p/snappy/) compression engine from Google. It has been patched to enable it to be built on Linux on z Systems. The following build instructions have been tested on RHEL 6 and SLES 11 SP3.
 
 1. Install the prerequisites:
 
+    (RHEL 6)
+
+		yum install automake autoconf java-1.7.1-ibm java-1.7.1-ibm-devel git
+
+    (SLES 11 SP3)
+
 		zypper install automake autoconf java-1_7_0-ibm java-1_7_0-ibm-devel git-core
+
+   If `yum` is unable to find the IBM Java packages on RHEL 6, you might not have the correct repositories set up. See this article for more information: [[Adding RHEL Optional and Supplementary Repositories]].
 
 2. Check out the Snappy-Java source code:
 
@@ -11,6 +19,12 @@
         git checkout develop-s390x
 
 3. Set the JAVA_HOME environment variable to the IBM Java 7 directory, e.g.
+
+    (RHEL 6)
+
+        export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm.s390x
+
+    (SLES 11 SP3)
 
         export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-ibm-1.7.0
 
