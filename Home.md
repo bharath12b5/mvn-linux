@@ -22,4 +22,4 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [[Building RabbitMQ on RHEL]]
 * [[Building RabbitMQ on SLES]]
 * [[Building Doxygen]]
-
+* [[Building Snappy-Java]]
