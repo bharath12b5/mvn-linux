@@ -2,7 +2,7 @@
 
 1. Install the prerequisites:
 
-        zypper install cmake libxml2-devel
+        zypper install cmake gcc-c++ libxml2-devel
 
 2. MariaDB uses [jemalloc](http://www.canonware.com/jemalloc/), a scalable concurrent memory allocator. This needs to be built first:
         
