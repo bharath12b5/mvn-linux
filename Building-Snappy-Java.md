@@ -41,6 +41,6 @@
         make IBM_JDK_7=1 USE_GIT=1 GIT_SNAPPY_BRANCH=master \
              GIT_REPO_URL=https://github.com/google/snappy.git
 
-5. The resulting JAR file can be found under snappy-java/target/ as snappy-java-1.1.2-SNAPSHOT.jar. It actually includes not only the native libraries for z Systems, but also for other architecture as well (e.g. Linux on x86, Windows, etc.).
+5. The resulting JAR file can be found under snappy-java/target/ as snappy-java-1.1.2-SNAPSHOT.jar. It actually includes not only the native libraries for Linux on z Systems, but also for other platforms as well (e.g. Linux on x86, Windows, etc.).
 
 6. Rename the JAR file to snappy-java-1.1.2.jar, and add it to the class path of any Java project that uses the snappy compression engine (e.g. Cassandra). It works as a drop-in replacement for any copy of Snappy-Java that comes with the Java project.
