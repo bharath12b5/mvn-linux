@@ -1,4 +1,4 @@
-Maven can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12 or SLES 11 by following these instructions.  Maven version 3.2.5 has been successfully built & tested this way.
+Maven can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12 or SLES 11 by following these instructions.  Maven version 3.2.5 has been successfully built and tested this way.
 
 _**General Notes:**_ 	
 
