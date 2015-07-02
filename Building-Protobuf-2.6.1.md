@@ -88,4 +88,4 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
   export LD_LIBRARY_PATH=/usr/local/lib
   protoc --version
   ```
-  _**Note:** protobuf should report version `libprotoc 2.6.1`_
+  _**Note:** Protobuf should report version `libprotoc 2.6.1`_
