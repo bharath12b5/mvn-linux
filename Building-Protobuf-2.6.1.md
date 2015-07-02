@@ -1,4 +1,4 @@
-The Google Protobuf code can be built for Linux on z Systems running RHEL 7.1/6.6 or SLES 12/11 by following these instructions. (Protobuf is available at https://developers.google.com/protocol-buffers/ and the github repository can be found at https://github.com/google/protobuf/):
+The Google Protobuf code can be built for Linux on z Systems running RHEL 7.1/6.6 and SLES 12/11 by following these instructions. (Protobuf is available at https://developers.google.com/protocol-buffers/ and the github repository can be found at https://github.com/google/protobuf/):
 
 _**NOTES:**_ 
 
