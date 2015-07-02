@@ -1,6 +1,6 @@
 # Building Fluentd
 
-Fluentd version 0.12.10 has been successfully built and tested for Linux on z Systems.  The following instructions can be used for RHEL 6&7 and SLES 11&12.
+Fluentd version 0.12.10 has been successfully built and tested for Linux on z Systems.  The following instructions can be used for RHEL 6/7 and SLES 11/12.
 
 _**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._
 
