@@ -1,4 +1,4 @@
-[MongoDB](http://mongodb.org/) can be built for a Linux on z System running RHEL 7.1/6.6 or SLES 12/11 by following the instructions below.
+[MongoDB](http://mongodb.org/) can be built for a Linux on z System running RHEL 7.1/6.6 and SLES 12/11 by following the instructions below.
 Note that [V8z](https://github.com/andrewlow/v8z/) will also need to be built, as referenced below.
 These instructions have been used to successfully build versions 2.4.9 and 2.6.6 of MongoDB.
 
