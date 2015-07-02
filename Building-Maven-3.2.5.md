@@ -1,4 +1,4 @@
-Maven can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12 or SLES 11 by following these instructions.  Maven version 3.2.5 has been successfully built and tested this way.
+Maven can be built for Linux on z Systems running RHEL 7.1/6.6 and SLES 12/11 by following these instructions.  Maven version 3.2.5 has been successfully built and tested this way.
 
 _**General Notes:**_ 	
 
@@ -51,15 +51,15 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 4. Set environment variables
 
-  For **SLES 12 and SLES 11**
+  For **SLES 12/11**
   ```shell
   export JAVA_HOME=/usr/lib64/jvm/java
   ```
-  For **RHEL 7.1 and RHEL 6.6**
+  For **RHEL 7.1/6.6**
   ```shell
   export JAVA_HOME=/usr/lib/jvm/java
   ```
-  For **RHEL 7.1, RHEL 6.6, SLES 12 and SLES 11**
+  For **RHEL 7.1/6.6 and SLES 12/11**
   ```shell
   export M2_HOME=/<source_root>/maven
   export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin 
