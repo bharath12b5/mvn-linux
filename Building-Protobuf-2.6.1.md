@@ -81,7 +81,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
   make check
   ```
   _**Note:** There are 5 tests/suites.  All 5 should pass_
-5. Install protobuf and verify the installation
+5. Install Protobuf and verify the installation
 
   ```shell
   sudo make install
