@@ -1,60 +1,109 @@
-#Building Maven 3.2.5
+Maven can be built for Linux on z Systems running RHEL 7.1/6.6 and SLES 12/11 by following these instructions.  Maven version 3.2.5 has been successfully built and tested this way.
 
-The following build instructions have been tested with **Maven 3.2.5** on SLES12 and RHEL7 on IBM z Systems.
+_**General Notes:**_ 	
 
-####Step 1:Install the Dependencies
-Following are the build dependencies for installing Maven.
-*       java-1.7.0-openjdk-devel(on RHEL7) / java-1_7_0-openjdk-devel(on SLES12)
-*		git (RHEL7) / git-core (SLES12)
-*       ant
+i) When following the steps below please use a standard permission user unless otherwise specified.
+	 
+ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it
 
-RHEL7:
-```
-yum -y update && yum install -y \
-   git\
-   java-1.7.0-openjdk-devel.s390x \
-   ant
-```
+##Building Maven 3.2.5
 
-SLES12:
-```
-zypper install -y \
-   git-core \
-   java-1_7_0-openjdk-devel \
-   ant
-```
-####Step 2: Clone the repository and checkout version 3.2.5
-Download  source from git: [Maven]
-	git clone https://git-wip-us.apache.org/repos/asf/maven.git/ --branch maven-3.2.5
+1. Install build time dependencies
 
-####Step 3:Setting Environment variables
-1.Set JAVA_HOME and PATH
+  For **SLES 12**
+  ```shell
+  sudo zypper install ant java-1_7_1-ibm-devel tar wget
+  ```
+  For **SLES 11**
+  ```shell
+  sudo zypper install java-1_7_0-ibm-devel tar wget       
+  ```
+  For **RHEL 7.1**
+  ```shell
+  sudo yum install ant java-1.7.1-ibm-devel tar wget
+  ```
+  For **RHEL 6.6**
+  ```shell
+  sudo yum install java-1.7.1-ibm-devel tar wget
+  ```
+ 
+  You may already have these packages installed - just install any missing.
+  
+  **Note:** Ant is not listed for SLES 11 or RHEL 6.6 as they provide an older version of ant than is required to build maven. Hence for SLES 11 and RHEL 6.6, ant is installed in a subsequent step below.
+  
+2. For **SLES 11 and RHEL 6.6** install appropriate version of ant 
 
-On RHEL7:
+  ```shell
+  cd /<source_root>/
+  wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.tar.gz
+  tar -zxvf apache-ant-1.9.4-bin.tar.gz
+  export PATH=/<source_root>/apache-ant-1.9.4/bin:$PATH
+  ```
 
-    export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk
-    export PATH=$PATH:$JAVA_HOME/bin
+3. Download the source code for maven and create a temporary installation directory
 
-On SLES12:
+  ```shell
+  cd /<source_root>/
+  wget http://apache.cs.utah.edu/maven/maven-3/3.2.5/source/apache-maven-3.2.5-src.tar.gz
+  tar -zxvf apache-maven-3.2.5-src.tar.gz
+  mkdir /<source_root>/maven
+  ```
 
-    export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-openjdk-1.7.0
-    export PATH=$PATH:$JAVA_HOME/bin
+4. Set environment variables
 
-2.Set Maven Home and PATH
+  For **SLES 12/11**
+  ```shell
+  export JAVA_HOME=/usr/lib64/jvm/java
+  ```
+  For **RHEL 7.1/6.6**
+  ```shell
+  export JAVA_HOME=/usr/lib/jvm/java
+  ```
+  For **RHEL 7.1/6.6 and SLES 12/11**
+  ```shell
+  export M2_HOME=/<source_root>/maven
+  export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin 
+  ```
 
-    export M2_HOME=/maven_build
-    export PATH=$PATH:/$M2_HOME/bin
+5. Modify the build file
 
-####Step 4: Build Maven
-**ANT** is used to build maven. Test Cases are included as part of build.
+  Ant is used to build maven and it is necessary to modify the build file to turn off 'fork' for the 'maven-compile' target.
+  The build file (build.xml) is located under `/<source_root>/apache-maven-3.2.5` and the following needs to be changed:
 
-    cd maven
-    ant
+  Original line:
+  ```xml
+  <property name="maven-compile.fork" value="true"/>
+  ```
+  Needs to be changed to:
+  ```xml
+  <property name="maven-compile.fork" value="false"/>
+  ```
+  
+6. Build Maven
 
-Once build is complete you will see a build successful message.
+  Ant needs to be invoked twice as shown below. A single invocation, with no target or target 'all', has been found to fail (believed due to required artifacts not being available to later stages of the build).
 
-###Verification:
-Run command `mvn --help` to verify installation.
+  ```shell
+  cd /<source_root>/apache-maven-3.2.5
+  ant maven-compile
+  ant
+  ```
+
+  On completion of a successful build, a "BUILD SUCCESSFUL" message is output.
+  
+  Tests are run as part of the build and should all pass. Test reports can be found under:    
+    `/<source_root>/apache-maven-3.2.5/maven-compat/target/surefire-reports`
+
+7. Verification
+
+  Run command `mvn --help` to verify installation.
+
+8. Relocate the maven installation as necessary
+
+  The above build creates a maven installation at $M2_HOME e.g. `/<source_root>/maven`. This may then be moved to an alternative location as desired.
+  
+  If the installation is moved then M2_HOME and PATH variables will need to be updated accordingly.
+  
 
 ####Known Issues:
 * Based on speed of your processor build time may vary. By default *timeout* is set to "600000"ms in build.xml. Due to this you may face timeout issue. You can solve it by editing timeout to required value.
@@ -64,6 +113,4 @@ Run command `mvn --help` to verify installation.
         MAVEN_OPTS=-XX:MaxPermSize=128m -Xmx512m
 
 ##References:
-http://maven.apache.org/archives/maven-1.x/index.html
-
-[Maven]:https://git-wip-us.apache.org/repos/asf/maven.git/
+http://maven.apache.org/
