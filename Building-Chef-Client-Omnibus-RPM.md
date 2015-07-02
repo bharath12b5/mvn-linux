@@ -1,5 +1,3 @@
-## Building Chef Client Omnibus RPM
-
 The Chef Client Omnibus version 12.0.4 RPM can be built for Linux on z Systems running RHEL 7.1/6.6 & SLES 12/11 by following these instructions. (Chef is available at https://www.chef.io/, the github repository for the client can be found at https://github.com/chef/chef and the Omnibus build process at https://github.com/chef/omnibus and https://github.com/chef/omnibus-software):
 
 _**NOTE:** When following the steps below please use a superuser / root. This isn't best practise (the build process is much more stable as a superuser) but this RPM could be built on a VM / Container so that root isn't exposed._
