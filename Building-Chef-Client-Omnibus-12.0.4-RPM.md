@@ -1,10 +1,10 @@
-The Chef Client Omnibus version 12.0.4 RPM can be built for Linux on z Systems running RHEL 7.1/6.6 & SLES 12/11 by following these instructions. (Chef is available at https://www.chef.io/, the github repository for the client can be found at https://github.com/chef/chef and the Omnibus build process at https://github.com/chef/omnibus and https://github.com/chef/omnibus-software):
+The Chef Client Omnibus version 12.0.4 RPM can be built for Linux on z Systems running RHEL 7.1/6.6 and SLES 12/11 by following these instructions. (Chef is available at https://www.chef.io/, the github repository for the client can be found at https://github.com/chef/chef and the Omnibus build process at https://github.com/chef/omnibus and https://github.com/chef/omnibus-software):
 
 _**NOTE:** When following the steps below please use a superuser / root. This isn't best practise (the build process is much more stable as a superuser) but this RPM could be built on a VM / Container so that root isn't exposed._
 
 1. Install the necessary dependencies (these include the Ruby build dependencies for step 2)
 
-    For **RHEL 7.1 & 6.6** use the following
+    For **RHEL 7.1 and 6.6** use the following
     ```shell
     yum install bison flex openssl-devel libyaml-devel libffi48-devel readline-devel zlib-devel ncurses-devel sqlite-devel gcc make wget tar gcc-c++ rpm-build unzip svn git patch
     ```
@@ -218,7 +218,7 @@ _**NOTE:** When following the steps below please use a superuser / root. This is
   ```
   Add the following lines just before the "Thank you for installing Chef!" message in the postinst file
 
-    RHEL 6.6 & 7.1
+    RHEL 6.6 and 7.1
     ```patch
     patch -p0 << END_OF_FILE
     --- /opt/chef/embedded/lib/ruby/gems/2.1.0/gems/ohai-8.4.0/lib/ohai/plugins/linux/platform.rb   2015-05-26 09:52:54.000000000 -0400
@@ -235,7 +235,7 @@ _**NOTE:** When following the steps below please use a superuser / root. This is
     END_OF_FILE
     ```
     
-    SLES 11 & 12
+    SLES 11 and 12
     ```patch
     patch -p0 << END_OF_FILE
     --- /opt/chef/embedded/lib/ruby/gems/2.1.0/gems/ohai-8.4.0/lib/ohai/plugins/linux/platform.rb   2015-05-26 09:52:54.000000000 -0400
