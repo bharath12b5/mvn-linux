@@ -1,6 +1,6 @@
 # Building Apache Http Web Server
 
-The following build instructions have been tested with Apache HTTP 2.5 on RHEL 7.1 & 6.6 and SLES 12 & 11 on IBM Linux on z Systems.
+The following build instructions have been tested with Apache HTTP 2.5 on RHEL 7.1/6.6 and SLES 12/11 on IBM Linux on z Systems.
 
 _**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._  
 _**NOTE:** A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_  
