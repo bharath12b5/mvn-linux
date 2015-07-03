@@ -1,6 +1,6 @@
 # Building Chef Client on RHEL 7.1/6.6 or SLES 12/11
 
-The Chef Client code can be built for a Linux on z System running RHEL 7.1/6.6 and SLES 12/11 by following these instructions (Chef is available at https://www.chef.io/ and the github repository for the client can be found at https://github.com/chef/chef):
+The Chef Client 12.4.0 code can be built for a Linux on z System running RHEL 7.1/6.6 or SLES 12/11 by following these instructions (Chef is available at https://www.chef.io/ and the github repository for the client can be found at https://github.com/chef/chef):
 
 _**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._
 
@@ -39,11 +39,13 @@ _**NOTE:** When following the steps below please use a standard permission user 
   ```shell
   git clone https://github.com/chef/chef.git
   ```
-4. Move into the source tree
+4. Move into the source tree and checkout the correct version
 
   ```shell
   cd chef
+  git checkout 12.4.0
   ```
+  _**Note:** This has been tested against version `12.4.0`, other versions may work as is or some changes may be required_
 5. Skip this step if you are on RHEL 7.1, on all other OS correct the gem environment for a standard user
 
   ```shell
