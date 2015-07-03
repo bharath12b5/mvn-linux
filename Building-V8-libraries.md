@@ -1,9 +1,20 @@
 The V8 JavaScript engine is very popular and is included by many different projects. It can be built as a set of static libraries, or a single shared library. Many projects prefer linking V8 statically, while others might prefer linking multiple programs against a shared library, in the interest of footprint. The following instructions should produce both types of libraries on RHEL 7 and SLES 12.
 
-Start by installing depot_tools from the Chromium project, which contains a number of tools needed to build V8:
+Start by installing the prerequisites:
+
+(RHEL)
+
+    sudo yum install subversion
+
+(SLES)
+
+    sudo zypper install subversion
+
+Clone depot_tools from the Chromium project, which contains a number of tools needed to build V8:
 
     git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
     export PATH=`pwd`/depot_tools:$PATH
+
 
 Then clone the V8z code from GitHub, and check out the current stable release 3.28:
 
