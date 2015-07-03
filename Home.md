@@ -1,4 +1,4 @@
-This wiki is a collection of documents and tutorials to help you get open-source software up and running on Linux on z.
+This wiki is a collection of documents and tutorials to help you get open-source software up and running on Linux on z. The following is not a complete list, refer to index on the right to see all documents.
 
 ## Recipes
 
