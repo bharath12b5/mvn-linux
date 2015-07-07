@@ -86,7 +86,7 @@
 
 ## Building the Galera wsrep provider
 
-The Galera wsrep provider is a library that extends a number of database products with replication capabilities. We have patched it so that it can be built on Linux on z Systems. It will need to be installed before MariaDB clustering can be enabled.
+The Galera wsrep ("write set replication") provider is a library that extends a number of database products (including MariaDB) with replication capabilities. We have patched it so that it can be built on Linux on z Systems. It will need to be installed before MariaDB clustering can be enabled.
 
 1. Building Galera requires SCons. Download the SCons RPM and install it:
 
@@ -110,9 +110,16 @@ The Galera wsrep provider is a library that extends a number of database product
 
    This will create libgalera_smm.so in the build directory.
 
-4. Issue the following commands to install the wsrep provider library:
+4. Issue the following commands to install the Galera arbitration daemon (garbd) and the wsrep provider library:
 
+        sudo cp garb/garbd /usr/local/sbin/        
         sudo cp libgalera_smm.so /usr/local/lib64/
         sudo /sbin/ldconfig -v
 
-   MariaDB is now ready for clustering. Refer to the very good [MariaDB documentation](https://mariadb.com/kb/en/mariadb/getting-started-with-mariadb-galera-cluster/) for more information on how to set up and configure a database cluster.
+   MariaDB is now ready for clustering.
+
+Refer to the following tutorials and documentation for more information on setting up and configuring a Galera cluster:
+
+- [Blog: Getting started with MariaDB Galera Cluster and Percona XtraDB Cluster](http://blog.yannickjaquier.com/mysql/getting-started-with-mariadb-galera-cluster-and-percona-xtradb-cluster.html)
+- [MariaDB documentation](https://mariadb.com/kb/en/mariadb/getting-started-with-mariadb-galera-cluster/) 
+- [Galera documentation](http://galeracluster.com/documentation-webpages/dbconfiguration.html)
