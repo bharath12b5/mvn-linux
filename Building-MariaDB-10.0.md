@@ -78,11 +78,11 @@
 3. To start the server, run:
 
         cd /opt/mariadb-galera-10.0.19-linux-s390x
-        bin/mysqld_safe --user=mysql --datadir=/home/mysql/data
+        sudo bin/mysqld_safe --user=mysql --datadir=/home/mysql/data
 
    To shut down the server, send SIGTERM to its process ID, e.g. (replace "localhost" with the actual hostname)
 
-        kill -TERM `cat /home/mysql/data/localhost.pid`
+        sudo kill -TERM `cat /home/mysql/data/localhost.pid`
 
 ## Building the Galera wsrep provider
 
