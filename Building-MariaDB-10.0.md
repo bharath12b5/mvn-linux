@@ -116,10 +116,24 @@ The Galera wsrep ("write set replication") provider is a library that extends a 
         sudo cp libgalera_smm.so /usr/local/lib64/
         sudo /sbin/ldconfig -v
 
-   MariaDB is now ready for clustering.
+5. The MariaDB configuration file needs to be updated as well. The exact configuration values will be different for each installation; the following is an example for a two-node cluster:
 
-Refer to the following tutorials and documentation for more information on setting up and configuring a Galera cluster:
+        [mysqld]
+        binlog_format=row
+        innodb_autoinc_lock_mode=2
+        query_cache_size=0
+        
+        wsrep_provider=/usr/local/lib64/libgalera_smm.so
+        wsrep_cluster_address='gcomm://192.168.0.101,192.168.0.102'
+        wsrep_cluster_name='mariacluster'
+        wsrep_node_address='192.168.0.101'
+        wsrep_node_name='dbnode1'
+        wsrep_sst_method=rsync
+        wsrep_sst_auth=root:rootpw
 
-- [Blog: Getting started with MariaDB Galera Cluster and Percona XtraDB Cluster](http://blog.yannickjaquier.com/mysql/getting-started-with-mariadb-galera-cluster-and-percona-xtradb-cluster.html)
-- [MariaDB documentation](https://mariadb.com/kb/en/mariadb/getting-started-with-mariadb-galera-cluster/) 
-- [Galera documentation](http://galeracluster.com/documentation-webpages/dbconfiguration.html)
+   MariaDB is now ready for clustering. Refer to the following tutorials and documentation for more information on setting up and configuring a Galera cluster:
+
+    - [Blog: Setting up a MySQL cluster with MariaDB Galera](http://jmoses.co/2014/03/18/setting-up-a-mysql-cluster-with-mariadb-galera.html)
+    - [Blog: Getting started with MariaDB Galera Cluster and Percona XtraDB Cluster](http://blog.yannickjaquier.com/mysql/getting-started-with-mariadb-galera-cluster-and-percona-xtradb-cluster.html)
+    - [MariaDB documentation](https://mariadb.com/kb/en/mariadb/getting-started-with-mariadb-galera-cluster/) 
+    - [Galera documentation](http://galeracluster.com/documentation-webpages/dbconfiguration.html)
