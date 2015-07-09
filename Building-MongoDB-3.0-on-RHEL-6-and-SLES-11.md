@@ -24,7 +24,7 @@
 
    Note that it is necessary to build the Go compiler in GCC as well, as it is needed for the MongoDB tools (see below).
 
-4. Clone the latest MongoDB 3.0 fork, which includes the changes for big-endian platforms.
+4. Clone the latest MongoDB 3.0 branch from our GitHub repo, which includes the changes for big-endian platforms.
 
         git clone https://github.com/linux-on-ibm-z/mongo mongo
         cd mongo
