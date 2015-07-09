@@ -12,7 +12,7 @@
 
         zypper install scons
 
-5. Clone the latest MongoDB 3.0 fork, which includes the changes for big-endian platforms.
+5. Clone the latest MongoDB 3.0 branch from our GitHub repo, which includes the changes for big-endian platforms.
 
         git clone https://github.com/linux-on-ibm-z/mongo mongo
         cd mongo
