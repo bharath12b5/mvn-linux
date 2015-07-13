@@ -1,11 +1,11 @@
-The [Apache Geode] (http://geode.incubator.apache.org/) 1.0.0 can be built and tested on Linux on z System (RHEL 7.1) by following these instructions.
+The [Apache Geode] (http://geode.incubator.apache.org/) can be built and tested on Linux on z System (RHEL 7.1 ans SLES 11) by following these instructions.
 
 NOTE: When following the steps below please use a standard permission user unless otherwise specified. It is suggested that you create a new working directory from which to execute the instructions below (unless otherwise specified).
 
-1. Install JAVA, for example IBM JAVA
+1. Install Java JDK, for example IBM Java in RHEL
 
     ```
-    $ sudo yum install java-1.7.1-ibm
+    $ sudo yum install java-1.7.1-ibm-devel
     ```
    or Open JDK
 
@@ -17,8 +17,10 @@ NOTE: When following the steps below please use a standard permission user unles
 
     ```
     $ JAVA_HOME=/usr/lib/jvm/java-*.*.*/
-    $ export $JAVA_HOME
+    $ export JAVA_HOME
     ```
+
+    If using SLES, simply replace `yum` with `zypper` in the above command to install packages.
 
 2. Get Geode package
 
@@ -45,7 +47,7 @@ NOTE: When following the steps below please use a standard permission user unles
     }
     ```
 
-5. **Note: Step 5 is needed when using IBM JAVA only. If using openJDK, skip to step 6 directly.**
+5. **Note: Step 5 is needed when using IBM Java only. If using openJDK, skip to step 6 directly.**
    Modify source code to support IBM JAVA, assuming you are now in the geode directory
 
     ```
