@@ -17,7 +17,7 @@ The following instructions have been tested on RHEL 7.1.
 
    **(Optional)** For improved performance, rebuild with additional compiler flags:
 
-        rpmbuild --rebuild --define 'optflags -O3 -funroll-loops -march=z196 -mtune=zEC12' postgresql94-9.4.1-1PGDG.rhel7.src.rpm
+        rpmbuild --rebuild --define 'optflags -O3 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -funroll-loops -m64 -march=z196 -mtune=zEC12' postgresql94-9.4.1-1PGDG.rhel7.src.rpm
 
 4. The binary RPMs will be created in _$HOME_/rpmbuild/RPMS/s390x/. They can be simply installed with the `rpm` command (as root):
 
