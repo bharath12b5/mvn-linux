@@ -1,72 +1,74 @@
 # Building Python Ceilometer Client
-The following build instructions have been tested with Ceilometer Client 1.0.13 on RHEL7 and SLES12 on IBM z Systems.
+The following build instructions have been tested with Ceilometer Client 1.0.13 on RHEL 7 & 6 and SLES 12 & 11 for IBM Linux on z Systems.
 
-### Version
-1.0.13
+_**General Notes:**_ 	
 
-###Section 1: Install the following Dependencies
-*       git (or git-core)
-*       python-devel
-*       python-setuptools
-*       pip
-*       python-virtualenv
-*       gcc
-*       findutils
-*       pbr
+i) When following the steps below please use a standard permission user unless otherwise specified.
+	 
+ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it
 
-RHEL7:
-```
-- yum install -y git \
-    python-devel \
-    python-setuptools \
-    gcc \
-    findutils
+## Building Ceilometer Client
 
-- easy_install pip
-- pip install virtualenv
-- pip install pbr
-```
+1. Install the build system dependencies
 
-SLES12:
-```
-- zypper install -y git-core \
-    python-devel \
-    python-setuptools \
-    gcc \
-    findutils
+    For RHEL 7.1 & 6.6
+    ```shell
+    sudo yum install git python-devel python-setuptools gcc findutils
+    ```
+    For SLES 12 & 11
+    ```shell
+    sudo zypper install git python-devel python-setuptools gcc findutils
+    ```
+2. Install python modules dependencies
 
-- easy_install pip==1.2.1
-- pip install virtualenv
-- pip install pbr
-```
-####Section 2: Build and Install
-1. Re-install the ca certificates for openssl framework (Only for Rhel)
-        yum reinstall -y ca-certificates
+    For RHEL 7.1 & 6.6
+    ```shell
+    sudo easy_install pip
+    ```
+    For SLES 12 & 11
+    ```shell
+    sudo easy_install pip==1.2.1
+    ```
+    Now use pip to install other dependencies
+    ```shell
+    sudo pip install virtualenv
+    sudo pip install pbr
+    ```
+3. Download the required version of Ceilometer
 
-2.      Get the source from git and checkout v1.0.13.
-```sh
-   git clone https://github.com/openstack/python-ceilometerclient.git
-   cd python-ceilometerclient
-   git checkout 1.0.13
-```
-3.      Install the build-dependencies using Pip
-```sh
-   pip install -r requirements.txt
-   pip install -r test-requirements.txt
-```
-4.      Run the test suites.
-```sh
-       ./run_tests.sh -N
-```
-5.      Install the binaries.
-```sh
-      python setup.py install
-```
+    ```shell
+    cd /<source_root>/
+    git clone https://github.com/openstack/python-ceilometerclient.git
+    cd python-ceilometerclient
+    git checkout 1.0.13
+    ```
+4. Install Ceilometer's python requirements
 
-###Verification:
-To verify run `ceilometer --help`. It should display the options and Usage of ceilometer.
+    ```shell
+    sudo pip install -r requirements.txt
+    ```
+5. (_Optional_) Install test requirements and test
+
+    SLES 11 Only
+    ```shell
+    sudo pip install linecache2
+    sudo pip install unittest2
+    ```
+    _**Note:** pip 1.2.1 install on SLES 11 sometimes has issues - if one of these fails to install, simply run the install a second time and it will complete_  
+	
+    For all platforms
+    ```shell
+    sudo pip install -r test-requirements.txt
+    ./run_tests.sh -N
+    ```
+    _**Note:** SLES 12 reports a syntax error whilst installing unittest2. However, the Client successfully installs and passes all 192 tests_
+	
+6. Install and verify
+
+    ```shell
+    sudo python setup.py install
+    ceilometer --help
+    ```
 
 ##References:
 https://github.com/openstack/python-ceilometerclient/
-
-[Ceilometer]:https://github.com/openstack/python-ceilometerclient.git
