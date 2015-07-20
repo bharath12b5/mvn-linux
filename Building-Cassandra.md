@@ -28,18 +28,7 @@ NOTE: When following the steps below please use a standard permission user unles
         cd bin
         export PATH=$PATH:`pwd`
 
-    Cassandra also requires Snappy Java. The next step is to build Snappy Java as a jar with IBM JDK.
-
-        mkdir snappy_z
-        cd snappy_z
-        wget https://github.com/linux-on-ibm-z/snappy-java/archive/develop-s390x.zip
-  
-        # change $JAVA_HOME to the java-1.7.1-ibm directory, e.g.,
-        # example: export JAVA_PATH=/usr/lib64/jvm/java-1.7.1-ibm-1.7.1
-        export JAVA_PATH=<path>
-        make USE_GIT=1 GIT_REPO_URL=https://github.com/google/snappy.git GIT_SNAPPY_BRANCH=master IBM_JDK_7=1
-
-        # the generated jar is in snappy-java/target folder - snappy-java-<version>-SNAPSHOT.jar
+    Cassandra also requires Snappy Java. The next step is to build [Snappy Java as a jar with IBM JDK](https://github.com/linux-on-ibm-z/docs/wiki/Building-Snappy-Java).
 
 1. Get the Cassandra source from the Apache mirror. 2.0.14 is the current most stable release.
 
@@ -49,11 +38,11 @@ NOTE: When following the steps below please use a standard permission user unles
 
         tar -xvf apache-cassandra-2.0.14-src.tar.gz
         cd apache-cassandra-2.0.14-src
- 
+
         # apply the patch.
         wget https://raw.githubusercontent.com/karan-dh/cassandra/master/cassandra-2.0.14.patch
         patch -p2 < cassandra-2.0.14.patch
-  
+ 
         # replace the original Snappy jar in the source and copy over the IBM compatible jar into the lib folder.
         rm ./lib/snappy-java-1.0.5.jar
         cp snappy-java-<version>-SNAPSHOT.jar ./lib
@@ -65,6 +54,6 @@ NOTE: When following the steps below please use a standard permission user unles
     The Cassandra jar is available under the bin folder.
 
 4. Run the unit test.
-  
+ 
         cd apache-cassandra-2.0.14-src
         ant test
