@@ -29,7 +29,7 @@ _**NOTE:** When following the steps below please use a standard permission user 
         wget http://sourceforge.net/projects/scons/files/scons/2.3.1/scons-2.3.1-1.noarch.rpm
         sudo rpm -i scons-2.3.1-1.noarch.rpm
 
-4. Clone the latest MongoDB fork for Power, which includes the changes for big-endian platforms.  Then change into the mongo directory.
+4. Clone the latest MongoDB port for Power, which includes the changes for big-endian platforms.  Then change into the mongo directory.
 
         git clone https://github.com/ibmsoe/mongo mongo
         cd mongo
