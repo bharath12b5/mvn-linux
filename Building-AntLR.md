@@ -1,90 +1,115 @@
 #Building AntLR 3.5
 
-The following build instructions have been tested with **AntLR 3.5** on SLES12 and RHEL7 on IBM z Systems.
+ANTLR can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES12 or SLES 11 by following these instructions.  Version 3.5 has been successfully built and tested this way.
+More information on ANTLR is available at [ANTLR-website](http://www.antlr.org/) and the source code can be downloaded from [ANTLR3-download](https://github.com/antlr/website-antlr3/tree/gh-pages/download).
 
-###Step 1:Install the Dependencies
-Following are the build dependencies for installing AntLR. Maven is not available in SLES12, RHEL7 repository, so we shall build it from source
+_**General Notes:**_ 	
 
-*       java-1.7.0-openjdk-devel(RHEL7) / java-1_7_0-openjdk-devel(SLES12)
-*		git (RHEL7) / git-core (SLES12)
-*       maven
+i) When following the steps below please use a standard permission user unless otherwise specified.
+	 
+ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it
 
-**Inter Dependency to build maven**
+## Building ANTLR
 
-ANT is additional dependency to build maven
-* ant
+### Obtain pre-built dependencies
 
-To install packages use yum install on RHEL7 and zypper install on SLES12. For example:
- 
-RHEL7:
-```	
-	yum install -y git java-1.7.0-openjdk-devel.s390x ant
-```
-SLES12:
-```	
-	zypper install -y git-core java-1_7_0-openjdk-devel ant
-```		   
-### Step 2: Set Environment variables
+1. Use the following commands to obtain dependencies
 
-1. Set JAVA_HOME and PATH
+    For RHEL 7.1
 
-    RHEL7:
+  ```shell
+  sudo yum install java-1.7.1-ibm-devel tar wget
+  ```
+	
+    For RHEL 6.6
 
-        export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk
-        export PATH=$PATH:$JAVA_HOME/bin
+  ```shell
+  sudo yum install java-1.7.1-ibm-devel tar wget
+  ```
+	
+    For SLES 12
 
-    SLES12:
+  ```shell
+  sudo zypper install java-1_7_1-ibm-devel tar wget
+  ```
+	
+    For SLES 11
 
-        export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-openjdk-1.7.0
-        export PATH=$PATH:$JAVA_HOME/bin
+  ```shell
+  sudo zypper install java-1_7_0-ibm-devel tar wget
+  ```
+	
+### Dependency Build - Maven 3.2.5
 
-2. Set Maven Home and PATH
+  This recipe uses Maven to build ANTLR so it is first necessary to build Maven. Full instructions can be found at [Building-Maven](https://github.com/linux-on-ibm-z/docs/wiki/Building-Maven).
+  
+### Product Build - ANTLR
 
-        export M2_HOME=/maven_build
-        export PATH=$PATH:/$M2_HOME/bin
+1. Set environment variables and working directory
 
-3. Set CLASSPATH for AntLR
+  For **SLES 12 and SLES 11**
+  
+  ```shell
+  export JAVA_HOME=/usr/lib64/jvm/java
+  ```
+  
+  For **RHEL 7.1 and RHEL 6.6**
+  
+  ```shell
+  export JAVA_HOME=/usr/lib/jvm/java
+  ```
+  
+  For **RHEL 7.1, RHEL 6.6, SLES 12 and SLES 11**
+  
+  ```shell
+  mkdir /<source_root>
+  cd /<source_root>/
+  export WORK_DIR=`pwd`
+  export M2_HOME=$WORK_DIR/maven
+  export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin
+  export CLASSPATH=$WORK_DIR/antlr3-antlr-3.5/antlr-complete/target/antlr-complete-3.5.jar:$CLASSPATH
+  ```
+	
+1. Download the ANTLR source code
 
-        export $WORK_DIR=`pwd`
-        export CLASSPATH=$CLASSPATH:$WORK_DIR/antlr3/antlr-complete/target/antlr-complete-3.5.jar
+  ```shell
+  cd $WORK_DIR
+  wget https://raw.githubusercontent.com/antlr/website-antlr3/gh-pages/download/antlr-3.5.tar.gz
+  tar -zxvf antlr-3.5.tar.gz
+  ```
+	
+1. Build and test ANTLR
+
+    ```shell
+    cd $WORK_DIR/antlr3-antlr-3.5
+    mvn -Dgpg.skip=true -Duser.name="test" -Dbootclasspath.compile=$JAVA_HOME/jre/lib/s390x/default/jclSC170/vm.jar:$JAVA_HOME/jre/lib/rt.jar -Dbootclasspath.testCompile=$JAVA_HOME/jre/lib/s390x/default/jclSC170/vm.jar:$JAVA_HOME/jre/lib/rt.jar -Djava6.home=$JAVA_HOME/jre install | tee antlr_build_log
+    ```
+
+  Note that test results are included in the output of the above command, hence we capture the output in antlr_build_log. Relevant lines contain the text "Tests run". There should be no test failures/errors.
 
 
-### Step 3: Building Maven(Dependency) :
-Download  source from git and build maven: [Maven]
+1. Verify the build
 
-		git clone https://git-wip-us.apache.org/repos/asf/maven.git/ --branch maven-3.2.5
-        cd maven
-        ant
+  The following command should display the version of ANTLR that has been built and output usage information.
 
-Once build is complete you will could see a build successful message.
+  ```shell
+  java org.antlr.Tool
+  ```
 
-###Step 4:Building AntLR3.5:
+1. Install ANTLR
 
-Download  source from git: [AntLR]
+  To install ANTLR, copy antlr-complete-3.5.jar from $WORK_DIR/antlr3-antlr-3.5/antlr-complete/target to your desired installation location and update environment variable CLASSPATH accordingly.
 
-		git clone --branch antlr-3.5 https://github.com/antlr/antlr3.git
-        cd antlr3
+  The installation may be verified by running the same command that was used to verify the build (in the previous step).
+	
 
-**Compile and install antlr using maven**
+1. _[Optional]_ Clean up
 
-    mvn -Dgpg.skip=true -Duser.name="Your Username" -Dbootclasspath.compile=$JAVA_HOME/jre/lib/rt.jar -Djava6.home=$JAVA_HOME/jre install
+  Once you have a copy of antlr-complete-3.5.jar outside $WORK_DIR then $WORK_DIR may be deleted.
+  
 
-###Verification:
-You can verify installation by running
+###References:
 
-    java org.antlr.Tool --help
+http://www.antlr.org/ - The ANTLR website
 
-####Known Issues:
-* Based on speed of your processor build time may vary. By default *timeout* is set to "600000"ms in build.xml. Due to this you may face timeout issue. You can solve it by editing timeout to a higher value.
-
-* If you get an OutofMemoryError during bootstrap, try setting an environment variable MAVEN_OPTS to provide more memory, e.g.
-
-        MAVEN_OPTS=-XX:MaxPermSize=128m -Xmx512m
-
-* BootClassPath may vary based on your rt.jar and other required Classes location, export the required classpath. You can export multiple classpaths with ':' separator
-
-##References:
-    https://github.com/antlr/antlr3/releases
-
-[Maven]:https://git-wip-us.apache.org/repos/asf/maven.git/
-[AntLR]:https://github.com/antlr/antlr3.git
+https://theantlrguy.atlassian.net/wiki/display/ANTLR3/Building+ANTLR+with+Maven - Further information on building ANTLR using Maven
