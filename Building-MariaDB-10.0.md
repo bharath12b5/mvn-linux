@@ -101,22 +101,41 @@ The Galera wsrep ("write set replication") provider is a library that extends a 
 
         sudo zypper install boost-devel check-devel openssl-devel
 
-3. Clone the Galera source code from our GitHub repository, then check out the 25.3.10 branch and build it:
+3. Clone the Galera source code from the [official GitHub repository](https://github.com/codership/galera), then check out the 25.3.10 branch:
 
-        git clone https://github.com/linux-on-ibm-z/galera.git
+        git clone https://github.com/codership/galera.git
         cd galera
         git checkout 25.3.10
+
+4. Patch the Galera code so that it will build on z. Edit the file SConstruct, and replace the `if... elif... else` block on lines 90 to lines 108 with the following:
+
+        compile_arch = ' -march=z196 -mtune=zEC12'
+        link_arch    = ''
+        x86 = 0
+
+   Then edit chromium/build_config.h, and add the following text after line 127:
+
+        #elif defined(__s390__)
+        #if defined(__s390x__)
+        #define ARCH_CPU_64_BITS 1
+        #else
+        #define ARCH_CPU_32_BITS 1
+        #endif
+        #define ARCH_CPU_BIG_ENDIAN 1
+
+5. Now issue the following command to build the code:
+
         scons strict_build_flags=0
 
    This will create libgalera_smm.so in the build directory.
 
-4. Issue the following commands to install the Galera arbitration daemon (garbd) and the wsrep provider library:
+6. Issue the following commands to install the Galera arbitration daemon (garbd) and the wsrep provider library:
 
         sudo cp garb/garbd /usr/local/sbin/        
         sudo cp libgalera_smm.so /usr/local/lib64/
         sudo /sbin/ldconfig -v
 
-5. The MariaDB configuration file needs to be updated as well. The exact configuration values will be different for each installation; the following is an example for a two-node cluster:
+7. The MariaDB configuration file needs to be updated as well. The exact configuration values will be different for each installation; the following is an example for a two-node cluster:
 
         [mysqld]
         binlog_format=row
