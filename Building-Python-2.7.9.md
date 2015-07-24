@@ -7,6 +7,7 @@ All of the usable dependencies are available on the RHEL 6.5, 7.0 and SLES 11.3,
 2. make
 3. ncurses
 4. patch
+5. bzip2-devel
 
 #### Section 2: Build and Install Python 2.7.9
 1. Get the source.
