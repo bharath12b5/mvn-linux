@@ -15,7 +15,7 @@ All of the usable dependencies are available on the RHEL 6.5, 7.0 and SLES 11.3,
         tar -xvf Python-3.4.3.tar.xz
 
 2. Configure the build
-Skipping this step sill result in installing Python in default location /usr/local.
+Skipping this step will result in installing Python in default location /usr/local.
 
          cd Python-3.4.3
         ./configure --prefix=<build-location> --exec-prefix=<build-location>
