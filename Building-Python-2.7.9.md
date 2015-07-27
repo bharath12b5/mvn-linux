@@ -16,7 +16,7 @@ All of the usable dependencies are available on the RHEL 6.5, 7.0 and SLES 11.3,
         tar -xvf Python-2.7.9.tar.xz
 
 2. Configure the build
-Skipping this step sill result in installing Python in default location /usr/local.
+Skipping this step will result in installing Python in default location /usr/local.
 
          cd Python-2.7.9
         ./configure --prefix=<build-location> --exec-prefix=<build-location>
