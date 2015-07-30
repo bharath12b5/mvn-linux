@@ -213,7 +213,7 @@ For testing, we run the tests from the source code
 
     ``` $ bundle exec rspec spec```
 
-[One know test error specific to z systems reported] (https://tickets.puppetlabs.com/browse/PUP-4962)
+[One known test error specific to z systems reported] (https://tickets.puppetlabs.com/browse/PUP-4962)
 
 ## Reference
 1. https://docs.puppetlabs.com/guides/install_puppet/pre_install.html
