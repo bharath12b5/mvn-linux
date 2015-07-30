@@ -195,5 +195,25 @@ The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source
     1). Disable the setting in the agent's config file by setting `pluginsyn=false`. Or
     2). Create at least one plugin.
 
+## Testing
+For testing, we run the tests from the source code
+
+1. Download  Puppet source code and install bundler
+
+    ```
+    $ git clone git://github.com/puppetlabs/puppet
+    $ cd puppet
+    $ gem install bundler
+    $ gem update
+    $ bundle init
+    $ bundle install
+    ```
+
+2. Run the test
+
+    ``` $ bundle exec rspec spec```
+
+[One know test error specific to z systems reported] (https://tickets.puppetlabs.com/browse/PUP-4962)
+
 ## Reference
 1. https://docs.puppetlabs.com/guides/install_puppet/pre_install.html
