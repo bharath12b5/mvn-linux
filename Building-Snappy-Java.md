@@ -18,9 +18,9 @@
 
 2. Check out the Snappy-Java source code:
 
-        git clone https://github.com/linux-on-ibm-z/snappy-java.git
+        git clone https://github.com/xerial/snappy-java.git
         cd snappy-java
-        git checkout develop-s390x
+        git checkout develop
 
 3. Set the JAVA_HOME environment variable to the Java 7 SDK directory, e.g.
 
