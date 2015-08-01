@@ -4,7 +4,7 @@
 
     (RHEL 6 and RHEL 7)
 
-		yum install automake autoconf java-1.7.1-ibm java-1.7.1-ibm-devel git
+		yum install automake autoconf libstdc++-static java-1.7.1-ibm java-1.7.1-ibm-devel git
 
     (SLES 11 SP3)
 
