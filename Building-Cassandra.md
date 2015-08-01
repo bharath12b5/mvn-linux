@@ -32,7 +32,7 @@ NOTE: When following the steps below please use a standard permission user unles
 
 1. Get the Cassandra source from the Apache mirror. 2.0.14 is the current most stable release.
 
-        wget http://mirror.its.dal.ca/apache/cassandra/2.0.14/apache-cassandra-2.0.14-src.tar.gz
+        wget http://archive.apache.org/dist/cassandra/2.0.14/apache-cassandra-2.0.14-src.tar.gz
 
 2. Extract and apply patch.
 
