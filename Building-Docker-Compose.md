@@ -32,7 +32,7 @@
                 
         easy_install pip
 
-## Section 2: Get docker-compose source from github
+## Section 2: Get Docker Compose source from github
         cd /
         git clone --branch 1.4.0rc2 https://github.com/docker/compose.git
         cd compose
@@ -43,7 +43,7 @@
         
         python setup.py install
 
-## Section 4: Verify docker-compose version
+## Section 4: Verify Docker Compose version
         docker-compose version
         
 # References
