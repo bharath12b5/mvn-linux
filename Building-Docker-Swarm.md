@@ -36,7 +36,7 @@ SLES12:
 ```
     cp -r -n swarm/* /go/src/github.com/docker/swarm
 ```
-3.4 Install swarm
+3.4 Install Docker Swarm
 ```
     go install github.com/docker/swarm/
 ```
