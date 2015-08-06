@@ -40,8 +40,8 @@ NOTE: When following the steps below please use a standard permission user unles
         cd apache-cassandra-2.0.14-src
 
         # apply the patch.
-        wget https://raw.githubusercontent.com/karan-dh/cassandra/master/cassandra-2.0.14.patch
-        patch -p1 < cassandra-2.0.14.patch
+        wget https://raw.githubusercontent.com/linux-on-ibm-z/docs/master/patches/cassandra-2.0.14-ibm-java.patch
+        patch -p1 < cassandra-2.0.14-ibm-java.patch
  
         # replace the original Snappy jar in the source and copy over the IBM compatible jar into the lib folder.
         rm ./lib/snappy-java-1.0.5.jar
