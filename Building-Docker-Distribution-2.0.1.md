@@ -1,6 +1,6 @@
 # Building Docker Distribution 2.0.1
 
-The following build instructions have been tested with Docker Distribution 2.0.1 release on RHEL7 and SLES12 on IBM z Systems.
+Docker Distribution can be built and tested on Linux on z Systems (RHEL 7.1 ans SLES 12) by following these instructions.
 
 ### Step 1 : Install the Dependencies
 Following are the build dependencies for Distribution. 
@@ -17,7 +17,7 @@ Following are the build dependencies for Distribution.
 
             yum install git
             
- *  To install Gccgo, please refer to the Gccgo recipe file.
+ *  To install Gccgo, please refer to the [gccgo](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo) recipe.
 
 ## Step 2 : Get the source (checkout v2.0.1 release)
             mkdir -p /go/src/github.com/docker
