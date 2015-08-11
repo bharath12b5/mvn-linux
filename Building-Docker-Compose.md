@@ -1,5 +1,5 @@
-# Recipe for building Docker Compose
-    The following build instructions describe how to build docker-compose on RHEL7 and SLES12 for IBM z Systems.
+# Building Docker Compose
+Docker Compose can be built and tested on Linux on z Systems (RHEL 7.1 ans SLES 12) by following these instructions.
 
 ## Version
         1.4.0rc2
