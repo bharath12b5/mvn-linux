@@ -1,20 +1,26 @@
 # Building Apache Http Web Server
 
-The following build instructions have been tested with Apache HTTP 2.5 on RHEL 7.1/6.6 and SLES 12/11 on IBM Linux on z Systems.
+The **Apache HTTP** web server can be built for Linux on z Systems running RHEL 7.1/6.6 or SLES 12/11 by following these instructions.  Version 2.5 has been successfully built & tested this way.
 
-_**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._  
-_**NOTE:** A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_  
-_**NOTE:** For convenience `vi` has been used in the instructions below when editing files, replace with your desired editing program if required_
+_**General Notes:**_ 	
+
+i) When following the steps below please use a standard permission user unless otherwise specified.
+	 
+ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it
+
+iii) Where the instructions refer to 'vi' you may, of course, use an editor of your choice
+
+## Building Apache HTTP Web Server
 
 1. Install build dependencies
 
     For RHEL 7.1 & 6.6
     ```shell
-    yum install git openssl openssl-devel gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel expat-devel which wget tar
+    sudo yum install git openssl openssl-devel gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel expat-devel which wget tar
     ```
     And for SLES 12 & 11
     ```shell
-    zypper install git openssl openssl-devel gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel wget tar
+    sudo zypper install git openssl openssl-devel gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel wget tar
     ```
 2. SLES 11 & RHEL 6.6 **Only** - build libtool
 
