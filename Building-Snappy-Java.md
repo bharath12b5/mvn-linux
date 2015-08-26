@@ -4,15 +4,15 @@
 
     (RHEL 6 and RHEL 7)
 
-		yum install automake autoconf libstdc++-static java-1.7.1-ibm java-1.7.1-ibm-devel git
+		yum install automake autoconf libstdc++-static java-1.7.1-ibm java-1.7.1-ibm-devel git wget gcc-c++ libtool tar make patch
 
     (SLES 11 SP3)
 
-		zypper install automake autoconf java-1_7_0-ibm java-1_7_0-ibm-devel git-core
+		zypper install automake autoconf java-1_7_0-ibm java-1_7_0-ibm-devel git-core wget gcc-g++ libtool tar make patch
 
     (SLES 12)
 
-		zypper install automake autoconf java-1_7_1-ibm java-1_7_1-ibm-devel git-core
+		zypper install automake autoconf java-1_7_1-ibm java-1_7_1-ibm-devel git-core wget gcc-g++ libtool tar make patch
 
    If `yum` is unable to find the IBM Java packages on RHEL 6, you might not have the correct repositories set up. See this article for more information: [[Adding RHEL Optional and Supplementary Repositories]].
 
@@ -40,6 +40,8 @@
 
         make IBM_JDK_7=1 USE_GIT=1 GIT_SNAPPY_BRANCH=master \
              GIT_REPO_URL=https://github.com/google/snappy.git
+
+   If this `make` command fails for any reason and you need to restart, issue `make clean` first. Otherwise the build will try to continue with an incomplete source tree and it will keep failing.
 
 5. The resulting JAR file can be found under snappy-java/target/ as snappy-java-1.1.2-SNAPSHOT.jar. It actually includes not only the native libraries for Linux on z Systems, but also for other platforms as well (e.g. Linux on x86, Windows, etc.).
 
