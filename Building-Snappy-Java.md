@@ -4,15 +4,15 @@
 
     (RHEL 6 and RHEL 7)
 
-		yum install automake autoconf libstdc++-static java-1.7.1-ibm java-1.7.1-ibm-devel git wget gcc-c++ libtool tar make patch
+		yum install automake autoconf libstdc++-static java-1.7.1-ibm java-1.7.1-ibm-devel git wget gcc-c++ libtool tar make patch pkgconfig
 
     (SLES 11 SP3)
 
-		zypper install automake autoconf java-1_7_0-ibm java-1_7_0-ibm-devel git-core wget gcc-g++ libtool tar make patch
+		zypper install automake autoconf java-1_7_0-ibm java-1_7_0-ibm-devel git-core wget gcc-g++ libtool tar make patch pkg-config
 
     (SLES 12)
 
-		zypper install automake autoconf java-1_7_1-ibm java-1_7_1-ibm-devel git-core wget gcc-g++ libtool tar make patch
+		zypper install automake autoconf java-1_7_1-ibm java-1_7_1-ibm-devel git-core wget gcc-g++ libtool tar make patch pkg-config
 
    If `yum` is unable to find the IBM Java packages on RHEL 6, you might not have the correct repositories set up. See this article for more information: [[Adding RHEL Optional and Supplementary Repositories]].
 
