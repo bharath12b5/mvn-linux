@@ -2,13 +2,15 @@
 
 ## Building MongoDB
 
-1. MongoDB includes V8 3.12 in its source tree, but that version does not support z Systems, so it will need to be linked with [a version of V8 that has been ported to z](https://github.com/andrewlow/v8z/). Fetch the V8z code from the 3.14-s390 branch, build the 64-bit shared library (libv8.so), and install it into the normal system location, usually under /usr/lib64/. See this article for complete instructions on building V8 3.14: [Building V8 libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-libraries).
+1. Building MongoDB requires a lot of disk space. Before attempting the build, ensure that you have 30GB of free space in the file system. You will also need root access to perform some of the steps below, e.g. installing libraries into system locations.
 
-2. Building MongoDB requires SCons. Download scons-2.3.1-1.noarch.rpm from [SCons 2.3.1 Downloads](http://sourceforge.net/projects/scons/files/scons/2.3.1) and install it like this:
+2. MongoDB depends on the V8 JavaScript engine. It includes V8 3.12 in its source tree, but that version does not support z Systems, so it will need to be linked with [a version of V8 that has been ported to z](https://github.com/andrewlow/v8z/). Fetch the V8z code from the 3.14-s390 branch, build the 64-bit shared library (libv8.so), and install it into the normal system location, usually under /usr/lib64/. See this article for complete instructions on building V8 3.14: [Building V8 libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-libraries).
+
+3. Building MongoDB requires SCons. Download scons-2.3.1-1.noarch.rpm from [SCons 2.3.1 Downloads](http://sourceforge.net/projects/scons/files/scons/2.3.1) and install it like this:
 
         rpm -i scons-2.3.1-1.noarch.rpm
 
-3. Building MongoDB 3.0 requires GCC 4.8.2 or newer. However, RHEL 6 and SLES 11 ship older versions of GCC, so it is necessary to build and install a newer GCC first. Download the [GCC 5.1.0 source code](ftp://gcc.gnu.org/pub/gcc/releases/gcc-5.1.0/gcc-5.1.0.tar.bz2) and issue the following commands:
+4. Building MongoDB 3.0 requires GCC 4.8.2 or newer. However, RHEL 6 and SLES 11 ship older versions of GCC, so it is necessary to build and install a newer GCC first. Download the [GCC 5.1.0 source code](ftp://gcc.gnu.org/pub/gcc/releases/gcc-5.1.0/gcc-5.1.0.tar.bz2) and issue the following commands:
 
         tar xjf gcc-5.1.0.tar.bz2
         cd gcc-5.1.0
@@ -54,7 +56,11 @@
               --static-libstdc++ --disable-warnings-as-errors --opt \
               --use-system-v8 --allocator=system --variant-dir=z smokeCppUnittests
               
-   To run the server smoke tests, re-run the build command with `--smokedbprefix=/tmp smoke`:
+   To run the server smoke tests, you must first build the MongoDB tools (see below), and copy all the tools into the MongoDB server build directory, e.g.
+
+        cp ../mongo-tools/bin/* .
+
+   Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`:
 
         scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
               --static-libstdc++ --disable-warnings-as-errors --opt \
