@@ -2,9 +2,11 @@
 
 ## Building MongoDB
 
-1. MongoDB includes V8 3.12 in its source tree, but that version does not support z Systems, so it will need to be linked with [a version of V8 that has been ported to z](https://github.com/andrewlow/v8z/). Fetch the V8z code from the 3.14-s390 branch, build the 64-bit shared library (libv8.so), and install it into the normal system location, usually under /usr/lib64/. See this article for complete instructions on building V8 3.14: [Building V8 libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-libraries).
+1. Building MongoDB requires a lot of disk space. Before attempting the build, ensure that you have 30GB of free space in the file system. You will also need root access to perform some of the steps below, e.g. installing libraries into system locations.
 
-2. Building MongoDB requires SCons. On RHEL 7, download scons-2.3.4-1.noarch.rpm from [SCons project page](http://prdownloads.sourceforge.net/scons/scons-2.3.4-1.noarch.rpm) and install it like this:
+2. MongoDB depends on the V8 JavaScript engine. It includes V8 3.12 in its source tree, but that version does not support z Systems, so it will need to be linked with [a version of V8 that has been ported to z](https://github.com/andrewlow/v8z/). Fetch the V8z code from the 3.14-s390 branch, build the 64-bit shared library (libv8.so), and install it into the normal system location, usually under /usr/lib64/. See this article for complete instructions on building V8 3.14: [Building V8 libraries](https://github.com/ibm-linux-on-z/docs/wiki/Building-V8-libraries).
+
+3. Building MongoDB requires SCons. On RHEL 7, download scons-2.3.4-1.noarch.rpm from [SCons project page](http://prdownloads.sourceforge.net/scons/scons-2.3.4-1.noarch.rpm) and install it like this:
 
         rpm -i scons-2.3.4-1.noarch.rpm
 
@@ -12,7 +14,7 @@
 
         zypper install scons
 
-5. Clone the latest MongoDB 3.0 branch from our GitHub repo, which includes the changes for big-endian platforms.
+4. Clone the latest MongoDB 3.0 branch from our GitHub repo, which includes the changes for big-endian platforms.
 
         git clone https://github.com/linux-on-ibm-z/mongo mongo
         cd mongo
@@ -38,7 +40,11 @@
 
         scons --opt --use-system-v8 --allocator=system smokeCppUnittests
               
-   To run the server smoke tests, re-run the build command with `--smokedbprefix=/tmp smoke`:
+   To run the server smoke tests, you must first build the MongoDB tools (see below), and copy all the tools into the MongoDB server build directory, e.g.
+
+        cp ../mongo-tools/bin/* .
+
+   Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`:
 
         scons --opt --use-system-v8 --allocator=system --smokedbprefix=/tmp smoke
 
