@@ -42,32 +42,6 @@
               --static-libstdc++ --disable-warnings-as-errors --opt \
               --use-system-v8 --allocator=system --variant-dir=z all
 
-## Testing (Optional)
-
-1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo on RHEL 6 or SLES 11, build the driver from source:
-
-        git clone git://github.com/mongodb/mongo-python-driver.git pymongo
-        cd pymongo
-        python setup.py install
-
-2. To run the C++ unit tests, re-run the build command in the MongoDB build directory, but replace the target `all` with `smokeCppUnittests`:
-
-        cd mongo
-        scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
-              --static-libstdc++ --disable-warnings-as-errors --opt \
-              --use-system-v8 --allocator=system --variant-dir=z smokeCppUnittests
-              
-   To run the server smoke tests, you must first build the MongoDB tools (see below), and copy all the tools into the MongoDB server build directory, e.g.
-
-        cp ../mongo-tools/bin/* .
-
-   Then you can run the server smoke tests by re-running the build command in the MongoDB build directory, with `--smokedbprefix=/tmp smoke`:
-
-        scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
-              --static-libstdc++ --disable-warnings-as-errors --opt \
-              --use-system-v8 --allocator=system --variant-dir=z \
-              --smokedbprefix=/tmp smoke
-
 ## Building MongoDB tools
 
 1. In version 3.0, tools such as mongodump, mongoexport, mongoimport and mongorestore have been rewritten in Go and moved to a different GitHub repository. Clone the source code and check out release 3.0.4:
@@ -91,6 +65,33 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 
         ./build.sh
 
+## Testing (Optional)
+
+1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo on RHEL 6 or SLES 11, build the driver from source:
+
+        git clone git://github.com/mongodb/mongo-python-driver.git pymongo
+        cd pymongo
+        python setup.py install
+
+2. To run the C++ unit tests, re-run the build command in the MongoDB build directory, but replace the target `all` with `smokeCppUnittests`:
+
+        cd mongo
+        scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
+              --static-libstdc++ --disable-warnings-as-errors --opt \
+              --use-system-v8 --allocator=system --variant-dir=z smokeCppUnittests
+              
+   To run the server smoke tests, you must copy all the MongoDB tools into the MongoDB server build directory, e.g.
+
+        cd mongo
+        cp ../mongo-tools/bin/* .
+
+   Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`:
+
+        scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
+              --static-libstdc++ --disable-warnings-as-errors --opt \
+              --use-system-v8 --allocator=system --variant-dir=z \
+              --smokedbprefix=/tmp smoke
+
 ## Installation
 
 The binaries will be output in the mongo/ and mongo-tools/bin/ directories. To install them properly, execute these commands:
@@ -105,3 +106,8 @@ The binaries will be output in the mongo/ and mongo-tools/bin/ directories. To i
         cp mongo-tools/bin/$i /usr/local/bin/
         chmod 755 /usr/local/bin/$i
     done
+
+## References
+
+- [MongoDB 3.0 manual](http://docs.mongodb.org/manual/)
+- [More information on running MongoDB for the first time](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-linux/#run-mongodb)
