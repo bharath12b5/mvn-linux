@@ -50,8 +50,9 @@
         cd pymongo
         python setup.py install
 
-2. To run the C++ unit tests, re-run the build command but replace the target `all` with `smokeCppUnittests`:
+2. To run the C++ unit tests, re-run the build command in the MongoDB build directory, but replace the target `all` with `smokeCppUnittests`:
 
+        cd mongo
         scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
               --static-libstdc++ --disable-warnings-as-errors --opt \
               --use-system-v8 --allocator=system --variant-dir=z smokeCppUnittests
@@ -60,7 +61,7 @@
 
         cp ../mongo-tools/bin/* .
 
-   Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`:
+   Then you can run the server smoke tests by re-running the build command in the MongoDB build directory, with `--smokedbprefix=/tmp smoke`:
 
         scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
               --static-libstdc++ --disable-warnings-as-errors --opt \
