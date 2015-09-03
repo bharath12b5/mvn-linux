@@ -56,7 +56,7 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 
 ## Testing (Optional)
 
-1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo on RHEL 6 or SLES 11, build the driver from source:
+1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo, build the driver from source:
 
         git clone git://github.com/mongodb/mongo-python-driver.git pymongo
         cd pymongo
