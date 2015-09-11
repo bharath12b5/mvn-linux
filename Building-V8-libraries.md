@@ -1,4 +1,4 @@
-The V8 JavaScript engine can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12 or SLES 11 by following these instructions. It can be built as a set of static libraries, or a single shared library.
+The V8 JavaScript engine can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12 or SLES 11 by following these instructions. It can be built as a set of shared libraries so that it can be used by multiple applications.
 Versions 3.14 and 3.28 have been successfully built and tested this way. (Note: If you are building V8 for use with [MongoDB](../Building MongoDB), you need V8 3.14.)
 
 More information on the V8 JavaScript engine is available at [the V8 website](https://developers.google.com/v8/intro) and the source code for the z Systems port can be obtained from [GitHub](https://github.com/andrewlow/v8z).
@@ -225,15 +225,6 @@ depot-tools requires a later version of git than that which is available through
     ```
 
    This is needed in order to prevent the `ar` command from failing when creating libraries during the build process.
-
-5. Build the static libraries:
-
-    ```shell
-    make s390x -j4
-    ```
-
-   The 64-bit static libraries will be found as `lib*.a` in the directory `v8z/out/s390x.release/obj.target/tools/gyp/`.
-  When building v3.28, additional libraries will be found as `libicu*.a` in the directory `v8z/out/s390x.release/obj.target/third_party/icu/`.
 
 6. Build the shared library:
 
