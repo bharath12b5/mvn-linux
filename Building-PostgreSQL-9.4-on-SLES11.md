@@ -14,11 +14,11 @@ The following instructions have been tested on SLES 11 SP3.
 
         zypper install gettext-devel ncurses-devel pam-devel pwdutils \
                        python-devel readline-devel tcl-devel timezone \
-                       zlib-devel systemd fdupes krb5-devel libxslt-devel \
-                       openldap2-devel openssl-devel pkg-config update-alternatives \
-                       libuuid-devel
+                       libuuid-devel zlib-devel systemd fdupes krb5-devel \
+                       libxslt-devel openldap2-devel openssl-devel pkg-config \
+                       update-alternatives
 
-   Be sure to [add the SLE11-SDK-* repositories to your zypper configuration](https://www.novell.com/support/kb/doc.php?id=7015337); otherwise some of the above packages may appear to be unavailable.
+   Be sure to [add the SLE-SDK repositories as installation sources for zypper](https://www.novell.com/support/kb/doc.php?id=7015337); otherwise some of the above packages may appear to be unavailable.
 
 3. Install the postgresql-init package downloaded above (as root):
 
@@ -29,7 +29,7 @@ The following instructions have been tested on SLES 11 SP3.
         rpmbuild --rebuild postgresql94-9.4.*.src.rpm
         rpmbuild --rebuild postgresql94-libs-9.4.*.src.rpm
 
-5. Install the generated binary RPMs (as root):
+5. The binary RPMs will be created in /usr/src/packages/RPMS/s390x/. They can be simply installed with the `rpm` command (as root):
 
         cd /usr/src/packages/RPMS/s390x
         rpm -i postgresql94-9.4.*.s390x.rpm \
