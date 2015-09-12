@@ -15,9 +15,11 @@ The following instructions have been tested on SLES 12.
 
         zypper install gettext-devel ncurses-devel pam-devel pwdutils \
                        python-devel readline-devel tcl-devel timezone \
-                       uuid-devel zlib-devel systemd fdupes krb5-devel \
+                       libuuid-devel zlib-devel systemd fdupes krb5-devel \
                        libxslt-devel openldap2-devel openssl-devel pkg-config \
                        update-alternatives
+
+   Be sure to add the SLE-SDK repositories as installation sources for zypper; otherwise some of the above packages may appear to be unavailable.
 
 3. Install the postgresql-init package downloaded above (as root):
 
@@ -38,9 +40,9 @@ The following instructions have been tested on SLES 12.
 
    Other RPMs in the same directory are optional and can be installed as well if you need them.
 
-6. Make sure that the directory /usr/lib/postgresql94/ has the appropriate permissions, by running these commands as root:
+6. Some versions of the RPMs install directories with incorrect permissions. Fix the permissions by running this command as root:
 
-        chown -R postgres:postgres /usr/lib/postgresql94
+        find /usr/lib/postgresql94 /usr/share/postgresql94 -type d -exec chmod 755 {} \;
 
 7. Starting the database server for the first time will initialize the cluster automatically. To start the server, run this command as root:
 
