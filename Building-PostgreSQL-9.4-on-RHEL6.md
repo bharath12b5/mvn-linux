@@ -1,4 +1,4 @@
-RHEL 6 currently carries the 8.4 line of PostgreSQL. The official [PostgreSQL RPM Repository](http://yum.postgresql.org/) provides the latest 9.4 binaries, but only for x86; publishing the z binaries through the official RPM repository is a work in progress. In the mean time, PostgreSQL 9.4 can be built for Linux on z from source RPMs.
+RHEL 6 currently carries the 8.4 line of PostgreSQL. The community-contributed [PostgreSQL RPM Repository](http://yum.postgresql.org/) provides the latest 9.4 binaries, but only for x86; publishing the z binaries through the official RPM repository is a work in progress. In the mean time, PostgreSQL 9.4 can be built for Linux on z from source RPMs.
 
 The following instructions have been tested on RHEL 6.5.
 
@@ -9,7 +9,10 @@ The following instructions have been tested on RHEL 6.5.
         yum install perl-ExtUtils-Embed perl-ExtUtils-MakeMaker \
                     python-devel tcl-devel readline-devel zlib-devel \
                     openssl-devel krb5-devel e2fsprogs-devel libxml2-devel \
-                    libxslt-devel pam-devel libuuid-devel openldap-devel
+                    libxslt-devel pam-devel libuuid-devel openldap-devel \
+                    openjade opensp docbook-style-dsssl
+
+   Note that you will need to [configure the RHEL 6 Optional repository](../Adding RHEL Optional and Supplementary Repositories) for YUM to find some of the above packages.
 
 3. Rebuild the binary RPM from the source RPM:
 
