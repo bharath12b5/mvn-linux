@@ -1,19 +1,20 @@
-RHEL 7 currently carries the 9.2 line of PostgreSQL. The official [PostgreSQL RPM Repository](http://yum.postgresql.org/) provides the latest 9.4 binaries, but only for x86; publishing the z binaries through the official RPM repository is a work in progress. In the mean time, PostgreSQL 9.4 can be built for Linux on z from source RPMs.
+RHEL 7 currently carries the 9.2 line of PostgreSQL. The community-contributed [PostgreSQL RPM Repository](http://yum.postgresql.org/) provides the latest 9.4 binaries, but only for x86; publishing the z binaries through the official RPM repository is a work in progress. In the mean time, PostgreSQL 9.4 can be built for Linux on z from source RPMs.
 
 The following instructions have been tested on RHEL 7.1.
 
-1. Download [the 9.4.1 source RPM for RHEL 7](http://yum.postgresql.org/srpms/9.4/redhat/rhel-7-x86_64/postgresql94-9.4.1-1PGDG.rhel7.src.rpm).
+1. Download [the 9.4.4 source RPM for RHEL 7](http://yum.postgresql.org/srpms/9.4/redhat/rhel-7-x86_64/postgresql94-9.4.4-1PGDG.rhel7.src.rpm).
 
 2. Install the dependencies (as root):
 
         yum install perl-ExtUtils-Embed perl-ExtUtils-MakeMaker \
                     python-devel tcl-devel readline-devel zlib-devel \
                     openssl-devel krb5-devel e2fsprogs-devel libxml2-devel \
-                    libxslt-devel pam-devel libuuid-devel openldap-devel
+                    libxslt-devel pam-devel libuuid-devel openldap-devel \
+                    openjade opensp docbook-dtds docbook-style-dsssl
 
 3. Rebuild the binary RPM from the source RPM:
 
-        rpmbuild --rebuild postgresql94-9.4.1-1PGDG.rhel7.src.rpm
+        rpmbuild --rebuild postgresql94-9.4.4-1PGDG.rhel7.src.rpm
 
    **(Optional)** For improved performance, rebuild with additional compiler flags:
 
