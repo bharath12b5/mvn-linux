@@ -10,7 +10,7 @@ The following instructions have been tested on RHEL 6.5.
                     python-devel tcl-devel readline-devel zlib-devel \
                     openssl-devel krb5-devel e2fsprogs-devel libxml2-devel \
                     libxslt-devel pam-devel libuuid-devel openldap-devel \
-                    openjade opensp docbook-style-dsssl
+                    openjade opensp docbook-dtds docbook-style-dsssl
 
    Note that you will need to [configure the RHEL 6 Optional repository](../Adding RHEL Optional and Supplementary Repositories) for YUM to find some of the above packages.
 
