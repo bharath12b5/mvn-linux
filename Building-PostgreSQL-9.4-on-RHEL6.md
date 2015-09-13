@@ -12,8 +12,6 @@ The following instructions have been tested on RHEL 6.5.
                     libxslt-devel pam-devel libuuid-devel openldap-devel \
                     openjade opensp docbook-dtds docbook-style-dsssl
 
-   Note that you will need to [configure the RHEL 6 Optional repository](../Adding RHEL Optional and Supplementary Repositories) for YUM to find some of the above packages.
-
 3. Rebuild the binary RPM from the source RPM:
 
         rpmbuild --rebuild postgresql94-9.4.4-1PGDG.rhel6.src.rpm
