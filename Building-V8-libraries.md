@@ -242,18 +242,20 @@ depot-tools requires a later version of git than that which is available through
     sudo chmod -f 644 /usr/include/v8*h /usr/include/libplatform/libplatform.h
     ```
   
-7. Install the V8 libraries:
+7. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer):
 
     ```shell
     cd /<source_root>/v8z
     
-    sudo cp -v out/s390x.release/lib.target/lib*.so /usr/lib64/
-    sudo chmod -f 755 /usr/lib64/libv8.so /usr/lib64/libicu*.so
+    sudo cp -v out/s390x.release/lib.target/lib*.so /usr/local/lib64/
+    sudo chmod -f 755 /usr/local/lib64/libv8.so /usr/local/lib64/libicu*.so
     
-    sudo cp -v out/s390x.release/obj.target/tools/gyp/lib*.a /usr/lib64/
+    sudo cp -v out/s390x.release/obj.target/tools/gyp/lib*.a /usr/local/lib64/
     if [ -d out/s390x.release/obj.target/third_party/icu ] ; then \
-        sudo cp -v out/s390x.release/obj.target/third_party/icu/lib*.a /usr/lib64/ ; fi
-    sudo chmod -f 644 /usr/lib64/libv8*.a /usr/lib64/libpreparser_lib.a /usr/lib64/libicu*.a
+        sudo cp -v out/s390x.release/obj.target/third_party/icu/lib*.a /usr/local/lib64/ ; fi
+    sudo chmod -f 644 /usr/local/lib64/libv8*.a /usr/local/lib64/libpreparser_lib.a /usr/local/lib64/libicu*.a
+
+    sudo ldconfig -v
     ```
 
    Note that the above `cp` commands use the `-v` option in order to list the files that are being installed.
