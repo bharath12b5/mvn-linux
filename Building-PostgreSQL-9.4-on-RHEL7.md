@@ -2,7 +2,7 @@ RHEL 7 currently carries the 9.2 line of PostgreSQL. The community-contributed [
 
 The following instructions have been tested on RHEL 7.1.
 
-1. Download [the 9.4.4 source RPM for RHEL 7](http://yum.postgresql.org/srpms/9.4/redhat/rhel-7-x86_64/postgresql94-9.4.4-1PGDG.rhel7.src.rpm).
+1. Download [the latest 9.4 source RPM for RHEL 7](http://yum.postgresql.org/srpms/9.4/redhat/rhel-7-x86_64/). As of this writing, the file to download is postgresql94-9.4.4-1PGDG.rhel7.src.rpm, however the exact version number (e.g. 9.4.4-1) may change with time.
 
 2. Install the dependencies (as root):
 
@@ -14,18 +14,18 @@ The following instructions have been tested on RHEL 7.1.
 
 3. Rebuild the binary RPM from the source RPM:
 
-        rpmbuild --rebuild postgresql94-9.4.4-1PGDG.rhel7.src.rpm
+        rpmbuild --rebuild postgresql94-9.4.*PGDG.rhel7.src.rpm
 
    **(Optional)** For improved performance, rebuild with additional compiler flags:
 
-        rpmbuild --rebuild --define 'optflags -O3 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -funroll-loops -m64 -march=z196 -mtune=zEC12' postgresql94-9.4.1-1PGDG.rhel7.src.rpm
+        rpmbuild --rebuild --define 'optflags -O3 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -funroll-loops -m64 -march=z196 -mtune=zEC12' postgresql94-9.4.*PGDG.rhel7.src.rpm
 
 4. The binary RPMs will be created in _$HOME_/rpmbuild/RPMS/s390x/. They can be simply installed with the `rpm` command (as root):
 
         cd $HOME/rpmbuild/RPMS/s390x/
-        rpm -i postgresql94-9.4.1-1PGDG.el7.s390x.rpm \
-               postgresql94-server-9.4.1-1PGDG.el7.s390x.rpm \
-               postgresql94-libs-9.4.1-1PGDG.el7.s390x.rpm
+        rpm -i postgresql94-9.4.*PGDG.el7.s390x.rpm \
+               postgresql94-server-9.4.*PGDG.el7.s390x.rpm \
+               postgresql94-libs-9.4.*PGDG.el7.s390x.rpm
 
    Other RPMs in the same directory are optional and can be installed as well if you need them.
 
