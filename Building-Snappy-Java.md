@@ -1,8 +1,10 @@
-[Snappy-Java](https://github.com/xerial/snappy-java) is a library that provides Java bindings for the popular [snappy](http://code.google.com/p/snappy/) compression engine from Google. It has been patched to enable it to be built on Linux on z Systems. The following build instructions have been tested on RHEL 6, RHEL 7, SLES 11 SP3 and SLES 12.
+[Snappy-Java](https://github.com/xerial/snappy-java) is a library that provides Java bindings for the popular [snappy](http://code.google.com/p/snappy/) compression engine from Google. It has been patched to enable it to be built on Linux on z Systems. The following build instructions have been tested on RHEL 7, SLES 11 SP3 and SLES 12.
+
+Currently it is not possible to build Snappy-Java correctly on RHEL 6, due to limitations in the libstdc++-static package. However, Snappy-Java can be built on RHEL 7, and the resulting JAR file will function correctly on a RHEL 6 system.
 
 1. Install the prerequisites:
 
-    (RHEL 6 and RHEL 7)
+    (RHEL 7)
 
 		yum install automake autoconf libtool pkgconfig gcc-c++ libstdc++-static \
                     java-1.7.1-ibm java-1.7.1-ibm-devel git wget tar make patch
@@ -17,7 +19,7 @@
 		zypper install automake autoconf libtool pkg-config gcc-c++ \
                     java-1_7_1-ibm java-1_7_1-ibm-devel git-core wget tar make patch
 
-   On RHEL, you will need the RHEL Optional and Supplementary repositories set up in order to install the libstdc++-static and IBM JDK packages. See this article for more information: [[Adding RHEL Optional and Supplementary Repositories]].
+   On RHEL 7, you will need the RHEL Optional and Supplementary repositories set up in order to install the libstdc++-static and IBM JDK packages. See this article for more information: [[Adding RHEL Optional and Supplementary Repositories]].
 
 2. Check out the Snappy-Java source code:
 
@@ -31,7 +33,7 @@
 
    /etc/alternatives/java_sdk_ibm should be a symbolic link that points to the location where the IBM Java SDK is installed.
 
-4. **(RHEL 6 and SLES 11 only)** Older versions of GCC do not support the -static-libstdc++ option, used in the Snappy-Java makefiles. To build on such a system, modify line 148 in Makefile.common so that it says:
+4. **(SLES 11 only)** Older versions of GCC do not support the -static-libstdc++ option, used in the Snappy-Java makefiles. To build on such a system, modify line 148 in Makefile.common so that it says:
 
         Linux-s390x_LINKFLAGS := -shared -static-libgcc -L .
 
