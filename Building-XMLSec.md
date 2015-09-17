@@ -1,50 +1,80 @@
-# Building XMLSec
-These steps are tested on sles12 and rhel7 on IBM z systems.
+#Xmlsec 1.2.20_On_RHEL 7.1/6.6_SLES 12/11
+Xmlsec code can be built for Linux on z Systems running RHEL 7.1/6.6 or SLES 12/11 by following these instructions.  Version 1.2.20 has been successfully built & tested this way.
 
-###Version
->1.2.20
-####1.  Install the following dependencies:
-*	git-core or git
-*	libtool
-*	make
-*	gcc
-*	libxslt-devel
-*	libtool-ltdl-devel (on rhel)
+_**General Notes:**_ 
 
-RHEL7:
-```
-yum install -y \
-	  git \
-	  make \
-	  libtool \
-	  libxslt-devel \
-	  libtool-ltdl-devel
-```		
+i) _When following the steps below please use a standard permission user unless otherwise specified._
+	 
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_
 
-SLES12
+## Building Xmlsec
 
-```
-zypper install -y \
-	  git-core \
-	  gcc \
-	  make \
-	  libtool \
-	  libxslt-devel \
-	  libopenssl-devel-1.0.1i-2.12.s390x
-```
-####2.  Clone source repository:
-    git clone https://github.com/GNOME/xmlsec.git
+### Obtain pre-built dependencies
 
-####3.  Build and install:
-         cd xmlsec
-        ./autogen.sh
-        make
-        make install
+1. Use the following commands to obtain dependencies
 
-####4.  Run test cases:
-     make check
+  For RHEL 7.1
+  
+  ```shell
+  sudo yum install git make libtool libxslt-devel libtool-ltdl-devel
+  ```
+  
+  For SLES 12
+  
+  ```shell
+  sudo zypper install git-core gcc make libtool libxslt-devel libopenssl-devel-1.0.1i-2.12.s390x
+  ```
+  
+  For RHEL 6.6
+  
+  ```shell
+  sudo yum install tar git make libtool libxslt-devel libtool-ltdl-devel
+  ```
+  
+  For SLES 11
+  
+  ```shell
+  sudo zypper install tar pkg-config autoconf automake git-core gcc make libtool libxslt-devel
+  ```
 
->Note:If the following error is shown
-xmlsec1: error while loading shared libraries: libxmlsec1.so.1: cannot open shared object file: No such file or directory
-Then set the environment variable "LD_LIBRARY_PATH" to path of xmlsec binaries
-EG:export LD_LIBRARY_PATH=/usr/local/lib
+### Product Build - Xmlsec
+
+1. Create a working directory with write permission to use as an installation workspace (Referred to as `/<source_root>/` from this point on) :
+
+  ```shell
+	mkdir /source_root/
+	cd /source_root/
+  ```
+
+2. Download Xmlsec source code
+
+  ```shell
+  cd /<source_root>/
+  git clone https://github.com/GNOME/xmlsec.git
+  cd xmlsec
+  ```
+  
+3. Generate and then run the configuration
+
+  ```shell
+  ./autogen.sh
+  ```
+  
+4. Build and (_optionally_) test
+
+  ```shell
+  make
+  ```
+
+5. Install xmlsec and verify the installation
+
+  ```shell
+  sudo make install
+  make check
+  ```
+  
+  _**Note:**_ If the following error is shown, set the environment variable "LD_LIBRARY_PATH" to path of xmlsec binaries e.g. `export LD_LIBRARY_PATH=/usr/local/lib`
+
+  ```shell
+  xmlsec1: error while loading shared libraries: libxmlsec1.so.1: cannot open shared object file: No such file or directory
+  ```
