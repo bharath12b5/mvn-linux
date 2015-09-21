@@ -39,6 +39,13 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
  _**Note:**_ If CPAN has not previously been setup it asks setup/configuration questions before the requested Perl module is installed. The answers can be site specific, but as a guideline, it is generally OK to accept the defaults or suggestions offered.
 
+ _**Note:**_ If Perl fails to build, it may be because 'echo port 7 ' is commented out in the services file. Please check in the `/etc/services` file, that the following lines exist and are active (e.g. Not preceeded by a `#` symbol to comment them out).
+ 
+   ```shell
+   echo                7/tcp        # Echo 
+   echo                7/udp        # Echo
+   ```
+
 3. Create a working directory with write permission to use as a `Doxygen` installation workspace (Referred to as `/<source_root>/` from this point on) :
 
    ```shell
