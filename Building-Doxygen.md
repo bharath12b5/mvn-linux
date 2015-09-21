@@ -48,7 +48,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 4. Check-out Doxygen from github, it will be placed in a sub-directory `doxygen` :
 
-	_**Note:**_ It is not necessary to checkout a specifc version. The example below downloads commit '2e39e5c7c1427ac6b24c64b7ef01be8d5a20092b' that was current when this recipe was created.
+	_**Note:**_ It is not necessary to checkout a specifc version. The example below downloads commit `2e39e5c7c1427ac6b24c64b7ef01be8d5a20092b` that was current when this recipe was created.
 
    ```shell
    git clone https://github.com/doxygen/doxygen
