@@ -2,19 +2,20 @@
 
         sudo zypper install maven
 
-2. Obtain the Spark source code (access to Hursley's gitlab is required; alternatively, download the tar.gz attached to this work item):
+2. Obtain the Spark source code:
 
         git clone https://github.com/linux-on-ibm-z/spark
+        cd spark
         git checkout branch-1.5
 
-3. Install IBM JDK8, see instructions here: http://www.ibm.com/developerworks/java/jdk/linux/download.html (select `64-bit System z` version). Then set the JAVA_HOME path:
+3. Download and install IBM JDK 8 from [developerWorks](http://www.ibm.com/developerworks/java/jdk/linux/download.html). Choose the "64-bit System z" version. After installing the JDK, set the `JAVA_HOME` environment variable to point its installation location:
 
-        export JAVA_HOME=${PATH TO YOUR JDK INSTALLATION} # i.e. /usr/lib64/jvm/jre-1.8.0-openjdk
+        export JAVA_HOME=${PATH TO YOUR JDK INSTALLATION} # e.g. /usr/lib64/jvm/java-1.8.0-ibm
         export PATH=$JAVA_HOME/bin:$PATH
 
 4. Set the `SPARK_HOME` directory:
 
-        export SPARK_HOME=$HOME/PROD_SPARK/spark-testing
+        export SPARK_HOME=$HOME/spark
 
 5. Invoke `mvn` to start the building process (this takes approximately 6 hours):
 
@@ -40,4 +41,4 @@
         # Find line with bootpath and add :snappy-java-1.1.1.7-ibmjdk7-s390x.jar
         sed '/bootpath=/s/$/:snappy-java-1.1.1.7-ibmjdk7-s390x.jar/' $JAVA_HOME/jre/lib/classlib.properties | tee $JAVA_HOME/jre/lib/classlib.properties
 
-7. OPTIONAL: Build Jblas and apply the patched jar in `$HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar`. See [[Building Jblas]] for more information.
+7. **(Optional)** Build jblas and replace the original JAR file in `$HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar`. See [[Building Jblas]] for more information.
