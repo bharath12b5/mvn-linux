@@ -40,6 +40,6 @@
         # Find line with bootpath and add :snappy-java-1.1.1.7-ibmjdk7-s390x.jar
         sed '/bootpath=/s/$/:snappy-java-1.1.1.7-ibmjdk7-s390x.jar/' $JAVA_HOME/jre/lib/classlib.properties | tee $JAVA_HOME/jre/lib/classlib.properties
 
-7. OPTIONAL: Build `jblas` and apply the patched jar in $HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar
-        # see work item 114852 to see how to build jblas
-        # replace the jar in $HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar with the newly built jar
+7. OPTIONAL: Build Jblas and apply the patched jar in $HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar
+        See [[Build Jblas]] for more information.
+        replace the jar in $HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar with the newly built jar
