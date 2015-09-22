@@ -23,14 +23,14 @@
 
 6. Apply fixes for Linux on z:
 
-        # We need to copy the fixed UserGroupInformation.class into the spark assembly jar (replacing what's in there atm)
+        # We need to copy the fixed UserGroupInformation.class into the Spark assembly JAR (replacing the original)
         rm -rf org
         mkdir -p org/apache/hadoop/security
 
         wget anonymous@javaserv.hursley.ibm.com:/defects/hadoop-jaas-fix/*.class -P org/apache/hadoop/security
 
         jar uf assembly/target/scala-2.10/spark-assembly-1.5.0-SNAPSHOT-hadoop2.6.0.jar org/apache/hadoop/security/*.class
-        # So update this too - it's on the classpath for tests
+        # Update this too--it is on the classpath for tests
 
         jar uf $HOME/.m2/repository/org/apache/hadoop/hadoop-common/2.6.0/hadoop-common-2.6.0.jar org/apache/hadoop/security/*.class
 
