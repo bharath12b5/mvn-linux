@@ -1,6 +1,6 @@
 These instructions describe how to build gccgo 1.4.2 for IBM Linux on z Systems (RHEL 6.6/RHEL 7.1 and SLES 11/SLES12).
 
-[GCC 5](https://gcc.gnu.org/gcc-5/changes.html) will provide a complete implementation of Go 1.4.2. Until GCC 5 is officially released later this year, you can build the GCC source code to obtain a Go 1.4.2 compiler and run-time environment for testing on Linux on z Systems.  These instructions have been tested on both RHEL 6.6/7.1 and SLES 11/12.
+[GCC 5](https://gcc.gnu.org/gcc-5/changes.html) provides a complete implementation of Go 1.4.2. Until GCC 5 is officially released for RHEL and SLES, you can build the GCC source code to obtain a Go 1.4.2 compiler and run-time environment for testing on Linux on z Systems.  These instructions have been tested on both RHEL 6.6/7.1 and SLES 11/12.
 
 _**Note:** When following the steps below, please use a standard permission user unless otherwise specified._
 
@@ -60,7 +60,7 @@ _**Note :** GCC tends to have problems when configured in the same directory as 
     --prefix="/opt/gccgo" \
     --enable-shared --with-system-zlib --enable-threads=posix \
     --disable-multilib --enable-__cxa_atexit --enable-checking \
-    --enable-gnu-indirect-function --enable-languages="c,go" \
+    --enable-gnu-indirect-function --enable-languages="c,c++,go" \
     --disable-bootstrap
 
     make all
@@ -131,6 +131,13 @@ _**Note:** The command output should be similar to the sample output below. Some
   libpthread.so.0 => /lib64/libpthread.so.0 (0x000003fffbf14000)
   /lib/ld64.so.1 (0x000002aae9e4b000)
   ```
+
+11. To build Go binaries that do not require the Go run-time library (so that they can run on a different system without gccgo installed), give gccgo the `-static-libgo` flag, e.g.
+
+  ```shell
+  go build -compiler=gccgo -gccgoflags='-static-libgo' -o myTestProgram HelloWorld.go
+  ```
+
 12. And finally, verify the go and gcc version with the following command:
 
   ```shell
