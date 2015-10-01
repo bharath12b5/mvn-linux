@@ -10,7 +10,8 @@ The following instructions have been tested on RHEL 6.5.
                     python-devel tcl-devel readline-devel zlib-devel \
                     openssl-devel krb5-devel e2fsprogs-devel libxml2-devel \
                     libxslt-devel pam-devel libuuid-devel openldap-devel \
-                    openjade opensp docbook-dtds docbook-style-dsssl
+                    openjade opensp docbook-dtds docbook-style-dsssl \
+                    bison flex rpm-build
 
 3. Rebuild the binary RPM from the source RPM:
 
