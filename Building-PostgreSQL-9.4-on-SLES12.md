@@ -10,14 +10,13 @@ The following instructions have been tested on SLES 12.
 
    The actual file names would be something like: postgresql-init-9.4-46.1.noarch.rpm, postgresql94-libs-9.4.4-2.1.src.rpm, and postgresql94-9.4.4-2.1.src.rpm. The version numbers may change with time.
 
-
 2. Install the dependencies (as root):
 
         zypper install gettext-devel ncurses-devel pam-devel pwdutils \
                        python-devel readline-devel tcl-devel timezone \
                        libuuid-devel zlib-devel systemd fdupes krb5-devel \
                        libxslt-devel openldap2-devel openssl-devel pkg-config \
-                       update-alternatives
+                       update-alternatives bison flex rpm-build
 
    Be sure to add the SLE-SDK repositories as installation sources for zypper; otherwise some of the above packages may appear to be unavailable.
 
