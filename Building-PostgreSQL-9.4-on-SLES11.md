@@ -16,7 +16,7 @@ The following instructions have been tested on SLES 11 SP3.
                        python-devel readline-devel tcl-devel timezone \
                        libuuid-devel zlib-devel systemd fdupes krb5-devel \
                        libxslt-devel openldap2-devel openssl-devel pkg-config \
-                       update-alternatives
+                       update-alternatives bison flex
 
    Be sure to [add the SLE-SDK repositories as installation sources for zypper](https://www.novell.com/support/kb/doc.php?id=7015337); otherwise some of the above packages may appear to be unavailable.
 
