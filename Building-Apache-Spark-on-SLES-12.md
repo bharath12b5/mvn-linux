@@ -1,3 +1,7 @@
+Apache Spark is an open source cluster computing framework originally developed in the AMPLab at University of California, Berkeley but was later donated to the Apache Software Foundation where it remains today. In contrast to Hadoop's two-stage disk-based MapReduce paradigm, Spark's multi-stage in-memory primitives provides performance up to 100 times faster for certain applications. By allowing user programs to load data into a cluster's memory and query it repeatedly, Spark is well-suited to machine learning algorithms.
+
+Disclaimer: Spark on Linux on z is still in beta, this implies the quality of this software is not for production use.
+
 1. As root, install Apache Maven:
 
         sudo zypper install maven
@@ -13,7 +17,7 @@
         export JAVA_HOME=${PATH TO YOUR JDK INSTALLATION} # e.g. /usr/lib64/jvm/java-1.8.0-ibm
         export PATH=$JAVA_HOME/bin:$PATH
 
-4. Set the `SPARK_HOME` directory:
+4. **(Optional, for storing test results)** Set the `SPARK_HOME` directory:
 
         export SPARK_HOME=$HOME/spark
 
@@ -21,24 +25,10 @@
 
         mvn -Pyarn -Phadoop-2.6 -Phive -Phive-thriftserver -DskipTests package
 
-6. Apply fixes for Linux on z:
+6. Build Hadoop from source. The patches made to the Apache Hadoop release 2.6, but not yet in the Maven's repository, so we need to manually build the JAR and replace the original. See [[Building Apache Hadoop 2.7]] for instructions to build Apache Hadoop.
+        cp ${hadoop.jar} $HOME/.m2/repository/org/apache/hadoop/hadoop-common/2.7.0/hadoop-common-2.7.0.jar 
 
-        # We need to copy the fixed UserGroupInformation.class into the Spark assembly JAR (replacing the original)
-        rm -rf org
-        mkdir -p org/apache/hadoop/security
-
-        wget anonymous@javaserv.hursley.ibm.com:/defects/hadoop-jaas-fix/*.class -P org/apache/hadoop/security
-
-        jar uf assembly/target/scala-2.10/spark-assembly-1.5.0-SNAPSHOT-hadoop2.6.0.jar org/apache/hadoop/security/*.class
-        # Update this too--it is on the classpath for tests
-
-        jar uf $HOME/.m2/repository/org/apache/hadoop/hadoop-common/2.6.0/hadoop-common-2.6.0.jar org/apache/hadoop/security/*.class
-
-        # Fix applied now, grab snappy jar too
-
-        wget anonymous@javaserv.hursley.ibm.com:/defects/snappy-s390x-fix/snappy-java-1.1.1.7-ibmjdk7-s390x.jar -P $JAVA_HOME/jre/lib
-
-        # Find line with bootpath and add :snappy-java-1.1.1.7-ibmjdk7-s390x.jar
-        sed '/bootpath=/s/$/:snappy-java-1.1.1.7-ibmjdk7-s390x.jar/' $JAVA_HOME/jre/lib/classlib.properties | tee $JAVA_HOME/jre/lib/classlib.properties
+7. Build Snappy-Java and copy it to the following location:
+        cp ${snappy-java.jar} hadoop/hadoop-branch-2.7/hadoop-tools/hadoop-distcp/target/lib/snappy-java-1.0.4.1.jar
 
 7. **(Optional)** Build jblas and replace the original JAR file in `$HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar`. See [[Building Jblas]] for more information.
