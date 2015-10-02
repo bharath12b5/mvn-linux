@@ -1,0 +1,1 @@
+Building Google Protobuf 2.5.0
