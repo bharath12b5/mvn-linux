@@ -28,7 +28,4 @@ Disclaimer: Spark on Linux on z is still in beta, this implies the quality of th
 6. Build Hadoop from source. The patches made to the Apache Hadoop release 2.6, but not yet in the Maven's repository, so we need to manually build the JAR and replace the original. See [[Building Apache Hadoop 2.7]] for instructions to build Apache Hadoop.
         cp ${hadoop.jar} $HOME/.m2/repository/org/apache/hadoop/hadoop-common/2.7.0/hadoop-common-2.7.0.jar 
 
-7. Build Snappy-Java and copy it to the following location:
-        cp ${snappy-java.jar} hadoop/hadoop-branch-2.7/hadoop-tools/hadoop-distcp/target/lib/snappy-java-1.0.4.1.jar
-
-7. **(Optional)** Build jblas and replace the original JAR file in `$HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar`. See [[Building Jblas]] for more information.
+7. **(Optional)** See [[Building Jblas]] for more information. Build jblas and replace the original JAR file in `$HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar`. 
