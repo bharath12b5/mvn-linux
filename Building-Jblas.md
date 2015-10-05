@@ -4,21 +4,31 @@ This recipe describes how to build Jblas on Linux on z Systems.
 
         sudo zypper install gcc-fortran libgfortran3
   
+2. Download the latest stable jblas source code:
 
-2. Download and unpack the latest stable `lapack` source code:
+    ```shell
+    wget https://github.com/mikiobraun/jblas/archive/jblas-1.2.4.tar.gz
+    tar zxvf jblas-1.2.4.tar.gz
+    cd jblas-jblas-1.2.4/
+    export JBLAS_HOME=`pwd`
+    ```
 
-        wget http://www.netlib.org/lapack/lapack-lite-3.1.1.tgz
-        tar zxvf lapack-lite-3.1.1.tgz
-        cd lapack-lite-3.1.1
+3. Download the dependency of LAPACK through jblas's configure program:
 
+    ```shell
+    ./configure --download-lapack
+    tar zxvf lapack-lite-3.1.1.tgz
+    cd lapack-lite-3.1.1/
+    export LAPACK_LITE=`pwd`
+    ```
 
-3. The makefile in lapack includes a file named `make.inc` which defines variables for the build platform. Create this file by pasting the following content into `make.inc`:
+4. The makefile in lapack includes a file named `make.inc` which defines variables for the build platform. Create this file by pasting the following content into `make.inc`:
 
     ```shell
     FORTRAN  = gfortran
-    OPTS     = -funroll-all-loops -O3
+    OPTS     = -fPIC -funroll-all-loops -O3
     DRVOPTS  = $(OPTS)
-    NOOPT    =
+    NOOPT    = -fPIC
     LOADER   = gfortran
     LOADOPTS =
     TIMER    = INT_CPU_TIME
@@ -32,30 +42,28 @@ This recipe describes how to build Jblas on Linux on z Systems.
     LINSRCLIB    = liblinsrc$(PLAT).a
     ```
 
-4. Compile and build the libraries:
+5. Compile and build the libraries:
 
     ```shell
     make blaslib
     make all
-    export LAPACK_HOME=`pwd`
     ```
 
-5. Download the latest stable jblas source code:
+6. Change directory back to jblas, then run configure:
 
     ```shell
-    wget https://github.com/mikiobraun/jblas/archive/jblas-1.2.4.tar.gz
-    tar zxvf jblas-1.2.4.tar.gz
-    cd jblas-jblas-1.2.4/
-    ```
-
-6. Configure the program and `make` it:
-
-    ```shell
+    cd $JBLAS_HOME
     ./configure --static-libs --built-type=lapack --lapack-build --libpath=$LAPACK_HOME
+    ```
+
+7. Modify the configure output file, `configure.out`, look for the variable `LOADLIBES` and make sure it looks like: 
+
+        LOADLIBES=-Wl,-z,muldefs ./lapack-lite-3.1.1/liblapack.a ./lapack-lite-3.1.1/libblas.a -lgfortran
+
+8. Run make to build and install Jblas:
+
+    ```shell
     make
     mvn package install
     ls -la target/jblas-1.2.4*
     ```
-7. Put the .so files into the .jar
-
-   This will place the jblas JAR file in the local Maven repository ($HOME/.m2)
