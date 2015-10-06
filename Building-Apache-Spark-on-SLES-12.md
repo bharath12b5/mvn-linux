@@ -26,6 +26,7 @@ Disclaimer: Spark on Linux on z is still in beta, this implies the quality of th
         mvn -Pyarn -Phadoop-2.6 -Phive -Phive-thriftserver -DskipTests package
 
 6. Build Hadoop from source. The patches made to the Apache Hadoop release 2.6, but not yet in the Maven's repository, so we need to manually build the JAR and replace the original. See [[Building Apache Hadoop 2.7]] for instructions to build Apache Hadoop.
+
         cp ${hadoop.jar} $HOME/.m2/repository/org/apache/hadoop/hadoop-common/2.7.0/hadoop-common-2.7.0.jar 
 
-7. **(Optional)** See [[Building Jblas]] for more information. Build jblas and replace the original JAR file in `$HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar`. 
+7. Build jblas from source. See [[Building Jblas 1.2.4]] for more information. Build jblas and replace the original JAR file in `$HOME/.m2/repository/org/jblas/jblas/1.2.4/jblas-1.2.4.jar`. 
