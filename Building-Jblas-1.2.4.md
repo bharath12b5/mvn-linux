@@ -1,3 +1,5 @@
+**jblas** is a fast linear algebra library for Java. jblas is based on BLAS and LAPACK, the de-facto industry standard for matrix computations, and uses state-of-the-art implementations like ATLAS for all its computational routines, making jBLAS very fast.
+
 This recipe describes how to build Jblas on Linux on z Systems.
 
 1. As root, install Fortran:
