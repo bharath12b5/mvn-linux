@@ -24,7 +24,7 @@ Hadoop requires Google Protobuf 2.5.0, please see [[Building Google Protobuf 2.5
     System.getProperty("os.arch").contains("64") ||　System.getProperty("os.arch").contains("s390x");
     ```
     
-    for more information about this fix, please see https://issues.apache.org/jira/browse/HADOOP-12081
+    This fix is only needed for version below 2.8, for more information about this fix, please see https://issues.apache.org/jira/browse/HADOOP-12081
 
 3. Run Maven to Create binary distribution with native code:
 
