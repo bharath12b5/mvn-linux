@@ -1,3 +1,5 @@
+**Protocol Buffers** is a method of serializing structured data. It is useful in developing programs to communicate with each other over a wire or for storing data. The method involves an interface description language that describes the structure of some data and a program that generates source code from that description for generating or parsing a stream of bytes that represents the structured data.
+
 Building Google Protobuf 2.5.0
 
 1. Download Protobuf source code:
