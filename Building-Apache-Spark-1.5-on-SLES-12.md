@@ -23,9 +23,9 @@ Disclaimer: Spark on Linux on z is still in beta, this implies the quality of th
 
 5. Invoke `mvn` to start the building process (this takes approximately 6 hours):
 
-        mvn -Pyarn -Phadoop-2.6 -Phive -Phive-thriftserver -DskipTests package
+        mvn -Pyarn -Phadoop-2.7 -Phive -Phive-thriftserver -DskipTests package
 
-6. Build Hadoop from source. The patches made to the Apache Hadoop release 2.6, but not yet in the Maven's repository, so we need to manually build the JAR and replace the original. See [[Building Apache Hadoop 2.7]] for instructions to build Apache Hadoop.
+6. Build Hadoop from source. The patches made to the Apache Hadoop release 2.7, but not yet in the Maven's repository, so we need to manually build the JAR and replace the original. See [[Building Apache Hadoop 2.7.1]] for instructions to build Apache Hadoop.
 
         cp ${hadoop.jar} $HOME/.m2/repository/org/apache/hadoop/hadoop-common/2.7.0/hadoop-common-2.7.0.jar 
 
