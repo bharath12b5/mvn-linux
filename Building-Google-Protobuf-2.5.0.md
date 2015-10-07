@@ -10,7 +10,7 @@ Building Google Protobuf 2.5.0
     cd protobuf-2.5.0
     ```
 
-2. Retrieve a generic header file from the official repository: 
+2. Retrieve a generic header file from the official repository (available since version 2.6.0): 
 
     ```shell
     wget https://raw.githubusercontent.com/google/protobuf/master/src/google/protobuf/stubs/atomicops_internals_generic_gcc.h src/google/protobuf/stubs/atomicops_internals_generic_gcc.h 
