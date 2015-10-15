@@ -1,4 +1,10 @@
-[Snappy-Java](https://github.com/xerial/snappy-java) is a library that provides Java bindings for the popular [snappy](http://code.google.com/p/snappy/) compression engine from Google. It has been patched to enable it to be built on Linux on z Systems. The following build instructions have been tested on RHEL 7, SLES 11 SP3 and SLES 12.
+[Snappy-Java](https://github.com/xerial/snappy-java) is a library that provides Java bindings for the popular [snappy](http://google.github.io/snappy/) compression engine from Google. The [latest release in Maven Central](http://search.maven.org/#artifactdetails|org.xerial.snappy|snappy-java|1.1.2|bundle) already contains support for Linux on z Systems.
+
+If you are running a Java application on Linux on z Systems that already bundles an older version of Snappy-Java, you can simply replace it with [the Snappy-Java 1.1.2 JAR file](http://search.maven.org/remotecontent?filepath=org/xerial/snappy/snappy-java/1.1.2/snappy-java-1.1.2.jar) from Maven Central. You may need to update the class path of the application, and potentially other meta-data used by the application to locate and load the JAR file.
+
+## Building Snappy-Java from source
+
+The following build instructions are not necessary if you only want to use pre-built Snappy-Java binaries (available from Maven Central; see above). The build instructions have been tested on RHEL 7, SLES 11 SP3 and SLES 12.
 
 Currently it is not possible to build Snappy-Java correctly on RHEL 6, due to limitations in the libstdc++-static package. However, Snappy-Java can be built on RHEL 7, and the resulting JAR file will function correctly on a RHEL 6 system.
 
