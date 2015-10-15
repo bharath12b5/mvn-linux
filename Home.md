@@ -5,7 +5,6 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [[Building CouchDB]]
 * [[Building V8 libraries]]
 * [[Building MongoDB]]
-* [[Building MongoDB 3.0 on RHEL 6 and SLES 11]]
 * [[Building PostgreSQL 9.4 on RHEL6]]
 * [[Building PostgreSQL 9.4 on RHEL7]]
 * [[Building PostgreSQL 9.4 on SLES11]]
@@ -22,4 +21,3 @@ This wiki is a collection of documents and tutorials to help you get open-source
 * [[Building RabbitMQ on RHEL]]
 * [[Building RabbitMQ on SLES]]
 * [[Building Doxygen]]
-* [[Building Snappy-Java]]
