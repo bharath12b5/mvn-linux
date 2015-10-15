@@ -8,9 +8,9 @@ Disclaimer: Spark on Linux on z is still in beta, this implies the quality of th
 
 2. Obtain the Spark source code:
 
-        git clone https://github.com/linux-on-ibm-z/spark
+        git clone https://github.com/apache/spark
         cd spark
-        git checkout branch-1.5
+        git checkout tags/v1.5.1
 
 3. Download and install IBM JDK 8 from [developerWorks](http://www.ibm.com/developerworks/java/jdk/linux/download.html). Choose the "64-bit System z" version. After installing the JDK, set the `JAVA_HOME` environment variable to point its installation location:
 
