@@ -24,15 +24,15 @@ _**NOTE:** When following the steps below please use a standard permission user 
     sudo zypper install bison flex libopenssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel gcc make wget tar
     ```
 
-2. Download and unpack the Ruby 2.2.1 source code
+2. Download and unpack the Ruby 2.2.3 source code
 
     ```shell
     cd /<source_root>/
-    wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.1.tar.gz
-    tar zxf ruby-2.2.1.tar.gz
-    cd ruby-2.2.1
+    wget http://cache.ruby-lang.org/pub/ruby/ruby-2.2.3.tar.gz
+    tar zxf ruby-2.2.3.tar.gz
+    cd ruby-2.2.3
     ```
-3. Configure and build Ruby 2.2.1
+3. Configure and build Ruby
 
     ```shell
     ./configure
