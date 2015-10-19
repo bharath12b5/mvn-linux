@@ -53,6 +53,6 @@
 
    Running `gcc -v` should show that GCC 4.8.5 is being used.
 
-1. Programs built with the new version of GCC may depend on runtime features that only exist in that version. To run such programs correctly, instruct the dynamic linker to look in the correct location by setting the LD_LIBRARY_PATH environment variable:
+1. Programs built with the new version of GCC may depend on runtime features that only exist in that version. To run such programs correctly, instruct the dynamic linker to look in the correct location by setting the `LD_LIBRARY_PATH` environment variable:
 
         export LD_LIBRARY_PATH=/opt/gcc/lib64
