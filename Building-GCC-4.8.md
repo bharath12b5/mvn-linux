@@ -30,9 +30,8 @@
         ../gcc-4.8.5/configure \
         --prefix="/opt/gcc" \
         --enable-shared --with-system-zlib --enable-threads=posix \
-        --disable-multilib --enable-__cxa_atexit --enable-checking \
-        --enable-gnu-indirect-function --enable-languages="c,c++" \
-        --disable-bootstrap
+        --enable-__cxa_atexit --enable-checking --enable-gnu-indirect-function \
+        --enable-languages="c,c++" --disable-bootstrap
 
         make all
 
@@ -55,4 +54,6 @@
 
 1. Programs built with the new version of GCC may depend on runtime features that only exist in that version. To run such programs correctly, instruct the dynamic linker to look in the correct location by setting the `LD_LIBRARY_PATH` environment variable:
 
-        export LD_LIBRARY_PATH=/opt/gcc/lib64
+        export LD_LIBRARY_PATH='/opt/gcc/$LIB'
+
+   **Note:** The `$LIB` pattern must be specified as-is in the value of the `LD_LIBRARY_PATH` variable (hence the single quotes). It will be expanded by the dynamic linker to either "lib" or "lib64", depending on the addressing mode of the program being executed.
