@@ -1,5 +1,7 @@
 These instructions describe how to build [R](https://www.r-project.org) for IBM Linux on z Systems SLES 11 and SLES 12.
 
+Version 3.1.3 for SLES 11 and version 3.2.2 for SLES 12 has been successfully built this way.
+
 **NOTE:** _When following the steps below, please use a standard permission user unless otherwise specified._
 
 R 3.2.x requires texinfo > 5.1 (which is not supported on SLES versions < 12.2).
