@@ -15,8 +15,8 @@ If so, make sure it's rwx by "other", plus any contents of that directory
 + *Install or verify gcc is installed:*   
 >         rpm -qa | grep gcc  
 
-+ *install various prereqs*    
->         yum install readline-devel.s390 readline-devel.s390x git svn fakeroot  
++ *Install various prerequisites*
+>         yum install readline-devel.s390 readline-devel.s390x git subversion fakeroot  
 
 + *Get yaml*   
 *First, download http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz then*  
