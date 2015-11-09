@@ -24,10 +24,12 @@ The following instructions have been tested on SLES 11 SP3.
 
         rpm -i postgresql-init-9.4-*.noarch.rpm
 
-4. Rebuild the binary RPMs from the two downloaded source RPMs (as root):
+4. Rebuild the binary RPMs from the two downloaded source RPMs (as a non-root user):
 
         rpmbuild --rebuild postgresql94-9.4.*.src.rpm
         rpmbuild --rebuild postgresql94-libs-9.4.*.src.rpm
+
+   Note that the re-build process may fail during the test phase if it is attempted as root.
 
 5. The binary RPMs will be created in /usr/src/packages/RPMS/s390x/. They can be simply installed with the `rpm` command (as root):
 
