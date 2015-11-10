@@ -91,7 +91,7 @@ Now that the new version of libvirt has been built and installed, we can build v
 
 1. To create a connection to the KVM hypervisor, open the File menu and choose "Add Connection". Select the option to "Connect to remote host", choose the "SSH" connection method, fill out the username and hostname fields, and then click "Connect".
 
-   ![Adding a new connection](docs/wiki/img/virt-manager-01-add-connection.png)
+   ![Adding a new connection](img/virt-manager-01-add-connection.png)
 
    After connecting to the hypervisor, all available guests will be listed in the virt-manager window.
 
@@ -107,7 +107,7 @@ Now that the new version of libvirt has been built and installed, we can build v
 
 1. Create a new virtual machine by clicking the "New" button in virt-manager. This will bring up the "New VM" dialog box. Ensure that you are connected to the correct KVM hypervisor as shown in the "Connection" drop-down menu. Select "Local install media (ISO image or CDROM)". Within the architecture options, ensure that "Virt Type" is set to "KVM" and "Machine Type" is set to "s390-ccw-virtio". Click "Forward".
 
-   ![Adding a new virtual machine](docs/wiki/img/virt-manager-02-add-vm.png)
+   ![Adding a new virtual machine](img/virt-manager-02-add-vm.png)
 
 1. Browse and select the ISO image to install from. The OS type and version can be specified if matched with the ISO or left as "Generic". Click "Forward".
 
@@ -117,11 +117,11 @@ Now that the new version of libvirt has been built and installed, we can build v
 
 1. Enter a name for the guest VM, and select the checkbox to "Customize configuration before install".
 
-   ![Customizing configuration](docs/wiki/img/virt-manager-3-customize-install.png)
+   ![Customizing configuration](img/virt-manager-3-customize-install.png)
 
    Click "Finish". This will bring up the VM configuration dialog box. Select "Boot Options" from the menu on the left, then expand the "Direct kernel boot" section and select "Enable direct kernel boot". In the "Kernel path" field, Enter the path to the extracted kernel file, e.g. `/tmp/iso-files/linux`. Similarly, in the "Initrd path" field, enter the path to the extracted initrd file, e.g. `/tmp/iso-files/initrd`. Click "Apply", then click "Begin Installation".
 
-   ![Changing the boot options](docs/wiki/img/virt-manager-4-boot-options.png)
+   ![Changing the boot options](img/virt-manager-4-boot-options.png)
 
 1. The console window to the new VM will open after a brief pause, and the installation of the guest operating system will begin. After completing the installation, the installer will typically reboot the system. The reboot will use the direct kernel boot parameters again instead of booting into the newly installed guest. To change the boot options, shut down the VM by clicking "Shut Down" in the console window, click "Details", navigate to the "Boot Options" menu, and uncheck the "Enable direct kernel boot" option.
 
