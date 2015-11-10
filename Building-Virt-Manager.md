@@ -117,11 +117,11 @@ Now that the new version of libvirt has been built and installed, we can build v
 
 1. Enter a name for the guest VM, and select the checkbox to "Customize configuration before install".
 
-   ![Customizing configuration](img/virt-manager-3-customize-install.png)
+   ![Customizing configuration](img/virt-manager-03-customize-install.png)
 
    Click "Finish". This will bring up the VM configuration dialog box. Select "Boot Options" from the menu on the left, then expand the "Direct kernel boot" section and select "Enable direct kernel boot". In the "Kernel path" field, Enter the path to the extracted kernel file, e.g. `/tmp/iso-files/linux`. Similarly, in the "Initrd path" field, enter the path to the extracted initrd file, e.g. `/tmp/iso-files/initrd`. Click "Apply", then click "Begin Installation".
 
-   ![Changing the boot options](img/virt-manager-4-boot-options.png)
+   ![Changing the boot options](img/virt-manager-04-boot-options.png)
 
 1. The console window to the new VM will open after a brief pause, and the installation of the guest operating system will begin. After completing the installation, the installer will typically reboot the system. The reboot will use the direct kernel boot parameters again instead of booting into the newly installed guest. To change the boot options, shut down the VM by clicking "Shut Down" in the console window, click "Details", navigate to the "Boot Options" menu, and uncheck the "Enable direct kernel boot" option.
 
