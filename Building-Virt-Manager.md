@@ -7,7 +7,8 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 1. Install prerequisites for virt-manager (as root):
 
         $ sudo yum groupinstall 'X Window System' 'GNOME'
-        $ sudo yum install git libosinfo libvirt-python libvirt-glib openssh-askpass python-ipaddr spice-gtk-python spice-gtk3
+        $ sudo yum install git libosinfo libvirt-python libvirt-glib openssh-askpass \
+                           python-ipaddr spice-gtk-python spice-gtk3
 
 1. Clone the virt-manager source code from GitHub, and build it:
 
@@ -45,14 +46,24 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
    After connecting to the hypervisor, all available guests will be listed in the virt-manager window.
 
-1. To install a Linux guest from an ISO image on the KVM server, you need to mount the ISO image, extract the kernel and initrd files from it, and place them in a temporary location. The following example is for copying the files from a SLES 12 SP3 ISO image.
+1. To install a Linux guest from an ISO image on the KVM server, you need to mount the ISO image, extract the kernel and initrd files from it, and place them in a temporary location. The following example is for copying the files from a SLES 12 SP1 ISO image:
 
         # mkdir /tmp/iso-files
-        # mount -o ro,loop /<path-to-ISO>/ /mnt
+        # mount -o ro,loop /disk/isos/SLE-12-SP1-Server-DVD-s390x-DVD1.iso /mnt
         # cd /mnt/boot/s390x
         # cp ./linux ./initrd /tmp/iso-files
         # cd /tmp/iso-files
         # chmod 755 linux initrd
+        # umount /mnt
+
+   The following is an example for copying the files from a RHEL 7.1 ISO image:
+
+        # mkdir /tmp/iso-files
+        # mount -o ro,loop /disk/isos/RHEL-7.1-20150219.1-Server-s390x-dvd1.iso /mnt
+        # cd /mnt/images
+        # cp ./kernel.img ./initrd.img /tmp/iso-files
+        # cd /tmp/iso-files
+        # chmod 755 kernel.img initrd.img
         # umount /mnt
 
 1. Create a new virtual machine by clicking the "New" button in virt-manager. This will bring up the "New VM" dialog box. Ensure that you are connected to the correct KVM hypervisor as shown in the "Connection" drop-down menu. Select "Local install media (ISO image or CDROM)". Within the architecture options, ensure that "Virt Type" is set to "KVM" and "Machine Type" is set to "s390-ccw-virtio". Click "Forward".
@@ -85,6 +96,7 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
 * [Creating and Managing Guests with Virt-Manager](https://docs.fedoraproject.org/en-US/Fedora/23/html/Virtualization_Getting_Started_Guide/ch06.html)
 * [Managing VMs with the Virtual Machine Manager](http://www.ibm.com/developerworks/cloud/library/cl-managingvms/)
+
 ## Building libvirt (Optional)
 
 You do not need a new version of libvirt if you only want to use virt-manager to manage KVM guests on IBM z Systems, but in case you would like to update libvirt to the latest and greatest version (for new bug fixes, for example), the following steps show how to build and install libvirt. These instructions have been tested on RHEL 7.1 on x86.
