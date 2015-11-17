@@ -32,6 +32,8 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
 ## Managing guests on a remote KVM hypervisor running on IBM z Systems
 
+### Connecting to the KVM hypervisor
+
 1. **(Optional)** virt-manager will invoke the [gnome-ssh-askpass](http://manpages.ubuntu.com/manpages/hardy/man1/gnome-ssh-askpass.1.html) utility to prompt for a SSH passphrase for the remote system interactively. Before starting virt-manager, [generate a pair of SSH keys](https://help.github.com/articles/generating-ssh-keys/) and copy the public key into the file `~root/.ssh/authorized_keys` on the KVM hypervisor. You can use a key without a passphrase to streamline the login process, but doing so has security implications and is not recommended for production systems.
 
    If you do not use SSH public key authentication, SSH will prompt for a password in the terminal. For this to work, you must invoke virt-manager with the `--no-fork` option.
@@ -45,6 +47,8 @@ The following instructions show how to build virt-manager on an x86-64 system, a
    ![Adding a new connection](img/virt-manager-01-add-connection.png)
 
    After connecting to the hypervisor, all available guests will be listed in the virt-manager window.
+
+### Creating a new virtual machine
 
 1. To install a Linux guest from an ISO image on the KVM server, you need to mount the ISO image, extract the kernel and initrd files from it, and place them in a temporary location. The following example is for copying the files from a SLES 12 SP1 ISO image:
 
@@ -72,11 +76,11 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
 1. Browse and select the ISO image to install from. The OS type and version can be specified if matched with the ISO or left as "Generic". Click "Forward".
 
-   ![Customizing configuration](img/virt-manager-03-ISO.png)
+   ![Choosing an installation ISO image](img/virt-manager-03-ISO.png)
 
 1. Select the amount of RAM and CPUs to allocate to the virtual machine. Click "Forward".
 
-   ![Customizing configuration](img/virt-manager-04-RAM-CPU.png)
+   ![Specifying virtual machine capacity](img/virt-manager-04-RAM-CPU.png)
 
 1. Enter a name and size for the disk storage for the virtual machine. Click "Forward".
 
@@ -92,7 +96,19 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
 1. Restart the virtual machine. The guest operating system should boot up correctly.
 
-## References
+### Cloning a virtual machine
+
+1. An easy way to create more virtual machines is to clone an existing one. Before cloning a virtual machine, make sure that it is not running (in the "Shutoff" state). In the virt-manager window, right-click on the virtual machine, and choose "Clone" to bring up the "Clone Virtual Machine" dialog box.
+
+   ![Cloning a virtual machine](img/virt-manager-08-clone-vm.png)
+
+1. By default, the name of the new clone is the same as the original virtual machine, with a "-clone" suffix. Change this name if desired. Click the "Clone" button to begin cloning. Once the cloning completes, a second instance of the virtual machine will appear in the virt-manager window. Both guests (old and new) can be started and should boot up correctly.
+
+   ![Running cloned virtual machines](img/virt-manager-09-clones.png)
+
+1. **(Optional)** By default, the original disk image will be copied to a new image file with a "-clone" suffix, e.g. _originalimage_-clone.qcow2. This name is not modifiable. However, after the cloning is complete, with the clone in "Shutoff" state, the cloned disk image can be renamed on the hypervisor (e.g. `mv testrhel-clone.qcow2 testrhel2.qcow2`), and then the virtual storage device can be removed from the clone, and re-added using the new file name.
+
+### References
 
 * [Creating and Managing Guests with Virt-Manager](https://docs.fedoraproject.org/en-US/Fedora/23/html/Virtualization_Getting_Started_Guide/ch06.html)
 * [Managing VMs with the Virtual Machine Manager](http://www.ibm.com/developerworks/cloud/library/cl-managingvms/)
@@ -144,3 +160,4 @@ You do not need a new version of libvirt if you only want to use virt-manager to
 1. **(Optional)** Restart the libvirt daemon:
 
         $ sudo service libvirtd restart
+
