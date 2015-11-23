@@ -6,9 +6,22 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
 1. Install prerequisites for virt-manager (as root):
 
+    (RHEL 7.1)
+
         $ sudo yum groupinstall 'X Window System' 'GNOME'
         $ sudo yum install git libosinfo libvirt-python libvirt-glib openssh-askpass \
-                           python-ipaddr spice-gtk-python spice-gtk3
+               python-ipaddr spice-gtk-python spice-gtk3
+
+    (SLES 12)
+
+        $ sudo zypper install gtk-vnc2-devel intltool libvirt-python libvirt-glib-devel \
+               libosinfo-devel openssh-askpass-gnome python-libxml2 python-gtk-devel \
+               python-gtk-vnc python-requests spice-gtk-devel vte2-devel python-vte
+
+1. **(SLES 12 only)** Download and install the openSUSE RPM for libosinfo, which is required by virt-manager but not avaialble yet for SLES 12:
+
+        $ wget http://download.opensuse.org/repositories/openSUSE:/13.2/standard/x86_64/libosinfo-0.2.11-2.1.4.x86_64.rpm
+        $ sudo rpm -i libosinfo-0.2.11-2.1.4.x86_64.rpm
 
 1. Clone the virt-manager source code from GitHub, and build it:
 
@@ -119,6 +132,8 @@ You do not need a new version of libvirt if you only want to use virt-manager to
 
 1. Install libvirt dependencies (as root):
 
+    (RHEL 7.1)
+
         $ sudo yum install audit-libs-devel augeas avahi-devel dbus-devel \
                device-mapper-devel ebtables fuse-devel git glusterfs-api-devel \
                glusterfs-devel gnutls-devel libattr-devel libblkid-devel \
@@ -130,14 +145,38 @@ You do not need a new version of libvirt if you only want to use virt-manager to
                python-requests qemu-img qemu-kvm readline-devel sanlock-devel \
                scrub systemd-devel xhtml1-dtds yajl-devel
 
+    (SLES 12)
+
+        $ sudo zypper install audit-devel augeas bridge-utils cyrus-sasl-devel \
+               device-mapper-devel dnsmasq ebtables fuse-devel gnutls intltool \
+               libapparmor-devel libattr-devel libavahi-devel libblkid-devel \
+               libcap-ng-devel libcurl-devel libgcrypt-devel libgnutls-devel \
+               libnetcontrol-devel libnl3-devel libnuma-devel libpcap-devel \
+               libpciaccess0-devel libselinux-devel libssh2-devel libtasn1-devel \
+               libudev-devel libvirt-python libxml2-devel libyajl-devel lzop \
+               numad qemu-tools openssh-askpass-gnome parted-devel polkit-devel \
+               python-libxml2 python-requests python-vte qemu radvd \
+               readline-devel sanlock sanlock-devel systemd-devel \
+               typelib-1_0-GtkVnc-2_0 virtualbox xen xen-devel xhtml-dtd
+
 1. Download the latest libvirt source RPM and rebuild it:
+
+    (RHEL 7.1)
 
         $ wget ftp://libvirt.org/libvirt/libvirt-1.2.20-1.fc22.src.rpm
         $ rpmbuild --rebuild libvirt-1.2.20-1.fc22.src.rpm
 
+
+    (SLES 12)
+
+        $ wget http://download.opensuse.org/repositories/Virtualization/SLE_12/src/libvirt-1.2.21-539.1.src.rpm
+        $ rpmbuild --rebuild libvirt-1.2.21-539.1.src.rpm
+
    The build process will also perform a number of sanity tests on the libvirt binaries. There should be no failures.
 
 1. The binary RPMs will be created in $HOME/rpmbuild/RPMS/x86_64/. Run `rpm -Uvh` as root to install libvirt (or upgrade it, if there is already an existing installation on the system):
+
+    (RHEL 7.1)
 
         $ cd $HOME/rpmbuild/RPMS/x86_64
         $ sudo rpm -Uvh libvirt-1.2.20-1.el7.x86_64.rpm \
@@ -155,9 +194,36 @@ You do not need a new version of libvirt if you only want to use virt-manager to
                         libvirt-daemon-driver-storage-1.2.20-1.el7.x86_64.rpm \
                         libvirt-daemon-kvm-1.2.20-1.el7.x86_64.rpm
 
+    (SLES 12)
+
+        $ cd /usr/src/packages/RPMS/x86_64/
+        $ sudo rpm -Uvh libvirt-1.2.21-539.1.x86_64.rpm \
+                        libvirt-client-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-config-network-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-config-nwfilter-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-interface-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-libxl-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-lxc-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-network-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-nodedev-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-nwfilter-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-qemu-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-secret-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-storage-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-uml-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-driver-vbox-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-lxc-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-qemu-1.2.21-539.1.x86_64.rpm
+
+        $ sudo rpm -Uvh libvirt-daemon-uml-1.2.21-539.1.x86_64.rpm \
+                        libvirt-daemon-xen-1.2.21-539.1.x86_64.rpm \
+                        libvirt-devel-1.2.21-539.1.x86_64.rpm \
+                        libvirt-doc-1.2.21-539.1.x86_64.rpm \
+                        libvirt-lock-sanlock-1.2.21-539.1.x86_64.rpm
+
    Upgrading libvirt should preserve existing libvirt data and configuration files. You may want to examine the configuration files and compare them with the versions saved by `rpm` (\*.rpmsave), to ensure that their contents are still correct.
 
 1. **(Optional)** Restart the libvirt daemon:
 
         $ sudo service libvirtd restart
-
