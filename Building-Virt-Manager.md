@@ -1,6 +1,6 @@
 [KVM for IBM z Systems](http://www-03.ibm.com/systems/z/solutions/virtualization/kvm/) became generally available in September 2015. [virt-manager](https://virt-manager.org/) (which is based on the [libvirt](http://libvirt.org/) API) is a popular GUI application for creating and managing KVM guests. Thanks to recent effort by the virt-manager community, the latest version now has the functionality to create and destroy guests running on KVM on z.
 
-The following instructions show how to build virt-manager on an x86-64 system, and how to use it to connect to a KVM hypervisor running on IBM z Systems, and manage its guests.
+The following instructions show how to build virt-manager on an x86-64 system, and how to use it to connect to a KVM hypervisor running on IBM z Systems, and manage its guests. These instructions have been tested on RHEL 7.1 and SLES 12 on x86-64.
 
 ## Building virt-manager
 
@@ -128,7 +128,7 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
 ## Building libvirt (Optional)
 
-You do not need a new version of libvirt if you only want to use virt-manager to manage KVM guests on IBM z Systems, but in case you would like to update libvirt to the latest and greatest version (for new bug fixes, for example), the following steps show how to build and install libvirt. These instructions have been tested on RHEL 7.1 on x86.
+You do not need a new version of libvirt if you only want to use virt-manager to manage KVM guests on IBM z Systems, but in case you would like to update libvirt to the latest and greatest version (for new bug fixes, for example), the following steps show how to build and install libvirt.
 
 1. Install libvirt dependencies (as root):
 
