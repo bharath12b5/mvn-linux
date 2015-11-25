@@ -90,17 +90,35 @@ ant
     * The Apache Cassandra jar file is available under the bin folder.
     
 ### Step 6: (Optional) Run the unit tests:
+_*Note:*_ 
+Use below commands to install IBM Java 1.7 and set it to Java Runtime Environment (Optional).
+
+* RHEL 7:
+```
+yum install java-1.7.1-ibm-devel.s390x
+export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm-1.7.1.3.10-1jpp.1.el7_1.s390x
+update-alternatives --config java    (Enter number to select IBM Java 1.7) 
+```
+* SLES 12:
+```
+zypper install java-1_7_1-ibm-devel java-1_7_1-ibm-jdbc java-1_7_1-ibm
+export JAVA_HOME=/usr/lib64/jvm/java-1.7.1-ibm
+update-alternatives --config java   (Enter number to select IBM Java 1.7)
+```
+
+Run the Cassandra test suite         
 ```
 ant test
 ```        
-_**Note:**_ At present few test cases are failing, failed test cases are reproduced on x86 except ScrubTest and LegacySSTableTest. Try below changes related to system Z to avoid test case failures due to timeout. 
+_**Note:**_ 
+_At present few test cases are failing, failed test cases are reproduced on x86 except ScrubTest and LegacySSTableTest. Try below changes related to system Z to avoid test case failures due to timeout._
     
-1. Try to run failed test case individually using below command.
+*  Try to run failed test case individually using below command.
 ```
         e.g.
         ant test -Dtest.name=LeveledCompactionStrategyTest
 ```
-2. Replace time out value in build.xml file as shown below
+*  Replace time out value in build.xml file as shown below
 ```
         Older Value:
         <property name="test.timeout" value="60000" />
@@ -111,7 +129,7 @@ _**Note:**_ At present few test cases are failing, failed test cases are reprodu
         <property name="test.long.timeout" value="1500000" />
         <property name="test.burn.timeout" value="1500000" /> 
 ```
-3. Replace timeout value in particular test case
+*  Replace timeout value in particular test case
 ```
         e.g. In IndexSummaryManagerTest.java test for function testRedistributeSummaries replace
         
