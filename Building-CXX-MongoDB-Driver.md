@@ -1,6 +1,6 @@
-#Building MongoDB C++ Driver
+#Building C++ MongoDB Driver
 
-The MongoDB C++ Driver can be built for Linux on z Systems running SLES12, RHEL7 and RHEL6 by following these instructions. The 'legacy' driver version legacy-1.0.5 has been successfully built & tested this way.
+The C++ MongoDB Driver can be built for Linux on z Systems running SLES12, RHEL7 and RHEL6 by following these instructions. The 'legacy' driver version legacy-1.0.5 has been successfully built & tested this way.
 
 
 _**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._  
