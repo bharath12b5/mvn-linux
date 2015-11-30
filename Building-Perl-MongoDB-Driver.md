@@ -3,7 +3,7 @@ The Perl MongoDB Driver v0.708.2.0 can be built for Linux on z Systems running R
 
 _**General Notes:**_
 
-i) _**Note:** This recipe provides the required MongoDB Perl Driver Linux on z Systems pre-requisites, a MongoDB Test script and directs the user to install a Perl module using tools from the Perl code repository CPAN.  The guidance to install the Perl module given here should work in most circumstances, but as details of a CPAN download are environment specific, the reader is referred documentation on the CPAN site (etc.) for further details._
+i) _**Note:** This recipe provides the required Perl MongoDB Driver Linux on z Systems pre-requisites, a MongoDB Test script and directs the user to install a Perl module using tools from the Perl code repository CPAN.  The guidance to install the Perl module given here should work in most circumstances, but as details of a CPAN download are environment specific, the reader is referred documentation on the CPAN site (etc.) for further details._
 
 ii) _**Note:** When following the steps below please use a standard permission user unless otherwise specified._
 
@@ -11,7 +11,7 @@ iii) _**Note:** This recipe specifies that CPAN commands should be run as `sudo`
 
 iv) _**Note:** A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
-## Building MongoDB_Perl_Driver
+## Building Perl MongoDB Driver
 
 ### Obtain pre-built dependencies.
 
@@ -63,7 +63,7 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
       ```shell
       sudo cpan MongoDB
       ```
-      i) _**Note:** The CPAN dialog for the MongDB module install follows the pattern described above for `Bundle::CPAN`. In the first instance to accept the default answers offered, taking note of any failures._
+      i) _**Note:** The CPAN dialog for the MongoDB module install follows the pattern described above for `Bundle::CPAN`. In the first instance to accept the default answers offered, taking note of any failures._
 
       ii) _**Note:** The CPAN repository is subject to continual updates which leads to occasional intermittent build, and test failures, possibly leading to a dependent module not being installed. Where a module has not been installed, it will first become apparent at run time, or in the testing (below) should a script attempt to access missing code. In such circumstances you can, try to reload the failed module with `sudo cpan <moduleName>`, or find the CPAN build directory (default=`/root/.cpan/build/`) to install it 'by hand', or try to install an older/later module version, or consult the documentation or 'the web' for further advice._
 
@@ -71,7 +71,7 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
 
 ### Post Installation  Testing.
 
-   This testing is based on information at https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod and demonstrates a MongoDB connection to a remote host.  A script (shown below) connects to the host and port (must be set to suit the target environment), and uses a database 'tutorial' and collection 'users' (which can also be edited). Information on MongDB Installation is available at http://docs.mongodb.org/manual/installation/ .
+   This testing is based on information at https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod and demonstrates a MongoDB connection to a remote host.  A script (shown below) connects to the host and port (must be set to suit the target environment), and uses a database 'tutorial' and collection 'users' (which can also be edited). Information on MongoDB Installation is available at http://docs.mongodb.org/manual/installation/ .
 
    The script adds two users to the collection, one of whom likes 'math' and consequently is a geek.  There are some searches on the data, and then the other user is also made a geek, and the data searched again. A sample of the expected output for this is shown below.
 
@@ -122,7 +122,7 @@ use MongoDB ;
 use MongoDB::OID; ;
 use Data::Dumper ;
 #
-# This is a simple test script to demonstrate  MongDB accessed via a Perl driver. The code is based on information
+# This is a simple test script to demonstrate  MongoDB accessed via a Perl driver. The code is based on information
 # available at the below link, and the user is directed there for further explanation :
 
 # https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod
