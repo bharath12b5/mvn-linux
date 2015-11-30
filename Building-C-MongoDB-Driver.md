@@ -1,4 +1,4 @@
-The MongoDB C Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 1.1.11 and 1.2.0-beta1 have been successfully built & tested this way.
+The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 1.1.11 and 1.2.0-beta1 have been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
