@@ -2,7 +2,7 @@
 Docker Swarm can be built and tested on Linux on z Systems (RHEL 7.1 ans SLES 12) by following these instructions.
 
 ### Version
-0.4.0 
+1.0.0 
 
 ### Section 1: Install the following Dependencies
 * gccgo (Refer [gccgo](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo) recipe)
@@ -30,7 +30,7 @@ SLES12:
 ```
 3.2 Download the source from gihub
 ```
-    git clone -b v0.4.0 https://github.com/docker/swarm.git
+    git clone -b v1.0.0 https://github.com/docker/swarm.git
 ```
 3.3 Move/Copy to required location
 ```
