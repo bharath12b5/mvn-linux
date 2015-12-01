@@ -1,6 +1,6 @@
 # Building Elasticsearch
 
-The instructions provided below specify the steps to build [Elasticsearch](https://www.elastic.co/products/elasticsearch) v1.5.1 on Linux on the IBM z Systems for RHEL 7 and SLES 12.
+The instructions provided below specify the steps to build [Elasticsearch](https://www.elastic.co/products/elasticsearch) v1.5.1 & v2.1.0 on Linux on the IBM z Systems for RHEL 7 and SLES 12.
 
 NOTE: When following the steps below, please use a standard permission user unless otherwise specified.
 
@@ -38,7 +38,7 @@ Also as root, run the command "ulimit -n 65535".
 Logout and Login. Run the command ulimit -n, it should return 65535.
 
 
-#### Obtain v1.5.1 of Elasticsearch
+#### Obtain required version of Elasticsearch
 
        wget https://github.com/elastic/elasticsearch/archive/v1.5.1.zip
        unzip v1.5.1.zip
