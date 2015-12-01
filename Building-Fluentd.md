@@ -1,6 +1,6 @@
 # Building Fluentd
 
-Fluentd version 0.12.10 has been successfully built and tested for Linux on z Systems.  The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Fluentd version 0.12.10 & 0.12.16 has been successfully built and tested for Linux on z Systems.  The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
 
 _**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._
 
@@ -33,7 +33,7 @@ _**NOTE:** When following the steps below please use a standard permission user 
     export PATH=/home/<USER>/.gem/ruby/bin:$PATH
     ```
     Where `<USER>` is the standard user you are logged in as.
-4. Build & install the fluentd gem and dependencies
+4. Build & install the latest stable fluentd gem and dependencies
 
     Fluentd is a gem based product, so the rubygem install process will automatically build the necessary native parts
     ```shell
