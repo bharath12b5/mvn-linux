@@ -1,6 +1,6 @@
-The following build instructions have been tested with **RabbitMQ Server 3.5.0** on **SLES 11.3, 12.0 on IBM z Systems**.
+The following build instructions have been tested with **RabbitMQ Server 3.5.0 & 3.5.6** on **SLES 11.3, 12.0 on IBM z Systems**.
 
-Installation instructions are available in the [official RabbitMQ documentation](https://www.rabbitmq.com/build-server.html).
+Installation instructions are available in the [official RabbitMQ documentation](https://www.rabbitmq.com/build-server.html). The following instruction use V3.5.0 but it could be replaced with your required version.
 
 ### Install the Dependencies
 
