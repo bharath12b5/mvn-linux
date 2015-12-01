@@ -1,8 +1,8 @@
-**General Notes**: These instructions have been tested for HAProxy version 1.5.14 on RHEL 6.6/7 and SLES 11.3/12. When following the steps below please use a standard permission user unless otherwise specified.
+**General Notes**: These instructions have been tested for HAProxy version 1.5.14 & 1.6.2 on RHEL 6.6/7 and SLES 11.3/12. When following the steps below please use a standard permission user unless otherwise specified.
 
-## Downloading, Building and Installing HAProxy 1.5.14
+## Downloading, Building and Installing HAProxy
 
-1. Download and unpack the HAProxy 1.5.14 source package.
+1. Download and unpack the required HAProxy source package.
     ```
     wget http://www.haproxy.org/download/1.5/src/haproxy-1.5.14.tar.gz
     tar xzvf haproxy-1.5.14.tar.gz
