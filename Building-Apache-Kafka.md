@@ -1,4 +1,4 @@
-**Apache Kafka** can be built for Linux on z Systems running RHEL 7.1 or 6.6 or SLES 12 or 11 by following these instructions.  Version 0.8.2.1 has been successfully built & tested this way.
+**Apache Kafka** can be built for Linux on z Systems running RHEL 7.1 or 6.6 or SLES 12 or 11 by following these instructions.  Version 0.8.2.1 & 0.8.2.2 has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
