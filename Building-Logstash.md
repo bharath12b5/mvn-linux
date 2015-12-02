@@ -1,56 +1,92 @@
-[Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a build-in Jruby (running on JVM) that needs a native library `jffi-1.2.so` for s390x platform
+# Building Logstash
+[Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a built-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
 
-This recipe is for building Logstash (1.5.3) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
+This recipe is for building Logstash (2.1.0) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
 
-### Dependencies:
-   - Java JDK 7 (or later, OpenJDK or IBM JDK)      
-   - Ant
-
-### Build from Release
-
-Download [Logstash](https://www.elastic.co/products/logstash) package and place the `libjffi-1.2.so` for s390x platform
-
-1. Install `ant` as root (skip if it is already installed)
-
-        $ sudo yum install ant.noarch           # for RHEL or
-        $ sudo zypper install ant               # for SLES
+_**General Notes:**_ 	 
+_When following the steps below please use a standard permission user unless otherwise specified._
 
 
-2. Get Logstash release package and unzip it
+### 1. Dependencies:
 
-        $ wget https://download.elastic.co/logstash/logstash/logstash-1.5.3.zip
-        $ unzip logstash-1.5.3.zip
+ *	RHEL7:
 
-    If  `wget` is not installed, perform
+	```
+		yum install -y java-1.7.0-openjdk ant make wget unzip tar gcc
+	```
+ *	RHEL6:
+	```
+		yum install -y java-1.7.1-ibm-devel.s390x wget make unzip gcc tar
+	```
 
-        $ yum install wget              # for RHEL or
-        $ zypper install wget           # for SLES
+ *	SLES12:
+	```
+		zypper install -y --type pattern Basis-Devel
+		zypper install -y java-1_7_0-openjdk ant make wget unzip gcc
+	```
+	
+ *	SLES11:
+	```
+		zypper install -y --type pattern Basis-Devel
+        zypper install -y java-1_7_0-ibm-devel wget unzip tar make gcc
+	```
+	
+ * Install appropriate version of Ant for SLES11 and RHEL6:
+    ```
+        export WORK_DIR=`pwd`
+        wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.tar.gz
+        tar -zxvf apache-ant-1.9.4-bin.tar.gz
+    ```
+    
+### 2. Build from Release: 
 
-3. Jruby runs on JVM and needs a native library (`libjffi-1.2.so`: java foreign language interface). Get `jffi` source code and build with `ant`
+ 1. Set Environment Variable
+ 	*  Set JAVA_HOME
 
-        $ wget https://github.com/jnr/jffi/archive/master.zip
-        $ unzip  master.zip      
-        $ cd jffi-master
-        $ ant                   #  build libjffi-1.2.so from c
+    ```
+        export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk (for rhel7)
+        export JAVA_HOME=/usr/lib64/jvm/java (for sles12)
+        export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-ibm (for sles11)
+        export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm.s390x (for rhel6)
+    ```
+    
+ 	* Set ANT PATH for RHEL6 and SLES11
+    ```
+        export PATH=$WORK_DIR/apache-ant-1.9.4/bin:$PATH
+    ```
+ 2. Get Logstash release package and unzip it
 
-    `libjffi-1.2.so` is generated in folder: `jffi-master/build/jni/libjffi-1.2.so`
+   ```
+       wget https://download.elastic.co/logstash/logstash/logstash-2.1.0.zip
+       unzip -u logstash-2.1.0.zip
+   ```
+ 3. Jruby runs on JVM and needs a native library (libjffi-1.2.so: java foreign language interface). Get `jffi` source code and build it with `ant`
 
-4. Copy `libjffi-1.2.so` to Logstash folder
+	```
+       wget https://github.com/jnr/jffi/archive/master.zip
+       mv master master.zip (Only for SLES11)
+       unzip  master.zip 
+       cd jffi-master
+       ant
+	```
+	
+ 4.  Copy libjffi-1.2.so to Logstash folder
+    ```
+       mkdir logstash-2.1.0/vendor/jruby/lib/jni/s390x-Linux
+       cp jffi-master/build/jni/libjffi-1.2.so \
+       logstash-2.1.0/vendor/jruby/lib/jni/s390x Linux/libjffi-1.2.so
+    ```
 
-        $ mkdir logstash-1.5.3/vendor/jruby/lib/jni/s390x-Linux
-        $ cp jffi-master/build/jni/libjffi-1.2.so logstash-1.5.3/vendor/jruby/lib/jni/s390x-Linux/libjffi-1.2.so
+ 5. Run Logstash
+   ```
+      cd logstash-2.1.0
+      bin/logstash version
+   ```
 
-5. Since version 1.5.2 the Logstash package introduces a ruby function to check user environment JRE version, it gives warning message if the JRE version is too low, however one of  ruby method "captures" that needs JRE seems not work with  IBM JRE 7 & 8.  ( No problem found when using Open JRE 7 or later). As a workaround, in file:
+## References:
 
-        logstash-1.5.3/vendor/bundle/jruby/1.9/gems/logstash-core-1.5.3-java/lib/logstash/runner.rb
+* [logstash](https://www.elastic.co/products/logstash)
 
-    comment out `line 32`,  like:
-
-        #    LogStash::Util::JavaVersion.warn_on_bad_java_version
-
-6. Run Logstash
-
-        $ cd  logstash-1.5.3
-        $ bin/logstash version
-
-Logstash should run on all supported OSes: SESL12/SESL11/RHEL6/RHEL7
+> 	The information provided in this article is accurate at the time of writing, but on-going development in the 
+> 	open-source projects involved may make the information incorrect or obsolete. Please contact us on [developerWorks](https://www.ibm.com/developerworks/community/groups/community/lozopensource)
+> 	if you have any questions or feedback.
