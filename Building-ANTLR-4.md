@@ -1,4 +1,4 @@
-## Building ANTLR 4.5.1
+## Building AntLR 4.5.1
 
 **ANTLR 4.5.1** has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7, RHEL 6, SLES 12 and SLES 11. More information on ANTLR is available at [ANTLR-website](http://www.antlr.org) and the source code can be downloaded from [ANTLR4-download](https://github.com/antlr/antlr4).
 
@@ -28,20 +28,7 @@ Use the following commands to obtain dependencies
 
 ` zypper install -y wget git-core java-1_7_0-ibm-devel `
 	   
-### Dependency build - Ant 1.8
-For RHEL 6.6 and SLES 11 build Ant 1.8 from source
-		
-		cd /<source_root>/
-		git clone https://github.com/apache/ant.git
-		cd ant
-		git checkout ANT_182
-		./build.sh
-		
-For RHEL 6.6 and SLES 11 set Environment Variables for Ant
-
-		export ANT_HOME=/<source_root>/ant/dist
-		export PATH=$PATH:$ANT_HOME/bin
-
+	   
 ### Dependency build - Maven 3.3.9
 This recipe uses Maven (version >= 3.3.3) to build ANTLR so it is first necessary to build Maven. Full instructions can be found at [Building-Maven](https://github.com/linux-on-ibm-z/docs/wiki/Building-Maven).
 
@@ -50,24 +37,15 @@ This recipe uses Maven (version >= 3.3.3) to build ANTLR so it is first necessar
 
     * Set JAVA_HOME and PATH
 
-        * RHEL 7.1
+        * RHEL 7.1 and RHEL 6.6
 		```
-                export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm-1.7.1.3.10-1jpp.1.el7_1.s390x
+                export JAVA_HOME=/usr/lib/jvm/java
                 export PATH=$PATH:$JAVA_HOME/bin
 		```		
-        * RHEL 6.1
+
+        * SLES 12 and SLES 11
 		```
-                export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm-1.7.1.3.10.s390x
-                export PATH=$PATH:$JAVA_HOME/bin
-		```		
-        * SLES 12
-		```
-                export JAVA_HOME=/usr/lib64/jvm/java-1.7.1-ibm-1.7.1
-                export PATH=$PATH:$JAVA_HOME/bin
-		```
-        * SLES 11
-		```
-                export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-ibm-1.7.0
+                export JAVA_HOME=/usr/lib64/jvm/java
                 export PATH=$PATH:$JAVA_HOME/bin
 		```
 
@@ -77,7 +55,7 @@ This recipe uses Maven (version >= 3.3.3) to build ANTLR so it is first necessar
 
 		cd /<source_root>/
 		git clone https://github.com/antlr/antlr4.git
-                cd antlr4
+        cd antlr4
 		git checkout 4.5.1
 
 		
@@ -90,7 +68,8 @@ This recipe uses Maven (version >= 3.3.3) to build ANTLR so it is first necessar
         export CLASSPATH=$CLASSPATH:/<source_root>/antlr4/tool/target/antlr4-4.5.1.jar
 
 5. Verify the build
-You can verify installation and check version by running
+
+    The following command should display the version of ANTLR that has been built and output usage information.
 
 		java org.antlr.v4.Tool 
 
@@ -107,8 +86,3 @@ You can verify installation and check version by running
 [ANTLR](http://www.antlr.org)
 [Maven](https://git-wip-us.apache.org/repos/asf/maven.git)
 [ANTLR4-download](https://github.com/antlr/antlr4)
-
-
-> 	The information provided in this article is accurate at the time of writing, but on-going development in the 
-> 	open-source projects involved may make the information incorrect or obsolete. Please contact us on [developerWorks](https://www.ibm.com/developerworks/community/groups/community/lozopensource)
-> 	if you have any questions or feedback.
