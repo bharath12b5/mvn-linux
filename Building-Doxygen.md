@@ -140,9 +140,3 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 ### References:
 https://github.com/doxygen/doxygen  
-  
-  
-
-> 	The information provided in this article is accurate at the time of writing, but on-going development in the 
-> 	open-source projects involved may make the information incorrect or obsolete. Please contact us on [developerWorks](https://www.ibm.com/developerworks/community/groups/community/lozopensource)
-> 	if you have any questions or feedback.
