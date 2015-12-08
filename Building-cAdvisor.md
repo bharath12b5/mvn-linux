@@ -2,7 +2,8 @@
 
 cAdvisor has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1 and SLES 12.
 
-Note: cAdvisor pull request [#886](https://github.com/google/cadvisor/pull/886) has been created on GitHub. The code changes will be available in the next release of cAdvisor.
+### Version
+0.19.5
 
 
 ### Prerequisites:
@@ -14,9 +15,10 @@ Note: cAdvisor pull request [#886](https://github.com/google/cadvisor/pull/886) 
 
 ### Building and Installing cAdvisor
 1. Export go path
-    ```
+ 
+   ```
         export GOPATH=/gcc/gcc/go; export PATH=$PATH:$GOPATH/bin
-    ```
+   ```
 2. Install following dependencies
  
     *  git
@@ -45,7 +47,7 @@ Note: cAdvisor pull request [#886](https://github.com/google/cadvisor/pull/886) 
 
 6. Checkout the code from repository
     ```
-        $ git clone https://github.com/linux-on-ibm-z/cadvisor.git
+        $ git clone https://github.com/google/cadvisor.git -b v0.19.5
     ```
 
 7. Change the work directory
