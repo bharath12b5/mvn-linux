@@ -18,7 +18,15 @@
         cd mongo
         git checkout v3.2-s390
 
-4. In the mongo/ directory, execute the following command to build MongoDB:
+4. In the mongo/ directory, create a file named version.json with the following content:
+
+   ```json
+   { "version": "3.2.0", "githash": "b80311d7fcfaae95c434ade551949921925234e6" }
+   ```
+
+   This helps prevent a unit test from failing due to the introduction of [this upstream change](https://github.com/linux-on-ibm-z/mongo/commit/457246ef9b013b30cafa4bb45125dc2e4193d6c2).
+
+5. In the mongo/ directory, execute the following command to build MongoDB:
 
         scons --opt --allocator=system all
 
