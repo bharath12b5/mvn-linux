@@ -24,9 +24,9 @@ If so, make sure that the directory (plus any content underneath it) is world-wr
         rpm -qa | grep gcc
         yum install gcc
 
-+ Install other pre-requisites:
++ Install other prerequisites:
 
-        yum install readline-devel readline-devel git svn fakeroot unzip
+        yum install git svn fakeroot unzip openssl-devel readline-devel zlib-devel
 
 + Download and unpack yaml source code:
 
