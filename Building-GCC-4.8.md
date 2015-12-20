@@ -2,7 +2,7 @@
 
 1. Install prerequisite packages for building GCC:
 
-        sudo yum install wget tar make flex gcc gcc-c++ binutils-devel bzip2
+        sudo yum install wget tar make flex gcc gcc-c++ gcc-devel.s390 binutils-devel bzip2
 
 1. Create a new working directory to use as a build and installation workspace. This is recommended to allow safe removal of the transient working data, which minimizes risk to the rest of the file system:
 
