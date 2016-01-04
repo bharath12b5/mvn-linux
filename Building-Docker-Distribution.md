@@ -58,7 +58,7 @@ Issue below command for running testcases.
             make PREFIX=/go test
             
 ## Step 7 : Start the registry 
-Use the below command to start docker registry.
+Use the below command to start docker registry. The yml filename might be different depends on which version of distribution.
 
         /go/bin/registry cmd/registry/config.yml
 
