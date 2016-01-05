@@ -60,12 +60,12 @@ Issue below command for running testcases.
 ## Step 7 : Start the registry 
 Use the below command to start docker registry. The yml filename might be different depends on which version of distribution.
 
-        /go/bin/registry cmd/registry/config.yml
+        /go/bin/registry cmd/registry/config-example.yml
 
 **Note:**
 
-* Docker registry fetches the configuration from cmd/registry/config.yml . 
-* The filesystem location at which docker registry stores the images is by default set as ```/var/lib/registry``` in config.yml.
+* Docker registry fetches the configuration from cmd/registry/config-example.yml . 
+* The filesystem location at which docker registry stores the images is by default set as ```/var/lib/registry``` in config-example.yml.
 
 ### References:
 https://github.com/docker/distribution
