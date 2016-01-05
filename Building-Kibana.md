@@ -1,10 +1,10 @@
 [Kibana](https://www.elastic.co/downloads/kibana) is an open source([Apache Licensed](https://github.com/elastic/kibana/blob/master/LICENSE.md)) analytics and visualization platform designed to work with Elasticsearch. It can easily perform advanced data analysis and visualize the data in a variety of charts, tables, and maps by searching, viewing, and interacting with data stored in Elasticsearch indices.
 
-This recipe is for building Kibana (4.1.1) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
+This recipe is for building Kibana (4.3.1) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
 
 ### Dependencies:
    - IBM SDK for Node.js (0.12.7)
-   - Elasticsearch (1.5.1 or later)
+   - Elasticsearch (2.1.x or later)
 
 ### Build from Release
 
@@ -20,8 +20,8 @@ This recipe is for building Kibana (4.1.1) for Linux on z Systems (SLES12/SLES11
 
 3. Get Kibana release package and extract
 
-        $ wget https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz
-        $ tar xvf kibana-4.1.1-linux-x64.tar.gz
+        $ wget https://download.elastic.co/kibana/kibana/kibana-4.3.1-linux-x64.tar.gz
+        $ tar xvf kibana-4.3.1-linux-x64.tar.gz
 
     If  `wget` is not installed, perform
 
@@ -30,7 +30,7 @@ This recipe is for building Kibana (4.1.1) for Linux on z Systems (SLES12/SLES11
 
 4. Replace `Node.js` in the package with the installed IBM SDK for Node.js.
 
-        $ cd kibana-4.1.1-linux-x64
+        $ cd kibana-4.3.1-linux-x64
         $ mv node node_old         # rename the node
         $ ln -s <IBM_NODE_HOME>/ibm/node  node
 
