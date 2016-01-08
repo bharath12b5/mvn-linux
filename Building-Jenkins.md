@@ -44,7 +44,7 @@ Following are the build dependencies for Jenkins:
    	
 ### Step 3: Deploy Jenkins 
 
-* Refer to the Deploy section of [Apache Tomcat](https://github.com/linux-on-ibm-z/docs/wiki/Building-Tomcat) recipe for deploying jenkins.war on Apache Tomcat.
+* Refer to the Deploy section of [Apache Tomcat](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-Tomcat) recipe for deploying jenkins.war on Apache Tomcat.
 
     
 ### References:
