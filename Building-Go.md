@@ -31,35 +31,29 @@ tar xvfz go1.5.2.linux-amd64.tar.gz
 
     ```
 cd $HOME
-git clone git@github.com:linux-on-ibm-z/go.git go-linux-s390x-bootstrap
+git clone http://github.com/linux-on-ibm-z/go.git
     ```
+
 1. Build the bootstrap tool:
 
     ```
 export GOROOT_BOOTSTRAP=$HOME/go1.5.2/go
-cd $HOME/go-linux-s390x-bootstrap/src
+cd $HOME/go/src
 GOOS=linux GOARCH=s390x ./bootstrap.bash
     ```
+
+   The build will place the bootstrap tool in `$HOME/go-linux-s390x-bootstrap`.
 
 ## Building the Go tool-chain
 
 To build the Go tool-chain you will need to have successfully built the Go bootstrap tool (see above).
 
-1. Make a copy of the Go source tree:
+*__NOTE__: If you do not have a home directory that is shared (e.g. via NFS) with the AMD64 machine, then deep copy `$HOME/go-linux-s390x-bootstrap` to `$HOME` on the z Systems machine, and clone the source again:*
 
-    ```
+```
 cd $HOME
-cp -R go-linux-s390x-bootstrap go
-    ```
-
-   Alternatively, you can clone the source again:
-
-    ```
-cd $HOME
-git clone git@github.com:linux-on-ibm-z/go.git
-    ```
-
-   *__NOTE__: If you do not have a home directory that is shared (e.g. via NFS) with the AMD64 machine, then deep copy `$HOME/go-linux-s390x-bootstrap` to `$HOME` on the z Systems machine.*
+git clone http://github.com/linux-on-ibm-z/go.git
+```
 
 1. Build the Go tool-chain on z Systems and run all tests.
 
