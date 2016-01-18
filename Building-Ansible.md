@@ -1,4 +1,4 @@
-[Ansible](http://www.ansible.com/) 1.9.2 "Dancing In the Streets" has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 6, RHEL 7.1, SLES 11.3, and SLES 12.0.
+[Ansible](http://www.ansible.com/) 2.0 has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 6, RHEL 7.1, SLES 11.3, and SLES 12.0.
 
 ## Building Ansible on RHEL 6, RHEL 7.1, SLES 11.3, and SLES 12.0
 
@@ -19,7 +19,7 @@
 
         sudo easy_install pip==1.2.1
 
-3.  Clone the latest stable Ansible 1.9 GitHub source tree.
+3.  Clone the latest stable Ansible 2.0 GitHub source tree.
 
     *Note: If you do not have Git installed, then install it like this:*
   
@@ -35,7 +35,7 @@
 
         git clone https://github.com/ansible/ansible.git
         cd ansible
-        git checkout stable-1.9
+        git checkout stable-2.0
 
 4.  Setup the environment and get Ansible modules:
 
