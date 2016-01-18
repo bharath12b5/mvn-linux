@@ -1,52 +1,42 @@
 # Building Docker Compose
-Docker Compose can be built and tested on Linux on z Systems (RHEL 7.1 ans SLES 12) by following these instructions.
+Docker Compose 1.5.2 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1 and SLES 12
 
-## Version
-        1.4.0rc2
+_**General Notes:**_  
+i) _When following the steps below please use a standard permission user unless otherwise specified._
 
-## Section 1: Install the following Dependencies
-#### RHEL7:
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-        yum update -y -qq
-        yum install -y \ 
-            git \ 
-            python-setuptools \ 
-            net-tools \ 
-            openssl-devel \ 
-            libffi-devel \ 
-            libxslt-devel \ 
-            libxml2-devel  
+##### 1. Install the following Dependencies
+For RHEL7.1 :
+
+      sudo yum update -y -qq
+      sudo yum install -y git python-setuptools net-tools openssl-devel libffi-devel libxslt-devel libxml2-devel
         
-        easy_install pip
+For SLES12:
 
-#### SLES12:
+      sudo zypper install -y git libxslt-devel libxml2-devel python-setuptools libpipeline-devel python-lxml python-xml
 
-        zypper install -y  \
-                git \
-                libxslt-devel \
-                libxml2-devel \
-                python-setuptools \ 
-                libpipeline-devel \ 
-                python-lxml \
-                python-xml
-                
-        easy_install pip
+##### 2. Install pip with easy_install
+      sudo easy_install pip
 
-## Section 2: Get Docker Compose source from github
-        cd /
-        git clone --branch 1.4.0rc2 https://github.com/docker/compose.git
-        cd compose
+##### 3. Create a working directory as a Docker Compose installation workspace  
+      mkdir /<source_root>/
+      cd /<source_root>/
 
-## Section 3: Build and Install
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+##### 4. Get Docker Compose source from github
+      git clone --branch 1.5.2 https://github.com/docker/compose.git
+      cd /<source_root>/compose
+
+##### 5. Build and Install Docker Compose
+      sudo pip install -r requirements.txt
+      sudo pip install -r requirements-dev.txt
         
-        python setup.py install
+      sudo python setup.py install
 
-## Section 4: Verify Docker Compose version
-        docker-compose version
+##### 6. Verify Docker Compose version
+      docker-compose version
         
 # References
-        https://github.com/docker/compose
-        https://docs.docker.com/compose/
+      https://github.com/docker/compose
+      https://docs.docker.com/compose/
         
