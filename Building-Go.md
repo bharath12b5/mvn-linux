@@ -11,7 +11,7 @@ For more generic information on how the Go bootstrapping process works take a lo
 
 ## Cross-compiling the Go bootstrap tool
 
-To build the Go bootstrap tool you will need to use an Intel/AMD-based machine running an up-to-date version of Linux. This guide has been tested on SLES 12 and RHEL 7.x.
+To build the Go bootstrap tool you will need to use an Intel/AMD-based machine running an up-to-date version of Linux. This guide has been tested on SLES 12, RHEL 7.0 and RHEL 7.1.
 
 1. Create a directory for the amd64 version of the Go tool-chain:
 
