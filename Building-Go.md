@@ -1,4 +1,4 @@
-These instructions describe how to build the latest development version of the [Go programming language](http://www.golang.org) for Linux on IBM z Systems running SLES 12 or RHEL 7.x.
+These instructions describe how to build the latest development version of the [Go programming language](http://www.golang.org) for Linux on IBM z Systems running SLES 12 or RHEL 7.0 or RHEL 7.1.
 
 _**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._
 
