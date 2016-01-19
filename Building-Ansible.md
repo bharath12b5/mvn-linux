@@ -1,3 +1,8 @@
+<!---PACKAGE:Ansible--->
+<!---DISTRO:RHEL 6:2.0--->
+<!---DISTRO:RHEL 7:2.0--->
+<!---DISTRO:SLES 11:2.0--->
+<!---DISTRO:SLES 12:2.0--->
 [Ansible](http://www.ansible.com/) 2.0 has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 6, RHEL 7.1, SLES 11.3, and SLES 12.0.
 
 ## Building Ansible on RHEL 6, RHEL 7.1, SLES 11.3, and SLES 12.0

@@ -1,3 +1,6 @@
+<!---PACKAGE:R--->
+<!---DISTRO:SLES 11:3.1.3--->
+<!---DISTRO:SLES 12:3.2.2--->
 These instructions describe how to build [R](https://www.r-project.org) for IBM Linux on z Systems SLES 11 and SLES 12.
 
 Version 3.1.3 for SLES 11 and version 3.2.2 for SLES 12 has been successfully built this way.

@@ -1,3 +1,6 @@
+<!---PACKAGE:MariaDB--->
+<!---DISTRO:RHEL 6:10.0--->
+<!---DISTRO:SLES 11:10.0--->
 [MariaDB](https://mariadb.org/) is already available for Linux on z Systems from the official RHEL 7.1 and SLES 12 repositories, but it is not available for RHEL 6 or SLES 11 SP3. Moreover, RHEL 7.1 ships only MariaDB 5.5, rather than the latest stable branch, 10.0. This article describes the procedure for building and configuring MariaDB Galera Cluster 10.0.19 on Linux on z Systems. The instructions have been tested on SLES 11 SP3.
 
 ## Building MariaDB
