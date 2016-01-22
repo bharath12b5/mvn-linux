@@ -11,7 +11,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 Following are the build dependencies for Distribution. 
 
 * git-core (SLES12) or git (RHEL7)
-* gccgo
+* Go
 
 **Dependencies Installation Notes:**   
 *	Git can be installed on SLES12 using the below command.
@@ -22,7 +22,7 @@ Following are the build dependencies for Distribution.
 
             sudo yum install -y git
             
-*	To install Gccgo, please refer to the [gccgo](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo) recipe.
+*	To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe.
 
 ##### Step 2 : Get the source (checkout v2.2.1 release)
 *	Create a distribution directory and clone the source code there.
@@ -43,26 +43,17 @@ Following are the build dependencies for Distribution.
 			export GOPATH=/<source_root>/
 			export GOPATH=$DISTRIBUTION_DIR/Godeps/_workspace:$GOPATH
             
-##### Step 4 : Edit Makefile
-*	Edit the Makefile to disable ```GO_LDFLAGS``` variable (since its not supported by gccgo) set in the file. Comment out the below line in **Makefile**.
-
-			GO_LDFLAGS=-ldflags "-X `go list ./version`.Version $(VERSION)"
-
-	Change it to
-
-			#GO_LDFLAGS=-ldflags "-X `go list ./version`.Version $(VERSION)"
-        
-##### Step 5 : Build the Binaries
+##### Step 4 : Build the Binaries
 *	Run the below command to build the distribution binaries.
 
 			make PREFIX=/<source_root>/ clean binaries
             
-##### Step 6 : Run the Test Suite
+##### Step 5 : Run the Test Suite
 *	Issue below command for running testcases.
 
             make PREFIX=/<source_root>/ test
             
-##### Step 7 : Start the registry 
+##### Step 6 : Start the registry 
 *	Copy the config-dev.yml file to config.yml
 
 			cp $DISTRIBUTION_DIR/cmd/registry/config-dev.yml $DISTRIBUTION_DIR/cmd/registry/config.yml
