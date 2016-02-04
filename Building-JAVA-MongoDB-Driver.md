@@ -1,13 +1,15 @@
-The [MongoDB Java Driver](http://docs.mongodb.org/ecosystem/drivers/java/) is a Java program, and as such version 3.0.2 can either be downloaded directly or built for a Linux on z System running RHEL 7.1/6.6 or SLES 12/11.
+The [MongoDB Java Driver](http://docs.mongodb.org/ecosystem/drivers/java/) is a Java program, and as such version 3.2.0 can either be downloaded directly or built for a Linux on z System running RHEL 7.1/6.6 or SLES 12/11.
 
-If you wish to download the prebuilt `jar`, the driver is available from [mongo-java-driver-3.0.2.jar](https://oss.sonatype.org/content/repositories/releases/org/mongodb/mongo-java-driver/3.0.2/mongo-java-driver-3.0.2.jar) or you can use maven/gradle as per the instructions on [MongoDB Java Driver github](http://mongodb.github.io/mongo-java-driver/) - if you wish to rebuild the jar please follow the instructions below:
+If you wish to rebuild the jar please follow the instructions below:
 
-_**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._  
-_**NOTE:** A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_  
-_**NOTE:** For convenience `vi` has been used in the instructions below when editing files, replace with your desired editing program if required_
+_**General Notes:**_
+
+i) _When following the steps below please use a standard permission user unless otherwise specified._  
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_  
+iii) _For convenience `vi` has been used in the instructions below when editing files, replace with your desired editing program if required._
 
 
-1. Install the build time dependencies
+1. Install the build dependencies
 
     On RHEL 7.1 and 6.6 systems:
     ```shell
@@ -15,21 +17,21 @@ _**NOTE:** For convenience `vi` has been used in the instructions below when edi
     ```
     On SLES 11 systems:
     ```shell
-    sudo zypper install -y git java-1_7_0-ibm-devel
+    sudo zypper install -y git java-1_7_0-ibm-devel-1.7.0_sr9.10-9.1.s390x
     ```
     On SLES 12 systems:
     ```shell
     sudo zypper install -y git java-1_7_1-ibm-devel
     ```
-  You may already have some of these packages installed - just install any that are missing.
+  Some of these packages may have been installed already - just install any that are missing.
   
 2. Download the source tree and checkout the required version
 
     ```shell
     cd /<source_root>/
     git clone https://github.com/mongodb/mongo-java-driver.git
-    cd mongo-java-driver
-    git checkout r3.0.2
+    cd /<source_root>/mongo-java-driver
+    git checkout r3.2.0
     ```
 3. Start the build process
 
@@ -42,7 +44,7 @@ _**NOTE:** For convenience `vi` has been used in the instructions below when edi
 
     Correct a relative path to be absolute and then run all available tests
     ```shell
-    sed 's_config/checkstyle-exclude.xml_/<source_root>/mongo-java-driver/config/checkstyle-exclude.xml_' config/checkstyle.xml > config/checkstyle.xml.new
+    sed 's\config/checkstyle-exclude.xml\/<source_root>/mongo-java-driver/config/checkstyle-exclude.xml\' config/checkstyle.xml > config/checkstyle.xml.new
     mv -f config/checkstyle.xml.new config/checkstyle.xml
     ./gradlew check
     ```
@@ -98,7 +100,7 @@ The example code section given below is used to perform a basic test to ensure t
             collection.drop();
 
             Document doc = new Document("company", "IBM")
-                .append("MongoDB Driver", new Document("language", "Java").append("version", "r3.0.2"));
+                .append("MongoDB Driver", new Document("language", "Java").append("version", "r3.2.0"));
             collection.insertOne(doc);
 
             List<Document> documents = new ArrayList<Document>();
@@ -122,19 +124,19 @@ The example code section given below is used to perform a basic test to ensure t
     }
     ```
      
-    3. ***Execute*** 
+3. ***Execute*** 
     
     Compile and run the test program by:
 
     ```shell
-    javac -cp mongo-java-driver/build/libs/mongo-java-driver-3.0.2.jar test.java
-    java -cp mongo-java-driver/build/libs/mongo-java-driver-3.0.2.jar:. test
+    javac -cp /<source_root>/mongo-java-driver/build/libs/mongo-java-driver-3.2.0.jar test.java
+    java -cp /<source_root>/mongo-java-driver/build/libs/mongo-java-driver-3.2.0.jar:. test
     ```
     Executing the test program should produce output similar to this (the Object Ids will vary, but typically will be consecutive):
 
     ```shell
-    { "_id" : { "$oid" : "560562bf35203f023ee2f7db" }, "company" : "IBM", "MongoDB Driver" : { "language" : "Java", "version" : "r3.0.2" } }
-{ "_id" : { "$oid" : "560562bf35203f023ee2f7dc" }, "line" : 0 }
-{ "_id" : { "$oid" : "560562bf35203f023ee2f7dd" }, "line" : 1 }
-{ "_id" : { "$oid" : "560562bf35203f023ee2f7de" }, "line" : 2 }
+    { "_id" : { "$oid" : "560562bf35203f023ee2f7db" }, "company" : "IBM", "MongoDB Driver" : { "language" : "Java", "version" : "r3.2.0" } }
+	{ "_id" : { "$oid" : "560562bf35203f023ee2f7dc" }, "line" : 0 }
+	{ "_id" : { "$oid" : "560562bf35203f023ee2f7dd" }, "line" : 1 }
+	{ "_id" : { "$oid" : "560562bf35203f023ee2f7de" }, "line" : 2 }
     ```
