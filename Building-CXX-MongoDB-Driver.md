@@ -1,10 +1,12 @@
 #Building C++ MongoDB Driver
 
-The C++ MongoDB Driver can be built for Linux on z Systems running SLES12, RHEL7 and RHEL6 by following these instructions. The 'legacy' driver version legacy-1.0.5 has been successfully built & tested this way.
+The C++ MongoDB Driver can be built for Linux on z Systems running SLES12, RHEL7 and RHEL6 by following these instructions. The 'legacy' driver version legacy-1.1.0 has been successfully built & tested this way.
 
 
-_**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._  
+_**General Notes:**_ 	 
+i) _When following the steps below please use a standard permission user unless otherwise specified._
 
+ii) _A directory  `/<source_root>/`  will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
 1. **Install build time dependencies**
 
@@ -33,7 +35,8 @@ _**NOTE:** When following the steps below please use a standard permission user 
 
    On RHEL6 and RHEL7, download scons-2.2.0-1.noarch.rpm from [SCons 2.2.0 Downloads](http://sourceforge.net/projects/scons/files/scons/2.2.0) and install it like this:
 
-        wget http://sourceforge.net/projects/scons/files/scons/2.2.0/scons-2.2.0-1.noarch.rpm
+        cd /<source_root>/
+		wget http://sourceforge.net/projects/scons/files/scons/2.2.0/scons-2.2.0-1.noarch.rpm
         sudo rpm -i scons-2.2.0-1.noarch.rpm
 
 #Build and Install the C++ Driver
@@ -43,10 +46,10 @@ _**NOTE:** When following the steps below please use a standard permission user 
     Clone the C++ driver source code:
 
     ```shell
-    cd <working-path>
+    cd /<source_root>/
     git clone https://github.com/mongodb/mongo-cxx-driver
-    cd mongo-cxx-driver
-    git checkout legacy-1.0.5
+    cd /<source_root>/mongo-cxx-driver
+    git checkout legacy-1.1.0
     ```
     
 2. ***Build and Install***
@@ -56,7 +59,15 @@ _**NOTE:** When following the steps below please use a standard permission user 
     ```shell
     sudo scons --prefix=/usr/local install
     ```
-    
+ 
+3. ***Build and run the unit tests with scons:***
+	
+	```shell
+	sudo scons build-unit
+	sudo scons unit
+	```
+
+	
 #Basic validation test
 
 The example code section given below is used to perform a basic test to ensure that the MongoDB C++ Driver is working as expected, and can connect to, modify and query a MongoDB server.
@@ -165,3 +176,6 @@ The example code section given below is used to perform a basic test to ensure t
     { _id: ObjectId('55f8394a8d772db54d86f38e'), row: 1 }
     { _id: ObjectId('55f8394a8d772db54d86f38f'), row: 2 }
     ```
+	
+# References
+https://github.com/mongodb/mongo-cxx-driver
