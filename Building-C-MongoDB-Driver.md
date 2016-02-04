@@ -1,77 +1,53 @@
-The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 1.1.11 and 1.2.0-beta1 have been successfully built & tested this way.
+The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 1.3.1 have been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
-i) When following the steps below please use a standard permission user unless otherwise specified.
+i) _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) Where the instructions refer to 'vi' you may, of course, use an editor of your choice
+ii) _Where the instructions refer to 'vi' you may, of course, use an editor of your choice._
+
+iii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 # Building MongoDB C Driver
 
-1. **Install build time dependencies**
+1. **Install build dependencies**
 
   For **SLES 12**
   ```shell
-  sudo zypper install autoconf automake git gcc libtool
+  sudo zypper install -y autoconf automake gcc libtool make wget
   ```
+  
   For **SLES 11**
   ```shell
-  sudo zypper install autoconf automake gcc git libtool make pkg-config tar
+  sudo zypper install -y autoconf automake gcc libtool make pkg-config tar wget
   ```
+  
   For **RHEL 7.1**
   ```shell
-  sudo yum install autoconf automake gcc git libtool make
+  sudo yum install -y autoconf automake gcc libtool make which wget
   ```
+  
   For **RHEL 6.6**
   ```shell
-  sudo yum install autoconf automake gcc git libtool make tar which
+  sudo yum install -y autoconf automake gcc libtool make tar which wget
   ```
  
   You may already have these packages installed - just install any that are missing.
   
-
   
 2. **Download and configure the C Driver**
 
-  ```shell
-  git clone https://github.com/mongodb/mongo-c-driver
-  cd mongo-c-driver
-  ```
+ For version 1.3.1 of the driver:
+ 
+```shell
+    cd /<source_root>/
+	wget -O mongo-c-driver-1.3.1.tar.gz  https://github.com/mongodb/mongo-c-driver/releases/download/1.3.1/mongo-c-driver-1.3.1.tar.gz
+	tar xzf mongo-c-driver-1.3.1.tar.gz
+	cd /<source_root>/mongo-c-driver-1.3.1
+	./configure
+```
 
- For version 1.1.11 of the driver:
-
-  ```shell
-  git checkout 1.1.11
-  ./autogen.sh
-  ```
-
- For version 1.2.0-beta1 of the driver:
-
-  ```shell
-  git checkout 1.2.0-beta1
-  ./autogen.sh
-  ```
-
- After the autogen.sh for version 1.2.0-beta1, you will see this message, due to the code being early beta:
-
-  ```shell
-   *** IMPORTANT ***
-   
-   This is an unstable version of libbson.
-   It is for test purposes only.
-   
-   Please, DO NOT use it in a production environment.
-   It will probably crash and you will lose your data.
-   
-   Additionally, the API/ABI may change during the course
-   of development.
-   
-   Thanks,
-   
-   The libbson team.
-  ```
-
-3. **Build and install the Driver**
+3. **Build and Install the Driver**
 
     ```shell
     make && sudo make install
@@ -191,7 +167,7 @@ The example code section given below is used to perform a basic test to ensure t
     export LD_LIBRARY_PATH=/usr/local/lib
     ./test
     ```
-  Excuting the test program should produce output similar to this (the Object Ids will vary, but typically will be consecutive):
+  Executing the test program should produce output similar to this (the Object Ids will vary, but typically will be consecutive):
 
     ```shell
     { "_id" : { "$oid" : "55f84c94646895004533b171" }, "company" : "IBM", "project" : "zLinux", "driver" : "C", "version" : "1.2.0" }
