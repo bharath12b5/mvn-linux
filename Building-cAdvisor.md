@@ -1,3 +1,6 @@
+<!---PACKAGE:cAdvisor--->
+<!---DISTRO:RHEL 7.1:0.19.5--->
+<!---DISTRO:SLES 12:0.19.5--->
 # Building cAdvisor
 
 cAdvisor has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1 and SLES 12.
