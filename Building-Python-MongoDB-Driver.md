@@ -1,4 +1,4 @@
-The Python driver for MongoDB (PyMongo) can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11 and SLES 12 by following these instructions. Version 3.0.3 of PyMongo has been successfully built & tested this way.
+The Python driver for MongoDB (PyMongo) can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11 and SLES 12 by following these instructions. Version 3.2 of PyMongo has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
@@ -8,18 +8,24 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 iii) _Where the instructions refer to 'vi' you may, of course, use an editor of your choice._
 
-## Building PyMongo 3.0.3
+## Building PyMongo 3.2
 
 1. Install standard utilities and platform specific dependencies :
 
-   RHEL 6.6/RHEL 7.1
+   RHEL 6.6/ RHEL 7.1
    ```shell
-   sudo yum install git 
+   sudo yum install git openssl openssl-devel pyOpenSSL
    ``` 
-   SLES 11/SLES 12
+
+   SLES 11
+   ```shell
+   sudo zypper install git python-xml python-openssl openssl-devel openssl
+   ```
+   SLES 12
    ```shell
    sudo zypper install git python-xml
    ```
+   
 2. Create a working directory with write permission to use as an installation workspace:
 
    ```shell
@@ -27,20 +33,70 @@ iii) _Where the instructions refer to 'vi' you may, of course, use an editor of 
    cd /<source_root>/
    ```
 
-3. Check-out PyMongo source from github.  It will be placed in `/<source_root>/pymongo` :
+3. Clone PyMongo repository from GitHub into `/<source_root>/pymongo` directory :
 
    ```shell
    git clone git://github.com/mongodb/mongo-python-driver.git pymongo
    cd pymongo
-   git checkout 3.0.3
+   git checkout 3.2
    ```
 
-4. Configure and install pymongo :
+4. Configure and install PyMongo :
 
    ```shell
    sudo python setup.py install
    ```
-5. Verify if pymongo has installed successfully :
+   
+5. Execute test cases :
+
+   Access to MongoDB Server is required to execute test cases.
+   If MongoDB Server is running on same machine then execute the following:
+   ```shell
+   sudo python setup.py test
+   ```
+   
+   If MongoDB Server is running on remote machine, then create a test_cases.sh file with following content:
+   ```shell
+   export DB_IP=<MongoDB_Server_IP>
+   python setup.py test
+   ```
+   Give execute permission to file and execute it as follows:
+   ```shell
+   chmod +x test_cases.sh
+   sudo ./test_cases.sh
+   ```
+ 
+    **Note: Execute the below steps only in case of test case failures**
+    
+    If test_bad_encode test case fails with error: "TypeError: encoder expected a mapping type but got: {'a': {...}}", or if  test_get_last_version test case fails with AssertionError then it might be an issue with Python version. Try installing Python 2.7.9 using following steps and re-run the test cases.
+  
+   Install dependencies as follows:
+   
+   On RHEL 6.6/ RHEL 7.1:
+   ```shell
+   sudo yum install tar xz wget zlib-devel
+   ``` 
+   On SLES11/ SLES12:
+   ```shell
+   sudo zypper install tar xz wget zlib-devel
+   ```
+   Follow the steps in [Python recipe](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-2.7.9) to install Python
+   
+   If MongoDB Server is running on same machine then set the build location in path variable
+   ```shell
+   export PATH=<python-build-location>/bin:$PATH
+   ```
+   
+   If MongoDB Server is running on remote machine then  put the "export PATH=<python-build-location>/bin:$PATH" in first line of test_cases.sh file.
+   
+   ```shell
+   export PATH=<python-build-location>/bin:$PATH
+   export DB_IP=<MongoDB_Server_IP>
+   python setup.py test
+   ```
+Re-run test cases as mentined above.
+   
+6. Verify if PyMongo has installed successfully :
 
    ```shell
 	python
@@ -53,12 +109,13 @@ iii) _Where the instructions refer to 'vi' you may, of course, use an editor of 
 	Type "help", "copyright", "credits" or "license" for more 	information.
 	>>>
    ```
-   Now verify that pymongo has been installed:
+   Now verify that PyMongo has been installed:
 
    ```shell
 	>>> import pymongo
    ```
 	If you get no errors from this import statement, then PyMongo has been installed successfully.
+	To exit from python prompt either use ctrl + d or type exit(). 
 
 ### Basic validation test
     
@@ -66,7 +123,7 @@ The example code section given below is used to perform a basic test to ensure t
 
 1. ***Prerequisites***
 
-    The MongoDB Driver needs access to a running MongoDB server, either on your local server or a remote system. The following commands are an example of how to start up a MongodDB server and then connect to it with the client shell, but note that MongoDB has not been installed as part of these instructions, and typically you would be running MongoDB on a remote server.
+    The MongoDB Driver needs access to a running MongoDB server, either on your local server or a remote system. The following commands are an example of how to start up a MongoDB server and then connect to it with the client shell, but note that MongoDB has not been installed as part of these instructions, and typically you would be running MongoDB on a remote server.
 
     ```shell
     mongod > /tmp/mongodb.log &
@@ -106,7 +163,7 @@ The example code section given below is used to perform a basic test to ensure t
     header = {"company": "IBM",
               "project": "MongoDB Driver",
               "language": "python",
-              "version": "3.0.3"};
+              "version": "3.2"};
 
     db[collection].insert_one(header);
 
@@ -129,10 +186,10 @@ The example code section given below is used to perform a basic test to ensure t
 	
     ```shell
     {u'_id': ObjectId('560eb1ff051ba90001d927a0'),
- u'company': u'IBM',
- u'language': u'python',
- u'project': u'MongoDB Driver',
- u'version': u'3.0.3'}
+     u'company': u'IBM',
+     u'language': u'python',
+     u'project': u'MongoDB Driver',
+     u'version': u'3.2'}
     {u'_id': ObjectId('560eb1ff051ba90001d927a1'), u'line': 0}
     {u'_id': ObjectId('560eb1ff051ba90001d927a2'), u'line': 1}
     {u'_id': ObjectId('560eb1ff051ba90001d927a3'), u'line': 2}
