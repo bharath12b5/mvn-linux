@@ -1,219 +1,335 @@
-The [Open Source Puppet 4.1.0] (https://puppetlabs.com/puppet/puppet-open-source) can be built on RHEL7, RHEL 6, SLES 11 and SLES 12 on IBM z System by following these instructions.
+<!---PACKAGE:Puppet--->
+<!---DISTRO:SLES 12:4.3.1--->
+<!---DISTRO:SLES 11:4.3.1--->
+<!---DISTRO:RHEL 7.1:4.3.1--->
+<!---DISTRO:RHEL 6.6:4.3.1--->
 
-## Puppet master installation
+# Building Puppet
+Puppet version 4.3.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
 
-1. Install Ruby and RubyGems
+_**General Notes:**_  
+i) _When following the steps below please use a standard permission user unless otherwise specified._
 
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+
+## Puppet Master Installation
+1. Install following dependencies  
+  
+   For RHEL6 & RHEL7:  
     ```
-    $ wget http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
-    $ tar -xvf ruby-2.2.2.tar.gz
-    $ cd ruby-2.2.2
-    $ ./configure
-    $ make
-    $ make install
-    ```
+    sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
+```
+  For SLES11 & SLES12:  
+    ````
+    sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
+````
 
-    If you do not have wget installed, perform
+2. Download and install Ruby
+    ````
+    cd /<source_root>/
+    wget http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
+    tar -xvf ruby-2.2.2.tar.gz
+    cd ruby-2.2.2   
+	./configure && make && sudo make install
+````
 
-    `$yum install wget` for RHEL or
+3. Download and install RubyGems
+    ````
+    cd /<source_root>/
+    wget http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz
+    tar -xvf rubygems-2.2.2.tgz
+    cd rubygems-2.2.2
+	sudo /usr/local/bin/ruby setup.rb                
+````
 
-    `$zypper install wget` for SLES
+4. Install bundler
+    ````
+    cd /<source_root>/
+    sudo /usr/local/bin/gem install bundler rake-compiler	
+````
 
-2. Edit the environment variable:
+5. Install Puppet
+    ````
+    cd /<source_root>/
+    sudo /usr/local/bin/gem install puppet -v 4.3.1	
+````
 
-    ```$ vi ˜/.bash_profile```
+6. Locate the $confdir by command
+    ````
+    confdir=`puppet master --configprint confdir`	
+````
+The output gives the directory. If such directory does not exist, create one. 
+    ````
+    mkdir -p $confdir
+````
 
-    append `PATH=$PATH:/usr/local/bin`, and save.
+7. Create necessary directories and files in  $confdir
+    ````
+    mkdir $confdir/modules
+    mkdir $confdir/manifests
+    cd $confdir
+    touch puppet.conf
+    wget https://raw.githubusercontent.com/puppetlabs/puppet/master/conf/auth.conf
+    mkdir -p $confdir/opt/puppetlabs/puppet
+    mkdir -p $confdir/var/log/puppetlabs
+````
 
-3. Install Puppet
+9. Create "puppet" user and group
+    ````
+    sudo useradd -d /home/puppet -m -s /bin/bash puppet
+    sudo /usr/local/bin/puppet resource group puppet ensure=present
+````
+```Note```: Set a user specified password for puppet user .Running **sudo passwd puppet** will prompt for new password
+    
 
-    ```$ gem install puppet```
 
-4. Locate the `$confdir` by command
+10. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com)
+    ````
+    [main]
+          logdir = $confdir/var/log/puppetlabs
+          basemodulepath = $confdir/modules
+          server = master.myhost.com
+          user  = puppet
+          group = puppet
+          pluginsync = false
+     [master]
+          certname = master.myhost.com
+          autosign = true
+````
 
-    ```$ puppet master --configprint confdir```
+11. The Puppet master runs on TCP port 8140. This port needs to be open on your master’s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall
+    ````
+    iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT 
+````
 
-    and the output gives the directory. If such directory does not exit, create one. For example, if the output is `/etc/puppetlabs/puppet`, then
-
-    ```$ mkdir -p /etc/puppetlabs/puppet```
-
-5. Create necessary directories and files in `$confdir`
-
-    ```
-    $ puppet master --genconfig > /etc/puppetlabs/puppet/puppet.conf
-    $ mkdir /etc/puppetlabs/puppet/modules
-    $ mkdir /etc/puppetlabs/puppet/manifests
-    $ cd /etc/puppetlabs/puppet
-    $ wget https://raw.githubusercontent.com/puppetlabs/puppet/master/conf/auth.conf
-    ```
-
-6. Create other necessary directories
-
-    ```
-    $ mkdir -p /opt/puppetlabs/puppet
-    $ mkdir -p /var/log/puppetlabs
-    ```
-
-7. Comment the "configtimeout" setting in `$confdir/puppet.conf`
-
-    ```$ vi /etc/puppetlabs/puppet/puppet.conf```
-
-    in vi, type "/configtimeout", press "n" to locate the setting "configtimeout" and input a "#" in front of it to comment it.
-
-8. Create a group and user for the master:
-
-    ```
-    $ puppet resource group puppet ensure=present
-    $ puppet resource user puppet ensure=present gid=puppet shell='/sbin/nologin'
-    ```
-
-9. Modify the `$confdir/puppet.conf`. If we assume the hostname of the master machine is master.myhost.com, change the values of servers (either in the main or master section) as follows:
-
-    ```
-    server=master.myhost.com
-    ca_server=$server
-    report_server=$server
-    archive_file_server=$server
-    ```
-
-    make sure the values of all servers are DNS resolvable. Here we have assigned all the servers to be master.myhost.com, they could also be different servers.
-
-10. The Puppet master runs on TCP port 8140. This port needs to be open on your master’s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall:
-
-    ```$ iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT```
-
-## Puppet agent installation
-
-1. Install Ruby and RubyGems
-
-    ```
-    $ wget http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
-    $ tar -xvf ruby-2.2.2.tar.gz
-    $ cd ruby-2.2.2
-    $ ./configure
-    $ make
-    $ make install
-    ```
-
-    If you do not have wget installed, perform
-
-    `$yum install wget` for RHEL or
-
-    `$zypper install wget` for SLES
-
-2. Edit the environment variable:
-
-    ```$ vi ˜/.bash_profile```
-
-    append `PATH=$PATH:/usr/local/bin`, and save.
-
-3. Install Puppet
-
-    ```$ gem install puppet```
-
-4. Locate the `$confdir` by command
-
-    ```$ puppet agent --configprint confdir```
-
-    if such directory does not exit, create one. For example, if the output is `/etc/puppetlabs/puppet`, then
-
-    ```$ mkdir -p /etc/puppetlabs/puppet```
-
-5. Create necessary directories and files in `$confdir`
-
-    ```
-    $ puppet agent --genconfig > /etc/puppetlabs/puppet/puppet.conf
-    $ cd /etc/puppetlabs/puppet
-    ```
-
-6. Create other necessary directories
-
-    ```
-    $ mkdir -p /opt/puppetlabs/puppet
-    $ mkdir -p /var/log/puppetlabs
-    ```
-
-7. Comment the "configtimeout" setting in `$confdir/puppet.conf`
+## Puppet Agent Installation
+1. Install following dependencies
+  
+  For RHEL6 & RHEL7:  
 
     ````
-    $ vi /etc/puppetlabs/puppet/puppet.conf
-    ```
+    sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
+````
+   For SLES11 & SLES12:
+    ````
+    sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
+````
 
-    in vi, type "/configtimeout", press "n" to locate the setting "configtimeout" and input a "#" in front of it to comment it.
+2. Download and install Ruby
+    ````
+    cd /<source_root>/
+    wget http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz
+    tar -xvf ruby-2.2.2.tar.gz
+    cd ruby-2.2.2
+    ./configure && make && sudo make install
+````
 
-8. Modify the `$confdir/puppet.conf`. If we assume the hostname of the master machine is master.myhost.com, change the values of servers (servers in the main or agent section) as follows:
+3. Download and install RubyGems
+    ````
+     cd /<source_root>/
+     wget http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz
+     tar -xvf rubygems-2.2.2.tgz
+     cd rubygems-2.2.2
+     sudo /usr/local/bin/ruby  setup.rb
+````
 
-    ```
-    server=master.myhost.com
-    ca_server=$server
-    report_server=$server
-    archive_file_server=$server
-    ```
+4. Install bundler
+    ````
+    cd /<source_root>/
+    sudo /usr/local/bin/gem install bundler rake-compiler
+````
 
-    make sure the values of all servers are DNS resolvable to the agent machine. Here we have assigned all the servers to be master.myhost.com, they could also be different servers.
+5. Install Puppet
+    ````
+    cd /<source_root>/
+    sudo /usr/local/bin/gem install puppet -v 4.3.1
+````
 
-9. Puppet runs on TCP port 8140.
+6. Locate the  $confdir  by command
+    ````
+    confdir=`puppet agent --configprint confdir`
+````
+The output gives the directory. If such directory does not exist, create one. 
+    ````
+    mkdir -p $confdir
+````
 
-    ```$ iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT```
+7. Create necessary directories and files in  $confdir
+    ````
+    cd $confdir
+    mkdir -p $confdir/opt/puppetlabs/puppet
+    mkdir -p $confdir/var/log/puppetlabs
+    touch puppet.conf
+````
+
+8. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com and hostname of the agent machine is agent.myhost.com)
+    ````
+    [main]
+          logdir =  $confdir/var/log/puppetlabs
+          basemodulepath = /etc/puppetlabs/puppet/modules
+          server = master.myhost.com
+          user  = puppet
+          group = puppet
+          pluginsync = false
+     [agent]
+          certname = agent.myhost.com
+          report = true
+          pluginsync = false
+````
+
+9. Add an entry in /etc/hosts file with ipaddress and hostname of master node
+    ````
+     sudo vi /etc/hosts
+     <master ipaddress> <master hostname>
+````
 
 ## Connecting the Master and Agent for the first time
 
-1. On the master machine (assuming with hostname master.myhost.com), run the master application:
+1. Run the master application on master machine (assuming with hostname master.myhost.com)
+    ````
+    puppet master --verbose --no-daemonize 
+````
+The --verbose option outputs verbose logging and the --no-daemonize option keeps the daemon in the foreground and redirects output to standard output. You can also add the --debug option to produce more verbose debug output from the daemon.
 
-    ```$ puppet master --verbose --no-daemonize```
+2. On the agent application (assuming the hostname of the agent is agent.myhost.com)
+    ````
+    puppet agent --test 
+````
+Note: The following errors might be seen after execution of the above step
 
-    The --verbose option outputs verbose logging and the --no-daemonize option keeps the daemon in the foreground and redirects output to standard out. You can also add the --debug option to produce more verbose debug output from the daemon.
-
-  On the agent application (assuming the hostname of the agent is agent.myhost.com):
-
-    ```$ puppet agent --test```
-
-    You can see the output from our connection. The agent has created a certificate signing request and a private key to secure our connection. Puppet uses SSL certificates to authenticate connections between the master and the agent. The agent sends the certificate request to the master and waits for the master to sign and return the certificate. At this point, the agent has exited after sending in its Certificate Signing Request (CSR). The agent will need to be rerun to check in and run Puppet after the CSR has been signed by the CA. You can configure Puppet agent not to exit, but instead stay alive and poll periodically for the CSR to be signed. This configuration is called waitforcert and is generally only useful if you are also auto-signing certificates on the master.
-
-2. On the master machine, to complete the connection and authenticate our agent, we now need to sign the certificate the agent has sent to the master. We do this using puppet cert (or the puppetca binary) on the master:
-
-    ```$ puppet cert list```
-
-    The list option displays all the certificates waiting to be signed. We can then sign our certificate using the sign option:
-
-    ```$ puppet cert sign agent.myhost.com```
-
-3. Restart both master and agent, now they should connect.
-
-4. If an error occurs, showing that
-
-    > Info: Retrieving pluginfacts
-
-    > Error: /File[/opt/puppetlabs/puppet/cache/facts.d]: Could not evaluate: Could not retrieve information from environment production source(s) puppet:///pluginfacts
-
-    > Info: Retrieving plugin
-
-    > Error: /File[/opt/puppetlabs/puppet/cache/lib]: Could not evaluate: Could not retrieve information from environment production source(s) puppet://master.myhost.com/plugins
+    Info: Retrieving pluginfacts
+    Error: /File[/opt/puppetlabs/puppet/cache/facts.d]: Could not evaluate: Could not retrieve information from environment production source(s) puppet:///pluginfacts
+    Info: Retrieving plugin
+    Error: /File[/opt/puppetlabs/puppet/cache/lib]: Could not evaluate: Could not retrieve information from environment production source(s) puppet://master.myhost.com/plugins
 
     This is because you don't have any plugins to syn yet, and the pluginsyn property is set to be true by default. So solutions are:
 
-    1). Disable the setting in the agent's config file by setting `pluginsyn=false`. Or
-    2). Create at least one plugin.
+	1) Disable the setting in the agent's 'puppet.conf' file by setting  pluginsyn=false. Or 
 
-## Testing
-For testing, we run the tests from the source code
+	2) Create at least one plugin
 
-1. Download  Puppet source code and install bundler
+## Testing  
+For testing, run the tests from the source code. 
+ 
+1. Switch user to puppet, clone Puppet git repository in /home/puppet and execute "bundle install" to install the required gems    
+    ````
+     su puppet
+     cd /home/puppet
+     git clone --branch 4.3.1 git://github.com/puppetlabs/puppet
+     cd puppet
+     bundle install --path .bundle/gems/
+````
 
-    ```
-    $ git clone git://github.com/puppetlabs/puppet
-    $ cd puppet
-    $ gem install bundler
-    $ gem update
-    $ bundle init
-    $ bundle install
-    ```
+2. Edit file_spec.rb to support the testcases in environment  
+    ````
+    cd /home/puppet/puppet
+````  
+Change the below line at number 59 in ```spec/unit/indirector/file_bucket_file/file_spec.rb  ```
+    ````
+    end.to raise_error(Puppet::FileBucket::BucketError, /Got passed new contents/)
+````
+Replace it with  
+    ````
+    should compile.and_raise_error(Puppet::FileBucket::BucketError, /Got passed new contents/)
+        end
+````  
+3. Running the test cases  
 
-2. Run the test
+	Few testcases need to be executed as root user and others as puppet user.  
 
-    ``` $ bundle exec rspec spec```
+	3.1. Execute testcases as root user:  
+  
+    _* Unit testcases, except ssl, face, indirector, network related testcases, should be executed as root user._  
+    _* The integration testcases for provider and type should be executed as root user._  
+    _* ```Note```: Run the  below commands as root user.You can switch to root user by running **exit**, if you are currently switched to puppet user._  
 
-[One known test error specific to z systems reported] (https://tickets.puppetlabs.com/browse/PUP-4962)
+    1. Create a shell script   
+    For example,` rootuser_tests.sh `
 
-## Reference
-1. https://docs.puppetlabs.com/guides/install_puppet/pre_install.html
+        ````
+    cd /home/puppet/puppet  
+    touch rootuser_tests.sh  
+    chmod +x rootuser_tests.sh  
+    ````
+
+    2. Add the following content to the shell script         
+        ````
+    #!/bin/bash
+    set -e
+        
+    echo "Running Unit testcases as root user"
+    declare -a unittests1
+    unittests1=$(ls spec/unit|egrep -v "ssl|face|indirector|network")
+    unittest_list1=($unittests1)
+    for i in "${unittest_list1[@]}"
+    do
+	  bundle exec rspec "spec/unit/$i"
+    done
+        
+    echo "Running Integration testcases as root user"
+    declare -a integration1
+    integration1=$(ls spec/integration|egrep "provider|type")
+    integration_list1=($integration1)
+    for j in "${integration_list1[@]}"
+    do
+      bundle exec rspec --exclude-pattern ./spec/integration/provider/service/systemd_spec.rb "spec/integration/$j"
+    done
+    ````
+
+    3. Run the shell script
+        ````
+    export LC_ALL="en_US.UTF8"
+    ./rootuser_tests.sh
+    ````  
+
+
+	3.2. Execute testcases as puppet user  
+	
+    _* ssl, face, indirector, network related  unit testcases should be executed as puppet user._  
+    _* The integration testcases except provider and type related testcases should be executed as puppet user._  
+    _* data_binding.rb file is not executed as it does not involve any testcases to be invoked directly._  
+    
+	1. Create a shell script  
+    For example `puppetuser_tests.sh` 
+        ````
+    cd /home/puppet/puppet
+    touch puppetuser_tests.sh
+    chmod +x puppetuser_tests.sh
+    ````
+
+    2. Add the following content to the script  
+        ````
+    #!/bin/bash
+    set -e
+        
+    echo "Running Unit testcases as puppet user"
+    declare -a unittests2
+    unittests2=$(ls spec/unit|egrep "ssl|face|indirector|network")
+    unittest_list2=($unittests2)
+    for i in "${unittest_list2[@]}"
+    do
+      bundle exec rspec "spec/unit/$i"
+    done
+        
+    echo "Running Integration testcases as puppet user"
+    declare -a integration2
+    integration2=$(ls spec/integration|egrep -v "data_binding.rb|provider|type")
+    integration_list2=($integration2)
+    for j in "${integration_list2[@]}"
+    do
+      bundle exec rspec "spec/integration/$j"
+    done
+    ````
+
+    3. Switch user to puppet  
+        ````
+    su puppet
+    ````
+
+    4. Run the shell script  
+        ````
+    ./puppetuser_tests.sh
+    ````
+    
+## References:
+    [https://puppetlabs.com/](https://puppetlabs.com/)
