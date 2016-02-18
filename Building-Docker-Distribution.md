@@ -12,15 +12,16 @@ Following are the build dependencies for Distribution.
 
 * git-core (SLES12) or git (RHEL7)
 * Go
+* make
 
 **Dependencies Installation Notes:**   
-*	Git can be installed on SLES12 using the below command.
+*	SLES12
      
-            sudo zypper install -y git-core
+            sudo zypper install -y git-core make
 
-*	Git can be installed on RHEL7 using the below command.
+*	RHEL7
 
-            sudo yum install -y git
+            sudo yum install -y git make
             
 *	To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe.
 
@@ -54,18 +55,22 @@ Following are the build dependencies for Distribution.
             make PREFIX=/<source_root>/ test
             
 ##### Step 6 : Start the registry 
+
+Docker registry fetches the configuration from cmd/registry/config.yml. 
+The filesystem location at which docker registry stores the images is by default set as ```/var/lib/registry``` in config.yml.
 *	Copy the config-dev.yml file to config.yml
 
 			cp $DISTRIBUTION_DIR/cmd/registry/config-dev.yml $DISTRIBUTION_DIR/cmd/registry/config.yml
+
+* 	Create directory to store images (if it does not exist)
+
+			mkdir -p /var/lib/registry
 			
-*	Use the below command to start docker registry.
+*	Use the below command to start docker registry
 
 			/<source_root>/bin/registry $DISTRIBUTION_DIR/cmd/registry/config.yml
 
-**Note:**
 
-* Docker registry fetches the configuration from cmd/registry/config.yml . 
-* The filesystem location at which docker registry stores the images is by default set as ```/var/lib/registry``` in config.yml.
 
 ##### References:
 https://github.com/docker/distribution
