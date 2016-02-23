@@ -1,6 +1,6 @@
 <!---PACKAGE:Apache Cassandra--->
 <!---DISTRO:SLES 12:2.2.3, 2.1.11, 2.0.14--->
-<!---DISTRO:SLES 12:2.1.11--->
+<!---DISTRO:SLES 11:2.1.11--->
 <!---DISTRO:RHEL 7.1:2.2.3, 2.1.11, 2.0.14--->
 
 Apache Cassandra versions 2.2.3 and 2.1.11 have been ported to Linux on z Systems, and the following articles explain how to obtain and build the code:
