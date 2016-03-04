@@ -1,13 +1,18 @@
-The Perl MongoDB Driver v0.708.2.0 can be built for Linux on z Systems running RHEL 6.6/7.1 and SLES 11/12 by following these instructions.  Version  v0.708.2.0 has been successfully built and tested this way.  More information on MongoDB_Perl_Driver is available at http://docs.mongodb.org/ecosystem/drivers/perl/ and the source code can be obtained from the Perl code repository, CPAN, at http://search.cpan.org/dist/MongoDB/
-.
+### Building Perl MongoDB Driver
+
+The Perl MongoDB Driver v1.2 can be built for Linux on z Systems for the distributions RHEL 6.6/7.1 and SLES 11/12 by following the below instructions.
+Version  v1.2 has been successfully built and tested using this method.
+More information on MongoDB_Perl_Driver can be found on http://docs.mongodb.org/ecosystem/drivers/perl/ and the source code can be obtained from the Perl code repository, CPAN, at http://search.cpan.org/dist/MongoDB/.
 
 _**General Notes:**_
 
-i) _**Note:** This recipe provides the required Perl MongoDB Driver Linux on z Systems pre-requisites, a MongoDB Test script and directs the user to install a Perl module using tools from the Perl code repository CPAN.  The guidance to install the Perl module given here should work in most circumstances, but as details of a CPAN download are environment specific, the reader is referred documentation on the CPAN site (etc.) for further details._
+i) _**Note:** This recipe provides the required Perl MongoDB Driver Linux on z Systems pre-requisites, a MongoDB Test script and directs the user to install a Perl module using tools from the Perl code repository CPAN.
+The guidance to install the Perl module given here should work in most circumstances, but as details of a CPAN download are environment specific, the reader is referred to a documentation on the CPAN site (etc.) for further details._
 
-ii) _**Note:** When following the steps below please use a standard permission user unless otherwise specified._
+ii) _**Note:** While implementing the steps given below please use a standard permission user unless otherwise specified._
 
-iii) _**Note:** This recipe specifies that CPAN commands should be run as `sudo` to ensure sufficient privileges to install Perl modules.  Depending on the environment employed, it may be possible to run the CPAN commands as a standard user._
+iii) _**Note:** This recipe specifies that CPAN commands should be run as `sudo` to ensure sufficient privileges to install Perl modules. 
+Depending on the environment employed, it may be possible to run the CPAN commands as a standard user._
 
 iv) _**Note:** A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
@@ -17,14 +22,14 @@ iv) _**Note:** A directory `/<source_root>/` will be referred to in these instru
 
 1. Use the following commands to obtain dependencies :
 
-   For RHEL
+   For RHEL6/RHEL7
    ```shell
-   sudo yum install make gcc tar zip perl perl-YAML cpan
+   sudo yum install -y make gcc tar zip perl perl-YAML cpan
    ```
 
-   For SLES (Note : On SLES CPAN is bundled with perl)
+   For SLES11/SLES12 (Note : On SLES CPAN is bundled with Perl)
    ```shell
-   sudo zypper install  make gcc tar zip perl perl-YAML
+   sudo zypper install -y make gcc tar zip perl perl-YAML
    ```
 
 ### **OPTIONAL** Dependency Build - Install latest CPAN.
@@ -40,9 +45,12 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
       ```shell
       sudo cpan -fi Bundle::CPAN
       ```
-      i) _**Note:** CPAN will ask for some configuration questions the first time it is used.  Answers to these questions will vary dependent on the user's location and environment. CPAN is however generally able to 'tune' itself for an environment, and it is usually sufficient to accept the default answer to the questions offered.  In the event of difficulty please see the CPAN documentation link in the references below._
+      i) _**Note:** CPAN will ask for some configuration questions the first time it is used.
+	  Answers to these questions will vary depending upon the user's location and environment. CPAN is however generally able to 'tune' itself for any environment, and it is usually sufficient to accept the default answer to the questions offered.
+	  In the event of difficulty please refer the CPAN documentation link in the references below._
 
-      ii) _**Note:** Once the CPAN configuration is complete the installation of `Bundle::CPAN` will begin .  Dependent on the software already installed, some Perl modules will likely need to be installed or updated. CPAN will ask to follow sub-dependencies automatically, store data on the system permanently, and will report any test failures (etc.). A working system will generally be obtained by accepting the default answers offered but keeping a note of the errors reported is recommended as they might be useful in later testing._
+      ii) _**Note:** Once the CPAN configuration is complete the installation of `Bundle::CPAN` will begin .  Depending on the software already installed, some Perl modules will likely need to be installed or updated. 
+	  CPAN will ask to follow sub-dependencies automatically, store data on the system permanently, and will report any test failures (etc.). A working system will generally be obtained by accepting the default answers offered but keeping a note of the errors reported is recommended as they might be useful in later testing._
 
    1. Confirm the version of CPAN  has been updated correctly.
       ```shell
@@ -65,17 +73,17 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
       ```
       i) _**Note:** The CPAN dialog for the MongoDB module install follows the pattern described above for `Bundle::CPAN`. In the first instance to accept the default answers offered, taking note of any failures._
 
-      ii) _**Note:** The CPAN repository is subject to continual updates which leads to occasional intermittent build, and test failures, possibly leading to a dependent module not being installed. Where a module has not been installed, it will first become apparent at run time, or in the testing (below) should a script attempt to access missing code. In such circumstances you can, try to reload the failed module with `sudo cpan <moduleName>`, or find the CPAN build directory (default=`/root/.cpan/build/`) to install it 'by hand', or try to install an older/later module version, or consult the documentation or 'the web' for further advice._
+      ii) _**Note:** The CPAN repository is subjected to continual updates which leads to occasional intermittent build, and test failures, possibly leading to a dependent module not being installed. Where a module has not been installed, it will first become apparent at run time, or in the testing (below) should a script attempt to access missing code. In such circumstances you can, try to reload the failed module with `sudo cpan <moduleName>`, or find the CPAN build directory (default=`/root/.cpan/build/`) to install it 'by hand', or try to install an older/later module version, or consult the documentation or 'the web' for further advice._
 
       iii) _**Note:** On completion more than 100 Perl modules may have been loaded into the CPAN build directory and installed on the system._
 
 ### Post Installation  Testing.
 
-   This testing is based on information at https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod and demonstrates a MongoDB connection to a remote host.  A script (shown below) connects to the host and port (must be set to suit the target environment), and uses a database 'tutorial' and collection 'users' (which can also be edited). Information on MongoDB Installation is available at http://docs.mongodb.org/manual/installation/ .
+   This testing is based on information on https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod and demonstrates a MongoDB connection to a remote host.  A script (shown below) connects to the host and port (must be set to suit the target environment), and uses a database 'tutorial' and collection 'users' (which can also be edited). Information on MongoDB Installation is available at http://docs.mongodb.org/manual/installation/ .
 
    The script adds two users to the collection, one of whom likes 'math' and consequently is a geek.  There are some searches on the data, and then the other user is also made a geek, and the data searched again. A sample of the expected output for this is shown below.
 
-   Data in the database accumulates if the script is run multiple times.  To aid testing, a Perl variable '$dropdata' can be set to '1', so the database will be deleted on exit. (Please only make this change where it can only affect this test database, otherwise important data can be lost).  In addition,  more detailed output can be obtained by setting the Perl variable '$dumper = 1', and sample output for this is also shown below.
+   Data in the database accumulates if the script is run multiple times.  To aid testing, a Perl variable '$dropdata' can be set to '1', so the database will be deleted on exit. ( Make this change where it can only affect test database, otherwise important data may be lost).  In addition,  more detailed output can be obtained by setting the Perl variable '$dumper = 1', and sample output for this is also shown below.
 
    At run time, if a required module is found missing, a message of the form `Can't locate <Directory>>/<Module>.pm in @INC (@INC contains: inc /usr/...` is issued. Installation of the missing module can then be attempted using CPAN commands described above, (perhaps using the `-fi` flags to help force installation).
 
@@ -87,26 +95,26 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
       cd  /<source_root>/
       ```
 
-   1. Cut and paste the script (below) into a text file named `/<source_root>/test_MongoDB.pl`
+   2. Cut and paste the script (below) into a text file named `/<source_root>/test_MongoDB.pl`
 
-   1. Modify the Perl variables $DBhost, $DBport, $DBname, and $DBcolletion to connect with the target MongoDB database, then save the file.
+   3. Modify the Perl variables $DBhost, $DBport, $DBname, and $DBcolletion to connect with the target MongoDB database, then save the file.
 
-   1. Ensure execute permissions are set on the file so it can be run.
+   4. Ensure execute permissions are set on the file so it can be run.
       ```shell
       chmod 755 /<source_root>/test_MongoDB.pl
       ```
 
-   1. Check the changes made to the Perl script are valid (Response should be `.../test_MongoDB.pl syntax OK`).
+   5. Check the changes made to the Perl script are valid (Response should be `.../test_MongoDB.pl syntax OK`).
       ```shell
       perl -wc /<source_root>/test_MongoDB.pl
       ```
 
-   1. Run the script, and compare the results with those shown below.
+   6. Run the script, and compare the results with those shown below.
       ```shell
       perl /<source_root>/test_MongoDB.pl
       ```
 
-   1. **OPTIONAL** Make any desired changes to the script and then remove the ` /<source_root>/` directory to tidy up.
+   7. **OPTIONAL** Make any desired changes to the script and then remove the ` /<source_root>/` directory to tidy up.
       ```shell
       rm -rf  /<source_root>/
       ```
@@ -153,7 +161,7 @@ my $u2 = {"name" => "Stan" };
 #
 # Connect to the database_host, connect to the database, and set the collection
 # -----------------------------------------------------------------------------
-my $client = MongoDB::Connection->new(host => "$DBhost", port => "$DBport");
+my $client = MongoDB::MongoClient->new(host => "$DBhost", port => "$DBport");
 my $db = $client->get_database("$DBname");
 my $users = $db->get_collection("$DBcollection" );
 
