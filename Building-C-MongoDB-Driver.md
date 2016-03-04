@@ -1,34 +1,36 @@
-The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 1.3.1 have been successfully built & tested this way.
+The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 1.3.x has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+i) When following the steps below please use a standard permission user unless otherwise specified.
 
-ii) _Where the instructions refer to 'vi' you may, of course, use an editor of your choice._
+ii) Where the instructions refer to 'vi' you may, of course, use an editor of your choice
 
-iii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+iii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it.
+
+iv) Version 1.3.x refers to the current stable version of 1.3 branch releases. At the time of writing recipe, it was 1.3.2.
 
 # Building MongoDB C Driver
 
 1. **Install build dependencies**
 
   For **SLES 12**
-  ```shell
+  ```
   sudo zypper install -y autoconf automake gcc libtool make wget
   ```
   
   For **SLES 11**
-  ```shell
+  ```
   sudo zypper install -y autoconf automake gcc libtool make pkg-config tar wget
   ```
   
   For **RHEL 7.1**
-  ```shell
+  ```
   sudo yum install -y autoconf automake gcc libtool make which wget
   ```
   
   For **RHEL 6.6**
-  ```shell
+  ```
   sudo yum install -y autoconf automake gcc libtool make tar which wget
   ```
  
@@ -37,19 +39,19 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions, t
   
 2. **Download and configure the C Driver**
 
- For version 1.3.1 of the driver:
+   For version 1.3.x of the driver:
  
-```shell
+  ```
     cd /<source_root>/
-	wget -O mongo-c-driver-1.3.1.tar.gz  https://github.com/mongodb/mongo-c-driver/releases/download/1.3.1/mongo-c-driver-1.3.1.tar.gz
-	tar xzf mongo-c-driver-1.3.1.tar.gz
-	cd /<source_root>/mongo-c-driver-1.3.1
+	wget -O mongo-c-driver-1.3.x.tar.gz  https://github.com/mongodb/mongo-c-driver/releases/download/1.3.x/mongo-c-driver-1.3.x.tar.gz
+	tar xzf mongo-c-driver-1.3.x.tar.gz
+	cd mongo-c-driver-1.3.x
 	./configure
-```
+  ```
 
-3. **Build and Install the Driver**
+3. **Build and install the Driver**
 
-    ```shell
+    ```
     make && sudo make install
     ```
     
@@ -59,15 +61,15 @@ The example code section given below is used to perform a basic test to ensure t
 
 1. ***Prerequisites***
 
-    The MongoDB Driver obviously needs access to a running MongoDB server, either on your local server or a remote system. The following commands are an example of how to start up a MongodDB server and then connect to it with the client shell, but note that MongoDB has not been installed as part of these instructions, and typically you would be running MongoDB on a remote server.
+    The MongoDB Driver obviously needs access to a running MongoDB server, either on your local server or a remote system. The following commands are an example of how to start up a MongoDB server and then connect to it with the client shell, but note that MongoDB has not been installed as part of these instructions, and typically you would be running MongoDB on a remote server.
 
-    ```shell
+    ```
     mongod > /tmp/mongodb.log &
     mongo --host localhost 
     ```
     Which would typically give a command prompt such as:
     
-    ```shell
+    ```
     MongoDB shell version: 2.4.10 connecting to: localhost:27017/test > 
     ```
     The example code below will need to be modified to use your remote server hostname or IP address instead of "localhost", if you are attempting to connect to your own (remote) server.
@@ -78,7 +80,7 @@ The example code section given below is used to perform a basic test to ensure t
 	
 	_**Remember**_, if you are connecting to a remote server then you need to substitute the `localhost` with the hostname or IP address of the MongoDB server.
 
-    ```shell
+    ```
     #include <bson.h> 
     #include <mongoc.h> 
     #include <stdio.h> 
@@ -161,7 +163,7 @@ The example code section given below is used to perform a basic test to ensure t
     
   Compile and run the test program by:
 
-    ```shell
+    ```
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
     gcc test.c -o test $(pkg-config --cflags --libs libmongoc-1.0)
     export LD_LIBRARY_PATH=/usr/local/lib
@@ -169,7 +171,7 @@ The example code section given below is used to perform a basic test to ensure t
     ```
   Executing the test program should produce output similar to this (the Object Ids will vary, but typically will be consecutive):
 
-    ```shell
+    ```
     { "_id" : { "$oid" : "55f84c94646895004533b171" }, "company" : "IBM", "project" : "zLinux", "driver" : "C", "version" : "1.2.0" }
 	{ "_id" : { "$oid" : "55f84c94646895004533b172" }, "row" : "0" }
 	{ "_id" : { "$oid" : "55f84c94646895004533b173" }, "row" : "1" }
