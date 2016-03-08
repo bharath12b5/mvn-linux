@@ -16,7 +16,7 @@ The following instructions show how to build virt-manager on an x86-64 system, a
 
         $ sudo zypper install gtk-vnc2-devel intltool libvirt-python libvirt-glib-devel \
                libosinfo-devel openssh-askpass-gnome python-libxml2 python-gtk-devel \
-               python-gtk-vnc python-requests spice-gtk-devel vte2-devel python-vte
+               python-gtk-vnc python-ipaddr python-requests spice-gtk-devel vte2-devel python-vte
 
 1. **(SLES 12 only)** Download and install the openSUSE RPM for libosinfo, which is required by virt-manager but not avaialble yet for SLES 12:
 
