@@ -1,6 +1,6 @@
 [KVM for IBM z Systems](http://www-03.ibm.com/systems/z/solutions/virtualization/kvm/) became generally available in September 2015. [virt-manager](https://virt-manager.org/) (which is based on the [libvirt](http://libvirt.org/) API) is a popular GUI application for creating and managing KVM guests. Thanks to recent effort by the virt-manager community, the latest version now has the functionality to create and destroy guests running on KVM on z.
 
-The following instructions show how to build virt-manager on an x86-64 system, and how to use it to connect to a KVM hypervisor running on IBM z Systems, and manage its guests. These instructions have been tested on RHEL 7.1 and SLES 12 on x86-64.
+The following instructions show how to build virt-manager on an x86-64 system, and how to use it to connect to a KVM hypervisor running on IBM z Systems, and manage its guests. These instructions have been tested on RHEL 7.1 and SLES 12.1 on x86-64.
 
 ## Building virt-manager
 
@@ -12,16 +12,11 @@ The following instructions show how to build virt-manager on an x86-64 system, a
         $ sudo yum install git libosinfo libvirt-python libvirt-glib openssh-askpass \
                python-ipaddr spice-gtk-python spice-gtk3
 
-    (SLES 12)
+    (SLES 12.1)
 
         $ sudo zypper install gtk-vnc2-devel intltool libvirt-python libvirt-glib-devel \
-               libosinfo-devel openssh-askpass-gnome python-libxml2 python-gtk-devel \
+               libosinfo libosinfo-devel openssh-askpass-gnome python-libxml2 python-gtk-devel \
                python-gtk-vnc python-ipaddr python-requests spice-gtk-devel vte2-devel python-vte
-
-1. **(SLES 12 only)** Download and install the openSUSE RPM for libosinfo, which is required by virt-manager but not avaialble yet for SLES 12:
-
-        $ wget http://download.opensuse.org/repositories/openSUSE:/13.2/standard/x86_64/libosinfo-0.2.11-2.1.4.x86_64.rpm
-        $ sudo rpm -i libosinfo-0.2.11-2.1.4.x86_64.rpm
 
 1. Clone the virt-manager source code from GitHub, and build it:
 
