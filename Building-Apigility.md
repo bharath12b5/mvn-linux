@@ -1,9 +1,18 @@
+<!---PACKAGE:Apigility--->
+<!---DISTRO:SLES 12:1.3.2--->
+<!---DISTRO:SLES 11:1.3.2--->
+<!---DISTRO:RHEL 7.1:1.3.2--->
+<!---DISTRO:RHEL 6.6:1.3.2--->
+
 # Building Apigility
 
-Apigility version 1.3.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Apigility can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11 and SLES 12, by following these instructions. Version 1.3.2 has been successfully built & tested this way.
 
-_**General Notes:**_ 	 
-_When following the steps below please use a standard permission user unless otherwise specified._
+##### General Notes:
+      
+i) When following the steps below please use a standard permission user unless otherwise specified.
+
+ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it.
 
 
 ### Section 1: Install the following dependencies
@@ -14,65 +23,49 @@ _When following the steps below please use a standard permission user unless oth
 
 	RHEL7.1:
 	```
-	yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  
+	sudo yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  
 
 	```
 	RHEL6.6:
 	```
-	yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf 		make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
+	sudo yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
 	```
 
 	SLES12:
 	```
-	zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
+	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
 
 	```
 	
 	SLES11:
 	```
-	zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
+	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
 
 	```
 
-#### Section 2: Build and install
+### Section 2: Build and install
 1. Download, configure and install PHP with openssl
  
-	Steps for RHEL7.1 and SLES12
+	
 	```
-			wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-			tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-			./configure --prefix=/usr/local/php --with-apxs2=/usr/local/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-			make
-			make install
+	cd /<source_root>/
+	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+	tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
+	./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+	make
+	sudo make install
 	```
 	
-	Steps for RHEL6.6
-	```
-			wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-			tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-			./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-			make
-			make install
-	```
-	
-	Steps for SLES11
-	```
-			wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-			tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-			./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 	--with-config-file-path=/usr/local/php --with-mysql --with-openssl
-			make 
-			make install
-	```
 2. Set environment path for the PHP
 
 		export PATH=/usr/local/php/bin:$PATH
 
 3. Get the source for Apigility
 
-        cd /
+        cd /<source_root>/
         git clone https://github.com/zfcampus/zf-apigility-skeleton.git 
-        cd /zf-apigility-skeleton 
-        git checkout 1.3.1
+        cd zf-apigility-skeleton 
+        git checkout 1.3.2
 
 4. Install composer
 
@@ -88,7 +81,7 @@ _When following the steps below please use a standard permission user unless oth
 6. Start the Apigility application
 
         export IP=$(hostname -i)
-        cd  /zf-apigility-skeleton
+        cd  /<source_root>/zf-apigility-skeleton
         php -S $IP:8080 -t public public/index.php
 
 ## References:
