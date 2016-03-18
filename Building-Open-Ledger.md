@@ -26,7 +26,7 @@ Rocksdb is an open source DB software used by Open Ledger.
     git clone https://github.com/facebook/rocksdb.git
     cd  rocksdb
     sed -i -e "s/-march=native/-march=z196/" build_tools/build_detect_platform
-    sed -i -e "s/-momit-leaf-frame-pointer/-DDUMBDUMMY/" Makefile
+    sed -i -e "s/-momit-leaf-frame-pointer/-DDUMMY/" Makefile
     make shared_lib
 2) Copy rocksdb to  path /opt
 
@@ -146,7 +146,7 @@ Now the new golang docker image is available for building Open Ledger docker ima
         RUN cd /opt  && git clone --branch v4.1 --single-branch --depth 1 https://github.com/facebook/rocksdb.git && cd rocksdb
         WORKDIR /opt/rocksdb
         RUN sed -i -e "s/-march=native/-march=z196/" build_tools/build_detect_platform
-        RUN sed -i -e "s/-momit-leaf-frame-pointer/-DDUMBDUMMY/" Makefile
+        RUN sed -i -e "s/-momit-leaf-frame-pointer/-DDUMMY/" Makefile
         RUN make shared_lib
         ENV LD_LIBRARY_PATH=/opt/rocksdb:$LD_LIBRARY_PATH
         RUN apt-get update && apt-get install -y libsnappy-dev zlib1g-dev libbz2-dev
