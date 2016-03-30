@@ -1,17 +1,24 @@
-**Apache Kafka** can be built for Linux on z Systems running RHEL 7.1 or 6.6 or SLES 12 or 11 by following these instructions.  Version 0.8.2.1 & 0.8.2.2 has been successfully built & tested this way.
+<!---PACKAGE:Apache Kafka--->
+<!---DISTRO:SLES 12:0.9.0--->
+<!---DISTRO:SLES 11:0.9.0--->
+<!---DISTRO:RHEL 7.1:0.9.0--->
+<!---DISTRO:RHEL 6.6:0.9.0--->
+
+**Apache Kafka** can be built for Linux on z Systems running RHEL 7.1 or 6.6 or SLES 12 or 11 by following these instructions.  Version 0.9.0 has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
 _ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_  
 _iii) For convenience `vi` has been used in the instructions below when editing files, replace with your desired editing program if required_
 
+
 ## Building Apache Kafka
 
 1. Install the build time dependencies
 
-    On RHEL 7.1 and 6.6 systems
+    On RHEL 6.6 and RHEL 7.1 systems
     ```shell
-    sudo yum install git wget unzip java-1.7.1-ibm-devel
+    sudo yum install git wget unzip java-1.7.1-ibm-devel.s390x
     ```
     On SLES 12 systems
     ```shell
@@ -19,7 +26,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```
     On SLES 11 systems
     ```shell
-    sudo zypper install git wget unzip java-1_7_0-ibm-devel
+    sudo zypper install git wget unzip java-1_7_0-ibm-devel java-1_7_0-ibm
     ```
     You may already have some of these packages installed - just install any that are missing.  
 
@@ -38,7 +45,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```shell
     git clone https://github.com/apache/kafka
     cd kafka
-    git checkout 0.8.2.1
+    git checkout 0.9.0
     ```
     _**Note:** The github location is a mirror of the Apache location https://git-wip-us.apache.org/repos/asf/kafka.git_
 5. Modify the build process to use a more recent build of Snappy Java
@@ -49,91 +56,40 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```shell
     vi build.gradle
     ```
-    Update the snappy-java version to be `1.1.2` rather than `1.1.1.6` it is as default 
+    Update the snappy-java version to be `1.1.2` rather than `1.1.1.7` it is as default 
     ```gradle
     project(':clients') {
-      archivesBaseName = "kafka-clients"
-      
-      dependencies {
-        compile "org.slf4j:slf4j-api:1.7.6"
+        apply plugin: 'checkstyle'
+        archivesBaseName = "kafka-clients"
+
+    dependencies {
+        compile "$slf4japi"
         compile 'org.xerial.snappy:snappy-java:1.1.2'
         compile 'net.jpountz.lz4:lz4:1.2.0'
+
     ```
    
 6. Configure Java and run the gradle build process
 
     Set the `JAVA_HOME` environment variable to:
     ```shell
+
     export JAVA_HOME=/etc/alternatives/java_sdk_ibm
+
     ```
     Now setup gradle and build the jar files
     ```shell
     gradle
     gradle jar
     ```
-    Multiple jar files are produced in multiple locations, most noteably the `clients`, `contrib` and `core` subdirectories, in which you'll find a path `build/libs/` which contain the jars
-    ```shell
-    ./examples/build/libs/kafka-examples-0.8.2.1.jar
-    ./contrib/hadoop-consumer/build/libs/kafka-hadoop-consumer-0.8.2.1.jar
-    ./contrib/build/libs/contrib-0.8.2.1.jar
-    ./contrib/hadoop-producer/build/libs/kafka-hadoop-producer-0.8.2.1.jar
-    ./core/build/libs/kafka_2.10-0.8.2.1.jar
-    ./core/build/dependant-libs-2.10.4/zookeeper-3.4.6.jar
-    ./core/build/dependant-libs-2.10.4/metrics-core-2.2.0.jar
-    ./core/build/dependant-libs-2.10.4/snappy-java-1.1.2-SNAPSHOT.jar
-    ./core/build/dependant-libs-2.10.4/slf4j-log4j12-1.7.6.jar
-    ./core/build/dependant-libs-2.10.4/log4j-1.2.16.jar
-    ./core/build/dependant-libs-2.10.4/scala-library-2.10.4.jar
-    ./core/build/dependant-libs-2.10.4/lz4-1.2.0.jar
-    ./core/build/dependant-libs-2.10.4/zkclient-0.3.jar
-    ./core/build/dependant-libs-2.10.4/slf4j-api-1.7.6.jar
-    ./core/build/dependant-libs-2.10.4/slf4j-log4j12-1.6.1.jar
-    ./core/build/dependant-libs-2.10.4/jopt-simple-3.2.jar
-    ./clients/build/libs/kafka-clients-0.8.2.1.jar
-    ```
 
 7. **Optionally** use the built in tests to verify Apache Kafka
 
-    At the time of writing one of the scala test files didn't work with the IBM Java and so needs modifying
-    ```shell
-    vi /<source_root>/kafka/core/src/test/scala/other/kafka/TestOffsetManager.scala
     ```
-    The issue is that the class being extended appears different under IBM's Java and the variable group needs to be renamed as follows:
-    ```scala
-    class CommitThread(id: Int, partitionCount: Int, commitIntervalMs: Long, zkClient: ZkClient)
-          extends ShutdownableThread("commit-thread")
-          with KafkaMetricsGroup {
-        
-      private val groupid = "group-" + id
-      private val metadata = "Metadata from commit thread " + id
-      private var offsetsChannel = ClientUtils.channelToOffsetManager(groupid, zkClient, SocketTimeoutMs)
-    .....
-      private def ensureConnected() {
-        if (!offsetsChannel.isConnected)
-          offsetsChannel = ClientUtils.channelToOffsetManager(groupid, zkClient, SocketTimeoutMs)
-      }
-    .....
-     override def doWork() {
-      val commitRequest = OffsetCommitRequest(groupid, immutable.Map((1 to partitionCount).map(TopicAndPartition("topic-" + id, _) -> OffsetAndMetadata(offset, metadata)):_*))
-      try {
-    .....
-        case e2: IOException =>
-          println("Commit thread %d: Error while committing offsets to %s:%d for group %s due to %s.".format(id, offsetsChannel.host, offsetsChannel.port, groupid, e2))
-          offsetsChannel.disconnect()
-    ```
-    The variable `group` was renamed to `groupid` and all 5 instances were changed (shown above) - if any instances are missed the next step will fail, but correct the issue and re-run.
-    ```shell
     gradle test
     ```
-    We are currently expecting to see 2 failures out of 286 as follows:
-    ```
-    kafka.api.ProducerFailureHandlingTest > testNotEnoughReplicasAfterBrokerShutdown FAILED
-        org.scalatest.junit.JUnitTestFailedError: Expected NotEnoughReplicasException when producing to topic with fewer brokers than min.insync.replicas
-    
-    kafka.admin.DeleteTopicTest > testDeleteTopicWithCleaner FAILED
-        java.lang.OutOfMemoryError: Java heap space
-    ```
-    _**Note:** These two issues are not Linux on z Systems specific, they are also present on x86 platforms. Occasionally additional tests will fail, but re-running will normally resolve them - test stability issues have been reported [here](https://issues.apache.org/jira/browse/KAFKA-1970)_
+
+    _**Note:** Occasionally tests will fail,but re-running will normally resolve them - These issues are not Linux on z Systems specific, they are also present on x86 platforms. Test stability issues have been reported [here](https://issues.apache.org/jira/browse/KAFKA-1970)_
 
 8. **Optionally** use the example scripts to run a single server
 
