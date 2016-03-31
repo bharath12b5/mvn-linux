@@ -1,95 +1,120 @@
+<!---PACKAGE:Apache Flume--->
+<!---DISTRO:SLES 12:1.6--->
+<!---DISTRO:RHEL 7.1:1.6--->
+
 # Building Apache Flume
 
-The instructions describe how to build the latest development version of [Apache Flume](https://flume.apache.org/) for Linux on IBM z Systems running SLES 12 or RHEL 7.
+The instructions describe how to build the [Apache Flume](https://flume.apache.org/) version 1.6 on IBM z Systems for SLES 12 or RHEL 7.
 
 _**GENERAL NOTE:** When following the steps below please use a standard permission user unless otherwise specified. 90MB of local disk space is required._
 
-Building Apache Flume for Linux on z Systems is a two-stage process:
+Building Apache Flume for Linux on z Systems is a two-stage process
 
-1. Obtain the Flume dependencies including OpenJDK 1.6.0 or above, Maven and Google Protocol Buffer.
+1. Obtain the Flume dependencies including IBM JDK 1.6.0 or above, Maven and Google Protocol Buffer.
 2. Build Flume from source code.
 
 For more generic information on how the Flume Data flow works take a look at this [Flume Architecture](https://flume.apache.org/FlumeUserGuide.html).
 
-## Obtaining build dependencies
+## Obtaining Build Dependencies
 
-Dependencies include OpenJDK, Maven and Google Protocol Buffer. This guide has been tested on SLES 12 and RHEL 7.x.
+Dependencies include IBM JDK, Maven and Google Protocol Buffer. This guide has been tested on SLES 12 and RHEL 7.x.
 
-1. Install Java1.7.0 open JDK and other dependencies:
+1. Install IBM JDK 1.7.1 and other dependencies
 
   For RHEL 7
     ```
-  yum install java-1.7.0-openjdk-devel.s390x ant tar wget
+  sudo yum install java-1.7.1-ibm-devel tar wget ant tar git telnet
+
     ```
   For SLES 12
     ```
-  zypper install java-1_7_0-openjdk ant tar wget
+  sudo zypper install java-1_7_1-ibm-devel  ant tar wget git telnet
     ```
 
-1. Create a temporary working directory:
+2. Create a temporary working directory
 
     ```
 mkdir /<source_root>
 cd /<source_root>/
 export WORK_DIR=`pwd`
     ```
-1. Path Configuration:
+3. Path Configuration
 
-  For SLES12:
+  For SLES12
   ```
-  export JAVA_HOME=/usr/lib64/jvm/java-1.7.0
-  export M2_HOME=$WORK_DIR/maven
-  export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin
+  export JAVA_HOME=/usr/lib64/jvm/java
+  export PATH=$PATH:$JAVA_HOME
   ```
-  For RHEL7:
+  For RHEL7
    ```
-export JAVA_HOME=/usr/lib/jvm/java-1.7.0 export
-M2_HOME=/usr/mvn/maven
+  export JAVA_HOME=/usr/lib/jvm/java
+  export PATH=$PATH:$JAVA_HOME
+   ```
+
+4. Build Maven
+    ```
+ wget http://apache.cs.utah.edu/maven/maven-3/3.2.5/source/apache-maven-3.2.5-src.tar.gz 
+ tar -zxvf apache-maven-3.2.5-src.tar.gz 
+ cd apache-maven-3.2.5
+ ant
+    ```
+   For SLE12
+   ```
+export JAVA_HOME=/usr/lib64/jvm/java
+export M2_HOME=<source_root>/apache-maven-3.2.5/maven
 export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin
+    ```
+  For RHEL7
    ```
+export JAVA_HOME=/usr/lib/jvm/java
+export M2_HOME=<source_root>/apache-maven-3.2.5/maven
+export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin
+     ```
 
-1. Build Maven:
 
-    ```
-cd $WORK_DIR/apache-maven-3.2.5
-ant
-    ```
-
-1. Build ProtoBuf:
-
-  The Google Protobuf code can be built for Linux on z Systems running RHEL 7 and SLES 12 by following [the instructions](https://github.com/linux-on-ibm-z/docs/wiki/Building-ProtoBuf).
+5. Build ProtoBuf, by following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-ProtoBuf).
 
 ## Building Flume
 
-1. Checkout the Source.
+1. Checkout the Source
 
     ```
    git clone https://github.com/apache/flume.git flume
    cd flume
+   git checkout flume-1.6 
     ```
 
-1. Configure the Maven option setting
+2. Configure the Maven option setting
 Apache Flume build requires more memory than the default configuration.
 
     ```
-export MAVEN_OPTS="-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m"
+   export MAVEN_OPTS="-Xms1024m -Xmx1024m -XX:MaxPermSize=1024m"
     ```
 
-1. Build the code
+3. Edit the pom.xml file to change the version of snappy-java in pom.xml from 1.1.0 to 1.1.2
+
+       ``` 
+       <dependency>
+         <groupId>org.xerial.snappy</groupId>
+         <artifactId>snappy-java</artifactId>
+         <version>1.1.2</version>
+       </dependency>
+       ```
+
+4. Build the code
   ```
 # Build the code and run the tests (note: use mvn install, not mvn package, since we deploy Jenkins SNAPSHOT jars daily, and Flume is a multi-module project)
    mvn install
 # or build the code without running the tests
-   mvn install -DskipTests
+   mvn install -DskipTests  -Drat.numUnapprovedLicenses=100
   ```
-This produces the ready-to-run snapshot packages in flume-ng-dist/target/apache-flume-ng-dist-1.4.0-SNAPSHOT-bin.tar.gz.
 
 ## Verify the build
 
 1. Create example.conf to set up a single node data streaming server
   ```
-   cd $FLUME_HOME/flume-ng-dist/target//apache-flume-1.7.0-SNAPSHOT-bin/apache-flume-1.7.0-SNAPSHOT-bin
-   vim example.conf
+   cd /<source_root>/flume/flume-ng-dist/target/apache-flume-1.6.0-bin/apache-flume-1.6.0-bin
+   vi example.conf
   ```
   Input the following content to example.conf
   ```
@@ -115,12 +140,12 @@ This produces the ready-to-run snapshot packages in flume-ng-dist/target/apache-
    a1.sources.r1.channels = c1
    a1.sinks.k1.channel = c1
   ```
-1. Run Flume NG
+2. Run Flume NG
   ```
    bin/flume-ng agent --conf conf --conf-file example.conf --name a1 -Dflume.root.logger=INFO,console
   ```
 
-1. Verify
+3. Verify
    Open another session and input the following command:
   ```
    telnet 127.0.0.1 44444
@@ -131,4 +156,4 @@ This produces the ready-to-run snapshot packages in flume-ng-dist/target/apache-
 Flume User Guide: https://flume.apache.org/FlumeUserGuide.html
 
 Apache in Confluence Community: https://cwiki.apache.org/confluence/display/FLUME/Getting+Started
- 
+ 
