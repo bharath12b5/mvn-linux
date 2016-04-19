@@ -1,20 +1,20 @@
 ### Building Perl MongoDB Driver
 
-The Perl MongoDB Driver v1.2 can be built for Linux on z Systems for the distributions RHEL 6.6/7.1 and SLES 11/12 by following the below instructions.
-Version  v1.2 has been successfully built and tested using this method.
+The Perl MongoDB Driver v1.2.3 can be built for Linux on z Systems for the distributions RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04 by following the below instructions.
+Version  v1.2.3 has been successfully built and tested using this method.
 More information on MongoDB_Perl_Driver can be found on http://docs.mongodb.org/ecosystem/drivers/perl/ and the source code can be obtained from the Perl code repository, CPAN, at http://search.cpan.org/dist/MongoDB/.
 
 _**General Notes:**_
 
-i) _**Note:** This recipe provides the required Perl MongoDB Driver Linux on z Systems pre-requisites, a MongoDB Test script and directs the user to install a Perl module using tools from the Perl code repository CPAN.
+i) _This recipe provides the required Perl MongoDB Driver Linux on z Systems pre-requisites, a MongoDB Test script and directs the user to install a Perl module using tools from the Perl code repository CPAN.
 The guidance to install the Perl module given here should work in most circumstances, but as details of a CPAN download are environment specific, the reader is referred to a documentation on the CPAN site (etc.) for further details._
 
-ii) _**Note:** While implementing the steps given below please use a standard permission user unless otherwise specified._
+ii) _While implementing the steps given below please use a standard permission user unless otherwise specified._
 
-iii) _**Note:** This recipe specifies that CPAN commands should be run as `sudo` to ensure sufficient privileges to install Perl modules. 
+iii) _This recipe specifies that CPAN commands should be run as `sudo` to ensure sufficient privileges to install Perl modules. 
 Depending on the environment employed, it may be possible to run the CPAN commands as a standard user._
 
-iv) _**Note:** A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
+iv) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
 ## Building Perl MongoDB Driver
 
@@ -31,6 +31,13 @@ iv) _**Note:** A directory `/<source_root>/` will be referred to in these instru
    ```shell
    sudo zypper install -y make gcc tar zip perl perl-YAML
    ```
+
+   For Ubuntu 16.04
+   ```shell
+   sudo apt-get update
+   sudo apt-get install make gcc tar zip perl-modules-5.22 libyaml-perl libtest-yaml-perl
+   ```
+
 
 ### **OPTIONAL** Dependency Build - Install latest CPAN.
 
@@ -540,11 +547,11 @@ Dropped Database - 'tutorial' = $VAR1 = {
 ```
 ### References:
 
-http://search.cpan.org/dist/MongoDB - Source Code download site for MongDB Perl Driver.
+http://search.cpan.org/dist/MongoDB - Source Code download site for MongoDB Perl Driver.
 
 http://www.cpan.org/misc/cpan-faq.html - CPAN Frequently asked questions.
 
-http://docs.mongodb.org/manual/installation - Installation manual for MongDB database.
+http://docs.mongodb.org/manual/installation - Installation manual for MongoDB database.
 
 http://docs.mongodb.org/ecosystem/drivers/perl - Source  For information about the MongoDB Perl Driver.
 
