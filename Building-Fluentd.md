@@ -1,36 +1,48 @@
+<!---PACKAGE:Fluentd--->
+<!---DISTRO:SLES 12:0.12.20--->
+<!---DISTRO:SLES 11:0.12.20--->
+<!---DISTRO:RHEL 7.1:0.12.20--->
+<!---DISTRO:RHEL 6.6:0.12.20--->
+<!---DISTRO:Ubuntu 16.x:0.12.20--->
+
 # Building Fluentd
 
-Fluentd version 0.12.20 has been successfully built and tested for Linux on z Systems.  The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Fluentd version 0.12.20 has been successfully built and tested for Linux on z Systems.  The following instructions can be used for RHEL 7.1/6.6, SLES 12/11 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._  
+
+iii) _At the time of writing recipe, the version of Fluentd was 0.12.20._   
 
 1. Install the dependencies for your specific platform
 
-    RHEL 7.1
+    RHEL 7.1:
     ```shell
     sudo yum install git ruby gcc gcc-c++ kernel-devel ruby-devel openssl make tzdata
     ```
-    RHEL 6.6
+    RHEL 6.6:
     ```shell
     sudo yum install bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel gcc make wget tar tzdata
     ```
-    SLES 12
+    SLES 12:
     ```shell
     sudo zypper install bison flex libopenssl-devel libyaml-devel libffi48-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel gcc make wget tar timezone
     ```
-    SLES 11
+    SLES 11:
     ```shell
     sudo zypper install bison flex libopenssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel gcc make wget tar timezone
     ```
-
-2. For platforms other than RHEL 7.1, build Ruby 2.3.0 from the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby)
+	Ubuntu 16.04:
+	```
+	sudo apt-get install -y ruby ruby-dev gcc make
+	```
+2. For platforms other than RHEL 7.1 and Ubuntu 16.04, build Ruby 2.3.0 from the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby)
 
     Once the Ruby build is completed and installed continue with the instructions below
 
-3. For platforms other than RHEL 7.1, setup the gem HOME and PATH environment for a standard user
+3. For platforms other than RHEL 7.1 and Ubuntu 16.04, setup the gem HOME and PATH environment for a standard user
 
     ```shell
     export GEM_HOME=/home/<USER>/.gem/ruby
@@ -40,10 +52,18 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	
 4. Build & install the latest stable fluentd gem and dependencies
 
-    Fluentd is a gem based product, so the rubygem install process will automatically build the necessary native parts
+    Fluentd is a gem based product, so the rubygem install process will automatically build the necessary native parts.
+	
+	For RHEL 6.6 and SLES:  
     ```shell
     gem install fluentd
     ```
+	
+	For RHEL 7.1 and Ubuntu 16.04:
+	```shell
+    sudo gem install fluentd
+    ```
+	
     This will lead to output such as
     ```shell
     Fetching: string-scrub-0.0.5.gem (100%)
