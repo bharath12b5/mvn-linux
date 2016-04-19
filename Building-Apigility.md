@@ -3,28 +3,30 @@
 <!---DISTRO:SLES 11:1.3.2--->
 <!---DISTRO:RHEL 7.1:1.3.2--->
 <!---DISTRO:RHEL 6.6:1.3.2--->
+<!---DISTRO:Ubuntu 16.x:1.3.2--->
 
 # Building Apigility
 
-Apigility can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11 and SLES 12, by following these instructions. Version 1.3.2 has been successfully built & tested this way.
+Apigility can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and Ubuntu 16.04, by following these instructions. Version 1.3.2 has been successfully built & tested this way.
 
 ##### General Notes:
       
 i) When following the steps below please use a standard permission user unless otherwise specified.
 
-ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it.
+ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it.
 
 
 ### Section 1: Install the following dependencies
 
-* Install Apache Http Server from [here.](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
+* For RHEL 6.6/7.1 and SLES 11/12 
+
+    Install Apache Http Server from [here.](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
     
 * Other dependencies
 
 	RHEL7.1:
 	```
 	sudo yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  
-
 	```
 	RHEL6.6:
 	```
@@ -34,20 +36,25 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 	SLES12:
 	```
 	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
-
 	```
 	
 	SLES11:
 	```
 	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
-
 	```
 
-### Section 2: Build and install
-1. Download, configure and install PHP with openssl
- 
+    Ubuntu16.04:
+	```
+	sudo apt-get update
+sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
+	```
+
+### Section 2: Build and Install
+1. Download, configure and install PHP with Openssl
+  
+    * For RHEL 6.6/7.1 and SLES 11/12
 	
-	```
+	 ```
 	cd /<source_root>/
 	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
 	tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
@@ -56,6 +63,18 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 	sudo make install
 	```
 	
+    * For Ubuntu 16.04
+        
+        ```
+        cd /<source_root>/
+        wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+        tar xvzf php-5.6.8.tar.gz
+        cd php-5.6.8
+        ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+        make
+        sudo make install
+        ```
+
 2. Set environment path for the PHP
 
 		export PATH=/usr/local/php/bin:$PATH
@@ -87,4 +106,3 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 ## References:
 
 https://github.com/zfcampus/zf-apigility-skeleton
-
