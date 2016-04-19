@@ -1,6 +1,13 @@
+<!---PACKAGE:Jenkins--->
+<!---DISTRO:SLES 12:1.625.3--->
+<!---DISTRO:SLES 11:1.625.3--->
+<!---DISTRO:RHEL 7.1:1.625.3--->
+<!---DISTRO:RHEL 6.6:1.625.3--->
+<!---DISTRO:Ubuntu 16.x:1.625.3--->
+
 # Building Jenkins
 
-Jenkins version 1.625.3 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6, RHEL 7.1, SLES11 and SLES 12.
+Jenkins version 1.625.3 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -10,7 +17,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 ##### Step 1: Install the dependencies
 Following are the build dependencies for Jenkins:
 
-* git (RHEL6/7) or git-core (SLES11/12)
+* git (RHEL6/7 and Ubuntu 16.04) or git-core (SLES11/12)
 * Maven 
 
 **Dependencies Installation Notes:**   
@@ -21,8 +28,25 @@ Following are the build dependencies for Jenkins:
 * Git can be installed on SLES11/12 using the command below.
 
             sudo zypper install -y git-core
+
+* Git can be installed on Ubuntu 16.04 using the command below
+ 
+            sudo apt-get install -y git
             
-* To install Maven, please refer to the [Maven](https://github.com/linux-on-ibm-z/docs/wiki/Building-Maven) recipe.
+* To install Maven
+ 
+ For RHEL6/7 and SLES11/12
+          Please refer to the [Maven](https://github.com/linux-on-ibm-z/docs/wiki/Building-Maven) recipe.
+ 
+ For Ubuntu 16.04
+	  
+         sudo apt-get install -y maven
+		 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=1024m"	  
+		  
+* To install Java, use the command below,(Only for Ubuntu 16.04)
+
+            sudo apt-get install openjdk-7-jdk
+ 			export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-s390x/jre/
 
 ##### Step 2: Build Jenkins
 * Get the source (clone branch 1.625.3)  
