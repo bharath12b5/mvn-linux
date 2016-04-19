@@ -1,4 +1,4 @@
-The [MongoDB Ruby Driver](http://docs.mongodb.org/ecosystem/drivers/ruby/) can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 2.2.4 have been successfully built & tested this way. 
+The [MongoDB Ruby Driver](http://docs.mongodb.org/ecosystem/drivers/ruby/) can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7, RHEL 6 and Ubuntu 16.04 by following these instructions. Versions 2.2.4 have been successfully built & tested this way.
 
 _**General Notes:**_ 	
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
@@ -6,7 +6,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 _iii) For convenience `vi` has been used in the instructions below when editing files, replace with your desired editing program if required_
 
 
-1. Install the build time dependencies 
+1. Install the build dependencies 
 
     On RHEL 7.1 & 6.6 systems:
     ```shell
@@ -15,6 +15,11 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     On SLES 12 & 11 systems:
     ```shell
     sudo zypper install ruby ruby-devel make gcc gcc-c++
+    ```
+    On Ubuntu 16.04 systems:
+    ```shell
+    sudo apt-get update
+    sudo apt-get install ruby ruby-dev make gcc g++
     ```
   You may already have some of these packages installed - just install any that are missing.
 
@@ -31,9 +36,9 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     _**Note:** Run `gem env` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
 4. Install the mongo gem (and dependent bson gem)
 
-    For the `2.2.4` version install mongo gem as given below:
+	For the 2.2.4 version install mongo gem as given below:
     ```shell
-    gem install mongo -v '2.2.4'
+    sudo gem install mongo -v '2.2.4'
     ```
     _**Note:** If the `-v` flag is omitted entirely the latest version will be installed
 
@@ -61,7 +66,7 @@ The example code section given below is used to perform a basic test to ensure t
     Create a file named test.rb with the content shown below.  This code connects to a MongoDB server, inserts some documents and then queries the database to read them back and display them. 
 	
 	_**Remember**_, if you are connecting to a remote server then you need to substitute the **`localhost`** with the hostname or IP address of the MongoDB server.
-
+   
    **Mongo Ruby Driver 2.2.4**  
    
    ```shell
