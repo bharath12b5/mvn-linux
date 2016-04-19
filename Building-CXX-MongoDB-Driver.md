@@ -1,6 +1,6 @@
 #Building C++ MongoDB Driver
 
-The C++ MongoDB Driver can be built for Linux on z Systems running SLES12, RHEL7 and RHEL6 by following these instructions. The 'legacy' driver version legacy-1.1.0 has been successfully built & tested this way.
+The C++ MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7, RHEL 6 and Ubuntu 16.04 by following these instructions. The 'legacy' driver version legacy-1.1.0 has been successfully built & tested this way.
 
 
 _**General Notes:**_ 	 
@@ -8,9 +8,9 @@ i) _When following the steps below please use a standard permission user unless 
 
 ii) _A directory  `/<source_root>/`  will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
-1. **Install build time dependencies**
+1. **Install build dependencies**
 
-   For **RHEL 7.1**
+  For **RHEL 7.1**
   ```shell
   sudo yum install automake boost-devel libtool gcc-c++ git make wget
   ```
@@ -26,7 +26,23 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
   ```shell
   Known not to work on SLES 11
   ```
- 
+  
+  For **Ubuntu 16.04**
+  ```shell
+  sudo apt-get update
+  sudo apt-get install gcc libtool wget tar make scons git g++ libboost-all-dev 
+  ```
+_**Note:**_
+Add following repos in `/etc/apt/sources.list` file and upgrade the system, if any of the mentioned package on Ubuntu is missing.
+    ```
+       deb http://ports.ubuntu.com/ubuntu-ports/ xenial main restricted universe multiverse
+       deb-src http://ports.ubuntu.com/ubuntu-ports/ xenial main restricted universe multiverse  
+       deb http://ports.ubuntu.com/ubuntu-ports/ xenial-security main restricted universe multiverse  
+       deb http://ports.ubuntu.com/ubuntu-ports/ xenial-updates main restricted universe multiverse              
+       deb-src http://ports.ubuntu.com/ubuntu-ports/ xenial-security main restricted universe multiverse  
+       deb-src http://ports.ubuntu.com/ubuntu-ports/ xenial-updates main restricted universe multiverse
+    ```
+
   You may already have these packages installed - just install any that are missing.
 
 2. **Install SCons**
@@ -57,17 +73,16 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
     Use SCons to build and install it:
 
     ```shell
-    sudo scons --prefix=/usr/local install
-    ```
- 
+    sudo scons --prefix=/usr/local install --disable-warnings-as-errors  
+
+    ```    
 3. ***Build and run the unit tests with scons:***
 	
 	```shell
-	sudo scons build-unit
-	sudo scons unit
-	```
-
-	
+	sudo scons build-unit --disable-warnings-as-errors
+	sudo scons unit --disable-warnings-as-errors   
+	```    
+    	
 #Basic validation test
 
 The example code section given below is used to perform a basic test to ensure that the MongoDB C++ Driver is working as expected, and can connect to, modify and query a MongoDB server.
@@ -164,14 +179,14 @@ The example code section given below is used to perform a basic test to ensure t
     Compile and run the test program by:
     
     ```shell
-        g++ test.cxx -o test -pthread -lmongoclient -lboost_thread-mt -lboost_system -lboost_regex
-        ./test
+      g++ test.cxx -o test -pthread -lmongoclient -lboost_thread -lboost_system -lboost_regex
+      ./test
     ```
     
     Executing the script should produce output similar to this (the Object Ids will vary, but typically will be consecutive):
     
     ```shell
-    { _id: ObjectId('55f839498d772db54d86f38c'), company: "IBM", project: "zLinux", driver: "C++", version: "legacy" }
+    { _id: ObjectId('55f839498d772db54d86f38c'), company: "IBM", project: "MongoDB Driver", driver: "C++", version: "legacy" }
     { _id: ObjectId('55f8394a8d772db54d86f38d'), row: 0 }
     { _id: ObjectId('55f8394a8d772db54d86f38e'), row: 1 }
     { _id: ObjectId('55f8394a8d772db54d86f38f'), row: 2 }
