@@ -3,9 +3,10 @@
 <!---DISTRO:SLES 11:4.3.1--->
 <!---DISTRO:RHEL 7.1:4.3.1--->
 <!---DISTRO:RHEL 6.6:4.3.1--->
+<!---DISTRO:Ubuntu 16.x:4.3.1--->
 
 # Building Puppet
-Puppet version 4.3.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Puppet version 4.3.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -19,9 +20,13 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     ```
     sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
 ```
-  For SLES11 & SLES12:  
+   For SLES11 & SLES12:  
     ````
     sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
+````
+   For Ubuntu 16.04:  
+    ````
+    sudo apt-get install -y g++ libreadline6 libreadline6-dev tar openssl unzip libyaml-dev libssl-dev make git wget libsqlite3-dev  libc6-dev
 ````
 
 2. Download and install Ruby
@@ -54,12 +59,14 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     sudo /usr/local/bin/gem install puppet -v 4.3.1	
 ````
 
-6. Locate the $confdir by command
+6. Locate the  $confdir  by command  
+**Note:** *Please make sure the directory `/usr/local/lib` has sufficient read and execute permissions to run the above command.Incase it doesn't,run`sudo chown 755 /usr/local/lib` to give the necessary permissions* 
     ````
-    confdir=`puppet master --configprint confdir`	
+    confdir=`puppet master --configprint confdir`
+	echo $confdir
 ````
 The output gives the directory. If such directory does not exist, create one. 
-    ````
+    ````	
     mkdir -p $confdir
 ````
 
@@ -83,7 +90,8 @@ The output gives the directory. If such directory does not exist, create one.
     
 
 
-10. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com)
+10. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com)    
+**Note:** *Hostname can found by running the command `hostname -f`* 
     ````
     [main]
           logdir = $confdir/var/log/puppetlabs
@@ -99,7 +107,7 @@ The output gives the directory. If such directory does not exist, create one.
 
 11. The Puppet master runs on TCP port 8140. This port needs to be open on your master’s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall
     ````
-    iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT 
+    sudo iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT 
 ````
 
 ## Puppet Agent Installation
@@ -110,9 +118,13 @@ The output gives the directory. If such directory does not exist, create one.
     ````
     sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
 ````
-   For SLES11 & SLES12:
+  For SLES11 & SLES12:
     ````
     sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
+````
+  For Ubuntu 16.04:  
+    ````
+    sudo apt-get install -y g++ libreadline6 libreadline6-dev tar openssl unzip libyaml-dev libssl-dev make git wget libsqlite3-dev  libc6-dev
 ````
 
 2. Download and install Ruby
@@ -145,12 +157,14 @@ The output gives the directory. If such directory does not exist, create one.
     sudo /usr/local/bin/gem install puppet -v 4.3.1
 ````
 
-6. Locate the  $confdir  by command
+6. Locate the  $confdir  by command    
+**Note:** *Please make sure the directory `/usr/local/lib` has sufficent read and execute permissions to run the above command.Incase it doesn't,run `sudo chown 755 /usr/local/lib` to give the necessary permissions* 
     ````
     confdir=`puppet agent --configprint confdir`
+	echo $confdir
 ````
 The output gives the directory. If such directory does not exist, create one. 
-    ````
+    ````	
     mkdir -p $confdir
 ````
 
@@ -162,7 +176,8 @@ The output gives the directory. If such directory does not exist, create one.
     touch puppet.conf
 ````
 
-8. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com and hostname of the agent machine is agent.myhost.com)
+8. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com and hostname of the agent machine is agent.myhost.com)    
+**Note:** *Hostname can found by running the command `hostname -f`* 
     ````
     [main]
           logdir =  $confdir/var/log/puppetlabs
@@ -209,7 +224,7 @@ Note: The following errors might be seen after execution of the above step
 	2) Create at least one plugin
 
 ## Testing  
-For testing, run the tests from the source code. 
+For testing, run the tests from the source code on Master machine. 
  
 1. Switch user to puppet, clone Puppet git repository in /home/puppet and execute "bundle install" to install the required gems    
     ````
