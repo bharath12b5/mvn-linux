@@ -1,6 +1,11 @@
+<!---PACKAGE:Docker Distribution--->
+<!---DISTRO:SLES 12:2.3.0--->
+<!---DISTRO:RHEL 7.1:2.3.0--->
+<!---DISTRO:Ubuntu 16.x:2.3.0--->
+
 # Building Docker Distribution
 
-Docker Distribution 2.3.0 can be built and tested on Linux on z Systems (RHEL 7.1 and SLES 12) by following these instructions.
+Docker Distribution 2.3.0 can be built and tested on Linux on z Systems (RHEL 7.1, SLES 12 and Ubuntu 16.04) by following these instructions.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -10,20 +15,24 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 ##### Step 1 : Install the Dependencies
 Following are the build dependencies for Distribution. 
 
-* git-core (SLES12) or git (RHEL7)
+* git-core (SLES 12) or git (RHEL 7.1, Ubuntu 16.04)
 * Go
 * make
 
 **Dependencies Installation Notes:**   
-*	SLES12
+*	SLES 12
      
             sudo zypper install -y git-core make
 
-*	RHEL7
+*	RHEL 7
 
             sudo yum install -y git make
+
+*	Ubuntu 16.04
+
+            sudo apt-get install -y git make golang
             
-*	To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe.
+*	For RHEL7, SLES12: To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe.
 
 ##### Step 2 : Get the source (checkout v2.3.0 release)
 *	Create a distribution directory and clone the source code there.
