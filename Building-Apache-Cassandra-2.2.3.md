@@ -1,6 +1,6 @@
-### Building Apache Cassandra 2.2.3
+### Building Apache Cassandra
 
-Apache Cassandra is a scalable and fault-tolerant distributed NoSQL database with support for column indexes and denormalized collections. The stable release of Cassandra 2.2.3 has been built and tested on Linux on z Systems.
+Apache Cassandra is a scalable and fault-tolerant distributed NoSQL database with support for column indexes and denormalized collections. The stable release of Cassandra 2.2.3 has been built and tested on Linux on z Systems. The following instructions can be used for RHEL 7, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -11,7 +11,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 The following build instructions have been tested with Apache Cassandra 2.2.3 on Linux on Z Systems with Java OpenJDK.
 
-### Step 1: Install the dependencies:
+### Step 1: Install the dependencies
 
 * RHEL 7:
 ```
@@ -23,13 +23,19 @@ sudo yum install -y git which java-1.8.0-openjdk-devel.s390x gcc-c++ make automa
 sudo zypper install -y java-1_7_0-openjdk-devel git which gcc-c++ make automake autoconf libtool libstdc++-devel tar wget patch words libXt-devel libX11-devel unzip xorg-x11-proto-devel xorg-x11-devel alsa-devel cups-devel
  
 ```
-### Step 2: Set environment variables:
+* Ubuntu 16.04:
+```
+sudo apt-get install git tar g++ make automake autoconf libtool  wget patch libx11-dev libxt-dev openjdk-8-jre openjdk-8-jdk pkg-config texinfo 
+ 
+```
+
+### Step 2: Set environment variables
 ```    
 unset JAVA_TOOL_OPTIONS
 export LANG="en_US.UTF-8"
 export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
 ```        
-### Step 3: Install Ant:
+### Step 3: Install Ant
 ```
 cd /<source_root>/
 wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.2-bin.tar.gz
@@ -39,7 +45,7 @@ export ANT_HOME=`pwd`
 cd bin
 export PATH=$PATH:`pwd`
 ```
-### Step 4: Install the latest version of Snappy-Java:
+### Step 4: Install the latest version of Snappy-Java
  ```
 cd /<source_root>/
 git clone https://github.com/xerial/snappy-java.git
@@ -47,29 +53,28 @@ cd snappy-java
 git checkout develop
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk (Only for RHEL7)
 export JAVA_HOME=/usr/lib64/jvm/java-1.7.0 (Only for SLES12)
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x (Only for Ubuntu 16.04)
 make IBM_JDK_7=1 USE_GIT=1 GIT_SNAPPY_BRANCH=master GIT_REPO_URL=https://github.com/google/snappy.git
 ```        
-### Step 5: Build and install Apache Cassandra 2.2.3:
+### Step 5: Build and install Apache Cassandra 2.2.3
 ```
 cd /<source_root>/
-wget https://archive.apache.org/dist/cassandra/2.2.3/apache-cassandra-2.2.3-src.tar.gz
-tar -xvf apache-cassandra-2.2.3-src.tar.gz
-cd apache-cassandra-2.2.3-src
+git clone https://github.com/apache/cassandra.git
+cd cassandra
+git checkout cassandra-2.2.3
 ```        
 * Replace the original Snappy-Java jar file in the lib folder with installed Snappy-Java:
 ```
-rm /<source_root>/apache-cassandra-2.2.3-src/lib/snappy-java-1.1.1.7.jar
-cp /<source_root>/snappy-java/target/snappy-java-1.1.3-SNAPSHOT.jar /<source_root>/apache-cassandra-2.2.3-src/lib/snappy-java-1.1.3.jar
+rm /<source_root>/cassandra/lib/snappy-java-1.1.1.7.jar
+cp /<source_root>/snappy-java/target/snappy-java-1.1.3-SNAPSHOT.jar /<source_root>/cassandra/lib/snappy-java-1.1.3.jar
 ```    
 * Build Apache Cassandra:
 ```
-cd /<source_root>/apache-cassandra-2.2.3-src
+cd /<source_root>/cassandra
 ant
 ```  
 
-_*Note:* The Apache Cassandra jar file is available under the bin folder._
-    
-### Step 6: (Optional) Run the unit tests:
+_*Note:* The Apache Cassandra jar file is available under the bin folder. Please ignore libraryLoadTest error in case of jna build for SLES12, Copy generated jar to respected folder and run the test case._
 
 * Build jna:
 ```
@@ -77,12 +82,15 @@ cd /<source_root>/
 git clone https://github.com/java-native-access/jna.git
 cd jna
 ant
-cp /<source_root>/jna/build/jna.jar  /<source_root>/apache-cassandra-2.2.3-src/lib/jna.jar
-rm /<source_root>/apache-cassandra-2.2.3-src/lib/jna-4.0.0.jar
+cp /<source_root>/jna/build/jna.jar  /<source_root>/cassandra/lib/jna.jar
+rm /<source_root>/cassandra/lib/jna-4.0.0.jar
 
 ```
+    
+### Step 6: (Optional) Set IBM java at run time
+
 _*Note:*_ 
-Use below commands to install IBM Java 1.7 and set it to Java Runtime Environment (Optional).
+_Use below commands to install IBM Java 1.7 and set it to Java Runtime Environment. Test case results shown in step 7 are executed using openjdk , results may vary by using IBM java_.
 
 * RHEL 7:
 ```
@@ -97,13 +105,15 @@ export JAVA_HOME=/usr/lib64/jvm/java-1.7.1-ibm
 sudo update-alternatives --config java   (Enter number to select IBM Java 1.7)
 ```
 
+### Step 7: Run the unit tests
+
 Run the Cassandra test suite         
 ```
-cd /<source_root>/apache-cassandra-2.2.3-src/
+cd /<source_root>/cassandra/
 ant test
 ```        
 _**Note:**_ 
-_Run below steps to avoid test case failure in similar situation described below. Ignore `LegacySSTableTest` failure as it is not related to system Z_.
+_Run below steps to avoid test case failure in similar situation described below. Ignore `LegacySSTableTest` failure as it is not related to system Z, also ScrubTest failure is fixed in Apache Cassandra 2.2.6,3.0 versions_.
 
 *  Replace time out value in build.xml file as shown below to avoid timeout error for multiple test cases.
 ```
@@ -135,14 +145,12 @@ _Run below steps to avoid test case failure in similar situation described below
         wget https://issues.apache.org/jira/secure/attachment/12783543/11054-3.0.patch
         patch -p1 < 11054-3.0.patch	
 ```  
-*  In case of KeyCacheCqlTest and ScrubTest failed due to key_cache size and memory issue, follow below steps.  
-
-    * Uncomment and set the value of heap in `/<source_root>/apache-cassandra-2.2.3-src/conf/cassandra-env.sh` file.
-  ```
-        MAX_HEAP_SIZE="4G"
-        HEAP_NEWSIZE="1G"
+*  Apply below patch in case of NativeCellTest failed.
+```
+         wget https://issues.apache.org/jira/secure/attachment/12789190/11214-cassandra-3.0.txt        
+         patch -p1 < 11214-cassandra-3.0.txt	
 ```  
-    * Set keycache size to 12 MB in `/<source_root>/apache-cassandra-2.2.3-src/conf/cassandra.yaml` file.
-  ```
+*  In case of KeyCacheCqlTest failed due to key_cache size and memory issue, follow below steps add below content in `/<source_root>/cassandra/test/conf/cassandra.yaml` file.
+```
         key_cache_size_in_mb: 12
 ```
