@@ -1,5 +1,5 @@
-# Building MariaDB 10.1
-MariaDB version 10.1 has been successfully build and tested for Linux on on z systems. Following instructions can be used for RHEL 7/6 and SLES12.
+# Building MariaDB
+MariaDB version 10.1 has been successfully build and tested for Linux on z systems. Following instructions can be used for RHEL 7/6 and SLES12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -21,20 +21,48 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
  
     ```
 
+*   Ubuntu 16.04
+
+      _**Note:** Add following repos in `/etc/apt/sources.list` file and upgrade the system, if any of the mentioned
+      package on Ubuntu is missing._ 
+    ```shell
+        deb http://ports.ubuntu.com/ubuntu-ports/ xenial main restricted universe multiverse  
+        deb-src http://ports.ubuntu.com/ubuntu-ports/ xenial main restricted universe multiverse  
+        deb http://ports.ubuntu.com/ubuntu-ports/ xenial-security main restricted universe multiverse  
+        deb http://ports.ubuntu.com/ubuntu-ports/ xenial-updates main restricted universe multiverse  
+        deb-src http://ports.ubuntu.com/ubuntu-ports/ xenial-security main restricted universe multiverse  
+        deb-src http://ports.ubuntu.com/ubuntu-ports/ xenial-updates main restricted universe multiverse
+
+    ```
+    ```
+        sudo apt-get update
+        sudo apt-get install -y build-essential libncurses-dev git wget cmake gcc make tar libpcre3-dev bison scons libboost-dev libboost-program-options-dev openssl dh-autoreconf libssl-dev
+                      
+    ```
+
 ### Section 2: Build and Install
 1. Get MariaDB source
 
         cd /<source_root>/
-        git clone  -b 10.1 https://github.com/MariaDB/server.git
+        git clone -b 10.1 https://github.com/MariaDB/server.git
         cd server 
         
 2. Build and install the source
+ *  For RHEL/SLES12
+     ```
+    BUILD/autorun.sh 
+    ./configure 
+    make 
+    sudo make install 
+     ```
 
-        BUILD/autorun.sh 
-        ./configure 
-        make 
-        sudo make install 
-        
+ *   For Ubuntu 16.04
+     ```
+     BUILD/autorun.sh 
+    ./configure --WITH_SAFEMALLOC=ON --with-debug
+     make 
+     sudo make install 
+     ```
 3. Execute test cases
 
         make test
@@ -42,7 +70,7 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
 4. Create a user and group with name mysql
 
         sudo useradd mysql
-	    sudo groupadd mysql
+        sudo groupadd mysql
 
 5. Give owner permission to the mysql directory
 
@@ -81,8 +109,35 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
         wget http://downloads.sourceforge.net/project/scons/scons/2.3.4/scons-2.3.4-1.noarch.rpm
         sudo rpm -i scons-2.3.4-1.noarch.rpm
     ``` 
+2. Install the following dependencies required for galera:(Only for **Ubuntu 16.04**)
+ *   Install makeinfo
 
-2. Clone the Galera source code from the official GitHub repository, then check out the 25.3.10 branch:
+    ```
+        cd /<source_root>/
+        wget http://ftp.gnu.org/gnu/texinfo/texinfo-5.0.tar.gz
+        tar -xvf texinfo-5.0.tar.gz
+        cd texinfo-5.0
+        ./configure --prefix=/usr
+        make
+        sudo make install
+    ``` 
+
+ *   Install check dependency
+
+    ```
+        cd /<source_root>/
+        sudo apt-get install libsubunit-dev libsubunit0 pkg-config 
+        git clone https://github.com/libcheck/check
+        cd check/
+        git checkout 0.10.0
+        autoreconf --install
+        export LD_LIBRARY_PATH=/usr/lib/s390x-linux-gnu/openssl-1.0.0/engines:/usr/lib/s390x-linux-gnu/:/usr/local/lib/
+        ./configure
+        make
+        sudo make install
+    ``` 
+
+3. Clone the Galera source code from the official GitHub repository, then check out the 25.3.10 branch:
 
     ```
         cd /<source_root>/
@@ -91,8 +146,8 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
         git checkout 25.3.10
     ```
     
-3. Patch the Galera code so that it will build on z. Edit the file SConstruct, and replace the  `if... elif... else`  block on lines 90 to lines 108 with following:
- *  For RHEL7/SLES12
+4. Patch the Galera code so that it will build on z. Edit the file SConstruct, and replace the  `if... elif... else`  block on lines 90 to lines 108 with following:
+ *  For RHEL7/SLES12/Ubuntu 16.04
      ```
         compile_arch = ' -march=z196 -mtune=zEC12'
         link_arch    = ''
@@ -106,7 +161,8 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
         x86 = 0
      ```
 
-     Then edit chromium/build_config.h, and add following text after line 127:
+     Then edit chromium/build_config.h, and add following text after line 127:(For RHEL6/RHEL7/SLES12/Ubuntu 16.04
+)
     
      ```
         #elif defined(__s390__)
@@ -118,20 +174,32 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
         #define ARCH_CPU_BIG_ENDIAN 1
      ```
     
-4. Now issue following command to build the code:
+5. Now issue following command to build the code:
 
     ```
         scons strict_build_flags=0 --config=force
     ```
-    
-5. Issue following commands to install the Galera arbitration daemon (garbd) and the wsrep provider library:
+
+    _**Note:** If the following build error observed then increase the time out period in a function `tcase_set_timeout(tc, 120)` (change 120 to a value either 480 or 600) present in the file 
+`galera/galera/tests/saved_state_check.cpp` and run the above command again._    
+
+    ```
+        33%: Checks: 3, Failures: 1, Errors: 1
+        galera/tests/saved_state_check.cpp:121:E:saved_state:test_unsafe:0: (after this point) Test timeout expired
+        galera/tests/saved_state_check.cpp:155:F:saved_state:test_corrupt:0: Failure 'uuid == WSREP_UUID_UNDEFINED' occurred
+
+    ```
+
+6. Issue following commands to install the Galera arbitration daemon (garbd) and the wsrep provider library:
 
     ```
         sudo cp garb/garbd /usr/local/sbin/        
         sudo cp libgalera_smm.so /usr/local/lib64/
         sudo /sbin/ldconfig -v
     ```
-6. The MariaDB configuration file  '/server/support-files/my-innodb-heavy-4G.cnf' needs to be updated as well. The exact configuration values will be different for each installation. Following is an example for a two-node cluster:
+ _**Note:** For Ubuntu 16.04, if `/usr/local/lib64/` path does not exist then using `mkdir -p /usr/local/lib64/` command create the path and copy `libgalera_smm.so`._
+
+7. The MariaDB configuration file  '/server/support-files/my-innodb-heavy-4G.cnf' needs to be updated as well. The exact configuration values will be different for each installation. Following is an example for a two-node cluster:
 
     ```
         [mysqld]
@@ -154,3 +222,5 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
 * [Blog: Getting started with MariaDB Galera Cluster and Percona XtraDB Cluster](http://blog.yannickjaquier.com/mysql/getting-started-with-mariadb-galera-cluster-and-percona-xtradb-cluster.html) 
 * [MariaDB documentation ](https://mariadb.com/kb/en/mariadb/getting-started-with-mariadb-galera-cluster/)
 * [Galera documentation](http://galeracluster.com/documentation-webpages/dbconfiguration.html)
+
+
