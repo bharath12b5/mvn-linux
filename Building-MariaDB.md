@@ -1,8 +1,9 @@
 <!---PACKAGE:MariaDB--->
-<!---DISTRO:SLES 12:10.1--->
-<!---DISTRO:SLES 11:10.0, 10.1--->
-<!---DISTRO:RHEL 7:10.1--->
-<!---DISTRO:RHEL 6:10.0, 10.1--->
+<!---DISTRO:SLES 12:10.x--->
+<!---DISTRO:SLES 11:10.x--->
+<!---DISTRO:RHEL 7:10.x--->
+<!---DISTRO:RHEL 6:10.x--->
+<!---DISTRO:Ubuntu 16.x:10.x--->
 
 # Building MariaDB
 
