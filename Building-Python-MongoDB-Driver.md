@@ -1,4 +1,4 @@
-The Python driver for MongoDB (PyMongo) can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11 and SLES 12 by following these instructions. Version 3.2 of PyMongo has been successfully built & tested this way.
+The Python driver for MongoDB (PyMongo) can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and  Ubuntu 16.04 by following these instructions. Version 3.2 of PyMongo has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
@@ -24,6 +24,13 @@ iii) _Where the instructions refer to 'vi' you may, of course, use an editor of 
    SLES 12
    ```shell
    sudo zypper install git python-xml
+   ```
+   
+   Ubuntu 16.04
+   ```shell
+   sudo apt-get update
+   sudo apt-get install git openssl libssh-dev python python-openssl python-setuptools
+   sudo easy_install pip  
    ```
    
 2. Create a working directory with write permission to use as an installation workspace:
