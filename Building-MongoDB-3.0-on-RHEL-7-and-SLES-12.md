@@ -1,4 +1,4 @@
-[MongoDB](http://mongodb.org/) 3.0.4 has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 7.1 and SLES 12.
+[MongoDB](http://mongodb.org/) 3.0.4 has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 7.1, SLES 12 and Ubuntu 16.04.
 
 ## Building MongoDB
 
@@ -13,6 +13,21 @@
    When building on SLES 12, SCons is included in the SLES 12 SDK, and can be installed from the DVD or online repository like this:
 
         zypper install scons
+  
+  	When building on Ubuntu 16.04, SCons can be installed from the online repository like this:
+  
+  		sudo apt-get install scons
+        
+  	When building on Ubuntu 16.04, install g++ using the following steps
+    	
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt-get update; sudo apt-get install gcc-4.8 g++-4.8
+        sudo update-alternatives --remove-all gcc 
+		sudo update-alternatives --remove-all g++
+		sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 20
+		sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 20
+		sudo update-alternatives --config gcc
+		sudo update-alternatives --config g++
 
 4. Clone the latest MongoDB 3.0 branch from our GitHub repo, which includes the changes for big-endian platforms.
 
@@ -26,7 +41,7 @@
 
 6. In the mongo/ directory, execute the following command to build MongoDB:
 
-        scons --opt --use-system-v8 --allocator=system all
+        sudo scons --opt --use-system-v8 --allocator=system all
 
 ## Building MongoDB tools
 
@@ -60,12 +75,12 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 
         git clone git://github.com/mongodb/mongo-python-driver.git pymongo
         cd pymongo
-        python setup.py install
+        sudo python setup.py install
 
 2. To run the C++ unit tests, re-run the build command in the MongoDB build directory, but replace the target `all` with `smokeCppUnittests`:
 
         cd mongo
-        scons --opt --use-system-v8 --allocator=system smokeCppUnittests
+        sudo scons --opt --use-system-v8 --allocator=system smokeCppUnittests
               
    To run the server smoke tests, you must copy all the MongoDB tools into the MongoDB server build directory, e.g.
 
@@ -74,7 +89,7 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 
    Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`:
 
-        scons --opt --use-system-v8 --allocator=system --smokedbprefix=/tmp smoke
+        sudo scons --opt --use-system-v8 --allocator=system --smokedbprefix=/tmp smoke
 
 ## Installation
 
