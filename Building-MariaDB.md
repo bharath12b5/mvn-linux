@@ -9,7 +9,7 @@
 
 MariaDB 10.1 has been ported to Linux on z Systems, and the following articles explain how to obtain and build the code:
 * [[Building MariaDB 10.1 on SLES 11]]
-* [[Building MariaDB 10.1 on RHEL 7_6 and SLES 12]]
+* [[Building MariaDB 10.1 on RHEL 7, RHEL6, SLES 12 and Ubuntu 16.04]]
 
 
 The instructions for building previous version(s) of MariaDB are included here:
