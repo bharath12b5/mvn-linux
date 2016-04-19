@@ -1,4 +1,4 @@
-The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7 and RHEL 6 by following these instructions.  Versions 1.3.x has been successfully built & tested this way.
+The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7, RHEL 6 and Ubuntu 16.04 by following these instructions.  Versions 1.3.x has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
@@ -32,6 +32,12 @@ iv) Version 1.3.x refers to the current stable version of 1.3 branch releases. A
   For **RHEL 6.6**
   ```
   sudo yum install -y autoconf automake gcc libtool make tar which wget
+  ```
+  
+  For **Ubuntu 16.04**
+  ```
+  sudo apt-get install update
+  sudo apt-get install autoconf automake gcc libtool make wget pkg-config
   ```
  
   You may already have these packages installed - just install any that are missing.
