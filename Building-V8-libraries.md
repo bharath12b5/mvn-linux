@@ -1,4 +1,11 @@
-The V8 JavaScript engine can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12 or SLES 11 by following these instructions. It can be built as a set of shared libraries so that it can be used by multiple applications.
+<!---PACKAGE:V8 JavaScript--->
+<!---DISTRO:SLES 12:V8--->
+<!---DISTRO:SLES 11:V8--->
+<!---DISTRO:RHEL 7.1:V8--->
+<!---DISTRO:RHEL 6.6:V8--->
+<!---DISTRO:Ubuntu 16.x:V8--->
+
+The V8 JavaScript engine can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12, SLES 11 and Ubuntu 16.04 by following these instructions. It can be built as a set of shared libraries so that it can be used by multiple applications.
 Versions 3.14 and 3.28 have been successfully built and tested this way. (Note: If you are building V8 for use with [MongoDB](../Building MongoDB), you need V8 3.14.)
 
 More information on the V8 JavaScript engine is available at [the V8 website](https://developers.google.com/v8/intro) and the source code for the z Systems port can be obtained from [GitHub](https://github.com/andrewlow/v8z).
@@ -30,6 +37,11 @@ _**General Notes:**_
     sudo ln -s /usr/bin/g++-4.7 /usr/bin/g++
     sudo ln -s /usr/bin/gcc /usr/bin/cc
     ```
+    (For Ubuntu 16.04)
+    ```shell
+	sudo apt-get update
+    sudo apt-get install git subversion make tar wget gcc g++ python
+    ```    
 
 2. Create a temporary installation directory:
 
@@ -47,7 +59,7 @@ _**General Notes:**_
 
 4. **(V8 3.28 only)** Building V8 3.28 or newer requires Python 2.7, which is not available as a pre-built RPM from RHEL 6 or SLES 11. Before building V8, you need to build Python 2.7, which in turn has a dependency on OpenSSL 1.0.2a on SLES 11. The next two sections describe how to build OpenSSL 1.0.2a and Python 2.7.
 
-   If you are building V8 3.28 on RHEL 7 or SLES 12, Python 2.7 should already be avaialble and V8 3.28 should build correctly, so just skip ahead to [Building V8](#building-v8).
+   If you are building V8 3.28 on RHEL 7, SLES 12 and Ubuntu 16.04, Python 2.7 should already be avaialble and V8 3.28 should build correctly, so just skip ahead to [Building V8](#building-v8).
 
 ### **(V8 3.28 on SLES 11 only)** Install OpenSSL 1.0.2a
 
@@ -242,7 +254,7 @@ depot-tools requires a later version of git than that which is available through
     sudo chmod -f 644 /usr/include/v8*h /usr/include/libplatform/libplatform.h
     ```
   
-7. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer):
+7. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer) for RHEL6, RHEL 7, SLES11, SLES12 and into /usr/local/lib/ for Ubuntu 16.04:
 
     ```shell
     cd /<source_root>/v8z
