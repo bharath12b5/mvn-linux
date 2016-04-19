@@ -1,4 +1,4 @@
-The PHP driver for MongoDB can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES12 or SLES 11 by following these instructions. Version 1.6.12 has been successfully built & tested this way. More information on the PHP driver is available at http://docs.mongodb.org/ecosystem/drivers/php/ and the source code can be obtained from http://github.com/mongodb/mongo-php-driver
+The PHP driver for MongoDB can be built for Linux on z Systems running RHEL 7.1, RHEL 6.6, SLES 12, SLES 11 and Ubuntu 16.04 by following these instructions. Version 1.6.12 has been successfully built & tested this way. More information on the PHP driver is available at http://docs.mongodb.org/ecosystem/drivers/php/ and the source code can be obtained from http://github.com/mongodb/mongo-php-driver
 
 **_General Notes_:**
 
@@ -23,11 +23,31 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
   For SLES 12
 
 		sudo zypper install gcc make php5-devel php5-pear tar wget git
+		
+  For SLES 11
+
+		sudo zypper install gcc make php53-devel php53-pear tar wget git
+		
+  For Ubuntu 16.04
+  
+		sudo apt-get update
+		sudo apt-get install gcc make tar wget git autoconf libxml2 libxml2-dev
 
 2. Create temporary installation directory
 
 		mkdir /<source_root>
+		
+3. Build and install php5.6.8 **(Only for Ubuntu 16.04)** 
 
+		cd /<source_root>
+		wget http://www.php.net/distributions/php-5.6.8.tar.gz
+		tar xvzf php-5.6.8.tar.gz
+		cd /<source_root>/php-5.6.8 
+		./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php
+		make
+		sudo make install
+		sudo cp /<source_root>/php-5.6.8/php.ini-development /usr/local/php/php.ini
+		export PATH=/usr/local/php/bin:$PATH
 
 		   
 ### Product Build - PHP Driver for MongoDB
@@ -109,6 +129,12 @@ For RHEL
 For SLES
 	       
 	        echo -e "\n; PHP driver for MongoDB\nextension=mongo.so" | sudo tee -a /etc/php5/cli/php.ini
+			
+
+For Ubuntu 16.04
+
+            
+			echo -e "\n; PHP driver for MongoDB\nextension=mongo.so" | sudo tee -a  /usr/local/php/php.ini
 
 
 ### Basic validation test	  
