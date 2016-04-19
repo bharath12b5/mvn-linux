@@ -1,12 +1,12 @@
-The [MongoDB Java Driver](http://docs.mongodb.org/ecosystem/drivers/java/) is a Java program, and as such version 3.2.0 can either be downloaded directly or built for a Linux on z System running RHEL 7.1/6.6 or SLES 12/11.
+The [MongoDB Java Driver](http://docs.mongodb.org/ecosystem/drivers/java/) is a Java program, and as such version 3.2.0 can either be downloaded directly or built for a Linux on z System running RHEL 7.1/6.6 or SLES 12/11 or Ubuntu 16.04.
 
 If you wish to rebuild the jar please follow the instructions below:
 
 _**General Notes:**_
 
-i) _When following the steps below please use a standard permission user unless otherwise specified._  
-ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_  
-iii) _For convenience `vi` has been used in the instructions below when editing files, replace with your desired editing program if required._
+_i) When following the steps below please use a standard permission user unless otherwise specified._  
+_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it_  
+_iii) For convenience `vi` has been used in the instructions below when editing files, replace with your desired editing program if required._
 
 
 1. Install the build dependencies
@@ -22,6 +22,11 @@ iii) _For convenience `vi` has been used in the instructions below when editing 
     On SLES 12 systems:
     ```shell
     sudo zypper install -y git java-1_7_1-ibm-devel
+    ```
+    On Ubuntu 16.04 systems:
+    ```shell
+    sudo apt-get update
+    sudo apt-get install git openjdk-8-jdk
     ```
   Some of these packages may have been installed already - just install any that are missing.
   
@@ -129,8 +134,8 @@ The example code section given below is used to perform a basic test to ensure t
     Compile and run the test program by:
 
     ```shell
-    javac -cp /<source_root>/mongo-java-driver/build/libs/mongo-java-driver-3.2.0.jar test.java
-    java -cp /<source_root>/mongo-java-driver/build/libs/mongo-java-driver-3.2.0.jar:. test
+    javac -cp /<source_root>/mongo-java-driver/mongo-java-driver/build/libs/mongo-java-driver-3.2.0.jar test.java
+    java -cp /<source_root>/mongo-java-driver/mongo-java-driver/build/libs/mongo-java-driver-3.2.0.jar:. test
     ```
     Executing the test program should produce output similar to this (the Object Ids will vary, but typically will be consecutive):
 
