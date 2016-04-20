@@ -19,8 +19,7 @@ _iv) For convenience `vi` has been used in the instructions below when editing f
 
    RHEL 7.1 & 6.6
     ```shell
-    sudo yum install libjpeg-devel libpng-devel curl-devel cronie openssh libicu-devel libxslt-devel.s390x libicu-
-    devel.s390x
+    sudo yum install libjpeg-devel libpng-devel curl-devel cronie openssh libicu-devel libxslt-devel.s390x libicu-devel.s390x
     ```
     SLES 12
     ```shell
@@ -28,8 +27,7 @@ _iv) For convenience `vi` has been used in the instructions below when editing f
     ```
     SLES 11
     ```shell
-    sudo zypper install libjpeg-devel libpng-devel curl-devel cron openssh libmcrypt-devel libicu-devel pkg-config
-    libxslt-devel
+    sudo zypper install libjpeg-devel libpng-devel curl-devel cron openssh libmcrypt-devel libicu-devel pkg-config libxslt-devel
     ```
     _**Note:** This recipe assumes that you will be building the MySQL and Apache HTTP servers and will therefore install 
                all of the build dependencies for these._ 
