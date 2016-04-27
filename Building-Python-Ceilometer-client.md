@@ -1,12 +1,18 @@
+<!---PACKAGE:Ceilometer client--->
+<!---DISTRO:SLES 12:2.4.0--->
+<!---DISTRO:SLES 11:2.4.0--->
+<!---DISTRO:RHEL 7.1:2.4.0--->
+<!---DISTRO:RHEL 6.6:2.4.0--->
+
 # Building Python Ceilometer Client
 
-Ceilometer Client 1.5.1 has been successfully built and tested on Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Ceilometer Client 2.4.0 has been successfully built and tested on Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
 
-_**General Notes:**_
+**General Notes:**
 
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+i) When following the steps below please use a standard permission user unless otherwise specified.
 
-ii) _A directory `<source_root>` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+ii) A directory `<source_root>` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it
 
 # Building Python-Ceilometerclient
 
@@ -14,7 +20,7 @@ ii) _A directory `<source_root>` will be referred to in these instructions, this
 
  For RHEL 6.6 
  
-        sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv findutils gcc openssl-devel xz curl wget tar
+        sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv findutils gcc openssl-devel xz curl wget tar 
  
  For RHEL 7.1
 
@@ -26,7 +32,7 @@ ii) _A directory `<source_root>` will be referred to in these instructions, this
  
  For SLES 12
 
-		sudo zypper install -y git-core wget gcc python-devel zlib-devel findutils
+		sudo zypper install -y git-core wget gcc python-devel zlib-devel findutils 
 
 
 2. Install Python 2.7.9 as a dependency (For RHEL 6.6 & SLES 11 Only) 
@@ -72,22 +78,19 @@ ii) _A directory `<source_root>` will be referred to in these instructions, this
 	  
 	  RHEL 6.6/RHEL 7.1:
 		
-		sudo pip install pbr
-		sudo pip install virtualenv
+		sudo pip install pbr virtualenv
 	    
 	  
 	  SLES 11/SLES 12:
 		
-		sudo pip install funcsigs
-        sudo pip install docutils
-		sudo pip install jinja2
+		sudo pip install funcsigs docutils jinja2 extras pyrsistent unittest2 testtools
 
-4. Download the version 1.5.1 of Python-Ceilometerclient
+4. Download the version 2.4.0 of Python-Ceilometerclient
 
 		cd /<source_root>/
         git clone https://github.com/openstack/python-ceilometerclient.git
 		cd python-ceilometerclient
-        git checkout 1.5.1
+        git checkout 2.4.0
 		  
 
 		  
@@ -112,7 +115,7 @@ ii) _A directory `<source_root>` will be referred to in these instructions, this
 		sudo pip install -r test-requirements.txt
 		./run_tests.sh -N
 	
-	**NOTE:** SLES 12 reports a syntax error while installing unittest2. However, the Client successfully installs and passes all 252 tests
+	**NOTE:** SLES 12 reports a syntax error while installing unittest2. However, the Client successfully installs and passes all 255 tests
 
 
 7. Install and verify
