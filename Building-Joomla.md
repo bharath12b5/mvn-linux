@@ -5,7 +5,8 @@
 <!---DISTRO:RHEL 6.6:3.5--->
 <!---DISTRO:Ubuntu 16.x:3.5--->
 
-**Joomla** can be built for Linux on z Systems running RHEL 6, RHEL 7 ,SLES 11, SLES12 and Ubuntu 16.04 by following these instructions.  Version 3.5.1 has been successfully built & tested this way.
+
+**Joomla** can be built for Linux on z Systems running RHEL 6, RHEL 7, SLES 11, SLES 12 and Ubuntu 16.04 by following these instructions.  Version 3.5.1 has been successfully built & tested this way.
 More information on Joomla is available at https://www.joomla.org and the source code can be downloaded from http://joomlacode.org
 
 _**General Notes:**_
@@ -18,241 +19,197 @@ iii) A directory `/<source_root>/` will be referred to in these instructions.  T
 
 ## Building Joomla
 
-###Obtain pre-built dependencies and create `/<source_root>/` directory.
+### Section 1: Install dependencies
 
-1. Use the following commands to obtain dependencies
-
-    For RHEL 6.6 and RHEL 7.1
-    ```shell
-    sudo yum install git wget libjpeg-devel libpng-devel
-    ```
-    For SLES 11 and SLES 12
-    ```shell
-    sudo zypper install git wget libjpeg-devel libpng-devel
-    ```
-    For Ubuntu 16.04
-
-    ```shell
-    sudo apt-get update
-    sudo apt-get install wget apache2 mysql-server php7.0 php7.0-mysql libapache2-mod-php7.0 libapache2-mod-perl2  php7.0-cli php7.0-common php7.0-curl php7.0-dev
-    ```
-2. Create the `/<source_root>/` directory as mentioned above
-
-    ```shell
-    mkdir /<source_root>/
-	  ```
-
-###Build Apache HTTP Server for RHEL/SLES
-
-1. Building Apache HTTP Server 2.5
-	
-	To build the Apache HTTP Server, refer to the instructions [ here ](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
-
-	
-###Dependency Build -  MySQL 5.6.26 (For RHEL/SLES)
-
-1. Install MySQL following the recipe for MySQL.  Run through the steps in [ Building MySQL ](https://github.com/linux-on-ibm-z/docs/wiki/Building-MySQL) recipe up until step 2 under Post installation Setup and Testing.
-
-2. Start the DB if it is not started
-	```shell
-    sudo <mysql_installation_dir>/bin/mysqld_safe --user=mysql & 
-	```
-	
-3.  Grant access to the mysql user
-  ```shell
-cd /<mysql_installation_dir>/bin
-sudo ./mysql
-GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'localhost' IDENTIFIED BY 'mysql'; 
-exit
+* RHEL 6
+```
+sudo yum install -y httpd mysql mysql-server wget libjpeg-devel libpng-devel unzip tar gcc gcc-c++ make cmake httpd-devel libxml2 libxml2-devel
 ```
 
-###Dependency Build -  php-5.6.2 (For RHEL/SLES)
-
-1. Download the php source code, then extract it.
-	
-  ```shell
-cd /<source_root>/
-  wget http://museum.php.net/php5/php-5.6.2.tar.gz
-  tar -xzvf php-5.6.2.tar.gz
-  cd php-5.6.2
-  ``` 
-
-2. Bootstrap to configure the Makefile. Then Make and Install the utility.   
-
-  ```shell
-  ./configure --with-apxs2=/<http_build_location>/bin/apxs --with-gd --with-zlib --with-mysql=<mysql_installation_dir>
-  make
-  sudo make install
-  ```
-    **Note:**  
-i) _`<http_build_location>` is the http server installation prefix location. Default is /usr/local/apache2_  
-ii) _`<mysql_installation_dir>` is the mysql installation prefix location. Default is /usr/local/mysql_
-
-
-3. Setup  php.ini.
-
-  ```shell
-  sudo cp php.ini-development /usr/local/lib/php.ini
-  ```
+* RHEL 7
+```
+sudo yum install -y wget httpd php php-mysql mariadb mariadb-server unzip
+```
+ 
+* SLES 11
+```
+sudo zypper install -y apache2 apache2-devel tar wget gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel mysql libjpeg-devel libpng-devel unzip
+```
 	 
-4. Update the configuration
+* SLES 12
+```
+sudo zypper install -y apache2 apache2-devel tar wget mariadb gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel wget libjpeg-devel libpng-devel unzip
+```
+* Ubuntu 16.04
+```
+sudo apt-get update
+sudo apt-get install wget apache2 mysql-server php7.0 php7.0-mysql libapache2-mod-php7.0 libapache2-mod-perl2  php7.0-cli php7.0-common php7.0-curl php7.0-dev
+```
 
-    Firstly provide a php configuration:
-    ```shell
-    sudo cp php.ini-production /usr/local/lib/php.ini
-    ```
-    Secondly update the Apache configuration to support php:
-    ```shell
-    sudo vi /usr/local/apache2/conf/httpd.conf
-    ```
-    Update the config file to have the below section:
-    ```shell
-    #
-    # DirectoryIndex: sets the file that Apache will serve if a directory
-    # is requested.
-    #
-    <IfModule dir_module>
-    DirectoryIndex index.php
-    </IfModule>
-    ```
-    _**Note:** We changed `index.html` to `index.php`_  
-    
-    Update the config file to have the below section:
-    ```shell
-   #
-   # DocumentRoot: The directory out of which you will serve your
-   # documents. By default, all requests are taken from this directory, but
-   # symbolic links and aliases may be used to point to other locations.
-   #
+#####Create the `/<source_root>/` directory as mentioned above
+```
+mkdir /<source_root>/
+```
 
-    Define DOCROOT "/usr/local/apache2/htdocs"
-    DocumentRoot "${DOCROOT}"
 
-    <Directory "${DOCROOT}"> 
-    Options Indexes FollowSymLinks 
-    AllowOverride All 
-    Require all granted 
-    </Directory>
-    ```
-    _**Note:** We changed `AllowOverride None` to `AllowOverride All`. This will enable the Apache server rewrites._
-   
-   Update the config file to have the below line change :
-   
-   ```shell
-   LoadModule rewrite_module modules/mod_rewrite.so 
-   ```
-   _**Note:** Uncomment the line by removing "#" . This will load module for Apache server rewrites._
-   
-    Also append the following to the end of the config file:
-    ```shell
-    <FilesMatch \.php$>
-    SetHandler application/x-httpd-php    
-    </FilesMatch>
-    ```
-    _**Note:** This section tells Apache how to handle `.php` files, like `index.php` above_
-        
-    Finally restart the Apache HTTP server to make the configuration take effect:
-    ```shell
-    sudo /usr/local/apache2/bin/apachectl -k restart
-    ```
+#####Build and Install PHP (For RHEL 6, SLES 11 and SLES 12)
 
-### Start Apache HTTP Server and MySQL Sever (For Ubuntu 16.04)
+1 . Download PHP source code
+```
+cd /<source_root>/
+wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+tar xvzf php-5.6.8.tar.gz
+```
 
-1. Start Apache HTTP Server
-    ```shell
-    sudo /usr/sbin/apachectl  -k start
-    
-	```
+2 . Configure
 
-2. Start the DB if it is not started
-	```shell
-    sudo /usr/bin/mysqld_safe --user=mysql & 
-    
-	```
-	
-3.  Grant access to the MySQL user
-      ```shell
-    /usr/bin/mysql -u root -p
-    GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'localhost'; 
-    exit
-      
+* RHEL 6
+```
+cd /<source_root>/php-5.6.8
+./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-gd --with-zlib 
+```
+
+* SLES 11 and SLES 12
+```
+cd /<source_root>/php-5.6.8
+./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 --with-config-file-path=/usr/local/php --with-mysql --with-gd --with-zlib 
+```
+
+3 . Build PHP
+```
+cd /<source_root>/php-5.6.8
+make  
+sudo make install
+```
+
+###Section 2: Make Changes in the configuration files
+( You may require root permissions to do the changes.) 
+
+* RHEL 6:
+
+  1 . Edit configuration file `/etc/httpd/conf/httpd.conf` as follows.
+       
+   * Replace ` /var/www/html` by `/var/www/html/Joomla`
+
+   * Enable the php module by adding the below lines at the end of the configuration file.	
       ```
+      AddType application/x-httpd-php .php
 
-###Product Build -  Joomla 3.4.3
+     <IfModule dir_module>
+           DirectoryIndex index.php
+     </IfModule>
 
-1. Extract Joomla source code 
+    <FilesMatch \.php$>
+           SetHandler application/x-httpd-php
+    </FilesMatch>
+
+      ```
+  
+* RHEL 7:
+
+  1 . Edit configuration file `/etc/httpd/conf/httpd.conf` as follows.
+       
+   * Replace ` /var/www/html` by `/var/www/html/Joomla`
+
+     
+* SLES 11 and SLES 12:
+
+  1 . Edit configuration file `/etc/apache2/default-server.conf` as follows.
+       
+   * Replace ` /srv/www/htdocs` by `/srv/www/htdocs/Joomla`
+  
+  2 . Edit configuration file `/etc/apache2/httpd.conf` as follows.
+	    
+   * Comment out the below line. 	 
    
-   For RHEL and SLES
-  ```shell
-  cd /<source_root>/
-  wget http://joomlacode.org/gf/download/frsrelease/20086/162539/Joomla_3.4.3-Stable-Full_Package.tar.gz
-  sudo cp Joomla_3.4.3-Stable-Full_Package.tar.gz /<http_build_location>/htdocs
-  mkdir -p /<http_build_location>/htdocs/Joomla
-  cd  /<http_build_location>/htdocs/Joomla
-  sudo tar -zxvf Joomla_3.4.3-Stable-Full_Package.tar.gz
-  ```
-   For Ubuntu 16.04
-  ```shell
+    ```
+     Include /etc/apache2/sysconfig.d/include.conf 
+    ```
+   * Enable the php module by adding the below lines at the end of the configuration file. 
+
+    ```
+     AddType application/x-httpd-php .php
+
+     <Directory /> 
+     DirectoryIndex index.php 
+     </Directory>
+
+     LoadModule php5_module /usr/lib64/apache2/libphp5.so
+     ```
+
+
+### Section 3: Download Joomla source code and configure
+
+1 . Download and install Joomla
+
+RHEL 6, RHEL 7 and Ubuntu 16.04:
+ ```
   cd /var/www/html
   sudo mkdir Joomla
   cd Joomla
   sudo wget https://github.com/joomla/joomla-cms/releases/download/3.5.1/Joomla_3.5.1-Stable-Full_Package.zip
   sudo unzip Joomla_3.5.1-Stable-Full_Package.zip
-  ```
+  sudo chmod a+w /var/www/html/Joomla/
+```
 
-2. Move the configuration file to configuration.php 
+SLES 11 and SLES 12:
+ ```	
+ cd /srv/www/htdocs
+ sudo mkdir Joomla
+ cd Joomla
+ sudo wget -O Joomla_3.5.1-Stable-Full_Package.zip  https://github.com/joomla/joomla-cms/releases/download/3.5.1/Joomla_3.5.1-Stable-Full_Package.zip
+ sudo unzip Joomla_3.5.1-Stable-Full_Package.zip
+ sudo chmod a+w /srv/www/htdocs/Joomla/
+```
 
-  ```shell
-  cd installation
-  sudo mv configuration.php-dist configuration.php
-  ```
 
-3. Change the owner of htdocs to daemon
+2 . Rename configuration.php-dist as configuration.php 
+ ```
+ sudo mv installation/configuration.php-dist installation/configuration.php 
+ ```
 
-  ```shell
-  cd  /<http_build_location>
-  sudo chown -R daemon:daemon htdocs
-  ```
-  
-4. Install Joomla
+### Section 4: Start Apache HTTP Server and MySQL Sever
 
-    i) Start the HTTP Server (if not started)
-    
-    For RHEL/SLES
-    ```shell
-    /<http_build_location>/bin/apachectl configtest
-  	sudo /<http_build_location>/bin/apachectl -k start
-    ```
-    For Ubuntu 16.04
-    ```shell
-    sudo /usr/sbin/apachectl  -k start
-    ```    
+1. Initialize MySQL server  
 
-    ii) Start the MySQL Database (if not started)
+```
+ sudo /usr/bin/mysql_install_db --user=mysql
+```
 
-    For RHEL/SLES
-    ```shell
-    sudo <mysql_installation_dir>/bin/mysqld_safe --user=mysql &
-    ```
-    For Ubuntu 16.04
-    ```shell
-    sudo /usr/bin/mysqld_safe --user=mysql &
-    ```
+2 . Start MySQL server
+ ```
+ sudo mkdir -p /var/log/mysql (For SLES 11 and SLES 12)
+ sudo /usr/bin/mysqld_safe --user=mysql &  
+ ```
 
-	  iii) Access the Joomla install file using a browser
-	
-    ```shell
+3 . Grant privileges
+```
+ sudo /usr/bin/mysql -u root -p
+ GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'localhost'; 
+ exit
+```
+
+4 . Start Apache http server
+ ```
+ sudo /usr/sbin/httpd -D BACKGROUND   (For RHEL 6 and RHEL 7)
+ sudo /usr/sbin/httpd2 -D BACKGROUND  (For SLES 11 and SLES 12)
+ sudo /usr/sbin/apachectl -k start   (For Ubuntu 16.04)
+ ```
+
+### Section 5: Access the Joomla 3.5.1
+Access the Joomla install file using a browser
+```
   	http://<host-ip>:<port>/installation/index.php
-    ```
-     	
-    _**Note:** if you get an error like "Forbidden You don't 	have permission to access / on this server" you may need 	to update the permissions of the parent directory where 	you installed Apache HTTP Server, for example `sudo chmod 	o+x <user parent directory>`_
+ ```
+
+ _**Note:** if you get an error like "Forbidden You don't have permission to access / on this server" you may need to update the permissions of the parent directory where you installed Apache HTTP Server, for example `sudo chmod o+x <user parent directory>`_
 
 ###_[Optional]_ Post installation Setup and Testing. 
 
 1. To Manage the site content visit the index file at 
 
     ```shell
-	 http://<host-ip>:<port>/Joomla/index.php
+	 http://<host-ip>:<port>/index.php
     ```
 
 ###_[Optional]_ Clean up.
@@ -260,11 +217,10 @@ ii) _`<mysql_installation_dir>` is the mysql installation prefix location. Defau
 
     ```shell
     sudo rm -rf /<source_root>/
-    sudo rm /<http_build_location>/htdocs/Joomla_3.4.3-Stable-Full_Package.tar.gz
+    sudo rm /<http_build_location>/Joomla_3.5.1-Stable-Full_Package.zip
     ```
  
 
-	
 
 ###References:  
 http://php.net/manual/en/install.unix.apache2.php    
