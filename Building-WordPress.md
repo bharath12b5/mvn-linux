@@ -1,161 +1,153 @@
-### Building WordPress
+<!---PACKAGE:WordPress--->
+<!---DISTRO:SLES 12:4.5--->
+<!---DISTRO:SLES 11:4.5--->
+<!---DISTRO:RHEL 7.1:4.5--->
+<!---DISTRO:RHEL 6.6:4.5--->
 
-WordPress version 4.3.1 has been tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+## Building WordPress
+
+WordPress version 4.5 has been tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
 
 _**General Notes:**_ 	 
-_When following the steps below please use a standard permission user unless otherwise specified._
-	
+
+_i) When following the steps below please use a standard permission user unless otherwise specified._
+
+_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+
+_iii) For convenience vi has been used in the instructions below when editing files, replace with your desired editing program if required._	
 
 ### Section 1: Install dependencies
 
-1.  Apache (with PHP enabled)
+* RHEL6
+```
+sudo yum install httpd php php-mysql git mysql mysql-server 
+```
 
-    * RHEL7.1/6.6:
-	```
-		yum install -y httpd php* --skip-broken
-	```
-	Edit configuration file /etc/apache2/httpd.conf and make the following changes.
-	
-	Add the following line at the end of the file.
-	```
-		ServerName localhost
-	```
-	
-    * SLES12/11:
-	```
-		zypper install -y apache2 apache2-devel tar wget gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
-	```
-		
-	Edit configuration file /etc/apache2/httpd.conf and make the following changes.
-	
-	Add the following line at the end of the file.
-	```
-		ServerName localhost
-	```
-	Comment or remove the following line
-	```
-		Include /etc/apache2/sysconfig.d/include.conf
-	```
-2.  Build and install php using the following steps
-     
+* RHEL7
+```
+sudo yum install httpd php php-mysql git mariadb mariadb-server 
+```
+ 
+* SLES11
+```
+sudo zypper install apache2 apache2-devel tar wget git-core gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel mysql git
+```
+	 
+* SLES12
+```
+sudo zypper install apache2 apache2-devel tar wget git-core mariadb gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
+
+```
+Build and Install PHP (for SLES11 and SLES12)
+```
+cd <source_root>
+wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
+./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 --with-config-file-path=/usr/local/php --with-mysql 
+make  
+sudo make install
+```
+
+
+###Section 2: Make changes in the configuration file 
+( You should be root to do the below changes.) 
+
+* RHEL6 and RHEL7
+
+  1 . Edit configuration file `/etc/httpd/conf/httpd.conf` as follows.
+       
+
+   * Replace  `/var/www/html` by `/var/www/html/WordPress`
+
+   * Add the server name at the end of the configuration file.
      ```
-		wget http://www.php.net/distributions/php-5.6.8.tar.gz
-        tar xvzf php-5.6.8.tar.gz
-		cd php-5.6.8
-        ./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 --with-config-file-path=/usr/local/php --with-mysql
-         make
-         make install
-	 ```
-3.  Enable PHP module 
-
-    Add following lines in httpd.conf (Located at folder /etc/apache2 on SLES12/11 and /etc/httpd/conf on RHEL7.1/6.6)
-
-	RHEL7.1/6.6:
-	```
-		AddType application/x-httpd-php .php
-		<Directory />\n DirectoryIndex index.php \n </Directory>
-	```
-
-	SLES12/11:
-	```
-		AddType application/x-httpd-php .php"
-		<Directory />\n DirectoryIndex index.php \n </Directory>
-		LoadModule php5_module /usr/lib64/apache2/libphp5.so
-	```		
-4.  MySQL 
-
-	RHEL7.1/6.6:
-	```
-		yum install -y mysql   \
-                mariadb \
-                mariadb-server
-	```
-	SLES12
-	 ```
-		zypper install -y mariadb 
-	```
-	SLES11
-	 ```
-		zypper install -y mysql 
-	```
-	  
+     ServerName localhost
+     ```	
+   * Enable the php module by adding the below lines at the end of the configuration file.
 	
-5. Install git
-	
-	RHEL7.1/6.6:
-	```
-		yum install -y git
-	```
+      ```
+      <Directory />
+          DirectoryIndex index.php 
+      </Directory>
+      ```
+* SLES11 and SLES12
 
-	SLES12/11:
-	```
-		zypper install -y git
-	```
+  1 . Replace `/srv/www/htdocs` by `/srv/www/htdocs/WordPress` in `/etc/apache2/default-server.conf` 
 
-### Section 2: Download WordPress source code and configure
+  2 . Edit configuration file `/etc/apache2/httpd.conf` as follows.
+	    
+   * Remove below line in `/etc/apache2/httpd.conf`  	 
+   
+      ```
+       Include /etc/apache2/sysconfig.d/include.conf 
+      ```
+   * Enable php module by adding the following lines in the  `/etc/apache2/httpd.conf` file
+      ```
+       AddType application/x-httpd-php .php
 
-1.  Change to DocumentRoot and download the source in the following location
+       <Directory /> 
+             DirectoryIndex index.php 
+       </Directory>
 
-	RHEL7.1/6.6:
-	```
-	  cd /var/www/html
-	```
+       LoadModule php5_module /usr/lib64/apache2/libphp5.so
+       ```
 
-	SLES12/11:
-	```
-		cd /srv/www/htdocs 
-	```			
-        git clone -b 4.3.1 https://github.com/WordPress/WordPress.git
+### Section 3: Download WordPress source code and configure
 
-2.  Create 'WordPress' Database.
+1 . Download and install WordPress
 
-                mysql -h <DB_HOST> -uroot -p -e "create database WordPress" ;
+RHEL6 and RHEL7
+```
+cd /var/www/html
+sudo git clone https://github.com/WordPress/WordPress.git
+cd WordPress
+sudo git checkout 4.5
+```
 
-3.  Create a new mysql user.
+SLES11 and SLES12
+```	
+cd /srv/www/htdocs
+sudo git clone https://github.com/WordPress/WordPress.git
+cd WordPress
+sudo git checkout 4.5
+```
 
-                mysql -h <DB_HOST> -uroot -p -e "create user 'wpuser'@'<ip-address>' identified by 'wpwd'";
+2 . Rename `wp-config-sample.php` as `wp-config.php` 
+ ```
+ sudo mv wp-config-sample.php wp-config.php 
+ ```
 
-    To get ip-address of machine you can use following command.
+3 . Make the following changes in the `wp-config.php` file ( You may require root permissions to do the changes.) 
+```
+     * Change the 'localhost' to '127.0.0.1'
+     * Change 'database_name_here' to 'WORDPRESS'
+     * Change 'username_here' to 'Wordpress'
+     * Change 'password_here' to 'password'
+    
+```
+4 . Initialize MySQL server
+```
+sudo /usr/bin/mysql_install_db --user=mysql
+```
 
-                hostname -i
+5 . Create database and grant privileges to 'Wordpress' user	
+```
+sudo mkdir -p  /var/log/mysql(For SLES11 and SLES12)
+sudo /usr/bin/mysqld_safe --user=mysql & 
+sudo /usr/bin/mysql  -h <DB_HOST> -uroot -p -e "create database WORDPRESS" && sudo /usr/bin/mysql -h <DB_HOST> -uroot -p -e "create user 'Wordpress'@'localhost' identified by 'password'" 
+sudo /usr/bin/mysql  -h <DB_HOST> -uroot -p -e "grant all privileges on WORDPRESS.* to 'Wordpress'@'localhost' identified by 'password' with GRANT OPTION"
+```
 
-4.  Grant all privileges to new user on 'WordPress' database.
+6 . Start httpd server
+ ```
+ sudo /usr/sbin/httpd -D BACKGROUND   (For RHEL6 and RHEL7)
+ sudo /usr/sbin/httpd2 -D BACKGROUND  (For SLES11 and SLES12)
+ ```
 
-                mysql -h <DB_HOST> -uroot -p -e "grant all privileges on WordPress.* to 'wpuser'@'<ip-address>' identified by 'wpwd'";
+7 . After starting WordPress, direct your Web browser to the WordPress Admin Console at
+ ```
+ http://localhost:<port_exposed>
+ ```
 
-5.  Copy wp-config-sample.php into wp-config.php.
-	
-	RHEL7.1/6.6:
-	```
-		mv /var/www/html/WordPress/wp-config-sample.php      
-		/var/www/html/WordPress/wp-config-sample.php/wp-config.php 
-	```
-
-	SLES12/11:
-	```
-		mv /srv/www/htdocs/WordPress/wp-config-sample.php
-		/srv/www/htdocs/WordPress/wp-config.php
-	```	
-        Change Database name to WordPress in wp-config.php.
-        Change UserName to WordPress in wp-config.php
-	Change Password tp password in wp-config.php
-                 
-
-6.  Change DocumentRoot to WordPress folder
-	
-	RHEL7.1/6.6:
-	
-	    replace /var/www/html with /var/www/html/WordPress	in /etc/httpd/conf/httpd.conf
-	
-	SLES12/11:
-	    replace srv/www/htdocs with srv/www/htdocs/WordPress in /etc/apache2/default-server.conf 	
-
-
-7. Start Apache HTTP Server.
-
-      /usr/local/bin/httpd -D FOREGROUND
-
-
-### References:
-
-     https://github.com/WordPress/WordPress.git/
+#### References
+https://github.com/WordPress/WordPress.git/
