@@ -1,3 +1,9 @@
+<!---PACKAGE:Apache HTTP--->
+<!---DISTRO:SLES 12:2.4.18--->
+<!---DISTRO:SLES 11:2.4.18--->
+<!---DISTRO:RHEL 7.1:2.4.18--->
+<!---DISTRO:RHEL 6.6:2.4.18--->
+
 ###Building Apache Http Web Server
 
 Apache HTTP Web Server is available on RHEL 7.1/6.6 or SLES 12/11 but only in older versions, should you require a different version from those listed below you will need to build it.
