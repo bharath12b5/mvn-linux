@@ -1,36 +1,53 @@
+<!---PACKAGE:Kibana--->
+<!---DISTRO:RHEL 6.6:4.5.0--->
+<!---DISTRO:RHEL 7.1:4.5.0--->
+<!---DISTRO:SLES 11:4.5.0--->
+<!---DISTRO:SLES 12:4.5.0--->
+
 [Kibana](https://www.elastic.co/downloads/kibana) is an open source([Apache Licensed](https://github.com/elastic/kibana/blob/master/LICENSE.md)) analytics and visualization platform designed to work with Elasticsearch. It can easily perform advanced data analysis and visualize the data in a variety of charts, tables, and maps by searching, viewing, and interacting with data stored in Elasticsearch indices.
 
-This recipe is for building Kibana (4.3.1) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
+This recipe is for building Kibana (4.5.0) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
 
 ### Dependencies:
-   - IBM SDK for Node.js (0.12.7)
-   - Elasticsearch (2.1.x or later)
+   - IBM SDK for Node.js (0.12.7 or later)
+   - Elasticsearch (2.3.x or later)
+   - IBM Java 
 
-### Build from Release
 
+### Building Kibana
 
-1. If IBM SDK for Node.js is already installed, go to step 3; otherwise go to http://www.ibm.com/developerworks/web/nodesdk/, click `Download now` for `Linux on z Systems` and `Download Version 1.2`, follow the instruction to download IBM SDK for Node.js 64-bit version and move to Linux system.
+1. Use the following commands to obtain dependencies
 
-2. On Linux, install `Node.js`
+    For RHEL 6.6 and RHEL 7.1
+    ```shell
+    sudo yum install -y wget tar java-1.7.1-ibm-devel
+    ```
+    For SLES 11
+    ```shell
+    sudo zypper install -y wget tar java-1.7.0-ibm-devel
+    ```
+    For SLES 12
+    ```shell
+    sudo zypper install -y wget tar java-1.7.1-ibm-devel
+    ```
 
-        $ chmod +x ibm-1.2.0.5-node-v0.12.7-linux-s390x.bin
-        $ ./ibm-1.2.0.5-node-v0.12.7-linux-s390x.bin
+2. If IBM SDK for Node.js is already installed, go to step 4; otherwise go to http://www.ibm.com/developerworks/web/nodesdk/, click `Download now` for `Linux on z Systems` and `Download Version 1.2`, follow the instruction to download IBM SDK for Node.js 64-bit version and move to Linux system.
 
-     Follow screen instruction to install `Node.js` to a folder (for example <IBM_NODE_HOME>).
+3. On Linux, install `Node.js`
 
-3. Get Kibana release package and extract
+        $ chmod +x ibm-1.2.0.10-node-v0.12.12-linux-s390x.bin
+        $ ./ibm-1.2.0.10-node-v0.12.12-linux-s390x.bin
 
-        $ wget https://download.elastic.co/kibana/kibana/kibana-4.3.1-linux-x64.tar.gz
-        $ tar xvf kibana-4.3.1-linux-x64.tar.gz
+     Follow screen instruction to install `Node.js` to a folder (for example, `IBM_NODE_HOME`).
 
-    If  `wget` is not installed, perform
+4. Get Kibana release package and extract
 
-        $ yum install wget              # for RHEL or
-        $ zypper install wget           # for SLES
+        $ wget https://download.elastic.co/kibana/kibana/kibana-4.5.0-linux-x64.tar.gz
+        $ tar xvf kibana-4.5.0-linux-x64.tar.gz
+  
+5. Replace `Node.js` in the package with the installed IBM SDK for Node.js.
 
-4. Replace `Node.js` in the package with the installed IBM SDK for Node.js.
-
-        $ cd kibana-4.3.1-linux-x64
+        $ cd kibana-4.5.0-linux-x64
         $ mv node node_old         # rename the node
         $ ln -s <IBM_NODE_HOME>/ibm/node  node
 
