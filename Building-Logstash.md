@@ -3,11 +3,12 @@
 <!---DISTRO:RHEL 7.1:2.3.0--->
 <!---DISTRO:SLES 11:2.3.0--->
 <!---DISTRO:SLES 12:2.3.0--->
+<!---DISTRO:Ubuntu 16.x:2.3.0--->
 
 # Building Logstash
 [Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a build-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
 
-This recipe is for building Logstash (2.3.0) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
+This recipe is for building Logstash (2.3.0) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7/Ubuntu16.04)
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -39,6 +40,11 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 		sudo zypper install -y --type pattern Basis-Devel
         sudo zypper install -y java-1_7_0-ibm-devel wget unzip tar make gcc
 	```
+
+ *  Ubuntu 16.04
+    ```
+        sudo apt-get  install -y  ant make wget unzip tar gcc openjdk-8-jdk
+    ```
 	
  * Install appropriate version of Ant for SLES11 and RHEL6:
     ```
@@ -57,6 +63,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
         export JAVA_HOME=/usr/lib64/jvm/java (for sles12)
         export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-ibm (for sles11)
         export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm.s390x (for rhel6)
+		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x/jre (for Ubuntu)
     ```
     
  	* Set ANT PATH for RHEL6 and SLES11
