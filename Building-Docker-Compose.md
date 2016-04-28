@@ -1,5 +1,9 @@
+<!---PACKAGE:Chef Server--->
+<!---DISTRO:RHEL 7.1:1.6.2--->
+<!---DISTRO:SLES 12:1.6.2--->
+
 # Building Docker Compose
-Docker Compose 1.5.2 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1 and SLES 12
+Docker Compose 1.6.2 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1 and SLES 12
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -14,29 +18,29 @@ For RHEL7.1 :
         
 For SLES12:
 
-      sudo zypper install -y git libxslt-devel libxml2-devel python-setuptools libpipeline-devel python-lxml python-xml
+       sudo zypper install -y git libxslt-devel libxml2-devel python-setuptools libpipeline-devel python-lxml python-xml
 
 ##### 2. Install pip with easy_install
-      sudo easy_install pip
+        sudo easy_install pip
 
 ##### 3. Create a working directory as a Docker Compose installation workspace  
-      mkdir /<source_root>/
-      cd /<source_root>/
+         mkdir /<source_root>/
+         cd /<source_root>/
 
 ##### 4. Get Docker Compose source from github
-      git clone --branch 1.5.2 https://github.com/docker/compose.git
-      cd /<source_root>/compose
+        git clone --branch 1.6.2 https://github.com/docker/compose.git
+        cd /<source_root>/compose
 
 ##### 5. Build and Install Docker Compose
-      sudo pip install -r requirements.txt
-      sudo pip install -r requirements-dev.txt
+        sudo pip install -r requirements.txt
+        sudo pip install -r requirements-dev.txt
         
-      sudo python setup.py install
-
+        sudo python setup.py install
+		
 ##### 6. Verify Docker Compose version
-      docker-compose version
+        docker-compose version
         
 # References
-      https://github.com/docker/compose
-      https://docs.docker.com/compose/
+        https://github.com/docker/compose
+        https://docs.docker.com/compose/
         
