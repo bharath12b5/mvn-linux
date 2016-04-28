@@ -1,4 +1,4 @@
-<!---PACKAGE:Chef Server--->
+<!---PACKAGE:Docker Compose--->
 <!---DISTRO:RHEL 7.1:1.6.2--->
 <!---DISTRO:SLES 12:1.6.2--->
 
