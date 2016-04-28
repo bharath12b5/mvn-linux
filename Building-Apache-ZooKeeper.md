@@ -1,7 +1,12 @@
+<!---PACKAGE:Apache ZooKeeper--->
+<!---DISTRO:RHEL 6.6:3.4.8--->
+<!---DISTRO:RHEL 7.1:3.4.8--->
+<!---DISTRO:SLES 11:3.4.8--->
+<!---DISTRO:SLES 12:3.4.8--->
 
 # Building Apache ZooKeeper
 
-[Apache ZooKeeper](https://zookeeper.apache.org/) version 3.4.6 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+[Apache ZooKeeper](https://zookeeper.apache.org/) version 3.4.8 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -12,7 +17,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 * For RHEL 7.1/6.6
 
-        sudo yum install --nogpgcheck -y git tar wget ant hostname ant-junit cppunit-devel cppunit-doc hamcrest-javadoc hamcrest-demo hamcrest patch
+        sudo yum install --nogpgcheck -y git tar wget ant hostname ant-junit cppunit-devel cppunit-doc hamcrest-javadoc hamcrest-demo hamcrest patch xz libtool make
         sudo yum groupinstall -y "Development tools"
    
 
@@ -40,7 +45,11 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
            export ANT_HOME=/<source_root>/apache-ant-1.9.3
            export PATH=$PATH:$ANT_HOME/bin
         ```
-
+		
+	 * For SLES12:
+	 
+			export ANT_HOME=/usr/share/ant/
+	    
     * For SLES11 and RHEL6.6:
         ```
 			cd /<source_root>/
@@ -62,7 +71,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 		cd /<source_root>/
 		git clone https://github.com/apache/zookeeper
 		cd zookeeper
-		git checkout tags/release-3.4.6
+		git checkout tags/release-3.4.8
 	```		
 
 2. Install requirements for Build
@@ -84,7 +93,8 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 			cd /<source_root>/zookeeper/
 			ant jar
 			ant test    [optional]
-* Note: User can ignore intermittent test-case failures as it does not affect the functionality
+* Note: User can ignore intermittent test-case failures as it does not affect the functionality.
+        
 
 ## References:
 
