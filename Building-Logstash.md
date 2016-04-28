@@ -1,10 +1,18 @@
-# Building Logstash
-[Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a built-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
+<!---PACKAGE:Logstash--->
+<!---DISTRO:RHEL 6.6:2.3.0--->
+<!---DISTRO:RHEL 7.1:2.3.0--->
+<!---DISTRO:SLES 11:2.3.0--->
+<!---DISTRO:SLES 12:2.3.0--->
 
-This recipe is for building Logstash (2.1.0) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
+# Building Logstash
+[Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a build-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
+
+This recipe is for building Logstash (2.3.0) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7)
 
 _**General Notes:**_ 	 
-_When following the steps below please use a standard permission user unless otherwise specified._
+i) _When following the steps below please use a standard permission user unless otherwise specified._
+
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 
 ### 1. Dependencies:
@@ -12,23 +20,24 @@ _When following the steps below please use a standard permission user unless oth
  *	RHEL7:
 
 	```
-		yum install -y java-1.7.0-openjdk ant make wget unzip tar gcc
+		sudo yum install -y java-1.7.0-openjdk ant make wget unzip tar gcc
 	```
  *	RHEL6:
 	```
-		yum install -y java-1.7.1-ibm-devel.s390x wget make unzip gcc tar
+		sudo yum install -y java-1.7.1-ibm-devel.s390x wget make unzip gcc tar
 	```
 
  *	SLES12:
 	```
-		zypper install -y --type pattern Basis-Devel
-		zypper install -y java-1_7_0-openjdk ant make wget unzip gcc
+		sudo zypper install -y --type pattern Basis-Devel
+		sudo zypper install -y java-1_7_0-openjdk ant make wget unzip gcc
 	```
 	
  *	SLES11:
 	```
-		zypper install -y --type pattern Basis-Devel
-        zypper install -y java-1_7_0-ibm-devel wget unzip tar make gcc
+        sudo zypper update
+		sudo zypper install -y --type pattern Basis-Devel
+        sudo zypper install -y java-1_7_0-ibm-devel wget unzip tar make gcc
 	```
 	
  * Install appropriate version of Ant for SLES11 and RHEL6:
@@ -57,12 +66,14 @@ _When following the steps below please use a standard permission user unless oth
  2. Get Logstash release package and unzip it
 
    ```
-       wget https://download.elastic.co/logstash/logstash/logstash-2.1.0.zip
-       unzip -u logstash-2.1.0.zip
+       cd /<source_root>/
+       wget https://download.elastic.co/logstash/logstash/logstash-2.3.0.zip
+       unzip -u logstash-2.3.0.zip
    ```
- 3. Jruby runs on JVM and needs a native library (libjffi-1.2.so: java foreign language interface). Get `jffi` source code and build it with `ant`
+ 3. Jruby runs on JVM and needs a native library (libjffi-1.2.so: java foreign language interface). Get `jffi` source code and build with `ant`
 
 	```
+       cd /<source_root>/
        wget https://github.com/jnr/jffi/archive/master.zip
        mv master master.zip (Only for SLES11)
        unzip  master.zip 
@@ -72,14 +83,15 @@ _When following the steps below please use a standard permission user unless oth
 	
  4.  Copy libjffi-1.2.so to Logstash folder
     ```
-       mkdir logstash-2.1.0/vendor/jruby/lib/jni/s390x-Linux
+       cd /<source_root>/
+       mkdir logstash-2.3.0/vendor/jruby/lib/jni/s390x-Linux
        cp jffi-master/build/jni/libjffi-1.2.so \
-       logstash-2.1.0/vendor/jruby/lib/jni/s390x Linux/libjffi-1.2.so
+       logstash-2.3.0/vendor/jruby/lib/jni/s390x-Linux/libjffi-1.2.so
     ```
 
  5. Run Logstash
    ```
-      cd logstash-2.1.0
+      cd /<source_root>/logstash-2.3.0
       bin/logstash version
    ```
 
