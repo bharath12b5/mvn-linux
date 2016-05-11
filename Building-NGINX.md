@@ -1,6 +1,13 @@
+<!---PACKAGE:NGINX--->
+<!---DISTRO:RHEL 6.6:1.10.0--->
+<!---DISTRO:RHEL 7.1:1.10.0--->
+<!---DISTRO:SLES 11:1.10.0--->
+<!---DISTRO:SLES 12:1.10.0--->
+<!---DISTRO:Ubuntu 16.x:1.10.0--->
+
 # Building NGINX
 
-NGINX version 1.8.0 has been successfully built and tested for RHEL 6.6/7.1 and SLES 11/12.
+NGINX version 1.10.0 has been successfully built and tested for RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 _i) When following the steps below please use a standard permission user unless otherwise specified._
@@ -8,7 +15,7 @@ _i) When following the steps below please use a standard permission user unless 
 _ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 
-## Downloading, Building and Installing NGINX 1.8.0
+## Downloading, Building and Installing NGINX 1.10.0
 
 1.  Install dependencies as needed for the specific platform
 
@@ -28,16 +35,23 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ```source-shell
     sudo zypper install -y pcre-devel wget tar gcc make zlib-devel
     ```
+	
+    Ubuntu 16.04
+
+    ```source-shell
+	sudo apt-get update
+    sudo apt-get install -y  wget tar gcc make libpcre3-dev openssl libssl-dev
+    ``` 
     
 
-2.  Download and unpack the NGINX 1.8.0 source package
+2.  Download and unpack the NGINX 1.10.0 source package
 
     ```source-shell
 	mkdir /<source_root>/
     cd /<source_root>/
-    wget http://nginx.org/download/nginx-1.8.0.tar.gz
-    tar xvf nginx-1.8.0.tar.gz
-    cd nginx-1.8.0
+    wget http://nginx.org/download/nginx-1.10.0.tar.gz
+    tar xvf nginx-1.10.0.tar.gz
+    cd nginx-1.10.0
     ```
 
 3.  Build and install NGINX
@@ -62,7 +76,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     For example, this simple HTML document provides a bare minimum of text:
 
     ```text-html-basic
-    DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
     <html>
     <head>
      <title>Test HTML File</title>
