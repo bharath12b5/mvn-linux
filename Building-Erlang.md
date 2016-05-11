@@ -1,17 +1,24 @@
+<!---PACKAGE:Erlang--->
+<!---DISTRO:RHEL 6.6:18.3--->
+<!---DISTRO:RHEL 7.1:18.3--->
+<!---DISTRO:SLES 11:18.3--->
+<!---DISTRO:SLES 12:18.3--->
+<!---DISTRO:Ubuntu 16.x:Distro--->
+
 # Building Erlang
 
-The [Erlang/OTP 18.2.1](http://www.erlang.org/download_release/30) can be built on SLES 11/12 and RHEL 6.6/7.1 IBM Linux on z Systems as follows :-
+The [Erlang/OTP 18.3](http://www.erlang.org/downloads/18.3) can be built on SLES 11/12 and RHEL 6.6/7.1 IBM Linux on z Systems as follows :-
 
 _**General Notes:**_ 	 
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+_i) When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._ 
+_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._ 
 
  1. Install the build dependencies:
 
       (SLES 11)
      ```
-     sudo zypper install java-1_7_0-ibm java-1_7_0-ibm-devel wget tar make perl gcc gcc-c++ libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel
+    sudo zypper install java-1_7_0-ibm java-1_7_0-ibm-devel wget tar make perl gcc gcc-c++ libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel
      ```
 
       (SLES 12)
@@ -26,19 +33,19 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  2. Move to a working directory with write permission to build Erlang in:
  
       ```
-     cd /<source_root>/
+      cd /<source_root>/
       ```
  3. Download the Erlang/OTP source code from Erlang's official website:
      ```
-     wget http://www.erlang.org/download/otp_src_18.2.1.tar.gz
+     wget http://www.erlang.org/download/otp_src_18.3.tar.gz
      ```
 
- **Note:** *otp_src_18.2.1 was available at the time of writing, paths and filenames can vary, dependent on release.*
+ **Note:** *otp_src_18.3 was available at the time of writing, paths and filenames can vary, dependent on release.*
 
  4. Untar the source code and step down into a new working directory:
      ```
-     tar zxf otp_src_18.2.1.tar.gz
-     cd otp_src_18.2.1
+     tar zxf otp_src_18.3.tar.gz
+     cd otp_src_18.3
      export ERL_TOP=$(pwd)
      ```
  **Note:** *The export variable ERL_TOP must be set exactly as shown to allow the tests to function correctly.*
@@ -54,15 +61,15 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
      ```
 	You should see a shell as shown below:
 
- 	 > Erlang/OTP 18 [erts-7.2.1] [source] [64-bit] [smp:4:4] [async-threads:10] [kernel-poll:false]
+ 	 > Erlang/OTP 18 [erts-7.3] [source] [64-bit] [smp:4:4] [async-threads:10] [kernel-poll:false]
 
- 	 >Eshell V7.2.1  (abort with ^G)
+ 	 >Eshell V7.3  (abort with ^G)
  	
-  	**Note:** *To exit from the shell type \<ctrl\>-G,and then, once User switch command is 	displayed type q then return.*
+  	**Note:** *To exit from the shell type \<ctrl\>-G, and then, once User switch command is displayed type q then return.*
 
  7. OPTIONAL Run the smoke tests:
     ```
-     cd /<source_root>/otp_src_18.2.1 
+     cd /<source_root>/otp_src_18.3 
      make release_tests
      cd release/tests/test_server
      $ERL_TOP/bin/erl -s ts install -s ts smoke_test batch -s init stop
@@ -85,7 +92,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
  9. If no error is found in the smoke tests, install Erlang:
      ```
-     cd /<source_root>/otp_src_18.2.1 
+     cd /<source_root>/otp_src_18.3 
      sudo make install
      ```
      
