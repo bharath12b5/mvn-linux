@@ -1,6 +1,6 @@
 # Building PostgreSQL
 
-[PostgreSQL version 9.5](http://www.postgresql.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for SLES 11/12 and RHEL 6.6/7.1.
+[PostgreSQL version 9.5.2](http://www.postgresql.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for SLES 11/12 and RHEL 6.6/7.1 .
 
 _**General Notes:**_ 	 
 _i) When following the steps below please use a standard permission user unless otherwise specified._
@@ -11,7 +11,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
       (SLES 11/12)
      ```
-    sudo zypper in -y git gcc gcc-c++ make readline-devel zlib-devel bison flex
+    sudo zypper in -y git gcc  gcc-c++ make readline-devel  zlib-devel bison flex
     ```
 
        (RHEL 6.6/7.1)
@@ -20,15 +20,14 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
       ```
 2. Create postgres user, group and home directory:
  	
-    RHEL 6.6/7.1 ,SLES 11/12 
      ```
     sudo groupadd -r postgres 
 	sudo useradd -r -m -g postgres postgres
 	sudo passwd postgres
      ```
-    
-	 **Note:** *Password for SLES11 should be up to 7 characters.Please note that `/usr/sbin` is available in `PATH` environment variable.*
 	 
+    **Note:** *Password for SLES11 should be up to 7 characters. Please note that `/usr/sbin` is available in `PATH` environment variable.*
+	
 3. Build and install PostgreSQL:
  	  * Download PostgreSQL source code from github:
   
@@ -37,7 +36,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
          cd /home/postgres
          git clone https://github.com/postgres/postgres.git 
          cd postgres/
-         git checkout REL9_5_0
+         git checkout REL9_5_2
          ```   
      
    		 **Note:** *Login as postgres user and download the source in postgres home directory.* 
@@ -60,6 +59,8 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
        sudo make install
 	   export PATH=$PATH:/usr/local/pgsql/bin
        ``` 
+	 **Note:** *Please make sure the postgres user directory has sufficient read and execute permissions when executing.* 
+	   
 4. Set up PostgreSQL server: 
     * Create PostgreSQL data directory to store data and make postgres user as the owner:
 	
@@ -73,7 +74,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
         su postgres -s /bin/bash
         /usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data/
         ```	
-     **Note:** *Please make sure the directory `/usr/local/` has sufficent read and execute permissions when initializing.*   
+     **Note:** *Please make sure the directory `/usr/local/` has sufficient read and execute permissions when initializing.*   
        
     * Start the PostgreSQL server:
         ```
