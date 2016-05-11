@@ -1,11 +1,11 @@
 <!---PACKAGE:Docker Distribution--->
-<!---DISTRO:SLES 12:2.3.0--->
-<!---DISTRO:RHEL 7.1:2.3.0--->
-<!---DISTRO:Ubuntu 16.x:2.3.0--->
+<!---DISTRO:SLES 12:2.4.0--->
+<!---DISTRO:RHEL 7.1:2.4.0--->
+<!---DISTRO:Ubuntu 16.x:2.4.0--->
 
 # Building Docker Distribution
 
-Docker Distribution 2.3.0 can be built and tested on Linux on z Systems (RHEL 7.1, SLES 12 and Ubuntu 16.04) by following these instructions.
+Docker Distribution 2.4.0 can be built and tested on Linux on z Systems (RHEL 7.1, SLES 12 and Ubuntu 16.04) by following these instructions.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -34,14 +34,14 @@ Following are the build dependencies for Distribution.
             
 *	For RHEL7, SLES12: To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe.
 
-##### Step 2 : Get the source (checkout v2.3.0 release)
+##### Step 2 : Get the source (checkout v2.4.0 release)
 *	Create a distribution directory and clone the source code there.
 			
 			mkdir -p /<source_root>/src/github.com/docker
 			cd /<source_root>/src/github.com/docker
 			git clone https://github.com/docker/distribution.git
 			cd /<source_root>/src/github.com/docker/distribution
-			git checkout v2.3.0
+			git checkout v2.4.0
             
 ##### Step 3 : Set environment variable
 *	Set DISTRIBUTION_DIR environment variable. 
@@ -78,7 +78,7 @@ The filesystem location at which docker registry stores the images is by default
 			
 *	Use the below command to start docker registry
 
-			/<source_root>/bin/registry $DISTRIBUTION_DIR/cmd/registry/config.yml
+			/<source_root>/bin/registry serve $DISTRIBUTION_DIR/cmd/registry/config.yml
 
 
 
