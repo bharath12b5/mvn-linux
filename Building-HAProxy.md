@@ -1,12 +1,13 @@
 <!---PACKAGE:HAProxy--->
-<!---DISTRO:SLES 12:1.6.3--->
-<!---DISTRO:SLES 11:1.6.3--->
-<!---DISTRO:RHEL 7.1:1.6.3--->
-<!---DISTRO:RHEL 6.6:1.6.3--->
+<!---DISTRO:SLES 12:1.6.4--->
+<!---DISTRO:SLES 11:1.6.4--->
+<!---DISTRO:RHEL 7.1:1.6.4--->
+<!---DISTRO:RHEL 6.6:1.6.4--->
+<!---DISTRO:Ubuntu 16.x:1.6.4--->
 
 # Building HAProxy
 
-[HAProxy version 1.6.3](http://www.haproxy.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6/7.1 and SLES 11/12.
+[HAProxy version 1.6.4](http://www.haproxy.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6/7.1 and SLES 11/12 and Ubuntu 16.04
 
 
 _**General Notes:**_ 	 
@@ -26,21 +27,25 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
      ```
     sudo zypper install  wget tar make  gcc
      ```
+	 
+	 (Ubuntu 16.04)
+     ```
+	 sudo apt-get update
+     sudo apt-get install  wget tar make  gcc
+     ```
 2.  Download and unpack the required HAProxy source package
 
         cd /<source_root>/
-        wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.3.tar.gz
-        tar xzvf haproxy-1.6.3.tar.gz
-        cd haproxy-1.6.3/
+        wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.4.tar.gz
+        tar xzvf haproxy-1.6.4.tar.gz
+        cd haproxy-1.6.4/
 
 3.  Build and install HAProxy
 
         make TARGET=linux26
         sudo make install
 
-4.  **Optional** 
-
-	HAProxy will be installed in /usr/local/sbin; depending upon user preferences and conventions, it may be necessary to either update PATH or create links to the executable files.
+    **Note:** HAProxy will be installed in `/usr/local/sbin`. Depending upon user preferences and conventions, it may be necessary to either update PATH or create links to the executable files.
 
 ## Simple Round-Robin Load Balancing Test
 
