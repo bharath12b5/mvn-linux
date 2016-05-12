@@ -1,19 +1,21 @@
 <!---PACKAGE:Apache HTTP--->
-<!---DISTRO:SLES 12:2.4.18--->
-<!---DISTRO:SLES 11:2.4.18--->
-<!---DISTRO:RHEL 7.1:2.4.18--->
-<!---DISTRO:RHEL 6.6:2.4.18--->
+<!---DISTRO:SLES 12:2.4.20--->
+<!---DISTRO:SLES 11:2.4.20--->
+<!---DISTRO:RHEL 7.1:2.4.20--->
+<!---DISTRO:RHEL 6.6:2.4.20--->
+<!---DISTRO:Ubuntu 16.x:2.4.20--->
 
 ###Building Apache Http Web Server
 
-Apache HTTP Web Server is available on RHEL 7.1/6.6 or SLES 12/11 but only in older versions, should you require a different version from those listed below you will need to build it.
+Apache HTTP Web Server is available on RHEL 7.1/6.6 or SLES 12/11 or Ubuntu 16.04. Should you require a different version from those listed below you will need to build it.
 
 *    RHEL 7.1 has `2.4.6`
 *    RHEL 6.6 has `2.2.15`
 *    SLES 12 has `2.4.10`
 *    SLES 11.3 has `2.2.12`
+*    Ubuntu 16.04 has `2.4.18`
 
-The **Apache HTTP** web server can be built for Linux on z Systems running RHEL 7.1/6.6 or SLES 12/11 by following these instructions. Version 2.4.18 has been successfully built & tested this way.
+The **Apache HTTP** web server can be built for Linux on z Systems running RHEL 7.1/6.6 or SLES 12/11 or Ubuntu 16.04 by following these instructions. Version 2.4.20 has been successfully built & tested this way.
 
 **General Notes:**
 
@@ -38,13 +40,17 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 	For SLES 11
 	
 	    sudo zypper install git gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel wget tar
+	
+	For Ubuntu 16.04
+	   
+		sudo apt-get install git python openssl gcc autoconf make libtool-bin libpcre3-dev libxml2  libexpat1 libexpat1-dev wget tar 
 
 2. Build Openssl 1.0.2 (SLES 11 Only)
     
 		cd /<source_root>/
-		wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
-		tar zxf openssl-1.0.2g.tar.gz
-		cd openssl-1.0.2g
+		wget ftp://openssl.org/source/openssl-1.0.2h.tar.gz
+		tar zxf openssl-1.0.2h.tar.gz
+		cd openssl-1.0.2h
 		./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
 		make
 		sudo make install		
@@ -67,7 +73,7 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 		cd /<source_root>/
 		git clone https://github.com/apache/httpd.git 
 		cd httpd
-		git checkout 2.4.18
+		git checkout 2.4.20
 		cd srclib
 		git clone https://github.com/apache/apr.git
 
