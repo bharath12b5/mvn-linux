@@ -25,6 +25,7 @@ Rocksdb is an open source DB software used by Open Ledger.
 
     git clone https://github.com/facebook/rocksdb.git
     cd  rocksdb
+    git checkout v4.1
     sed -i -e "s/-march=native/-march=z196/" build_tools/build_detect_platform
     sed -i -e "s/-momit-leaf-frame-pointer/-DDUMMY/" Makefile
     make shared_lib
