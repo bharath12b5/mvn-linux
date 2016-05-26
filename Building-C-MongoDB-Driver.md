@@ -36,7 +36,7 @@ iv) Version 1.3.x refers to the current stable version of 1.3 branch releases. A
   
   For **Ubuntu 16.04**
   ```
-  sudo apt-get install update
+  sudo apt-get update
   sudo apt-get install autoconf automake gcc libtool make wget pkg-config
   ```
  
