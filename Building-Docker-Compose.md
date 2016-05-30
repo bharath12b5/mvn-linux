@@ -1,9 +1,15 @@
 <!---PACKAGE:Docker Compose--->
-<!---DISTRO:RHEL 7.1:1.6.2--->
-<!---DISTRO:SLES 12:1.6.2--->
+<!---DISTRO:RHEL 7.1:1.7.1--->
+<!---DISTRO:SLES 12:1.7.1--->
+<!---DISTRO:Ubuntu 16.x:1.7.1--->
 
 # Building Docker Compose
-Docker Compose 1.6.2 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1 and SLES 12
+
+Below versions of Docker Compose are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `1.5.2`
+
+The instructions provided below specify the steps to build Docker Compose version 1.7.1 on Linux on the IBM z Systems for RHEL 7, SLES 12.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -11,12 +17,12 @@ i) _When following the steps below please use a standard permission user unless 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ##### 1. Install the following Dependencies
-For RHEL7.1 :
+For RHEL7.1 
 
       sudo yum update -y -qq
       sudo yum install -y git python-setuptools net-tools openssl-devel libffi-devel libxslt-devel libxml2-devel
         
-For SLES12:
+For SLES12
 
        sudo zypper install -y git libxslt-devel libxml2-devel python-setuptools libpipeline-devel python-lxml python-xml
 
@@ -28,7 +34,7 @@ For SLES12:
          cd /<source_root>/
 
 ##### 4. Get Docker Compose source from github
-        git clone --branch 1.6.2 https://github.com/docker/compose.git
+        git clone --branch 1.7.1 https://github.com/docker/compose.git
         cd /<source_root>/compose
 
 ##### 5. Build and Install Docker Compose
