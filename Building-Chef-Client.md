@@ -1,19 +1,26 @@
-## Building Chef Client 12.7.2
+<!---PACKAGE:Elasticsearch--->
+<!---DISTRO:SLES 12:12.9--->
+<!---DISTRO:SLES 11:12.9--->
+<!---DISTRO:RHEL 7.1:12.9--->
+<!---DISTRO:RHEL 6.6:12.9--->
+<!---DISTRO:Ubuntu 16.x:12.9--->
 
-The Chef Client 12.7.2 code can be built for a Linux on z System running RHEL 7.1/6.6 or SLES 12/11 by following these instructions (Chef is available at https://www.chef.io/ and the github repository for the client can be found at https://github.com/chef/chef):
+## Building Chef Client 12.9.38
+
+The Chef Client 12.9.38 code can be built for a Linux on z System running RHEL 7.1/6.6, SLES 12/11 and Ubuntu 16.04 by following these instructions (Chef is available at https://www.chef.io/ and the github repository for the client can be found at https://github.com/chef/chef):
 
 _**General Notes:**_   
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
 _ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
 
-## Building Chef Client on RHEL 7.1/6.6, SLES 12/11
+## Building Chef Client on RHEL 7.1/6.6, SLES 12/11, UBUNTU 16.04
 
 1. Install the build dependencies
 
     For RHEL 7.1 
     ```
-    sudo yum install -y git ruby ruby-devel rubygems rubygem-bundler gcc make wget which tar
+    sudo yum install -y git gcc make wget tar bison flex openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite-devel which
     ```
 	
     For RHEL 6.6 
@@ -28,22 +35,27 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
     For SLES 12
     ```
-    sudo zypper install -y git ruby2.1 ruby2.1-devel ruby2.1-rubygem-bundler gcc make which tar    
+    sudo zypper install -y git gcc make wget tar bison flex libopenssl-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel tcl-devel tk-devel sqlite3-devel
     ```
+	
+	For Ubuntu 16.04
+	```
+	sudo apt-get install -y git make gcc make wget build-essential zlib1g zlib1g-dev libssl-dev libreadline-dev libgdbm-dev
+	```
 
 2. For SLES 11 you will need to build Openssl  
 
     ```
     cd /<source_root>/
-    wget ftp://openssl.org/source/openssl-1.0.2g.tar.gz
-    tar zxf openssl-1.0.2g.tar.gz
-    cd openssl-1.0.2g
+    wget ftp://openssl.org/source/openssl-1.0.2h.tar.gz
+    tar zxf openssl-1.0.2h.tar.gz
+    cd openssl-1.0.2h
     ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
     make
     sudo make install
     ```
     
-3. For RHEL 6.6 and SLES 11 you will need Ruby 2.2.4
+3. Build Ruby 2.2.4
    
    3.1. Download the source code
    ```
@@ -55,10 +67,10 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 	
   For SLES 11
   ```
-  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2g' --with-openssl-include=/<source_root>/openssl-1.0.2g/include --with-openssl-dir=/usr/
+  ./configure LDFLAGS='-L/<source_root>/openssl-1.0.2h' --with-openssl-include=/<source_root>/openssl-1.0.2h/include --with-openssl-dir=/usr/
   ```
 	  
-  For RHEL 6.6
+  For RHEL 6.6, RHEL 7.1, SLES12 and Ubuntu 16.04
   ```
   ./configure
   ```
@@ -81,10 +93,10 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ```
     git clone https://github.com/chef/chef.git
     cd chef
-    git checkout 12.7.2
+    git checkout v12.9.38
     ```
 
-6. Skip this step if you are on RHEL 7.1, on all other OS correct the gem environment for a standard user
+6. Correct the gem environment for a standard user
 
     ```
     export GEM_HOME=/home/<USER>/.gem/ruby
@@ -98,7 +110,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 7. Install the required version of the bundler ruby gem
 
    ```
-   gem install bundler -v '1.7.3'
+   gem install bundler -v '1.11.2'
    ```
 	
 8. Use bundler to install Chef Client's ruby gem dependencies
@@ -125,9 +137,12 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
    ls pkg/*.gem | grep -v mingw32 | xargs gem install
    ```    
    
-11. Chef client is now built and installed (verify with chef-client or knife)
+11. Chef client is now built and installed 
 
-
+   ```
+   chef-client -version
+   ```    
+   
 ## Testing Chef Client
 
 If you'd like to test the Chef client you've just built and installed, just follow the steps below:
@@ -162,28 +177,8 @@ If you'd like to test the Chef client you've just built and installed, just foll
    require_relative 'tasks/rspec'
    ```
 
-2. Notes on Verification Test Failures (not specific to Linux on z Systems)  
-   1. If test case "chef-client when the chef repo has a cookbook with a no-op recipe should complete successfully with no other environment variables" fails, edit the file
-
-   		``` vi ./spec/integration/client/client_spec.rb```  
-        
-        the following line of code
-        
-        ```let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }```
-        
-        can be changed to: 
-        	
-        For RHEL6/7 & SLES11
-		``` 
-		let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH GEM_HOME).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
-		```
-        
-        For SLES12
-		``` 
-		let(:critical_env_vars) { %w(PATH RUBYOPT BUNDLE_GEMFILE GEM_PATH GEM_HOME HOME).map {|o| "#{o}=#{ENV[o]}"} .join(' ') }
-		```
-		
-3. Visit https://github.com/chef/chef#testing for more   
+	
+2. Visit https://github.com/chef/chef#testing for more   
 
 ## References:
 
