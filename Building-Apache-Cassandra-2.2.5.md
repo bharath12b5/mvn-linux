@@ -9,18 +9,18 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ### Building Apache Cassandra 2.2.5 with OpenJDK
 
-The following build instructions have been tested with Apache Cassandra 2.2.5 on Linux on Z Systems with Java OpenJDK.
+The following build instructions have been tested with Apache Cassandra 2.2.5 on Linux on Z Systems with OpenJDK 1.8.
 
 ### Step 1: Install the dependencies
 
-* RHEL 7.1:
+* RHEL 7.2:
 ```
 sudo yum install -y git which java-1.8.0-openjdk-devel.s390x gcc-c++ make automake autoconf libtool libstdc++-static tar wget patch words libXt-devel libX11-devel
 
 ```
-* SLES12:
+* SLES12 (SP1):
 ```
-sudo zypper install -y java-1_7_0-openjdk-devel git which gcc-c++ make automake autoconf libtool libstdc++-devel tar wget patch words libXt-devel libX11-devel unzip xorg-x11-proto-devel xorg-x11-devel alsa-devel cups-devel libstdc++6-locale glibc-locale
+sudo zypper install -y java-1_8_0-openjdk-devel git which gcc-c++ make automake autoconf libtool libstdc++-devel tar wget patch words libXt-devel libX11-devel unzip xorg-x11-proto-devel xorg-x11-devel alsa-devel cups-devel libstdc++6-locale glibc-locale
  
 ```
 * Ubuntu 16.04:
@@ -52,8 +52,8 @@ cd /<source_root>/
 git clone https://github.com/xerial/snappy-java.git
 cd snappy-java
 git checkout develop
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk (Only for RHEL 7.1)
-export JAVA_HOME=/usr/lib64/jvm/java-1.7.0 (Only for SLES12)
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk (Only for RHEL 7.2)
+export JAVA_HOME=/usr/lib64/jvm/java-1.8.0 (Only for SLES12 (SP1))
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x (Only for Ubuntu 16.04)
 make IBM_JDK_7=1 USE_GIT=1 GIT_SNAPPY_BRANCH=master GIT_REPO_URL=https://github.com/google/snappy.git
 ```        
@@ -66,48 +66,50 @@ git checkout cassandra-2.2.5
 ```        
 * Replace the original Snappy-Java jar file in the lib folder with installed Snappy-Java:
 ```
-rm /<source_root>/cassandra/lib/snappy-java-1.1.1.7.jar
-cp /<source_root>/snappy-java/target/snappy-java-1.1.3-SNAPSHOT.jar /<source_root>/cassandra/lib/snappy-java-1.1.3.jar
+    rm /<source_root>/cassandra/lib/snappy-java-1.1.1.7.jar
+    cp /<source_root>/snappy-java/target/snappy-java-1.1.3-SNAPSHOT.jar /<source_root>/cassandra/lib/snappy-java-1.1.3.jar
 ```    
-* Build jna:
+* Build JNA:
 
 ```
-cd /<source_root>/
-git clone https://github.com/java-native-access/jna.git
-cd jna
-ant
-cp /<source_root>/jna/build/jna.jar /<source_root>/cassandra/lib/jna.jar
-rm /<source_root>/cassandra/lib/jna-4.0.0.jar
+    cd /<source_root>/
+    git clone https://github.com/java-native-access/jna.git
+    cd jna
+    ant
+    cp /<source_root>/jna/build/jna.jar /<source_root>/cassandra/lib/jna.jar
+    rm /<source_root>/cassandra/lib/jna-4.0.0.jar
 ```
 * Build Apache Cassandra:
 ```
-cd /<source_root>/cassandra
-ant
+    cd /<source_root>/cassandra
+    ant
 ```  
 
 _*Note:* The Apache Cassandra jar file is available under the bin folder._
 
+    
 ### Step 6: Run unit tests
 
 **Set IBM java at run time (Optional)**
 
 _*Note:*_ 
-_Use below commands to install IBM Java 1.7 and set it to Java Runtime Environment. Setting IBM Java for tests will be needed if user needs speed in executing the test suite. User may get affected by lack of Oracle's GC functionality in IBM Java and may get additional test failures or issues while running Cassandra. Test case results shown below are executed using openjdk , results may vary if using IBM java_.
+_Use below commands to install IBM Java 1.8 and set it to Java Runtime Environment. Setting IBM Java for tests will be needed if user needs speed in executing the test suite. User may get affected by lack of Oracle's GC functionality in IBM Java. Test case results shown below are executed using openjdk 1.8, results may vary if using IBM java_.
 
-* RHEL 7:
+* RHEL 7.2:
 ```
-yum install java-1.7.1-ibm-devel.s390x
-export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm-1.7.1.3.10-1jpp.1.el7_1.s390x
-update-alternatives --config java    (Enter number to select IBM Java 1.7) 
+    yum install java-1.8.0-ibm-devel.s390x
+    export JAVA_HOME=/usr/lib/jvm/java-1.8.0-ibm-1.8.0.3.0-1jpp.1.el7.s390x/
+    update-alternatives --config java    (Enter number to select IBM Java 1.8) 
 ```
-* SLES 12:
+* SLES 12 (SP1):
 ```
-zypper install java-1_7_1-ibm-devel java-1_7_1-ibm-jdbc java-1_7_1-ibm
-export JAVA_HOME=/usr/lib64/jvm/java-1.7.1-ibm
-update-alternatives --config java   (Enter number to select IBM Java 1.7)
+    zypper install java-1_8_0-ibm-devel
+    export JAVA_HOME=/usr/lib64/jvm/java-1.8.0-ibm-1.8.0/
+    update-alternatives --config java   (Enter number to select IBM Java 1.8)
 ```
 
 **Run Cassandra test suite**
+
 ```
 cd /<source_root>/cassandra/
 ant test
@@ -117,14 +119,14 @@ _Ignore `LegacySSTableTest` failure as it is not related to Linux on z systems, 
 
 *  Replace time out value in build.xml file as shown below to avoid timeout error for multiple test cases.
 ```
-        Older Value:
-        <property name="test.timeout" value="240000" />
-        <property name="test.long.timeout" value="600000" />
-        <property name="test.burn.timeout" value="600000" /> 
-        New Value:
-        <property name="test.timeout" value="600000" />
-        <property name="test.long.timeout" value="600000" />
-        <property name="test.burn.timeout" value="600000" /> 
+    Older Value:
+    <property name="test.timeout" value="240000" />
+    <property name="test.long.timeout" value="600000" />
+    <property name="test.burn.timeout" value="600000" /> 
+    New Value:
+    <property name="test.timeout" value="600000" />
+    <property name="test.long.timeout" value="600000" />
+    <property name="test.burn.timeout" value="600000" /> 
 ```
 
 * Set per thread memory to higher value for cql-tests to execute smoothly or to avoid test case failure due to timeout and memory error 
@@ -132,20 +134,29 @@ _Ignore `LegacySSTableTest` failure as it is not related to Linux on z systems, 
 
 *  Try to run failed test case individually using below command.
 ```
-        e.g.
-        ant test -Dtest.name=KeyCacheCqlTest
+    e.g.
+    ant test -Dtest.name=KeyCacheCqlTest
 ```
 *  Apply below patch in case of TimeTypeTest and CompressorTest failed.
 ```
-        wget https://issues.apache.org/jira/secure/attachment/12783543/11054-3.0.patch
-        patch -p1 < 11054-3.0.patch	
+    wget https://issues.apache.org/jira/secure/attachment/12783543/11054-3.0.patch
+    patch -p1 < 11054-3.0.patch	
 ```
 *  Apply below patch in case of NativeCellTest failed.
 ```
-         wget https://issues.apache.org/jira/secure/attachment/12789190/11214-cassandra-3.0.txt        
-         patch -p1 < 11214-cassandra-3.0.txt	
+    wget https://issues.apache.org/jira/secure/attachment/12789190/11214-cassandra-3.0.txt        
+    patch -p1 < 11214-cassandra-3.0.txt	
 ```
 *  Add below content in `/<source_root>/cassandra/test/conf/cassandra.yaml` to change the key cache size as per requirement.
 ```
-        key_cache_size_in_mb: 12
+    key_cache_size_in_mb: 12
+```
+
+### Step 7: Start Cassandra Server
+
+_**Note:**_ To execute Cassandra binary with IBM Java (optional)  
+Comment `JVM_OPTS="$JVM_OPTS -Xloggc:${CASSANDRA_HOME}/logs/gc.log"` line in `/<source_root>/casssandra/conf/cassandra-env.sh` file.
+
+```
+nohup /<source_root>/bin/cassandra -f &
 ```
