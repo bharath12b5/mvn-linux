@@ -1,6 +1,19 @@
-[OCaml](http://ocaml.org) is a popular object-oriented functional programming language. The OCaml system contains an interpreter as well as a compiler (that compiles OCaml source to machine code). The latest revision of the code now support Linux on z Systems. The following instructions describe how to build OCaml on RHEL and SLES.
+<!---PACKAGE:OCaml--->
+<!---DISTRO:SLES 12:4.03--->
+<!---DISTRO:SLES 11:4.03--->
+<!---DISTRO:RHEL 7.1:4.03--->
+<!---DISTRO:RHEL 6.6:4.03--->
+<!---DISTRO:Ubuntu 16.x:4.03--->
 
-**NOTE**: When following the steps below please use a standard permission user unless otherwise specified.
+### Building OCaml
+
+[OCaml](http://ocaml.org) is a popular object-oriented functional programming language. The OCaml system contains an interpreter as well as a compiler (that compiles OCaml source to machine code). The stable release of OCaml 4.03.0 has been built and tested on Linux on z Systems.
+
+_**General Notes:**_  
+i) _When following the steps below please use a standard permission user unless otherwise specified._
+
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+
 
 ## Pre-requisites
 
@@ -8,16 +21,22 @@
 
    (RHEL 6/7)
 
-        sudo yum install gcc make
+        sudo yum install gcc make git
 
    (SLES 11/12)
 
-        sudo zypper install gcc make
+        sudo zypper install gcc make git
+		
+	(UBUNTU 16.04)
+		
+		sudo apt-get update
+		sudo apt-get install gcc make git
 
 2. Download the OCaml source and navigate into the top-level directory:
 
         git clone https://github.com/ocaml/ocaml.git
         cd ocaml
+		git checkout 4.03.0
 
 ## Building and Installation
 
