@@ -1,13 +1,17 @@
 <!---PACKAGE:HAProxy--->
-<!---DISTRO:SLES 12:1.6.4--->
-<!---DISTRO:SLES 11:1.6.4--->
-<!---DISTRO:RHEL 7.1:1.6.4--->
-<!---DISTRO:RHEL 6.6:1.6.4--->
-<!---DISTRO:Ubuntu 16.x:1.6.4--->
+<!---DISTRO:SLES 12:1.6--->
+<!---DISTRO:SLES 11:1.6--->
+<!---DISTRO:RHEL 7.1:1.6--->
+<!---DISTRO:RHEL 6.6:1.6--->
+<!---DISTRO:Ubuntu 16.x:Distro, 1.6--->
 
 # Building HAProxy
 
-[HAProxy version 1.6.4](http://www.haproxy.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6/7.1 and SLES 11/12 and Ubuntu 16.04
+Below versions of HAProxy are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `1.6.3`
+
+[HAProxy version 1.6.5](http://www.haproxy.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6/7.1 and SLES 11/12 and Ubuntu 16.04
 
 
 _**General Notes:**_ 	 
@@ -36,9 +40,9 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 2.  Download and unpack the required HAProxy source package
 
         cd /<source_root>/
-        wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.4.tar.gz
-        tar xzvf haproxy-1.6.4.tar.gz
-        cd haproxy-1.6.4/
+        wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.5.tar.gz
+        tar xzvf haproxy-1.6.5.tar.gz
+        cd haproxy-1.6.5/
 
 3.  Build and install HAProxy
 
