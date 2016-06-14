@@ -1,184 +1,185 @@
 <!---PACKAGE:Consul--->
-<!---DISTRO:SLES 12:0.5.2--->
-<!---DISTRO:SLES 11:0.5.2--->
-<!---DISTRO:RHEL 7.1:0.5.2--->
-<!---DISTRO:RHEL 6.6:0.5.2--->
+<!---DISTRO:SLES 12:0.6.4--->
+<!---DISTRO:RHEL 7.1:0.6.4--->
+<!---DISTRO:Ubuntu 16.x:0.6.4--->
 
-# Building Consul
+The instructions provided below specify the steps to build Consul v0.6.4 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
 
-Consul version 0.5.2 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6/7.1 and SLES 11/12.
-
-_**General Notes:**_  
+_**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
+## Install Dependencies
 
-##### Step 1: Install Prerequisites
-1. Prerequisites : 
-  * GccGo 
-  * Go  
+For RHEL 7.1
+   ```
+   sudo yum install git vi gcc tar wget make unzip
+   ```
+   
+For SLES 12
+   ```
+   sudo zypper install git vi gcc tar wget make unzip
+   ```
+   
+For Ubuntu 16.04
+   ```
+   sudo apt-get update && \
+   sudo apt-get install git vim gcc tar wget unzip
+   ```
+   
+## Install GO Dependencies
+   For RHEL 7.1 and SLES 12, refer [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe to install Go.
 
-  For RHEL6.6 and SLES11:
-    * GccGo: Please refer [GccGo](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo) recipe to install Go.
+   For Ubuntu 16.04, install following dependency:    
+   
+   ```
+      sudo apt-get install golang-1.6
+   ```
 
-  For RHEL7.1 and SLES12:
-    * Go: Please refer [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe to install Go.
+## Building Consul from its source
+1. Set GOPATH Environment Variables
+	 
+    ```
+     export GOPATH=/<source_root>
+    ```
+2. Make directory & clone the source code
+   ```
+   mkdir $GOPATH/src
+   cd $GOPATH/src
+   mkdir -p ./github.com/hashicorp
+   cd $GOPATH/src/github.com/hashicorp
+   git clone --branch=v0.6.4 https://github.com/hashicorp/consul.git
+   ```
+   
 
+3. Modify file `$GOPATH/src/github.com/hashicorp/consul/scripts/build.sh` with your choice
+   of editor and replace lines from 40 to 45 with following commands:
+   
+  ```
+    cd $DIR
+    go install
+   ```
+
+   These lines invoke tool [gox](https://github.com/mitchellh/gox) and compile for
+   different ARCH and OS combos.Unfortunately, [gox](https://github.com/mitchellh/gox)
+   does not support s390x arch for now.Therefore, in order to build consul for z System,
+   it is required to use the native build tool of go.
+   
+4. Replace sys package
+
+   ```
+    cd $GOPATH/src/github.com/hashicorp/consul/vendor/golang.org/x
+    mv sys sys.bak
+    git clone https://github.com/linux-on-ibm-z/sys.git
+   ```
+5. Build consul
+
+   For RHEL 7.1 and SLES 12
+   ```
+   cd $GOPATH/src/github.com/hashicorp/consul/
+   make
+   ```
      
-2. Install the build dependencies
-  * For RHEL6.6:
+   For Ubuntu 16.04
+   ```
+   cd $GOPATH/src/github.com/hashicorp/consul/
+   sudo -E make
+   ```
+6. Verify build success
+   
+   ```
+   cd $GOPATH/bin
+   ./consul
+   ```
+
+7. (Optional) Testing Consul  
+
+   ```
+   make test
+   ```
+
+8. Download Consul Web UI
+   ```
+   mkdir $GOPATH/consul_web_ui
+   cd $GOPATH/consul_web_ui
+   wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_web_ui.zip
+   unzip $GOPATH/consul_web_ui/consul_0.6.4_web_ui.zip
+   ```
+
+9. Run Consul Server
+
+  _**Note:**_ To start a Consul server, you need to pass few mandatory configuration parameters while starting a server.      It can be passed using _server.json_ file. The sample _server.json_ file looks like following :
+
   ```
-sudo yum install -y git unzip 
-```
+  {
+    "datacenter": "<your-datacenter-name>",
+    "data_dir": "/opt/consulserver",
+    "log_level": "INFO",
+    "node_name": "<your-server-node-name>",
+    "server": true,
+    "bootstrap": true,
+    "ports" : {
 
-  * For SLES11:
-  ```
- sudo zypper install -y git-core unzip 
-```
-
-  * For RHEL7.1:
-  ```
-sudo yum install -y make wget unzip which
-```
-  * For SLES12:
-  ```
-sudo yum install -y make wget unzip
-```
-
-3. Install other build dependency: **git >= 1.8.5**  
-_Git version 1.8.5 or later is compatible with this Go version to build Consul. Update git version >= 1.8.5 by building it from source._
-
-  1. _[Optional]_ Check the version of any existing git executable.
-    ```
-  which git
-  $(which git) --version
-```   
-_**Note:** If above command gives git version lesser than 1.8.5, then follow below steps, else jump to Step no. 2 i.e. **'Export required go environment variables'**._  
-
-  2. Install build dependencies for git
-    ```
-  sudo yum install -y asciidoc-8.6.8-5.el7.noarch openssl-devel curl-devel expat-devel perl-ExtUtils-MakeMaker gettext-devel tar
-```  
-
-  3. Download the git source code
-    ```
-  cd /<source_root>/
-  git clone https://github.com/git/git.git
-  cd /<source_root>/git/
-  git checkout v1.8.5
-```
-
-  4. Build and Install git
-    ```
-  make prefix=<build-location> && sudo make prefix=<build-location> install 
-```
-
-  5. Export git binary path to PATH environment variable
-    ```
-  export PATH=<build-location>/bin:$PATH  
-```
-
-##### Step 2: Export required go environment variables
-  ```
- export GOPATH=/<source_root>
-```
-For RHEL6.6 and SLES11,  
-```
- export CGO_LDFLAGS="-L /lib64 -l pthread"
-```
-
-##### Step 3: Download Consul source code
-```
- mkdir -p $GOPATH/src/github.com/hashicorp/
- cd $GOPATH/src/github.com/hashicorp/
- git clone https://github.com/hashicorp/consul.git
- cd $GOPATH/src/github.com/hashicorp/consul
- git checkout v0.5.2
-```
-##### Step 4: Build Consul
-```
- make
-```
-##### Step 5: Download Consul Web UI
-```
- mkdir $GOPATH/consul_web_ui
- cd $GOPATH/consul_web_ui
- wget https://releases.hashicorp.com/consul/0.5.2/consul_0.5.2_web_ui.zip
- unzip $GOPATH/consul_web_ui/consul_0.5.2_web_ui.zip
-```
-##### Step 6: Change working directory back to Consul
-```
- cd $GOPATH/src/github.com/hashicorp/consul
-```
-##### Step 7: (Optional) Testing Consul
-```
- make test
-```
-
-##### Step 8: Run a Consul server
-_**Note:**_ To start a Consul server, you need to pass few mandatory configuration parameters while starting a server. It can be passed using _server.json_ file. The sample _server.json_ file looks like following :
-
-```
-{
-  "datacenter": "<your-datacenter-name>",
-  "data_dir": "/opt/consulserver",
-  "log_level": "INFO",
-  "node_name": "<your-server-node-name>",
-  "server": true,
-  "bootstrap": true,
-  "ports" : {
-
-    "dns" : -1,
-    "http" : <http-port>,
-    "rpc" : <RPC-port>,
-    "serf_lan" : <LAN-port>,
-    "serf_wan" : <WAN-port>,
-    "server" : <internal-consul-port>
+      "dns" : -1,
+      "http" : <http-port>,
+      "rpc" : <RPC-port>,
+      "serf_lan" : <LAN-port>,
+      "serf_wan" : <WAN-port>,
+      "server" : <internal-consul-port>
+    }
   }
-}
 ```
 _Click [here](https://www.consul.io/docs/agent/options.html) to read more about server configuration parameters_.
 
-```
- sudo bin/consul agent -config-dir=/<path-to-server.json-file>/server.json
-```
-##### Step 9: Run a Consul agent
-_Note:_ To start a Consul agent, you need to pass few mandatory configuration parameters while starting an agent. It can be passed using _agent.json_ file. The sample _agent.json_ file looks like following :
 
-```
-{
-  "datacenter": "<your-datacenter-name>",
-  "data_dir": "/opt/consulclient",
-  "log_level": "INFO",
-  "node_name": "<your-client-node-name>",
-  "ui_dir": "<path-to-ui-dir-until-index.html>"
-  "client_addr": "0.0.0.0",
-  "ports" : {
+   ```
+     sudo $GOPATH/bin/consul agent -config-dir=/<path-to-server.json-file>/server.json
+   ```
 
-    "dns" : -1,
-    "http" : <http-port>,
-    "rpc" : <RPC-port>,
-    "serf_lan" : <LAN-port>,
-    "serf_wan" : <WAN-port>,
-    "server" : <internal-consul-port>
-  },
-  "start_join" : [
-   "<consul-server-ip-address>:<LAN-port-of-consul-server>"
-   ]
-}
-```
+10. Run Consul Agent
+
+  _Note:_ To start a Consul agent, you need to pass few mandatory configuration parameters while starting an agent. It can   be passed using _agent.json_ file. The sample _agent.json_ file looks like following :
+
+  ```
+  {
+    "datacenter": "<your-datacenter-name>",
+    "data_dir": "/opt/consulclient",
+    "log_level": "INFO",
+    "node_name": "<your-client-node-name>",
+    "ui_dir": "<path-to-ui-dir-until-index.html>"
+    "client_addr": "0.0.0.0",
+    "ports" : {
+
+      "dns" : -1,
+      "http" : <http-port>,
+      "rpc" : <RPC-port>,
+      "serf_lan" : <LAN-port>,
+      "serf_wan" : <WAN-port>,
+      "server" : <internal-consul-port>
+    },
+    "start_join" : [
+     "<consul-server-ip-address>:<LAN-port-of-consul-server>"
+     ]
+  }
+  ```
 _Click [here](https://www.consul.io/docs/agent/options.html) to read more about agent configuration parameters_.
 
-```
- sudo bin/consul agent -config-dir=/<path-to-server.json-file>/agent.json
-```
+  ```
+   sudo $GOPATH/bin/consul agent -config-dir=/<path-to-server.json-file>/agent.json
+  ```
 
-##### Step 10: Access Consul web user interface from browser
-```
- http://<consul-agent-host-ip>:<http-port>/ui/ 
-```
+11. Access Consul web user interface from browser
+  ```
+   http://<consul-agent-host-ip>:<http-port>/ui/ 
+  ```
 _**Note:**_ Click [here](http://www.mammatustech.com/consul-service-discovery-and-health-for-microservices-architecture-tutorial) to read more about how to register a new service.
 
-#### References:
-https://www.consul.io/  
-https://github.com/hashicorp/consul
+## References:
+
+  [How to write go code](https://golang.org/doc/code.html)  
+  [Building Go for z System](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go)  
+  [Consul](https://github.com/hashicorp/consul)  
+  [Godeps](https://github.com/tools/godep)  
+  [gox](https://github.com/mitchellh/gox)  	 
+  https://www.consul.io/  	 
+  https://github.com/hashicorp/consul
