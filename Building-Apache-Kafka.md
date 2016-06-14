@@ -1,10 +1,11 @@
 <!---PACKAGE:Apache Kafka--->
-<!---DISTRO:SLES 12:0.9.0--->
-<!---DISTRO:SLES 11:0.9.0--->
-<!---DISTRO:RHEL 7.1:0.9.0--->
-<!---DISTRO:RHEL 6.6:0.9.0--->
+<!---DISTRO:SLES 12:0.10.0--->
+<!---DISTRO:SLES 11:0.10.0--->
+<!---DISTRO:RHEL 7.1:0.10.0--->
+<!---DISTRO:RHEL 6.6:0.10.0--->
+<!---DISTRO:Ubuntu 16.x:0.10.0--->
 
-**Apache Kafka** can be built for Linux on z Systems running RHEL 7.1 or 6.6 or SLES 12 or 11 by following these instructions.  Version 0.9.0 has been successfully built & tested this way.
+The instructions provided below specify the steps to build Apache Kafka 0.10.0.0 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
@@ -14,7 +15,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
 
 ## Building Apache Kafka
 
-1. Install the build time dependencies
+1. Install the dependencies
 
     On RHEL 6.6 and RHEL 7.1 systems
     ```shell
@@ -28,8 +29,26 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```shell
     sudo zypper install git wget unzip java-1_7_0-ibm-devel java-1_7_0-ibm
     ```
+    On Ubuntu 16.04 systems
+    ```shell
+    sudo apt-get update
+    sudo apt-get install git wget unzip
+    ```
+	
     You may already have some of these packages installed - just install any that are missing.  
 
+2. Install IBM Java (On Ubuntu 16.04 **only**)
+	
+	Click [here](http://www.ibm.com/developerworks/java/jdk/linux/download.html) to download IBM Java SE Version 8 for 64-bit System Z. Copy the binary to `<source_root>` directory.
+	
+	```shell
+	cd /<source_root>/
+	chmod +x ibm-java-sdk-8.0-3.0-s390x-archive.bin
+	./ibm-java-sdk-8.0-3.0-s390x-archive.bin
+	```
+	
+	Follow instructions to install IBM Java.
+	
 3. Install gradle (unless you have it already)
 
     ```shell
@@ -40,50 +59,38 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```
     Other versions of `gradle` may work, but this has been tested with `2.5`  
     _**Note:** Where `<source_root>` is the directory defined at the top of this document - if you wish to clean up the `<source_root>` at the end of the install you may want to place gradle in a different location, if so just update the paths_
+
 4. Download the required version of the Apache Kafka source
 
     ```shell
     git clone https://github.com/apache/kafka
     cd kafka
-    git checkout 0.9.0
+    git checkout 0.10.0
     ```
     _**Note:** The github location is a mirror of the Apache location https://git-wip-us.apache.org/repos/asf/kafka.git_
-5. Modify the build process to use a more recent build of Snappy Java
-
-    Snappy Java prior to version `1.1.2` does not support Linux on z Systems, however fixes for the issue have been provided to the community and version `1.1.2` now incorporates an s390 build. However the current release (at the time of writing) of Apache Kafka does not use this later version of Snappy Java, so we update the build process to use it, as below:
-    
-    Modify the `build.gradle` file to use a later version
-    ```shell
-    vi build.gradle
-    ```
-    Update the snappy-java version to be `1.1.2` rather than `1.1.1.7` it is as default 
-    ```gradle
-    project(':clients') {
-        apply plugin: 'checkstyle'
-        archivesBaseName = "kafka-clients"
-
-    dependencies {
-        compile "$slf4japi"
-        compile 'org.xerial.snappy:snappy-java:1.1.2'
-        compile 'net.jpountz.lz4:lz4:1.2.0'
-
-    ```
    
-6. Configure Java and run the gradle build process
+5. Configure Java and run the gradle build process
 
-    Set the `JAVA_HOME` environment variable to:
-    ```shell
+   Set the `JAVA_HOME` environment variable to:
+        
+   For RHEL/SLES
+      ```
+      export JAVA_HOME=/etc/alternatives/java_sdk_ibm
+      ```
+        
+   For Ubuntu:
+      ```
+      export JAVA_HOME=/<source_root>/ibm-java-s390x-80
+      ```
+   _**Note:** Where `<source_root>` is the directory defined at the top of this document - if you wish to clean up the `<source_root>` at the end of the install you may want to place ibm-java-s390x-80 in a different location, if so just update the JAVA_HOME_
 
-    export JAVA_HOME=/etc/alternatives/java_sdk_ibm
-
-    ```
     Now setup gradle and build the jar files
-    ```shell
-    gradle
-    gradle jar
-    ```
 
-7. **Optionally** use the built in tests to verify Apache Kafka
+	  ```
+      gradle
+      gradle jar
+	  ```
+6. **Optionally** use the built in tests to verify Apache Kafka
 
     ```
     gradle test
@@ -91,7 +98,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
 
     _**Note:** Occasionally tests will fail,but re-running will normally resolve them - These issues are not Linux on z Systems specific, they are also present on x86 platforms. Test stability issues have been reported [here](https://issues.apache.org/jira/browse/KAFKA-1970)_
 
-8. **Optionally** use the example scripts to run a single server
+7. **Optionally** use the example scripts to run a single server
 
     Apache Kafka provides a quickstart guide, this has a simple example that is replicated below (with a small patch), head to [kafka.apache.org](https://kafka.apache.org/08/quickstart.html) for the guide.
     
@@ -111,15 +118,39 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
           KAFKA_GC_LOG_OPTS="-Xverbosegclog:$LOG_DIR/$GC_LOG_FILE_NAME -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps "
         fi
         ```
-    2. Now launch the two single node servers
-    
+	
+	2. Remove `-loggc` options to update the script to start the servers. (on Ubuntu 16.04 **only**) 
+		
+		1. Update zookeeper-server-start.sh
+			
+			```shell
+			cd /<source_root>/kafka
+			vi bin/zookeeper-server-start.sh
+			```
+			The script that starts the zookeeper creates a gc log, however it uses an option that isn't supported on IBM Java, so we need to remove `-loggc` as below:
+			```shell
+			EXTRA_ARGS="-name zookeeper"
+			```
+				
+		2. Update kafka-server-start.sh
+		
+			```shell
+			cd /<source_root>/kafka
+			vi bin/kafka-server-start.sh
+			```
+			The script that starts the kafka creates a gc log, however it uses an option that isn't supported on IBM Java, so we need to remove `-loggc` as below:
+			```shell
+			EXTRA_ARGS="-name kafkaServer"
+			```
+	3. Now launch the two single node servers
+				
         ```shell
         bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
         bin/kafka-server-start.sh -daemon config/server.properties
         ```
         Both servers should start in the background, check the logs in `/<source_root>/kafka/logs/` for more information.  
     
-    3. Now create and list a simple test topic and messages file
+    4. Now create and list a simple test topic and messages file
     
         Please note the quickstart guide refer to `bin/kafka-create-topic.sh` however this has been replaced with `bin/kafka-topics.sh` and flags such as `--create` or `--delete` and some modifications to the parameters:
         ```shell
@@ -131,7 +162,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
         echo -e "Congratulations\nThe build is working\n\nWelcome to Apache Kafka with Linux on z Systems" > /tmp/msg.log
         bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test < /tmp/msg.log
         ```
-    4. Run the consumer and check the results
+    5. Run the consumer and check the results
     
         And finally run a consumer to pull these messages back off the node
         ```shell
