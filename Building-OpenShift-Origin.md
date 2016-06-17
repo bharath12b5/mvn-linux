@@ -16,8 +16,18 @@ _When following the steps below please use a standard permission user unless oth
 
 ### Step 2: Install Docker 1.8.2 or higher
 See instructions [here](http://www.ibm.com/developerworks/linux/linux390/docker.html)
-### Step 3: Install Go 1.5.2
-See instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go)
+
+### Step 3: Install Go 1.6
+
+See instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go).  
+
+**Special instructions when following the Go recipe**
+* After performing the git clone on the Go repository, follow up with this step to get the 1.6 branch
+
+    ```
+    git checkout release-branch.go1.6
+    ```
+
 
 ### Step 4: Build OpenShift Origin by following steps 1 through 5
 See instructions [here](https://github.com/openshift/origin/blob/master/CONTRIBUTING.adoc#develop-locally-on-your-host) to develop locally on your host
