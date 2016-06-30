@@ -1,7 +1,6 @@
 <!---PACKAGE:Apache JMeter--->
-<!---DISTRO:SLES 12:2.13--->
-<!---DISTRO:RHEL 7.1:2.13--->
-<!---DISTRO:Ubuntu 16.x:2.13--->
+<!---DISTRO:SLES 11:2.13--->
+<!---DISTRO:RHEL 6.6:2.13--->
 
 # Building Apache JMeter
 
