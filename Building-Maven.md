@@ -1,13 +1,23 @@
-Maven can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES12 or SLES 11 by following these instructions.  Version 3.2.5 & 3.3.9 has been successfully built & tested this way.
-More information on Maven is available at [Maven-website](http://maven.apache.org/) and the source code can be downloaded from [Maven-download](http://maven.apache.org/download.cgi).
+<!---PACKAGE:Apache Maven--->
+<!---DISTRO:SLES 12:3.x--->
+<!---DISTRO:SLES 11:3.x--->
+<!---DISTRO:RHEL 7.1:3.x--->
+<!---DISTRO:RHEL 6.6:3.x--->
+<!---DISTRO:Ubuntu 16.x:3.x--->
 
-_**General Notes:**_ 	
+# Building Maven
+
+Below versions of Maven are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `3.3.9`
+
+The instructions provided below specify the steps to build Maven version 3.3.9 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12.
+
+_**General Notes:**_
 
 i) When following the steps below please use a standard permission user unless otherwise specified.
 	 
 ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it
-
-## Building Maven
 
 ### Obtain pre-built dependencies
 
