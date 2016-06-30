@@ -1,5 +1,14 @@
 # Building Python 3.5.1
-The following build instructions have been tested with **Python 3.5.1** on **RHEL 6, 7 and SLES 11, 12 on IBM z Systems**.
+
+Below versions of Python  are available in respective distributions at the time of this recipe creation:
+
+* RHEL 7.1 has  2.7.5  
+* RHEL 6.6 has  2.6.6  
+* SLES 12 has  2.7.9
+* SLES 11 has  2.6.9
+* Ubuntu 16.04 has  3.5.1 
+
+The instructions provided below specify the steps to build Python 3.5.1 on Linux on the IBM z Systems for RHEL 7/6 and SLES11/12.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
