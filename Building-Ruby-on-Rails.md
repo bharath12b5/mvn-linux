@@ -3,15 +3,19 @@
 <!---DISTRO:RHEL 7.1:4.2.6--->
 <!---DISTRO:SLES 11:4.2.6--->
 <!---DISTRO:SLES 12:4.2.6--->
+<!---DISTRO:Ubuntu 16.x:4.2.6--->
 
-### Building Ruby on Rails on RHEL6/7 and SLES11/12
+# Building Ruby on Rails
 
-# Installing [Ruby on Rails](http://rubyonrails.org/) on RHEL6/7 and SLES11/12
+Below versions of Ruby on Rails are available in respective distributions at the time of this recipe creation:
 
-The Ruby on Rails code version 4.2.6 can be installed on a Linux on z System running RHEL6/7 and SLES11/12 by following these instructions:
+*    Ubuntu 16.04 has `4.2.6`
 
-**NOTE**: When following the steps below please use a standard
-permission user unless otherwise specified.
+The instructions provided below specify the steps to build Rails version 4.2.6 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12.  
+
+_**General Notes:**_   
+_i) When following the steps below please use a standard permission user unless otherwise specified._     
+_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 1. First build Ruby 1.9.3+ (the available yum / zypper version of ruby is too low level) from [these instructions](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby)
 
