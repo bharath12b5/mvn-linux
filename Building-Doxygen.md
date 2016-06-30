@@ -3,10 +3,19 @@
 <!---DISTRO:SLES 11:1.8.11--->
 <!---DISTRO:RHEL 7.1:1.8.11--->
 <!---DISTRO:RHEL 6.6:1.8.11--->
+<!---DISTRO:Ubuntu 16.x:1.8.11--->
 
 # Building Doxygen
 
-Doxygen can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11 and SLES 12, by following these instructions. Version 1.8.11 has been successfully built & tested this way.
+Below versions of Doxygen are available in respective distributions at the time of this recipe creation:
+
+• RHEL 7 has  1.8.5  
+• RHEL 6.6 has  1.6.1  
+• SLES 12 has  1.8.6-1.20  
+• SLES 11.3 has  1.5.6-1.19
+• Ubuntu 16.04 has 1.8.11-1
+
+The instructions provided below specify the steps to build Doxygen 1.8.11 on Linux on the IBM z Systems for RHEL 6.6/7.1 and SLES11/12 .
 
 ##### General Notes:
       
