@@ -7,7 +7,12 @@
 
 # Building Erlang
 
-The [Erlang/OTP 18.3](http://www.erlang.org/downloads/18.3) can be built on SLES 11/12 and RHEL 6.6/7.1 IBM Linux on z Systems as follows :-
+Below versions of Erlang are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `18.3`
+
+The instructions provided below specify the steps to build Erlang version 18.3 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12.
+
 
 _**General Notes:**_ 	 
 _i) When following the steps below please use a standard permission user unless otherwise specified._
