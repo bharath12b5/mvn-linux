@@ -3,10 +3,15 @@
 <!---DISTRO:SLES 11:4.5--->
 <!---DISTRO:RHEL 7.1:4.5--->
 <!---DISTRO:RHEL 6.6:4.5--->
+<!---DISTRO:Ubuntu 16.x:4.5--->
 
 ## Building WordPress
 
-WordPress version 4.5 has been tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Below versions of WordPress are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `4.4.2`
+
+The instructions provided below specify the steps to build WordPress version 4.5 on Linux on the IBM z Systems for RHEL 6/7.1, SLES11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 
@@ -36,6 +41,13 @@ sudo zypper install apache2 apache2-devel tar wget git-core gcc libtool autoconf
 * SLES12
 ```
 sudo zypper install apache2 apache2-devel tar wget git-core mariadb gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
+
+```
+
+* Ubuntu 16.04
+```
+sudo apt-get update
+sudo apt-get install -y git apache2 mysql-server php php-mysql libapache2-mod-php
 
 ```
 Build and Install PHP (for SLES11 and SLES12)
@@ -92,11 +104,29 @@ sudo make install
        LoadModule php5_module /usr/lib64/apache2/libphp5.so
        ```
 
+* Ubuntu 16.04
+
+  1 . Edit configuration file `/etc/apache2/apache2.conf` as follows.
+
+   * Add the server name at the end of the configuration file.
+     ```
+     ServerName localhost
+     ```	
+   * Enable the php module by adding the below lines at the end of the configuration file.
+	
+      ```
+	  AddType application/x-httpd-php .php
+	  
+      <Directory />
+          DirectoryIndex index.php 
+      </Directory>
+      ```
+	  
 ### Section 3: Download WordPress source code and configure
 
 1 . Download and install WordPress
 
-RHEL6 and RHEL7
+RHEL6, RHEL7 and Ubuntu 16.04
 ```
 cd /var/www/html
 sudo git clone https://github.com/WordPress/WordPress.git
@@ -126,8 +156,15 @@ sudo git checkout 4.5
     
 ```
 4 . Initialize MySQL server
+
+RHEL6/7, SLES11/12 
 ```
 sudo /usr/bin/mysql_install_db --user=mysql
+```
+
+Ubuntu 16.04
+```
+sudo /usr/sbin/mysqld --initialize --user=mysql --datadir=/var/lib/mysql/data
 ```
 
 5 . Create database and grant privileges to 'Wordpress' user	
@@ -142,11 +179,12 @@ sudo /usr/bin/mysql  -h <DB_HOST> -uroot -p -e "grant all privileges on WORDPRES
  ```
  sudo /usr/sbin/httpd -D BACKGROUND   (For RHEL6 and RHEL7)
  sudo /usr/sbin/httpd2 -D BACKGROUND  (For SLES11 and SLES12)
+ sudo service apache2 start           (For Ubuntu 16.04)
  ```
 
-7 . After starting WordPress, direct your Web browser to the WordPress Admin Console at
+7 . After starting Apache HTTPD Server, direct your Web browser to the WordPress Admin Console at
  ```
- http://localhost:<port_exposed>
+ http://<HOST_IP>:<PORT>
  ```
 
 #### References
