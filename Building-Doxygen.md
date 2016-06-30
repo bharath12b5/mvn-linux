@@ -12,7 +12,7 @@ Below versions of Doxygen are available in respective distributions at the time 
 • RHEL 7 has  1.8.5  
 • RHEL 6.6 has  1.6.1  
 • SLES 12 has  1.8.6-1.20  
-• SLES 11.3 has  1.5.6-1.19
+• SLES 11.3 has  1.5.6-1.19  
 • Ubuntu 16.04 has 1.8.11-1
 
 The instructions provided below specify the steps to build Doxygen 1.8.11 on Linux on the IBM z Systems for RHEL 6.6/7.1 and SLES11/12 .
