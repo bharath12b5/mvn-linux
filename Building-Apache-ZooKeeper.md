@@ -1,12 +1,17 @@
 <!---PACKAGE:Apache ZooKeeper--->
-<!---DISTRO:RHEL 6.6:3.4.8--->
-<!---DISTRO:RHEL 7.1:3.4.8--->
-<!---DISTRO:SLES 11:3.4.8--->
-<!---DISTRO:SLES 12:3.4.8--->
+<!---DISTRO:RHEL 6.6:3.5.1--->
+<!---DISTRO:RHEL 7.1:3.5.1--->
+<!---DISTRO:SLES 11:3.5.1--->
+<!---DISTRO:SLES 12:3.5.1--->
+<!---DISTRO:Ubuntu 16.x:3.5.1--->
 
 # Building Apache ZooKeeper
 
-[Apache ZooKeeper](https://zookeeper.apache.org/) version 3.4.8 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Below versions of Apache ZooKeeper are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `3.4.8`
+
+The instructions provided below specify the steps to build Apache ZooKeeper v3.5.1 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -17,19 +22,24 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 * For RHEL 7.1/6.6
 
-        sudo yum install --nogpgcheck -y git tar wget ant hostname ant-junit cppunit-devel cppunit-doc hamcrest-javadoc hamcrest-demo hamcrest patch xz libtool make
+        sudo yum install --nogpgcheck -y git tar wget ant hostname ant-junit cppunit-devel cppunit-doc hamcrest-javadoc hamcrest-demo hamcrest xz libtool make
         sudo yum groupinstall -y "Development tools"
    
 
 * For SLES11:
 
         sudo zypper refresh
-        sudo zypper install -y git gcc-c++ make tar wget java-1_7_0-ibm java-1_7_0-ibm-devel libcppunit-devel libtool patch 
+        sudo zypper install -y git gcc-c++ make tar wget java-1_7_0-ibm java-1_7_0-ibm-devel libcppunit-devel libtool 
 	                        
 * For SLES12:
    
-        sudo zypper install -y git ant ant-junit cppunit-devel cppunit-devel-doc gcc-c++ make autoconf libtool patch wget tar
+        sudo zypper install -y git ant ant-junit cppunit-devel cppunit-devel-doc gcc-c++ make autoconf libtool wget tar
 
+* For Ubuntu 16.04:
+
+		sudo apt-get update
+		sudo apt-get install git ant wget libcppunit-dev libcppunit-doc autoconf libtool make openjdk-8-jdk
+		
 * Install the following additional dependencies for RHEL6.6 and SLES11 (Upgrade the version of automake and autoconf)
 
      * For SLES11:
@@ -65,13 +75,17 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 			./configure && make && sudo make install && sudo cp automake /usr/bin/
         ```
     
+* Export _JAVA_HOME_ for Ubuntu 16.04
+	
+			export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-s390x
+	
 ### Section 2: Build and install ZooKeeper
 1. Get the source
 	```
 		cd /<source_root>/
 		git clone https://github.com/apache/zookeeper
 		cd zookeeper
-		git checkout tags/release-3.4.8
+		git checkout tags/release-3.5.1
 	```		
 
 2. Install requirements for Build
@@ -82,9 +96,6 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 			cd /<source_root>/zookeeper/src/c
 			ACLOCAL="aclocal -I /usr/share/aclocal" autoreconf -if
 
-			wget https://issues.apache.org/jira/secure/attachment/12570030/mt_adaptor.c.patch 
-			patch src/mt_adaptor.c mt_adaptor.c.patch 
-			
 			./configure && make && sudo make install
 			 sudo make distclean
 	
