@@ -1,6 +1,6 @@
 <!---PACKAGE:Apache Solr--->
 <!---DISTRO:SLES 12:6.0--->
-<!---DISTRO:SLES 12:5.5--->
+<!---DISTRO:SLES 11:5.5--->
 <!---DISTRO:RHEL 7.1:6.0--->
 <!---DISTRO:RHEL 6.6:5.5--->
 <!---DISTRO:Ubuntu 16.x:6.0--->
