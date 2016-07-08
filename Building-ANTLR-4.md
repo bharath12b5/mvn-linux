@@ -1,6 +1,10 @@
 ## Building AntLR 4.5.1
+Below versions of AntLR are available in respective distributions at the time of this recipe creation:
 
-**ANTLR 4.5.1** has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7, RHEL 6, SLES 12 and SLES 11. More information on ANTLR is available at [ANTLR-website](http://www.antlr.org) and the source code can be downloaded from [ANTLR4-download](https://github.com/antlr/antlr4).
+  * RHEL6 has `2.7.7`  
+  * Ubuntu 16.04 has `4.5.1`
+
+The instructions provided below specify the steps to build [AntLR](http://www.antlr.org/) version 4.5.1 on Linux on the IBM z Systems for RHEL 6/7 & SLES 11/12.
 
 #### _**General Notes:**_
 i) When following the steps below please use a standard permission user unless otherwise specified.
