@@ -1,9 +1,21 @@
-The Google Protobuf code can be built for Linux on z Systems running RHEL 7.1/6.6 and SLES 12/11 by following these instructions. (Protobuf is available at https://developers.google.com/protocol-buffers/ and the github repository can be found at https://github.com/google/protobuf/):
+<!---PACKAGE:Protobuf--->
+<!---DISTRO:SLES 12:2.6.1--->
+<!---DISTRO:SLES 11:2.6.1--->
+<!---DISTRO:RHEL 7.1:2.6.1--->
+<!---DISTRO:RHEL 6.6:2.6.1--->
+<!---DISTRO:Ubuntu 16.x:2.6.1--->
 
-_**NOTES:**_ 
+# Building Protobuf
 
-i) When following the steps below please use a standard permission user unless otherwise specified. 
- 
+Below versions of Protobuf are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04     has `2.6.1`
+
+The instructions provided below specify the steps to build Google Protobuf v2.6.1 on Linux on the IBM z Systems for RHEL 6/7 and SLES 11/12. (Protobuf is available at https://developers.google.com/protocol-buffers/ and the github repository can be found at https://github.com/google/protobuf/):
+
+_**General notes:**_ 
+
+i) When following the steps below please use a standard permission user unless otherwise specified.  
 ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it
 
 ## Building Protobuf 2.6.1 
@@ -89,3 +101,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
   protoc --version
   ```
   _**Note:** Protobuf should report version `libprotoc 2.6.1`_
+
+# References
+  https://developers.google.com/protocol-buffers/  
+  https://github.com/google/protobuf/
