@@ -7,7 +7,13 @@
 
 # Building XMLSec
 
-XMLSec source code can be built for Linux on z Systems running RHEL 7.1/6.6, SLES 12/11 and Ubuntu 16.04 by following these instructions. Version 1.2.22 has been successfully built & tested this way.
+Below versions of XMLSec are available in respective distributions:
+
+*    RHEL 6     has `1.2.20`
+*    RHEL 7     has `1.2.20`
+*    Ubuntu 16.04     has `1.2.20`
+
+The instructions provided below specify the steps to build XMLSec 1.2.22 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 
 
@@ -97,4 +103,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
   or
   ```shell
   xmlsec1: symbol lookup error: xmlsec1: undefined symbol: xmlSecGetDefaultCrypto
+```
   
+# References  
+  https://github.com/GNOME/xmlsec
