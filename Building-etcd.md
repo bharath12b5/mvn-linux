@@ -1,10 +1,15 @@
 <!---PACKAGE:etcd--->
-<!---DISTRO:SLES 12:2.3.2--->
-<!---DISTRO:RHEL 7.1:2.3.2--->
+<!---DISTRO:SLES 12:2.3.7--->
+<!---DISTRO:RHEL 7.1:2.3.7--->
+<!---DISTRO:Ubuntu 16.x:2.3.7--->
 
 # Building etcd
 
-etcd 2.3.2 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1 and SLES 12.
+Below versions of etcd are available in the respective distributions at the time of this recipe creation: 
+
+*    Ubuntu 16.04 has `2.2.5`
+
+The instructions provided below specify the steps to build etcd v2.3.7 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -20,46 +25,57 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
     For RHEL 7.1
     ```shell
-    sudo yum install curl wget tar 
+    sudo yum install curl git
     ```
     For SLES12
     ```shell
-    sudo zypper install curl wget tar 
+    sudo zypper install curl git 
     
     ```
-2. Get etcd v2.3.2 source code from github
-
+    For Ubuntu 16.04
+    ```shell
+    sudo apt-get update
+    sudo apt-get install golang git curl
     ```
+	
+2. Get etcd v2.3.7 source code from github
+
+    ```shell
     cd /<source_root>/
-    $ wget https://github.com/coreos/etcd/archive/v2.3.2.tar.gz
-    $ tar zxvf v2.3.2.tar.gz
+    git clone https://github.com/coreos/etcd
+    cd etcd
+    git checkout v2.3.7
     ```
 3. Check go version
 
-    ```
-    $ go version
+    ```shell
+    go version
     ```
 4. Build etcd
 
-    ```
-    cd /<source_root>/etcd-2.3.2
-    $ ./build
+    ```shell
+    cd /<source_root>/etcd
+    ./build
     ```
 5. Execute test suite
-   ```
-    cd /<source_root>/etcd-2.3.2
+   ```shell
+    cd /<source_root>/etcd
     ./test
    ```
 _**Notes:**_  
-_i) In case of error `“go test: -race and -msan are only supported on linux/amd64, freebsd/amd64,window"`, modify `/<source_root>/etcd-2.3.2/test` file and add support for "s390x" architecture as follows:_
-    ```
+_i) In case of error `“go test: -race and -msan are only supported on linux/amd64, freebsd/amd64,window"`, modify `/<source_root>/etcd/test` file and add support for "s390x" architecture as follows:_
+    ```shell
     if [ $MACHINE_TYPE != "armv7l" ];[ $MACHINE_TYPE != "s390x" ];then
       RACE="--race"
     fi
     ```
-_ii) If failure `cannot receive from ch as expected` is encountered, increase timeout in function 'TestWaitTime' in `./pkg/wait/wait_time_test.go` file as follows:_
+_ii) If the test case fails on timeout then increase the timeout limit of the respective test case._
+	
+	_Example:_
+	
+	_If failure `cannot receive from ch as expected` is encountered, increase timeout in function 'TestWaitTime' in `./pkg/wait/wait_time_test.go` file as follows:_
 
-    ```
+    ```go
     func TestWaitTime(t *testing.T) {
      .
      .
@@ -74,29 +90,43 @@ _ii) If failure `cannot receive from ch as expected` is encountered, increase ti
      .
      .
     ```
-   _**Note:** If the test case fails on timeout then increase the timeout limit._
 
+   _If failure `filenames = [.nfs00000000015847090007acea 7.test 8.test 9.test], want [7.test 8.test 9.test]` is encountered, increase timeout in function 'TestPurgeFileHoldingLock' in `./pkg/fileutil/purge_test.go` file as follows:_
+
+   ```go
+   func TestPurgeFileHoldingLock(t *testing.T) {
+    .
+    .
+    .
+     stop := make(chan struct{})
+	 errch := PurgeFile(dir, "test", 3, time.Millisecond, stop)
+	 time.Sleep(100 * time.Millisecond)
+    .
+    .
+    .
+   ```
+	
    _iii) Few test case failures seem intermittent and should pass on multiple run._
 
 6. Test etcd service
 
-    ```
-    cd /<source_root>/etcd-2.3.2
+    ```shell
+    cd /<source_root>/etcd
     ./bin/etcd
     ```
 
     _**Note:** In case of error `etcdmain: etcd on unsupported platform without ETCD_UNSUPPORTED_ARCH=s390x set"`, set following environment variable and rerun the command:_
     
-    ```
+    ```shell
     export ETCD_UNSUPPORTED_ARCH=s390x
     ```
     This will bring up etcd listening on port 2379 for client communication and on port 2380 for server-to-server communication.
  
   Next, let's set a single key, and then retrieve it:
 
-    ```
-    $ curl -L http://127.0.0.1:2379/v2/keys/mykey -XPUT -d value="this is awesome"
-    $ curl -L http://127.0.0.1:2379/v2/keys/mykey
+    ```shell
+    curl -L http://127.0.0.1:2379/v2/keys/mykey -XPUT -d value="this is awesome"
+    curl -L http://127.0.0.1:2379/v2/keys/mykey
     ```
 
   You have successfully started an etcd and written a key to the store.
