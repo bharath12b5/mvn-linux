@@ -1,11 +1,14 @@
 <!---PACKAGE:Docker Distribution--->
-<!---DISTRO:SLES 12:2.4.0--->
-<!---DISTRO:RHEL 7.1:2.4.0--->
-<!---DISTRO:Ubuntu 16.x:2.4.0--->
+<!---DISTRO:SLES 12:2.4.1--->
+<!---DISTRO:RHEL 7.1:2.4.1--->
+<!---DISTRO:Ubuntu 16.x:2.4.1--->
 
 # Building Docker Distribution
+Below versions of Docker Distribution are available in respective distributions at the time of this recipe creation:
 
-Docker Distribution 2.4.0 can be built and tested on Linux on z Systems (RHEL 7.1, SLES 12 and Ubuntu 16.04) by following these instructions.
+*    Ubuntu 16.04 has `2.3.0`
+
+The instructions provided below specify the steps to build Docker Distribution 2.4.1 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -24,7 +27,7 @@ Following are the build dependencies for Distribution.
      
             sudo zypper install -y git-core make
 
-*	RHEL 7
+*	RHEL 7.1
 
             sudo yum install -y git make
 
@@ -34,14 +37,14 @@ Following are the build dependencies for Distribution.
             
 *	For RHEL7, SLES12: To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe.
 
-##### Step 2 : Get the source (checkout v2.4.0 release)
+##### Step 2 : Get the source (checkout v2.4.1 release)
 *	Create a distribution directory and clone the source code there.
 			
 			mkdir -p /<source_root>/src/github.com/docker
 			cd /<source_root>/src/github.com/docker
 			git clone https://github.com/docker/distribution.git
 			cd /<source_root>/src/github.com/docker/distribution
-			git checkout v2.4.0
+			git checkout v2.4.1
             
 ##### Step 3 : Set environment variable
 *	Set DISTRIBUTION_DIR environment variable. 
@@ -51,7 +54,6 @@ Following are the build dependencies for Distribution.
 *	Set GOPATH environment variable.
 
 			export GOPATH=/<source_root>/
-			export GOPATH=$DISTRIBUTION_DIR/Godeps/_workspace:$GOPATH
             
 ##### Step 4 : Build the Binaries
 *	Run the below command to build the distribution binaries.
