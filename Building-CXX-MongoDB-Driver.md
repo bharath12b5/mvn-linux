@@ -1,6 +1,6 @@
 #Building C++ MongoDB Driver
 
-The C++ MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7, RHEL 6 and Ubuntu 16.04 by following these instructions. The 'legacy' driver version legacy-1.1.0 has been successfully built & tested this way.
+The instructions provided below specify the steps to build C++ MongoDB Driver legacy-1.1.1 on Linux on the IBM z Systems for RHEL 6/7, SLES 12 and Ubuntu 16.04
 
 
 _**General Notes:**_ 	 
@@ -49,11 +49,11 @@ Add following repos in `/etc/apt/sources.list` file and upgrade the system, if a
 
 	The C++ build system uses SCons. On Suse, this is available via normal package install. On Redhat, download and install package manually:
 
-   On RHEL6 and RHEL7, download scons-2.2.0-1.noarch.rpm from [SCons 2.2.0 Downloads](http://sourceforge.net/projects/scons/files/scons/2.2.0) and install it like this:
+   On RHEL6 and RHEL7, download scons-2.5.0-1.noarch.rpm from [SCons 2.5.0 Downloads](https://sourceforge.net/projects/scons/files/scons/2.5.0) and install it like this:
 
         cd /<source_root>/
-		wget http://sourceforge.net/projects/scons/files/scons/2.2.0/scons-2.2.0-1.noarch.rpm
-        sudo rpm -i scons-2.2.0-1.noarch.rpm
+		wget https://sourceforge.net/projects/scons/files/scons/2.5.0/scons-2.5.0-1.noarch.rpm
+        sudo rpm -i scons-2.5.0-1.noarch.rpm
 
 #Build and Install the C++ Driver
 
@@ -65,7 +65,7 @@ Add following repos in `/etc/apt/sources.list` file and upgrade the system, if a
     cd /<source_root>/
     git clone https://github.com/mongodb/mongo-cxx-driver
     cd /<source_root>/mongo-cxx-driver
-    git checkout legacy-1.1.0
+    git checkout legacy-1.1.1
     ```
     
 2. ***Build and Install***
@@ -190,6 +190,12 @@ The example code section given below is used to perform a basic test to ensure t
     { _id: ObjectId('55f8394a8d772db54d86f38d'), row: 0 }
     { _id: ObjectId('55f8394a8d772db54d86f38e'), row: 1 }
     { _id: ObjectId('55f8394a8d772db54d86f38f'), row: 2 }
+    ```
+	
+	_**Note:** If you get the error `/usr/bin/ld: cannot find -lboost_thread`, then create a symbolic link named libboost_thread to  libboost_thread-mt_
+		
+	```shell
+    sudo ln -s /usr/lib64/libboost_thread-mt.so /usr/lib64/libboost_thread.so
     ```
 	
 # References
