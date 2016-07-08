@@ -6,7 +6,11 @@
 
 # Building RabbitMQ
 
-RabbitMQ version 3.6.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6, RHEL 7.1, SLES11 and SLES 12.
+Below version of RabbitMQ is available in respective distributions:
+
+*    Ubuntu 16.04     has `3.5.7`
+
+RabbitMQ version 3.6.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -16,7 +20,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 #### Step 1: Install the Dependencies
 Required build/runtime dependencies:
 
-* Install Erlang
+* Install Erlang (For RHEL/SLES)
 	
 	Erlang > R13, See this article for complete build/install instructions: [Building Erlang on z](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang)
 
@@ -32,6 +36,12 @@ Required build/runtime dependencies:
 * SLES11 
 
 			sudo zypper install -y zip unzip libxslt xmlto patch subversion procps ant ant-junit java-1_7_0-ibm java-1_7_0-ibm-devel python-devel python-xml  git-core
+
+* Ubuntu 16.04
+
+            sudo apt-get update
+			sudo apt-get install ant openjdk-8-jdk erlang openssl wget tar xz-utils make python xsltproc rsync git zip
+
 			
 	**Note:-** Check the installed version of sed. If the sed version is below 4.2.2, use the following steps to build and install sed 4.2.2 from source:-
 	
