@@ -1,6 +1,6 @@
 #Building C++ MongoDB Driver
 
-The instructions provided below specify the steps to build C++ MongoDB Driver legacy-1.1.1 on Linux on the IBM z Systems for RHEL 6/7, SLES 12 and Ubuntu 16.04
+The instructions provided below specify the steps to build C++ MongoDB Driver legacy-1.1.1 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04
 
 
 _**General Notes:**_ 	 
