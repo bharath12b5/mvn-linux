@@ -1,7 +1,8 @@
 ### Building Perl MongoDB Driver
 
-The Perl MongoDB Driver v1.2.3 can be built for Linux on z Systems for the distributions RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04 by following the below instructions.
-Version  v1.2.3 has been successfully built and tested using this method.
+The instructions provided below specify the steps to build Perl MongoDB Driver v1.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+
+
 More information on MongoDB_Perl_Driver can be found on http://docs.mongodb.org/ecosystem/drivers/perl/ and the source code can be obtained from the Perl code repository, CPAN, at http://search.cpan.org/dist/MongoDB/.
 
 _**General Notes:**_
@@ -18,12 +19,13 @@ iv) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ## Building Perl MongoDB Driver
 
-### Obtain pre-built dependencies.
+### Obtain pre-built dependencies
 
-1. Use the following commands to obtain dependencies :
+1. Use the following commands to obtain dependencies:
 
    For RHEL6/RHEL7
    ```shell
+   sudo yum upgrade
    sudo yum install -y make gcc tar zip perl perl-YAML cpan
    ```
 
@@ -39,7 +41,7 @@ iv) _A directory `/<source_root>/` will be referred to in these instructions, th
    ```
 
 
-### **OPTIONAL** Dependency Build - Install latest CPAN.
+### **OPTIONAL** Dependency Build - Install latest CPAN
 
 Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modules to help the Build/Make process.
 
@@ -72,19 +74,27 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
 
       _**Note:** At the time of writing `Path::Tiny` failed a test on RHEL7.1 - The '-fi' options help force an install._
 
-### Product Build - MongoDB_Perl_Driver.
+### Product Build - MongoDB_Perl_Driver
 
    1. Use CPAN to install MongoDB, (Respond to dialog questions as they occur by accepting the default).
-      ```shell
+   
+      For RHEL7, SLES11/12 and Ubuntu 16.04
+	  ```shell
       sudo cpan MongoDB
       ```
+	  
+	  For RHEL6
+	  ```
+	  sudo cpan -fi MongoDB
+	  sudo find / -name boolean.pm | xargs sudo cp -t /usr/local/lib64/perl5/
+	  ```
       i) _**Note:** The CPAN dialog for the MongoDB module install follows the pattern described above for `Bundle::CPAN`. In the first instance to accept the default answers offered, taking note of any failures._
 
       ii) _**Note:** The CPAN repository is subjected to continual updates which leads to occasional intermittent build, and test failures, possibly leading to a dependent module not being installed. Where a module has not been installed, it will first become apparent at run time, or in the testing (below) should a script attempt to access missing code. In such circumstances you can, try to reload the failed module with `sudo cpan <moduleName>`, or find the CPAN build directory (default=`/root/.cpan/build/`) to install it 'by hand', or try to install an older/later module version, or consult the documentation or 'the web' for further advice._
 
       iii) _**Note:** On completion more than 100 Perl modules may have been loaded into the CPAN build directory and installed on the system._
 
-### Post Installation  Testing.
+### Post Installation  Testing
 
    This testing is based on information on https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod and demonstrates a MongoDB connection to a remote host.  A script (shown below) connects to the host and port (must be set to suit the target environment), and uses a database 'tutorial' and collection 'users' (which can also be edited). Information on MongoDB Installation is available at http://docs.mongodb.org/manual/installation/ .
 
@@ -126,7 +136,7 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
       rm -rf  /<source_root>/
       ```
 
-### Reference Files used for Testing :
+### Reference Files used for Testing:
 
    Perl script for 'cut and paste' into text file 'test_MongoDB.pl'.
 
