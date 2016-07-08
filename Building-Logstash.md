@@ -1,14 +1,14 @@
 <!---PACKAGE:Logstash--->
-<!---DISTRO:RHEL 6.6:2.3.0--->
-<!---DISTRO:RHEL 7.1:2.3.0--->
-<!---DISTRO:SLES 11:2.3.0--->
-<!---DISTRO:SLES 12:2.3.0--->
-<!---DISTRO:Ubuntu 16.x:2.3.0--->
+<!---DISTRO:RHEL 6.6:2.3.3--->
+<!---DISTRO:RHEL 7.1:2.3.3--->
+<!---DISTRO:SLES 11:2.3.3--->
+<!---DISTRO:SLES 12:2.3.3--->
+<!---DISTRO:Ubuntu 16.x:2.3.3--->
 
 # Building Logstash
 [Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a build-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
 
-This recipe is for building Logstash (2.3.0) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7/Ubuntu16.04)
+The instructions provided below specify the steps to build Apache Logstash v2.3.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -59,10 +59,8 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  	*  Set JAVA_HOME
 
     ```
-        export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk (for rhel7)
-        export JAVA_HOME=/usr/lib64/jvm/java (for sles12)
-        export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-ibm (for sles11)
-        export JAVA_HOME=/usr/lib/jvm/java-1.7.1-ibm.s390x (for rhel6)
+		export JAVA_HOME=/usr/lib/jvm/java (for RHEL6/7)
+        export JAVA_HOME=/usr/lib64/jvm/java (for SLES11/12)
 		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x/jre (for Ubuntu)
     ```
     
@@ -74,8 +72,8 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
    ```
        cd /<source_root>/
-       wget https://download.elastic.co/logstash/logstash/logstash-2.3.0.zip
-       unzip -u logstash-2.3.0.zip
+       wget https://download.elastic.co/logstash/logstash/logstash-2.3.3.zip
+       unzip -u logstash-2.3.3.zip
    ```
  3. Jruby runs on JVM and needs a native library (libjffi-1.2.so: java foreign language interface). Get `jffi` source code and build with `ant`
 
@@ -91,14 +89,14 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  4.  Copy libjffi-1.2.so to Logstash folder
     ```
        cd /<source_root>/
-       mkdir logstash-2.3.0/vendor/jruby/lib/jni/s390x-Linux
+       mkdir logstash-2.3.3/vendor/jruby/lib/jni/s390x-Linux
        cp jffi-master/build/jni/libjffi-1.2.so \
-       logstash-2.3.0/vendor/jruby/lib/jni/s390x-Linux/libjffi-1.2.so
+       logstash-2.3.3/vendor/jruby/lib/jni/s390x-Linux/libjffi-1.2.so
     ```
 
  5. Run Logstash
    ```
-      cd /<source_root>/logstash-2.3.0
+      cd /<source_root>/logstash-2.3.3
       bin/logstash version
    ```
 
