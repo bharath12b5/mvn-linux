@@ -1,12 +1,11 @@
+# Building v8
 <!---PACKAGE:V8 JavaScript--->
 <!---DISTRO:SLES 12:V8--->
-<!---DISTRO:SLES 11:V8--->
 <!---DISTRO:RHEL 7.1:V8--->
-<!---DISTRO:RHEL 6.6:V8--->
 <!---DISTRO:Ubuntu 16.x:V8--->
 
-The V8 JavaScript engine can be built for Linux on z Systems running RHEL 7, RHEL 6, SLES 12, SLES 11 and Ubuntu 16.04 by following these instructions. It can be built as a set of shared libraries so that it can be used by multiple applications.
-Versions 3.14 and 3.28 have been successfully built and tested this way. (Note: If you are building V8 for use with [MongoDB](../Building MongoDB), you need V8 3.14.)
+The instructions provided below specify the steps to build V8 JavaScript engine Versions 3.14 and 3.28 on Linux on the IBM z Systems for RHEL 7.1, SLES12 and Ubuntu 16.04. It can be built as a set of shared libraries so that it can be used by multiple applications.
+(Note: If you are building V8 for use with [MongoDB](../Building MongoDB), you need V8 3.14.)
 
 More information on the V8 JavaScript engine is available at [the V8 website](https://developers.google.com/v8/intro) and the source code for the z Systems port can be obtained from [GitHub](https://github.com/andrewlow/v8z).
 
@@ -20,24 +19,17 @@ _**General Notes:**_
 
 1. Issue the following commands to install pre-built dependencies:
 
-    (For RHEL 7.1 and RHEL 6.6)
+    For RHEL 7.1
     ```shell
     sudo yum install git subversion make gcc-c++ tar wget
     ```
 
-    (For SLES 12)
+    For SLES 12
     ```shell
-    sudo zypper install git subversion make gcc-c++ tar wget
+    sudo zypper install git subversion make gcc-c++ tar wget python-xml
     ```
 
-    (For SLES 11)
-    ```shell
-    sudo zypper install git subversion make gcc47-c++ tar wget
-    sudo ln -s /usr/bin/gcc-4.7 /usr/bin/gcc
-    sudo ln -s /usr/bin/g++-4.7 /usr/bin/g++
-    sudo ln -s /usr/bin/gcc /usr/bin/cc
-    ```
-    (For Ubuntu 16.04)
+    For Ubuntu 16.04
     ```shell
 	sudo apt-get update
     sudo apt-get install git subversion make tar wget gcc g++ python
@@ -57,156 +49,13 @@ _**General Notes:**_
     export PATH=$(pwd)/depot_tools:$PATH
     ```
 
-4. **(V8 3.28 only)** Building V8 3.28 or newer requires Python 2.7, which is not available as a pre-built RPM from RHEL 6 or SLES 11. Before building V8, you need to build Python 2.7, which in turn has a dependency on OpenSSL 1.0.2a on SLES 11. The next two sections describe how to build OpenSSL 1.0.2a and Python 2.7.
-
-   If you are building V8 3.28 on RHEL 7, SLES 12 and Ubuntu 16.04, Python 2.7 should already be avaialble and V8 3.28 should build correctly, so just skip ahead to [Building V8](#building-v8).
-
-### **(V8 3.28 on SLES 11 only)** Install OpenSSL 1.0.2a
-
-1. Download the OpenSSL source code
-
-    ```shell
-    cd /<source_root>/
-    wget ftp://ftp.openssl.org/source/openssl-1.0.2a.tar.gz
-    tar -xf openssl-1.0.2a.tar.gz
-    ```
-
-2. Configure and make:
- 
-    ```shell
-    cd /<source_root>/openssl-1.0.2a
-    ./Configure linux64-s390x
-    make
-    ```
-
-3. Install OpenSSL:
-
-    ```shell
-    sudo make install
-    export PATH=/usr/local/ssl/bin:$PATH
-    ```
-
-4. **(Optional)** Verify the OpenSSL installation; the following command should display the version of OpenSSL that has been built, e.g. "OpenSSL 1.0.2a 19 Mar 2015":
-
-    ```shell
-    cd /<source_root>
-    openssl version
-    ```
-
-### **(V8 3.28 on RHEL 6 or SLES 11)** Install Python 2.7.8
-
-1. Issue the following commands to obtain pre-built dependencies:
-
-    (For RHEL 6)
-    ```shell
-    sudo yum install ncurses-devel patch zlib-devel bzip2-devel xz openssl-devel
-    ```
-
-    (For SLES 11)
-    ```shell
-    sudo zypper install ncurses-devel patch zlib-devel libbz2-devel
-    ```
-  
-2. Download the Python source code:
-
-    ```shell
-    cd /<source_root>/
-    wget https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tar.xz
-    tar -xf Python-2.7.8.tar.xz
-    ```
-
-3. Configure:
-
-    ```shell
-    cd /<source_root>/Python-2.7.8
-    ./configure --prefix=/usr/local --exec-prefix=/usr/local
-    ```
-
-4.  **(SLES 11 only)** Edit Modules/Setup to replace the following block:
-
-    ```shell
-    #SSL=/usr/local/ssl
-    #_ssl _ssl.c \
-    #       -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
-    #       -L$(SSL)/lib -lssl -lcrypto
-    ```
-
-    with the following:
-
-    ```shell
-    SSL=/usr/local/ssl
-    _ssl _ssl.c \
-        -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
-        $(SSL)/lib/libssl.a $(SSL)/lib/libcrypto.a
-    #   -L$(SSL)/lib -lssl -lcrypto
-    _hashlib _hashopenssl.c \
-        -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
-        $(SSL)/lib/libssl.a $(SSL)/lib/libcrypto.a
-    ```
-
-   Note that the indented lines 3, 4, 7 and 8 must begin with a single tab character (not spaces).
-
-5. Make and install:
-
-    ```shell
-    make
-    sudo make install
-    ```
-
-6. **(Optional)** Verify the Python installation; the following command should display the version of Python that has been built, i.e. "Python 2.7.8":
-
-    ```shell
-    cd /<source_root>
-    python --version
-    ```
-
-### **(V8 3.28 on RHEL 6 only)** Install git 2.2.1    
-
-depot-tools requires a later version of git than that which is available through yum install. This can be achieved by building a suitable version of git from source, as follows:
-
-1. Issue the following command to obtain additional pre-built dependencies:
-
-    ```shell
-    sudo yum install autoconf perl-devel
-    ```
-
-2. Download the git source code:
-
-    ```shell
-    cd /<source_root>/
-    wget https://github.com/git/git/archive/v2.2.1.tar.gz
-    tar -xf v2.2.1.tar.gz
-    ```
-
-3. Configure and make:
- 
-    ```shell
-    cd /<source_root>/git-2.2.1
-    make configure
-    ./configure --prefix=/usr --without-tcltk
-    make NO_GETTEXT=1
-    ```
-
-4. Install:
-
-    ```shell
-    sudo make install NO_GETTEXT=1
-    ```
-
-5. **(Optional)** Verify the git installation; the following command should display the version of git that has been built, i.e. "git version 2.2.1":
-
-    ```shell
-    cd /<source_root>
-    git --version
-    ```
-
 ## Building V8
 
 1. Obtain the V8 source code:
 
     ```shell
     cd /<source_root>/
-    git clone https://github.com/andrewlow/v8z.git
+    git clone https://github.com/ibmruntimes/v8z
     cd v8z
     ```
 
@@ -217,11 +66,71 @@ depot-tools requires a later version of git than that which is available through
     ```shell
     git checkout 3.28-s390
     ```
+     Replace the `builddeps:` section in Makefile
+    ```shell
+
+    # Dependencies. "builddeps" are dependencies required solely for building,
+    # "dependencies" includes also dependencies required for development.
+    # Remember to keep these in sync with the DEPS file.
+    builddeps:
+     	svn checkout --force http://gyp.googlecode.com/svn/trunk build/gyp \
+  	    --revision 1831
+  	if svn info third_party/icu 2>&1 | grep -q icu46 ; then \
+	  svn switch --force \
+	      https://src.chromium.org/chrome/trunk/deps/third_party/icu52 \
+	      third_party/icu --revision 277999 ; \
+	else \
+	  svn checkout --force \
+	      https://src.chromium.org/chrome/trunk/deps/third_party/icu52 \
+	      third_party/icu --revision 277999 ; \
+	fi
+	svn checkout --force http://googletest.googlecode.com/svn/trunk \
+	    testing/gtest --revision 692
+	svn checkout --force http://googlemock.googlecode.com/svn/trunk \
+	    testing/gmock --revision 485
+    ```
+    by
+
+     ```shell
+# Dependencies. "builddeps" are dependencies required solely for building,
+# "dependencies" includes also dependencies required for development.
+# Remember to keep these in sync with the DEPS file.
+builddeps:
+		git clone https://chromium.googlesource.com/external/gyp build/gyp
+	if svn info third_party/icu 2>&1 | grep -q icu46 ; then \
+	  svn switch --force \
+	      https://src.chromium.org/chrome/trunk/deps/third_party/icu52 \
+	      third_party/icu --revision 277999 ; \
+	else \
+	  svn checkout --force \
+	      https://src.chromium.org/chrome/trunk/deps/third_party/icu52 \
+	      third_party/icu --revision 277999 ; \
+	fi
+	svn checkout --force https://github.com/google/googletest.git/trunk/googletest \
+	    testing/gtest --revision 951
+	svn checkout --force https://github.com/google/googlemock.git/trunk/googlemock \
+	    testing/gmock --revision 286
+      ```
 
    (For 3.14)
     
     ```shell
     git checkout 3.14-s390
+    ```
+    Replace the `builddeps:* in Makefile
+     ```shell
+    # Dependencies.
+    # Remember to keep these in sync with the DEPS file.
+    dependencies:
+    	svn checkout --force http://gyp.googlecode.com/svn/trunk build/gyp \
+    	    --revision 1501
+    ```
+    by
+    ```shell
+# Dependencies.
+# Remember to keep these in sync with the DEPS file.
+dependencies:
+		git clone https://chromium.googlesource.com/external/gyp build/gyp
     ```
 
 3. Fetch source code for dependent libraries:
@@ -229,16 +138,12 @@ depot-tools requires a later version of git than that which is available through
     ```shell
     make dependencies
     ```
-
-4. **(SLES 11 only)** Issue the following command:
-
+4. Build Library
     ```shell
-    sed -i "s/crsT/crs/g" build/gyp/pylib/gyp/generator/make.py
+
+    make s390x -j4
     ```
-
-   This is needed in order to prevent the `ar` command from failing when creating libraries during the build process.
-
-6. Build the shared library:
+5. Build the shared library:
 
     ```shell
     make s390x -j4 library=shared
@@ -246,7 +151,7 @@ depot-tools requires a later version of git than that which is available through
 
    The 64-bit shared library will be output as `v8z/out/s390x.release/lib.target/libv8.so`. When building V8 3.28, libicui18n.so and libicuuc.so are also created in the same directory as libv8.so.
 
-7. V8 header files will be required to build products invoking the V8 APIs. Issue the following commands to install the header files:
+6. V8 header files will be required to build products invoking the V8 APIs. Issue the following commands to install the header files:
 
     ```shell
     cd /<source_root>/v8z
@@ -254,7 +159,7 @@ depot-tools requires a later version of git than that which is available through
     sudo chmod -f 644 /usr/include/v8*h /usr/include/libplatform/libplatform.h
     ```
   
-7. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer) for RHEL6, RHEL 7, SLES11, SLES12 and into /usr/local/lib/ for Ubuntu 16.04:
+7. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer) for RHEL 7/SLES 12 and into `/usr/local/lib/` for Ubuntu 16.04:
 
     ```shell
     cd /<source_root>/v8z
