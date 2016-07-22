@@ -1,13 +1,13 @@
-<!---PACKAGE:Elasticsearch--->
-<!---DISTRO:SLES 12:12.9--->
-<!---DISTRO:SLES 11:12.9--->
-<!---DISTRO:RHEL 7.1:12.9--->
-<!---DISTRO:RHEL 6.6:12.9--->
-<!---DISTRO:Ubuntu 16.x:12.9--->
+<!---PACKAGE:Chef Client--->
+<!---DISTRO:SLES 12:12.12--->
+<!---DISTRO:SLES 11:12.12--->
+<!---DISTRO:RHEL 7.1:12.12--->
+<!---DISTRO:RHEL 6.6:12.12--->
+<!---DISTRO:Ubuntu 16.x:12.12--->
 
-## Building Chef Client 12.9.38
+## Building Chef Client 12.12.13
 
-The Chef Client 12.9.38 code can be built for a Linux on z System running RHEL 7.1/6.6, SLES 12/11 and Ubuntu 16.04 by following these instructions (Chef is available at https://www.chef.io/ and the github repository for the client can be found at https://github.com/chef/chef):
+The instructions provided below specify the steps to build Chef Client 12.12.13 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_   
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
@@ -93,7 +93,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ```
     git clone https://github.com/chef/chef.git
     cd chef
-    git checkout v12.9.38
+    git checkout v12.12.13
     ```
 
 6. Correct the gem environment for a standard user
@@ -118,14 +118,14 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
    ```
    bundle install
    ```
-    
+
 9. Build the Chef Client ruby gem packages
 
    ```
    bundle exec rake gem
    ```
 
-   _**NOTE:** For RHEL7, if ```bundler: command not found: rake``` error occurs. Set ```rake``` binary path to PATH environment variable and rerun above command._  
+   _**NOTE:** For RHEL7, if ```bundler: command not found: rake``` error occurs. Set ```rake``` binary path to PATH environment variable and rerun above command._
 
     ```
       export PATH=$PATH:$HOME/bin
@@ -147,12 +147,26 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
 If you'd like to test the Chef client you've just built and installed, just follow the steps below:
 
-1. Run the test suite
+1. Set CHEF_FIPS variable
+	
+	```
+	export CHEF_FIPS=""
+	```
+
+2. Update Fileutils method for Ubuntu 16.04
+
+	```
+	cd /<source_root>/chef/
+	sed -i "s/remove_entry_secure(@repository_dir, force = Chef::Platform.windows?)/rmdir(@repository_dir)/g" ./spec/support/shared/integration/integration_helper.rb
+	sed -i "s/rm_r/rmdir/g" ./spec/functional/run_lock_spec.rb
+	```
+
+3. Run the test suite
    	
    ```
-   cd /<source_root>/chef/
    bundle exec rake spec
-   ```  
+   ```
+   
    To run a single test file
    ```  
    bundle exec rspec spec/PATH/TO/FILE_spec.rb
@@ -162,23 +176,11 @@ If you'd like to test the Chef client you've just built and installed, just foll
    bundle exec rspec spec/PATH/TO/DIR
    ```
    
-   _**NOTE:** This may fail as there can be a dependency on rdoc/task in the Rakefile, if that happens just comment out the rdoc/task line as below._
+   _**NOTE:**_
+   There could be a test case failure "the cheffish DSL tries to load but fails (because chef-provisioning is not there)" which can be ignored as this is not specific to s390x.
 
-   ```
-   require "chef-config/package_task"
-   require 'rdoc/task'
-   require_relative 'tasks/rspec'
-   ```
-   can be changed to be
 
-   ```
-   require "chef-config/package_task"
-   #require 'rdoc/task'
-   require_relative 'tasks/rspec'
-   ```
-
-	
-2. Visit https://github.com/chef/chef#testing for more   
+4. Visit https://github.com/chef/chef#testing for more   
 
 ## References:
 
