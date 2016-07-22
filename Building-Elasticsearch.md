@@ -1,7 +1,7 @@
 <!---PACKAGE:Elasticsearch--->
-<!---DISTRO:SLES 12:2.3.2--->
-<!---DISTRO:RHEL 7.1:2.3.2--->
-<!---DISTRO:Ubuntu 16.x:2.3.2--->
+<!---DISTRO:SLES 12:2.3.3--->
+<!---DISTRO:RHEL 7.1:2.3.3--->
+<!---DISTRO:Ubuntu 16.x:2.3.3--->
 
 # Building Elasticsearch
 
@@ -9,7 +9,7 @@ Below versions of Elasticsearch are available in respective distributions at the
 
 *    Ubuntu 16.04 has `1.7.3`
 
-The instructions provided below specify the steps to build [Elasticsearch](https://www.elastic.co/products/elasticsearch) v2.3.2 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build [Elasticsearch](https://www.elastic.co/products/elasticsearch) v2.3.3 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
 
 ##### General Notes
       
@@ -29,7 +29,8 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 3. Ubuntu 16.04
   
-    	sudo apt-get install tar wget unzip curl maven openjdk-8-jdk
+    	sudo apt-get update
+        sudo apt-get install tar wget unzip curl maven openjdk-8-jdk
 
 #### Download Maven and add it to the path 
 
@@ -77,9 +78,9 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 	```
     cd /<source_root>/
-    wget https://github.com/elastic/elasticsearch/archive/v2.3.2.zip
-    unzip v2.3.2.zip
-    cd elasticsearch-2.3.2
+    wget https://github.com/elastic/elasticsearch/archive/v2.3.3.zip
+    unzip v2.3.3.zip
+    cd elasticsearch-2.3.3
     ```
 	
 #### Build the package
@@ -109,9 +110,9 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 2.   Extract Elasticsearch tar file
 	
 	```
-	cd /<source_root>/elasticsearch-2.3.2/distribution/tar/target/releases
-	tar -xvf elasticsearch-2.3.2-SNAPSHOT.tar.gz
-	cd elasticsearch-2.3.2-SNAPSHOT
+	cd /<source_root>/elasticsearch-2.3.3/distribution/tar/target/releases
+	tar -xvf elasticsearch-2.3.3-SNAPSHOT.tar.gz
+	cd elasticsearch-2.3.3-SNAPSHOT
 	```
 
 _**Note:**_  Click [here](https://www.elastic.co/downloads/elasticsearch) to know more about starting the Elasticsearch service.
