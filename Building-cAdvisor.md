@@ -1,7 +1,7 @@
 <!---PACKAGE:cAdvisor--->
-<!---DISTRO:SLES 12:0.23.2--->
-<!---DISTRO:RHEL 7.1:0.23.2--->
-<!---DISTRO:Ubuntu 16.x:0.23.2--->
+<!---DISTRO:SLES 12:0.23.6--->
+<!---DISTRO:RHEL 7.1:0.23.6--->
+<!---DISTRO:Ubuntu 16.x:0.23.6--->
 
 # Building cAdvisor
 
@@ -9,7 +9,7 @@ Below versions of cAdvisor are available in respective distributions at the time
 
 *    Ubuntu 16.04 has `0.20.5`
 
-The instructions provided below specify the steps to build cAdvisor version 0.23.2 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build cAdvisor version 0.23.6 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_   
 _i) When following the steps below please use a standard permission user unless otherwise specified._     
@@ -65,7 +65,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
 6. Checkout the code from repository
     ```
-         git clone https://github.com/google/cadvisor.git -b v0.23.2
+         git clone https://github.com/google/cadvisor.git -b v0.23.6
     ```
 
 7. Change the work directory
