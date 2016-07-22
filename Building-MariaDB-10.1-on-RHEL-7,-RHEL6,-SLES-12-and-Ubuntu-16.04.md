@@ -1,5 +1,12 @@
 # Building MariaDB
-MariaDB version 10.1 has been successfully build and tested for Linux on z systems. Following instructions can be used for RHEL 7/6 and SLES12 and Ubuntu 16.04.
+
+Below versions of MariaDB are available in respective distributions at the time of this recipe creation:
+
+*    RHEL   7     has `5.5.47`
+*    SLES   12    has `10.0.25-20.6.1`
+*    Ubuntu 16.04 has `10.0.25`
+
+The instructions provided below specify the steps to build MariaDB v10.1 on Linux on the IBM z Systems for RHEL 6/7, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
