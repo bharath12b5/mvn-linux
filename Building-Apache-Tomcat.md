@@ -1,12 +1,19 @@
 <!---PACKAGE:Apache Tomcat--->
-<!---DISTRO:SLES 12:8.0.32--->
-<!---DISTRO:SLES 11:8.0.32--->
-<!---DISTRO:RHEL 7.1:8.0.32--->
-<!---DISTRO:RHEL 6.6:8.0.32--->
+<!---DISTRO:SLES 12:8.5.3--->
+<!---DISTRO:SLES 11:8.5.3--->
+<!---DISTRO:RHEL 7.1:8.5.3--->
+<!---DISTRO:RHEL 6.6:8.5.3--->
+<!---DISTRO:Ubuntu 16.x:8.5.3--->
 
 # Building Apache Tomcat
 
-Apache Tomcat version 8.0.32 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Below versions of Apache Tomcat are available in respective distributions at the time of this recipe creation:
+
+*    RHEL   7     has `7.0.54`
+*    SLES   12    has `7.0.68`
+*    Ubuntu 16.04 has `8.0.32`
+
+The instructions provided below specify the steps to build Apache Tomcat v8.5.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -30,18 +37,25 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 * SLES11:
 
 			sudo zypper install -y wget tar git-core java-1_7_0-ibm-devel-1.7.0_sr9.10-9.1.s390x make gcc
+			
+* Ubuntu 16.04:
 
-* Install OpenSSL version 1.0.2d using following steps for RHEL7.1/6.6 and SLES12/11
+			sudo apt-get install -y openjdk-8-jdk tar git make gcc ant
+			
+						
+
+* Install OpenSSL version 1.0.2h using following steps
 
 			 cd /<source_root>/
              git clone https://github.com/openssl/openssl.git
              cd openssl
-             git checkout OpenSSL_1_0_2d
+             git checkout OpenSSL_1_0_2h
+			 
              ./config --prefix=/usr --openssldir=/usr/local/openssl shared
              make
              sudo make install
 
-* Install Ant using following steps for RHEL7.1/6.6 and SLES12/11:
+* Install Ant using following steps (For RHEL7.1/6.6 and SLES12/11 only.)
 
     Download a binary distribution of Ant from:
 		http://ant.apache.org/bindownload.cgi
@@ -72,7 +86,12 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 				export JAVA_HOME=/usr/lib64/jvm/java-1.7.0-ibm-1.7.0
 				export PATH=$PATH:$JAVA_HOME/bin
 			
-* Set ANT_HOME and PATH (For RHEL7.1/6.6 and SLES12/11)
+	* Ubuntu 16.04:
+
+				export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x
+				export PATH=$PATH:$JAVA_HOME/bin
+					
+* Set ANT_HOME and PATH (For RHEL7.1/6.6 and SLES12/11 only.)
 
 				export ANT_HOME=/<source_root>/apache-ant-1.9.6
 				export PATH=$PATH:$ANT_HOME/bin
@@ -81,13 +100,13 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 * Get the source
     
 			cd /<source_root>/
-			git clone https://github.com/apache/tomcat80.git
-			cd /<source_root>/tomcat80
-			git checkout TOMCAT_8_0_32
+			git clone https://github.com/apache/tomcat85.git
+			cd /<source_root>/tomcat85
+			git checkout TOMCAT_8_5_3
 		
 * Create build properties file
 
-			cd /<source_root>/tomcat80
+			cd /<source_root>/tomcat85
 			cp build.properties.default build.properties
 		
 * Build Tomcat source
@@ -102,7 +121,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 * Set CATALINA_HOME and PATH
 
-			export CATALINA_HOME=/<source_root>/tomcat80/output/build
+			export CATALINA_HOME=/<source_root>/tomcat85/output/build
 			export PATH=$PATH:$CATALINA_HOME/bin
 			
 * Run the tomcat server
@@ -135,6 +154,6 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	
 #### References:
 * http://tomcat.apache.org/
-* http://tomcat.apache.org/download-80.cgi
+* http://tomcat.apache.org/download-85.cgi
 * https://github.com/apache/tomcat/blob/trunk/BUILDING.txt
  
