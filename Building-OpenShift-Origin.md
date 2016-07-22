@@ -3,10 +3,12 @@
 
 # Building OpenShift Origin
 
-[OpenShift Origin V3](https://github.com/openshift/origin) is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. The stable release of OpenShift Origin 1.1.3 has been built and tested on Linux on z Systems.  The following instructions can be used for RHEL 7.1 and RHEL 7.2.
+[OpenShift Origin V3](https://github.com/openshift/origin) is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. The instructions provided below specify the steps to build OpenShift Origin 1.1.3 on Linux on the IBM z Systems for RHEL 7.1 and RHEL 7.2.
 
-### _**General Note:**_
-_When following the steps below please use a standard permission user unless otherwise specified._
+### _**General Notes:**_  
+i) _When following the steps below please use a standard permission user unless otherwise specified._
+
+ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ## Building and Installing OpenShift Origin
 
@@ -33,7 +35,7 @@ See instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go)
 See instructions [here](https://github.com/openshift/origin/blob/master/CONTRIBUTING.adoc#develop-locally-on-your-host) to develop locally on your host
 
 ####In summary:
-     export GOPATH=$HOME/go
+     export GOPATH=/<source_root>/go
      export PATH=$PATH:$GOPATH/bin
      export OS_OUTPUT_GOPATH=1
      mkdir -p $GOPATH/src/github.com/openshift
@@ -382,24 +384,38 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
     ```
 
 5. If you intend to use Auto-scaling feature of OpenShift Origin then OpenShift [origin-metrics](https://github.com/openshift/origin-metrics) images are required to be built:
-  1. Git clone origin-metrics in a directory of your choosing: `git clone https://github.com/openshift/origin-metrics.git`
+  1. Git clone origin-metrics in a directory of your choosing: 
+    ```
+      cd /<source_root>/
+      git clone https://github.com/openshift/origin-metrics.git
+      cd /<source_root>/origin-metrics
+      git checkout v1.2.0
+    ```
 
-  2. Create [wildfly](https://hub.docker.com/r/jboss/wildfly/) images required by origin-metrics. You will also need to build dependent Docker images for wildfly
+  2. Create [wildfly](https://hub.docker.com/r/jboss/wildfly/) images required by origin-metrics. You will also need to build dependent Docker images for wildfly. Dockerfile of hawkular-metrics uses this docker image as base image.
 
-  3. Modify Cassandra Dockerfile to include Linux on Z system changes. You will need to integrate Cassandra changes as per [Apache Cassandra 2.2.3](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-Cassandra-2.2.3)
+  3. Modify Cassandra Dockerfile to include Linux on Z system changes. You will need to integrate Cassandra changes as per [Apache Cassandra 2.2.5](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-Cassandra-2.2.5)
 
-  4. Modify Heapster Dockerfile to include Linux on Z system changes. Add the following line after 'git checkout $HEAPSTER_COMMIT &&':
+  4. Copy your pre-built go folder in to /\<source_root>/origin-metrics/heapster-base. Add following line before 'yum install -y -q git wget make &&' and modify Heapster Base dockerfile to remove Go installation steps:
+    ```
+    COPY go /tmp/go
+    ```  
+
+  5. You will need to build dependent Docker images for Heapster Base. Heapster dockerfile uses this docker image as base image.
+
+  6. Modify Heapster Dockerfile to include Linux on Z system changes. Add the following line after 'git checkout $HEAPSTER_COMMIT &&':
     ```
     cp ./Godeps/_workspace/src/github.com/boltdb/bolt/bolt_amd64.go ./Godeps/_workspace/src/github.com/boltdb/bolt/bolt_s390x.go
     ```
-  5. Run `hack/build-images.sh` to create origin-metrics images
+
+  7. Run `hack/build-images.sh` to create origin-metrics images
 
   
 ### Optional: Run Unit tests
 
     TEST_KUBE=1 hack/test-go.sh
 
-__Note:__ There is one failing test case regarding the oidc token, but this is not specific to s390x. 
+__Note:__ There is one failing test case regarding the oidc token, but this is not specific to s390x. Also there could be few errors related to router services, HTTPProbeChecker, TCPHealthChecker, etc. which we can skip for this version.
 
 ### Optional: Run Integration tests
 
