@@ -1,17 +1,12 @@
-<!---PACKAGE:MySQL--->
-<!---DISTRO:SLES 12:5.7--->
-<!---DISTRO:SLES 11:5.7--->
-<!---DISTRO:RHEL 7.1:5.7--->
-<!---DISTRO:Ubuntu 16.x:5.7--->
-
 ## Building MySQL
 
 Below versions of MySQL are available in respective distributions at the time of this recipe creation:
 
 *    Ubuntu 16.04 has `5.7.12-0ubuntu1`
 *    SLES 11 has `5.5.45-0.11.1`
+*    RHEL 6.6 has `5.1.73`
 
-The instructions provided below specify the steps to build MySQL version 5.7 on Linux on the IBM z Systems for RHEL 7.1, SLES 11, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build MySQL version 5.7 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11, SLES 12 and Ubuntu 16.04.
 
 More information on MySQL is available at https://www.mysql.com and the source code can be downloaded from https://github.com/mysql/mysql-server.git.
 
@@ -25,6 +20,11 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ###Obtain pre-built dependencies
 
+*	For RHEL 6.6
+
+	```shell
+	sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget zlib-devel bzip2.s390x libtool.s390x
+	```
 *	For RHEL 7.1
 
 	```shell
@@ -49,7 +49,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ###Dependency Build -  GCC 4.8.2 and cmake 3.3.0-rc2
 
-   _**Only Required on SLES 11**_  
+   _**Required on RHEL 6.6 and SLES 11**_  
    
    - Install GCC 4.8.2 by building from source.
    
@@ -71,7 +71,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	  
    3. Configure the Makefile. Then Make and Install the utility.
       ```shell
-      ../configure --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
+      ../configure --disable-multilib --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
 	  make 
 	  sudo make install 
       ```
@@ -86,7 +86,9 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
       ```shell
       gcc --version
       ```
-	  	  
+   
+   _**Only Required on SLES 11**_   
+   
    - Update cmake to version 3.3.0-rc2 by building from source.
 
    1. _[Optional]_ Check the version of any existing `cmake` executable.
@@ -135,7 +137,13 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     _**Note:** At the time of creating this recipe, branch 5.7 returned minor version 5.7.13, - this minor version is subject to change._
 
    3. Configure and Build the MySQL
-   
+    
+	For RHEL 6.6
+	```shell
+    cmake -DCMAKE_C_COMPILER=/opt/gcc4.8/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gcc4.8/bin/g++ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
+    gmake
+    ```
+	
 	For RHEL 7.1
 	```shell
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
@@ -168,7 +176,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
     The testing should take only a few seconds.
 
-    For RHEL7.1, SLES11 & SLES12
+    For RHEL6.6, RHEL7.1 , SLES 11 & SLES 12
 	```shell
     gmake test
     ```
@@ -185,7 +193,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     sudo gmake install
     ```
 	
-	For SLES 11
+	For RHEL 6.6 & SLES 11
 	```shell
     sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
     ```
@@ -210,6 +218,8 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
      ```
 
 ###References:
+
+https://bugs.mysql.com/bug.php?id=72752 - Explanation of the cmake upgrade for SLES 11.
 
 http://www.mysql.com - MySQL Homepage with definitive Information and Documentation and configuration for non-test environments.
 
