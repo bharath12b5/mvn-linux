@@ -7,7 +7,11 @@
 
 ### Building OCaml
 
-[OCaml](http://ocaml.org) is a popular object-oriented functional programming language. The OCaml system contains an interpreter as well as a compiler (that compiles OCaml source to machine code). The stable release of OCaml 4.03.0 has been built and tested on Linux on z Systems.
+Below version of OCaml is available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `4.02.3`
+
+[OCaml](http://ocaml.org) is a popular object-oriented functional programming language. The OCaml system contains an interpreter as well as a compiler (that compiles OCaml source to machine code). The instructions provided below specify the steps to build OCaml 4.03.0 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.  
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -57,3 +61,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
         umask 022
         sudo make install
+
+# References  
+  http://ocaml.org  
+  http://caml.inria.fr/ocaml/release.en.html
