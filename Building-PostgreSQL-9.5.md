@@ -1,6 +1,13 @@
 # Building PostgreSQL
 
-[PostgreSQL version 9.5.2](http://www.postgresql.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for SLES 11/12 and RHEL 6.6/7.1 .
+Below versions of PostgreSQL are available in respective distributions at the time of this recipe creation.
+
+• RHEL 7.1 has  9.2.15  
+• RHEL 6.6 has  8.4.20    
+• SLES 11 has  8.3.23-0.4.1  	 
+• Ubuntu 16.04 has  9.5+173  
+
+[PostgreSQL version 9.5.3](http://www.postgresql.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for SLES 11/12 and RHEL 6.6/7.1 .
 
 _**General Notes:**_ 	 
 _i) When following the steps below please use a standard permission user unless otherwise specified._
@@ -36,7 +43,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
          cd /home/postgres
          git clone https://github.com/postgres/postgres.git 
          cd postgres/
-         git checkout REL9_5_2
+         git checkout REL9_5_3
          ```   
      
    		 **Note:** *Login as postgres user and download the source in postgres home directory.* 
@@ -55,7 +62,6 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
        ```
        su <standard_permission_user>
-       cd /home/postgres/postgres
        sudo make install
 	   export PATH=$PATH:/usr/local/pgsql/bin
        ``` 
