@@ -1,14 +1,14 @@
-# Building Python 3.5.1
+# Building Python 3.5.2
 
 Below versions of Python  are available in respective distributions at the time of this recipe creation:
 
 * RHEL 7.1 has  2.7.5  
 * RHEL 6.6 has  2.6.6  
-* SLES 12 has  2.7.9
+* SLES 12 has  3.4.1
 * SLES 11 has  2.6.9
 * Ubuntu 16.04 has  3.5.1 
 
-The instructions provided below specify the steps to build Python 3.5.1 on Linux on the IBM z Systems for RHEL 7/6 and SLES11/12.
+The instructions provided below specify the steps to build Python 3.5.2 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -33,22 +33,26 @@ All of the usable dependencies are available on the RHEL 6, 7 and SLES 11, 12. I
 * SLES11
 
 		sudo zypper install -y gcc gcc-c++ make ncurses patch zlib zlib-devel wget tar
+
+* Ubuntu 16.04
 		
-#### Section 2: Build and Install Python 3.5.1
+		sudo apt-get install -y gcc g++ make libncurses5-dev libreadline6-dev libssl-dev libgdbm-dev libc6-dev libsqlite3-dev libbz2-dev xz-utils patch wget tar curl patch
+		
+#### Section 2: Build and Install Python 3.5.2
 1. Get the source.
 
 		cd /<source_root>/
-        wget https://www.python.org/ftp/python/3.5.1/Python-3.5.1.tar.xz
-        tar -xvf Python-3.5.1.tar.xz
+        wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tar.xz
+        tar -xvf Python-3.5.2.tar.xz
 
 2. Configure the build.  Skipping this step will result in installing Python in default location /usr/local.
 
-         cd /<source_root>/Python-3.5.1
+         cd /<source_root>/Python-3.5.2
         ./configure --prefix=<build-location> --exec-prefix=<build-location>
 
     For instance,
 
-         cd /<source_root>/Python-3.5.1
+         cd /<source_root>/Python-3.5.2
         ./configure --prefix=/usr/local --exec-prefix=/usr/local
 
 3. Build the source.
@@ -73,5 +77,4 @@ All of the usable dependencies are available on the RHEL 6, 7 and SLES 11, 12. I
 
 
 #### Section 3: References
-1. [Release notes for Python 3.5.1](https://www.python.org/downloads/release/python-351/)
-
+1. [Release notes for Python 3.5.2](https://www.python.org/downloads/release/python-352/)
