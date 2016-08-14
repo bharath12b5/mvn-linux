@@ -1,3 +1,8 @@
+<!---PACKAGE:Apache Geode--->
+<!---DISTRO:SLES 12:1.0.0--->
+<!---DISTRO:RHEL 7.1:1.0.0--->
+<!---DISTRO:Ubuntu 16.x:1.0.0--->
+
 ### Building Apache Geode
 
 Apache Geode 1.0.0 M1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1, SLES 12 SP1 and Ubuntu 16.04.
@@ -86,7 +91,6 @@ For Ubuntu 16.04:
     ```
 		./gradlew test
   ```
-   Above command may result into few test case failures related to Snappy java compression on s390x architecture. Those can be ignored.  
 
 _**Note:** Click [here](https://github.com/apache/incubator-geode/blob/rel/v1.0.0-incubating.M1/README.md) to know more about how to start a locator and server._
 
