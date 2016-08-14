@@ -1,11 +1,15 @@
 <!---PACKAGE:PhantomJS--->
 <!---DISTRO:SLES 12:2.1.1--->
 <!---DISTRO:RHEL 7:2.1.1--->
-
+<!---DISTRO:Ubuntu 16.x:2.1.1--->
 
 # Building PhantomJS
 
-PhantomJS can be built for Linux on z System running RHEL 7 or SLES 12 by the following these instructions. Version 2.1.1 has been successfully built & tested this way.
+Below versions of PhantomJS are available in respective distributions at the time of this recipe creation:
+
+• Ubuntu 16.04 has `2.1.1`
+
+The instructions provided below specify the steps to build [PhantomJS](http://phantomjs.org/build.html) version 2.1.1 on Linux on the IBM z Systems for RHEL 7 and SLES 12.
 
 ### *General Notes:*
 i) When following the steps below please use a standard permission user unless otherwise specified.
