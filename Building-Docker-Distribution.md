@@ -1,14 +1,14 @@
 <!---PACKAGE:Docker Distribution--->
-<!---DISTRO:SLES 12:2.4.1--->
-<!---DISTRO:RHEL 7.1:2.4.1--->
-<!---DISTRO:Ubuntu 16.x:2.4.1--->
+<!---DISTRO:SLES 12:2.5.0--->
+<!---DISTRO:RHEL 7.1:2.5.0--->
+<!---DISTRO:Ubuntu 16.x:2.5.0--->
 
 # Building Docker Distribution
 Below versions of Docker Distribution are available in respective distributions at the time of this recipe creation:
 
 *    Ubuntu 16.04 has `2.3.0`
 
-The instructions provided below specify the steps to build Docker Distribution 2.4.1 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Docker Distribution 2.5.0 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -37,14 +37,14 @@ Following are the build dependencies for Distribution.
             
 *	For RHEL7, SLES12: To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe.
 
-##### Step 2 : Get the source (checkout v2.4.1 release)
+##### Step 2 : Get the source (checkout v2.5.0 release)
 *	Create a distribution directory and clone the source code there.
 			
 			mkdir -p /<source_root>/src/github.com/docker
 			cd /<source_root>/src/github.com/docker
 			git clone https://github.com/docker/distribution.git
 			cd /<source_root>/src/github.com/docker/distribution
-			git checkout v2.4.1
+			git checkout v2.5.0
             
 ##### Step 3 : Set environment variable
 *	Set DISTRIBUTION_DIR environment variable. 
