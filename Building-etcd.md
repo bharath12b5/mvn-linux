@@ -1,7 +1,7 @@
 <!---PACKAGE:etcd--->
-<!---DISTRO:SLES 12:2.3.7--->
-<!---DISTRO:RHEL 7.1:2.3.7--->
-<!---DISTRO:Ubuntu 16.x:2.3.7--->
+<!---DISTRO:SLES 12:3.0.4--->
+<!---DISTRO:RHEL 7.1:3.0.4--->
+<!---DISTRO:Ubuntu 16.x:3.0.4--->
 
 # Building etcd
 
@@ -9,7 +9,7 @@ Below versions of etcd are available in the respective distributions at the time
 
 *    Ubuntu 16.04 has `2.2.5`
 
-The instructions provided below specify the steps to build etcd v2.3.7 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build etcd v3.0.4 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -38,32 +38,40 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     sudo apt-get install golang git curl
     ```
 	
-2. Get etcd v2.3.7 source code from github
+2. Get etcd v3.0.4 source code from github
 
     ```shell
     cd /<source_root>/
+	mkdir -p /<source_root>/src/github.com/coreos
+    cd /<source_root>/src/github.com/coreos
     git clone https://github.com/coreos/etcd
     cd etcd
-    git checkout v2.3.7
+    git checkout v3.0.4
     ```
-3. Check go version
+3. Set GOPATH
+   
+    ```shell
+	export GOPATH=/<source_root>/
+	```
+    
+4. Check go version
 
     ```shell
     go version
     ```
-4. Build etcd
+5. Build etcd
 
     ```shell
-    cd /<source_root>/etcd
+    cd /<source_root>/src/github.com/coreos/etcd
     ./build
     ```
-5. Execute test suite
+6. Execute test suite
    ```shell
-    cd /<source_root>/etcd
+    cd /<source_root>/src/github.com/coreos/etcd
     ./test
    ```
 _**Notes:**_  
-_i) In case of error `“go test: -race and -msan are only supported on linux/amd64, freebsd/amd64,window"`, modify `/<source_root>/etcd/test` file and add support for "s390x" architecture as follows:_
+_i) In case of error `"go test: -race and -msan are only supported on linux/amd64, freebsd/amd64,window"`, modify `/<source_root>/etcd/test` file and add support for "s390x" architecture as follows:_
     ```shell
     if [ $MACHINE_TYPE != "armv7l" ];[ $MACHINE_TYPE != "s390x" ];then
       RACE="--race"
@@ -108,10 +116,10 @@ _ii) If the test case fails on timeout then increase the timeout limit of the re
 	
    _iii) Few test case failures seem intermittent and should pass on multiple run._
 
-6. Test etcd service
+7. Test etcd service
 
     ```shell
-    cd /<source_root>/etcd
+    cd /<source_root>/src/github.com/coreos/etcd
     ./bin/etcd
     ```
 
