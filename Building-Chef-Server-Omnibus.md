@@ -1,11 +1,11 @@
 <!---PACKAGE:Chef Server--->
-<!---DISTRO:RHEL 6.6:12.5--->
-<!---DISTRO:RHEL 7.1:12.5--->
-<!---DISTRO:SLES 11:12.5--->
-<!---DISTRO:SLES 12:12.5--->
-<!---DISTRO:Ubuntu 16.x:12.5--->
+<!---DISTRO:RHEL 6.6:12.7--->
+<!---DISTRO:RHEL 7.1:12.7--->
+<!---DISTRO:SLES 11:12.7--->
+<!---DISTRO:SLES 12:12.7--->
+<!---DISTRO:Ubuntu 16.x:12.7--->
 
-The **Chef Server Omnibus** RPM can be built for Linux on z Systems running RHEL 7.1/6.6, SLES 12/11 or Ubuntu 16.04 by following these instructions.  Version 12.5.0 has been successfully built & tested this way.
+The instructions provided below specify the steps to build Chef Server Omnibus 12.7.0 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	
 _i) When following the steps below please use a super user / root. This isn't best practice (but the build process is much more stable as a super user) however this RPM could be built on a VM / Container so that root isn't exposed._  
@@ -34,8 +34,8 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```
    On Ubuntu 16.04
     ```shell
-	sudo apt-get update
-    sudo apt-get install git make gcc tar g++ patch libreadline6 libreadline6-dev bzip2 openjdk-8-jdk wget libxml2-dev curl libssl-dev bison flex ruby libyaml-dev libffi-dev zlib1g-dev libncurses5-dev ruby-dev 
+	apt-get update
+    apt-get install git make gcc tar g++ patch libreadline6 libreadline6-dev bzip2 openjdk-8-jdk wget libxml2-dev curl libssl-dev bison flex ruby libyaml-dev libffi-dev zlib1g-dev libncurses5-dev ruby-dev 
     ```
     You may already have some of these packages installed - install any that are missing if needed.  
     _**Note:** The `tcl-devel`, `tk-devel` and `gdbm-devel` packages should NOT be installed (otherwise the Ruby build process will incorporate them and Chef Server Omnibus may fail with a healthcheck dependency error later)_
@@ -105,11 +105,11 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
 
     **WARNING:** Do not perform the Ruby install dependencies step as that specifies the tcl / tk / gdbm libraries. The dependencies above cover the Ruby build process. If you already have tcl-devel, tk-devel or gdbm-devel installed you'll need to remove them for the duration of this build.
     
-    *For RHEL6.6 and SLES12:*  
-    The Ruby version available on the RHEL 6.6 package repositories is too low level and the Ruby version available on SLES 12 has some configuration issues so build and install Ruby yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby).
+    *For SLES12:*  
+    The Ruby version available on SLES 12 has some configuration issues so build and install Ruby yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby).
 
-    *For SLES11:*  
-    The Ruby version available on the SLES 11 package repositories is too low and the ruby version from above link gives some build issues for SLES 11. Hence build Ruby version 2.2.5 by using the above [link](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby) as reference for SLES11.
+    *For RHEL6.6 and SLES11:*  
+    The Ruby version available on the RHEL 6.6 and SLES11 package repositories is too low level and the ruby version from above link gives some build issues for RHEL 6.6 and SLES 11. Hence build Ruby version 2.2.5 by using the above [link](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby) as reference.
 
     _**Note:** While installing Ruby on **RHEL6** and **SLES11** if **GCC 6.0.0**  was installed, make sure while performing the below steps **GCC 6.0.0** version **should not** be used. It causes some compilation error for ncurses._
     
@@ -146,16 +146,16 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     git clone https://github.com/chef/chef-server
     git clone https://github.com/chef/omnibus
     cd omnibus
-    git checkout v5.2.0
+    git checkout v5.3.0
     cd ..
     ```
     _**Note:** The `--depth 100` flag is used to reduce the amount downloaded, in the future this might mean that specific checkouts won't work (as the total number of commits has moved on), in that case either increase the value or omit the tag_  
 
-    Only the **SLES** and **Ubuntu** platforms require modification.
+    Only the **Ubuntu** platforms require modification.
     ```shell
     vi omnibus/lib/omnibus/packager.rb
     ```
-    Update the packaging list to understand SLES/Ubuntu platforms as follows:
+    Update the packaging list to understand Ubuntu platforms as follows:
     ```ruby
     PLATFORM_PACKAGER_MAP = {
       'debian'   => DEB,
@@ -169,13 +169,13 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
       'ubuntu'   => DEB,
     }.freeze
     ```
-    _**Note:** `'suse'` was added and pointing to RPM to support SLES platforms_  
-    This is because the omnibus gem doesn't support / recognize `'suse'` as a platform and so drops into a `makeself` package.
+    _**Note:** `'ubuntu'` was added and pointing to DEB_  
+    This is because the omnibus gem doesn't support / recognize `'ubuntu'` as a platform and so drops into a `makeself` package.
 8. Checkout the required version of Chef Server and download the Ruby Gem requirements
 
     ```shell
     cd $SRCRT/chef-server/
-    git checkout 12.5.0
+    git checkout 12.7.0
     cd omnibus
     vi Gemfile
     ```
@@ -203,7 +203,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```
     _**Note:**_
 	
-    _i) Git needs to be configured with at least a user.email (if this is already set then there is no need to update it) in order for the git caching to work - the caching is useful to recover from missing any steps without having to do a complete rebuild. If you'd prefer not to have to configure git you can disable git caching in **7.i**._
+    _i) Git needs to be configured with at least a user.email (if this is already set then there is no need to update it) in order for the git caching to work - the caching is useful to recover from missing any steps without having to do a complete rebuild. If you'd prefer not to have to configure git you can disable git caching in **10.i**._
 
     _ii) If you get the following error "An error occurred while installing dep-selector-libgecode (1.0.2), and Bundler cannot continue.
     Make sure that `gem install dep-selector-libgecode -v '1.0.2'` succeeds before bundling."
@@ -255,17 +255,16 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
         cd $SRCRT/chef-server/omnibus/
         vi config/projects/chef-server.rb
         ```
-        Here we need to remove an override and update the version of Ruby bundled - this is because the s3 cache contains an old version of the cacerts file which is no longer available outside of s3 caching so use the latest instead, and the `2.1.4` version of Ruby has some SSL issues:
+        Here we need to update the version of Ruby bundled - the `2.1.4` version of Ruby has some SSL issues:
         ```ruby
-        #override :cacerts, version: '2014.08.20'
         override :rebar, version: "2.0.0"
         override :berkshelf2, version: "2.0.18"
         override :rabbitmq, version: "3.3.4"
         override :erlang, version: "17.5"
-        override :ruby, version: "2.1.6"
+        override :ruby, version: "2.2.2"
         override :chef, version: "9a3e6e04f3bb39c2b2f5749719f0c21dd3f3f2ec"
         ```
-        _**Note:**  Remove the `:cacerts` version line, if present, by commenting it out, and change the `:ruby` version to be `2.1.6`_
+        _**Note:**  change the `:ruby` version to be `2.2.2`_
     3. Update openresty.rb
     
         ```shell
@@ -291,18 +290,22 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
         ``` 
         _**Note:** Comment out the 3 `asm` and `jit` modules as they are not supported, also you have to change the `--with-luajit` option to `--with-lua51` in the else block as the default for lua (if not specified) is now with jit, which again is not supported._
 
-    4. Update libossp-uuid.rb
-    
-        ```shell
-        cd $SRCRT/chef-server/omnibus/
-        vi config/software/libossp-uuid.rb
-        ```
-        The original source is no longer available, so change the url as below:
-        ```ruby
-        source url: "https://gnome-build-stage-1.googlecode.com/files/uuid-1.6.2.tar.gz",
-            md5: "5db0d43a9022a6ebbbc25337ae28942f"
-        ```
-        _**Note:** The `md5` checksum should not change as it is the same file just from a different location_
+    4. Update opscode-solr4.rb
+
+		```shell
+		cd $SRCRT/chef-server/omnibus/
+		vi config/software/opscode-solr4.rb
+		```
+		changes are required to be done in the file as mentioned below.
+		```ruby
+		    source url: "http://archive.apache.org/dist/lucene/solr/#{version}/solr-#{version}.tgz",
+            md5: "8ae107a760b3fc1ec7358a303886ca06"
+           
+            dependency "server-jre"
+
+            relative_path "solr-#{version}"
+		```
+
     5. Update server-jre.rb
    
         ```shell
@@ -430,14 +433,7 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         cp ../../omnibus-software/config/software/ohai.rb config/software/.
         vi config/software/ohai.rb
         ```
-        Firstly the version of ohai available as `master` (at the time of writing) has a conflicting gem requirement, to fix this we specify the version to be `8.5.1`, so update it as below:
-        ```ruby
-        name "ohai"
-        default_version "8.5.1"
-        
-        source git: "git://github.com/opscode/ohai"
-        ```
-        Secondly there is an issue with the available gems, the simplest solution is to convert the install to work within bundler - which guarantees that the relevant gems are in the correct location, so also update the file to match the below:
+        There is an issue with the available gems, the simplest solution is to convert the install to work within bundler - which guarantees that the relevant gems are in the correct location, so also update the file to match the below:
         ```ruby
         build do
             env = with_standard_compiler_flags(with_embedded_path)
@@ -483,7 +479,7 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         ```
         _**Note:** All we have done is replaced `-Xloggc` with `-Xverbosegclog`_
 
-    12. Update ncurses.rb
+    12. Update ncurses.rb (RHEL/SLES **only**)
     
         ```shell
         cd $SRCRT/chef-server/omnibus/
@@ -494,7 +490,6 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         ```ruby
         #  if version == "5.9"
         #    # Update config.guess to support platforms made after 2010 (like aarch64)
-        #    patch source: "config_guess_2015-09-24.patch", plevel: 0
         #
         #    # Patch to add support for GCC 5, doesn't break previous versions
         #    patch source: "ncurses-5.9-gcc-5.patch", plevel: 1
@@ -502,19 +497,6 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         ```
         _**Note:** Comment out the whole if statement for version == "5.9"_
         
-        On Ubuntu 16.04:
-          
-         check the gcc version installed, if it is 5.x.x, apply the patch below:
-        ```ruby
-           if version == "5.9"
-          #    Update config.guess to support platforms made after 2010 (like aarch64)
-          #    patch source: "config_guess_2015-09-24.patch", plevel: 0
-          #
-          #    Patch to add support for GCC 5, doesn't break previous versions
-               patch source: "ncurses-5.9-gcc-5.patch", plevel: 1
-           end
-        ```  
-
     13. Update health_check.rb
     
         ```shell
@@ -582,21 +564,7 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         cp ../../omnibus-software/config/software/cacerts.rb config/software/.
         vi config/software/cacerts.rb
         ```
-        Here all we need to do is comment out two sections, one that adds some certificates and the other that defines the certificates to add:
-        ```ruby
-        build do
-          mkdir "#{install_dir}/embedded/ssl/certs"
-        
-        # Append the 1024bit Verisign certs so that S3 continues to work
-        #  block do
-        #    unless File.foreach("#{project_dir}/cacert.pem").grep(/^Verisign Class 3 Public Primary Certification Authority$/).any?
-        #      File.open("#{project_dir}/cacert.pem", "a") { |fd| fd.write(VERISIGN_CERTS) }
-        #    end
-        #  end
-        
-        copy "#{project_dir}/cacert.pem", "#{install_dir}/embedded/ssl/certs/cacert.pem"
-        ```
-        And also comment out (add the `#`) all the lines at the end of the file from the below onwards
+        Here all we need to comment out (add the `#`) all the lines at the end of the file from the below onwards
         ```ruby
         #VERISIGN_CERTS = <<-EOH
         #
@@ -788,6 +756,22 @@ c_src/double-conversion/utils.h:195: error: assuming signed overflow does not oc
      export SSL_CERT_FILE=/<source_root>/cacert.pem
      ```
     
+	_iv) If you get the following error `An error occurred while installing eventmachine (0.12.10), and Bundler cannot continue. Make sure that `gem install eventmachine -v '0.12.10'` succeeds before bundling.`, then_
+	 _Change the version of the eventmachine gem to 1.2.0.1 and run `bundle install`_
+	 ```shell
+	 cd ../src/opscode-expander
+	 vi Gemfile
+	 ```
+	 _Change the version of `eventmachine` to `1.2.0.1`_
+	 ```ruby
+	 gem "eventmachine", '~> 1.2.0.1'
+	 ```
+	 _Remove the Gemfile.lock and install the Gems_
+	 ```shell
+	 rm Gemfile.lock
+	 bundle install
+	 ```
+	 
     **Once this completes your built RPM will be in the `pkg` subdirectory.**  
     
     If you wanted to clean your build process and start again you can do some of the following:
