@@ -1,10 +1,10 @@
 <!---PACKAGE:Docker Swarm--->
-<!---DISTRO:SLES 12:1.2.1--->
-<!---DISTRO:RHEL 7.1:1.2.1--->
-<!---DISTRO:Ubuntu 16.x:1.2.1--->
+<!---DISTRO:SLES 12:1.2.3--->
+<!---DISTRO:RHEL 7.1:1.2.3--->
+<!---DISTRO:Ubuntu 16.x:1.2.3--->
 
 # Building Docker Swarm
-Docker Swarm 1.2.1 can be built and tested on Linux on z Systems (RHEL 7.1, SLES 12 and Ubuntu 16.04) by following these instructions.
+Docker Swarm 1.2.3 can be built and tested on Linux on z Systems (RHEL 7.1, SLES 12 and Ubuntu 16.04) by following these instructions.
 
 _**General Notes:**_  
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
@@ -83,7 +83,7 @@ _**Note:** If above command gives git version lesser than 1.8.5, then follow bel
     cd /<source_root>/src/github.com/docker
     git clone https://github.com/docker/swarm.git
     cd swarm 
-    git checkout v1.2.1
+    git checkout v1.2.3
    ```
 3.  Install Docker Swarm
 
