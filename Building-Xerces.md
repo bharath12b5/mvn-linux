@@ -1,15 +1,23 @@
+<!---PACKAGE:Xerces-C--->
+<!---DISTRO:SLES 12:3.1--->
+<!---DISTRO:SLES 11:3.1--->
+<!---DISTRO:RHEL 7.1:3.1--->
+<!---DISTRO:RHEL 6.6:3.1--->
+<!---DISTRO:Ubuntu 16.x:3.1--->
+
 #Building Xerces-C 3.1
 
-Recipe for xerces-c version 3.1.
+Below version of Xerces is available in respective distributions at the time of this recipe creation:
 
-Xerces-C  can be built for Linux on z Systems running RHEL 6.6/7.1 or SLES 11/12 by following these instructions.  Version Xerces-C 3.1 has been successfully built & tested this way.
-More information on Xerces-C is available at https://xerces.apache.org/xerces-c/ and the source code can be downloaded from https://github.com/apache/xerces-c.
+*    Ubuntu 16.04 has `3.1.1`
+
+The instructions provided below specify the steps to build Xerces-C 3.1 on Linux on the IBM z Systems for RHEL 6/7 and SLES 11/12. More information on Xerces-C is available at https://xerces.apache.org/xerces-c/ and the source code can be downloaded from https://github.com/apache/xerces-c.
 
 _**General Notes:**_ 	
 
-i) _**Note:** When following the steps below please use a standard permission user unless otherwise specified._
+i) When following the steps below please use a standard permission user unless otherwise specified._
 	 
-ii) _**Note:** A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ## Building Xerces-C
 
