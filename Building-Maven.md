@@ -93,20 +93,20 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
   ```shell
   cd $WORK_DIR
-  wget http://apache.cs.utah.edu/maven/maven-3/3.2.5/source/apache-maven-3.2.5-src.tar.gz
-  tar -zxvf apache-maven-3.2.5-src.tar.gz
+  wget http://apache.cs.utah.edu/maven/maven-3/3.3.9/source/apache-maven-3.3.9-src.tar.gz 
+  tar -zxvf apache-maven-3.3.9-src.tar.gz
   ```
 	
 1. Build Maven (using Ant)
 
     ```shell
-    cd $WORK_DIR/apache-maven-3.2.5
+    cd $WORK_DIR/apache-maven-3.3.9
     ant
     ```
   On completion of a successful build, a "BUILD SUCCESSFUL" message is output by Ant.
   
   Tests are run as part of the build and should all pass. Test reports can be found under:    
-    `$WORK_DIR/apache-maven-3.2.5/maven-compat/target/surefire-reports`
+    `$WORK_DIR/apache-maven-3.3.9/maven-compat/target/surefire-reports`
 
 
 1. Verify the build
