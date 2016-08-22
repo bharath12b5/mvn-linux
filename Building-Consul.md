@@ -34,7 +34,9 @@ For Ubuntu 16.04
    
    ```
       sudo apt-get install golang-1.6
+      export PATH=$PATH:/usr/lib/go-1.6/bin
    ```
+   
 
 ## Building Consul from its source
 1. Set GOPATH Environment Variables
