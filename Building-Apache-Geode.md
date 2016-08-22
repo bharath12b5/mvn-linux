@@ -5,7 +5,7 @@
 
 ### Building Apache Geode
 
-Apache Geode 1.0.0 M1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1, SLES 12 SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apache Geode 1.0.0 M2 on Linux on the IBM z Systems for RHEL 7, SLES 12-sp1 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -17,47 +17,25 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 For RHEL7.1:
 
   ```
-  sudo yum install -y git which java-1.8.0-openjdk.s390x java-1.8.0-openjdk-devel.s390x
+  sudo yum install -y git which java-1.8.0-ibm java-1.8.0-ibm-devel
 ```       
             
 For SLES12-SP1:
 
   ```    
-  sudo zypper install -y git which java-1_8_0-openjdk java-1_8_0-openjdk-devel
+  sudo zypper install -y git which java-1_8_0-ibm java-1_8_0-ibm-devel
 ```
-
-For Ubuntu 16.04:  
-
-  ```
-  sudo apt-get install -y git openjdk-8-jdk
-```
-
-### Step 2: Set Environment Variables
-
-For RHEL7.1:
-  ```
-  export JAVA_HOME=/usr/lib/jvm/java
-  export LANG="en_US.UTF-8"
-  export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
-  export _JAVA_OPTIONS=-Xmx2048m
-  export JVM_ARGS="-Xms2048m -Xmx2048m"
-  ```  
-    
-For SLES12-SP1:
-  ```
-  export JAVA_HOME=/usr/lib64/jvm/java
-  export LANG="en_US.UTF-8"
-  export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
-  export _JAVA_OPTIONS=-Xmx2048m
-  export JVM_ARGS="-Xms2048m -Xmx2048m"
-  ```
 
 For Ubuntu 16.04:
+
   ```
-  export LANG="en_US.UTF-8"
-  export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
-  export _JAVA_OPTIONS=-Xmx2048m
-  ```
+  sudo apt-get update
+  sudo apt-get install -y git wget
+``` 
+
+Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
+ 
+_**Note:** Set JAVA_HOME to your defined java path. Also set JAVA_HOME/bin to PATH variable properly._
 
 ### Step 3: Build and install Apache Geode
   1. Get the source
@@ -66,20 +44,20 @@ For Ubuntu 16.04:
 		cd /<source_root>/
 		git clone https://github.com/apache/incubator-geode.git
 		cd /<source_root>/incubator-geode/
-		git checkout rel/v1.0.0-incubating.M1
+		git checkout rel/v1.0.0-incubating.M2
     ```
-  2. Change gemfire-core/build.gradle to include snappy-java-1.1.2.jar:
+  2. Change geode-core/build.gradle to include snappy-java-1.1.2.jar:
 
     ```
-		vi /<source_root>/incubator-geode/gemfire-core/build.gradle
+		vi /<source_root>/incubator-geode/geode-core/build.gradle
     ```
     In the dependencies section, change the snappy-java entry as follows:
 
     ```
-		dependencies {
-		....
-			compile 'org.xerial.snappy:snappy-java:1.1.2'
-		}
+	compile ('org.xerial.snappy:snappy-java:1.1.2') {
+		ext.optional = true
+	}
+
     ``` 
  
   3. Build Apache Geode source without test cases  
@@ -90,9 +68,15 @@ For Ubuntu 16.04:
   4. Run test cases(Optional)  
     ```
 		./gradlew test
-  ```
+  ```  
 
-_**Note:** Click [here](https://github.com/apache/incubator-geode/blob/rel/v1.0.0-incubating.M1/README.md) to know more about how to start a locator and server._
+_**Note:** There are few test case failures which are also observed on Intel x86 VM when built using IBM JDK. These failures can be ignored._
+  
+_**Note:** Click [here](https://github.com/apache/incubator-geode/blob/rel/v1.0.0-incubating.M2/README.md) to know more about how to start a locator and server. In case of "gfsh: command not found" error, set below path to PATH variable:_ 
+
+```
+export PATH=$PATH:/<source_root>/incubator-geode/geode-assembly/build/install/apache-geode/bin
+```
 
 ### References  
 https://github.com/apache/incubator-geode  
