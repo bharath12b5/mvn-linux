@@ -29,11 +29,11 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
       
     On SLES 11:
 
-         sudo zypper install -y git tar bzip2 unzip python-devel make autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc libffi-devel openssl libopenssl-devel mercurial
+        sudo zypper install -y git tar bzip2 unzip python-devel make autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc libffi-devel openssl libopenssl-devel mercurial
 
     On SLES 12:
 
-         sudo zypper install -y git tar bzip2 unzip python-devel make which autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc openssl libopenssl-devel libffi-devel 
+        sudo zypper install -y git tar bzip2 unzip python-devel make which autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc openssl libopenssl-devel libffi-devel 
 
 2. Build Openssl (**only** on SLES 11)
 	
@@ -47,49 +47,57 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 3. Build Python (**only** on SLES 11)
 
-	The Python version available on the SLES 11 package repositories is too low level so build and install Python yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-3.5.1).
+	The Python version available on the SLES 11 package repositories is too low level so build and install Python yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-3.5.x).
 
 	Make sure that Python 3.5 is used. Update /usr/bin/python link.
 
-		sudo update-alternatives --install /usr/bin/python python /usr/bin/python2 1
-        sudo update-alternatives --install /usr/bin/python python /usr/local/bin/python3.5 2
-        sudo update-alternatives --list python
-        sudo  update-alternatives --config python  (Select the option pointing to python3.5)
+		sudo /usr/sbin/update-alternatives --install /usr/bin/python python /usr/bin/python2 1
+        sudo /usr/sbin/update-alternatives --install /usr/bin/python python /usr/local/bin/python3.5 2
+        sudo /usr/sbin/update-alternatives --list python
+        sudo /usr/sbin/update-alternatives --config python  (Select the option pointing to python3.5)
              
 
-4. Building Ansible requires *easy_install*. easy_install is provided in the setuptools 18.0.1 Python package. This package can be installed like this: (**Only** for RHEL6, RHEL7 and SLES12)
-
-         wget https://bootstrap.pypa.io/ez_setup.py
-         sudo python ez_setup.py
        
-5.  In order to install certain Python modules for Ansible later on, *pip* is required:
+       
+4.  In order to install certain Python modules for Ansible later on, *pip* is required:
 
-    On RHEL 6.6 and RHEL 7.1:
-  
+    On RHEL 6.6:
+	
+        wget https://bootstrap.pypa.io/ez_setup.py
+        sudo python ez_setup.py
         sudo easy_install pip
-      
+		
+    On RHEL 7.1:
+	
+		wget https://bootstrap.pypa.io/get-pip.py
+		sudo python get-pip.py 
+	        
 	On SLES 11:
 	
 		sudo pip3 install --upgrade pip
 		
     On SLES 12:
 
-        sudo easy_install pip==1.2.1
+        wget https://pypi.python.org/packages/c3/a2/a63244da32afd9ce9a8ca1bd86e71610039adea8b8314046ebe5047527a6/pip-1.2.1.tar.gz
+		tar zxvf pip-1.2.1.tar.gz
+		cd pip-1.2.1
+		sudo python setup.py install
+		
 
-6.  Clone the latest stable Ansible 2.1.0.0 GitHub source tree:
+5.  Clone the latest stable Ansible 2.1.0.0 GitHub source tree:
 
         cd /<source_root>/
         git clone https://github.com/ansible/ansible.git
         cd /<source_root>/ansible
         git checkout v2.1.0.0-1
 
-7.  Setup the environment and get Ansible modules:
+6.  Setup the environment and get Ansible modules:
 
         source ./hacking/env-setup
         git submodule update --init --recursive
         source ./hacking/env-setup -q
 
-8.  Ansible uses the following Python modules which need to be installed:
+7.  Ansible uses the following Python modules which need to be installed:
 
     On RHEL 6.6 and RHEL 7.1:
   
@@ -106,7 +114,8 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 		tar zxf pyasn1-0.1.9.tar.gz
 		cd pyasn1-0.1.9/
 		sudo python setup.py install
-		cd /<source_root>/ansible         
+		cd /<source_root>/ansible 
+        sudo pip install --upgrade setuptools        
 		sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pycrypto
       
 ## Installation
