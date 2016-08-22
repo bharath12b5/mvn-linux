@@ -1,3 +1,10 @@
+<!---PACKAGE:Ceilometer client--->
+<!---DISTRO:SLES 12:5.7--->
+<!---DISTRO:SLES 11:5.7--->
+<!---DISTRO:RHEL 7.1:5.7--->
+<!---DISTRO:RHEL 6.6:5.7--->
+<!---DISTRO:Ubuntu 16.x:5.7--->
+
 ## Building MySQL
 
 Below versions of MySQL are available in respective distributions at the time of this recipe creation:
@@ -47,7 +54,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	sudo apt-get install git make cmake gcc g++ libncurses5-dev bison
 	```
 
-###Dependency Build -  GCC 4.8.2 and cmake 3.3.0-rc2
+###Dependency Build -  GCC 4.8.2 and cmake 3.3.0
 
    _**Required on RHEL 6.6 and SLES 11**_  
    
@@ -89,7 +96,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
    
    _**Only Required on SLES 11**_   
    
-   - Update cmake to version 3.3.0-rc2 by building from source.
+   - Update cmake to version 3.3.0 by building from source.
 
    1. _[Optional]_ Check the version of any existing `cmake` executable.
     ```shell
@@ -101,13 +108,13 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
    2. Download the cmake source code, then extract it.
       ```shell
       cd /<source_root>/
-      wget http://www.cmake.org/files/v3.3/cmake-3.3.0-rc2.tar.gz
-      tar xzf cmake-3.3.0-rc2.tar.gz
+      wget http://www.cmake.org/files/v3.3/cmake-3.3.0.tar.gz
+      tar xzf cmake-3.3.0.tar.gz
       ```
 
    3. Bootstrap to configure the Makefile. Then Make and Install the utility.
       ```shell
-      cd cmake-3.3.0-rc2
+      cd cmake-3.3.0
       ./bootstrap --prefix=/usr
       gmake
       sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
