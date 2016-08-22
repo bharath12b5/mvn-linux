@@ -127,33 +127,11 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 * Run the tomcat server
 
 			cd $CATALINA_HOME/bin
-			sh catalina.sh start
-
-#### Step 4: Deploy an application on Apache Tomcat
-* To deploy an application on Apache Tomcat following are the two ways:-
-
-1. Go to Apache Tomcat Administration UI (http://localhost) .Click on Manager App and login using Tomcat credentials, you will be redirected to Tomcat Web Application Manager (http://localhost/manager/html)  page. Here you can deploy your application.
-
-	Notes:-
-	For setting up the Apache Tomcat Administration UI, following changes have to be added in tomcat-users.xml ($CATALINA_HOME/conf/tomcat-users.xml) file.
-	
-			<role rolename="manager-gui"/> 
-			<user username="tomcat" password="tomcat" roles="manager-gui"/>
-	
-	Restart Apache Tomcat server after making the above changes.
-	To restart, stop the server and start again.
-			
-			cd $CATALINA_HOME/bin
-			sh catalina.sh stop
-			sh catalina.sh start
-	
-	(OR)
-			
-2. Copy the war file in webapps($CATALINA_HOME/webapps) folder and restart the Apache Tomcat Server.			
-			
+			sh catalina.sh start		
 	
 #### References:
 * http://tomcat.apache.org/
 * http://tomcat.apache.org/download-85.cgi
 * https://github.com/apache/tomcat/blob/trunk/BUILDING.txt
+* https://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html
  
