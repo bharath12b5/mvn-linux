@@ -1,12 +1,17 @@
 <!---PACKAGE:Ceilometer client--->
-<!---DISTRO:SLES 12:2.4.0--->
-<!---DISTRO:SLES 11:2.4.0--->
-<!---DISTRO:RHEL 7.1:2.4.0--->
-<!---DISTRO:RHEL 6.6:2.4.0--->
+<!---DISTRO:SLES 12:2.5.0--->
+<!---DISTRO:SLES 11:2.5.0--->
+<!---DISTRO:RHEL 7.1:2.5.0--->
+<!---DISTRO:RHEL 6.6:2.5.0--->
+<!---DISTRO:Ubuntu 16.x:2.5.0--->
 
 # Building Python Ceilometer Client
 
-Ceilometer Client 2.4.0 has been successfully built and tested on Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11.
+Below versions of Python Ceilometer Client are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `2.4.0`
+
+The instructions provided below specify the steps to build Ceilometer Client 2.5.0 on Linux on the IBM z Systems for RHEL 7.1/6.6, SLES 12/11 and Ubuntu 16.04.
 
 **General Notes:**
 
@@ -14,25 +19,28 @@ i) When following the steps below please use a standard permission user unless o
 
 ii) A directory `<source_root>` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it
 
-# Building Python-Ceilometerclient
-
 1. Install the build dependencies
 
  For RHEL 6.6 
  
-        sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv findutils gcc openssl-devel xz curl wget tar 
+        sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv findutils gcc openssl-devel xz curl wget tar libffi-devel python-devel openssl-devel libffi python-cffi
  
  For RHEL 7.1
 
-		sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv findutils gcc  
+		sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv libffi-devel python-devel openssl-devel libffi python-cffi findutils gcc  libffi
 		          
  For SLES 11 
  
-        sudo zypper install -y git-core wget gcc python-devel zlib-devel xz openssl-devel curl tar findutils ncurses-devel libbz2-devel
+        sudo zypper install -y git-core wget gcc python-devel zlib-devel xz openssl-devel curl tar findutils ncurses-devel libbz2-devel libffi-devel python-devel 
  
  For SLES 12
 
-		sudo zypper install -y git-core wget gcc python-devel zlib-devel findutils 
+		sudo zypper install -y git-core wget gcc python-devel zlib-devel findutils  python-devel  python-cffi
+
+ For Ubuntu 16.04
+                
+        sudo apt-get update
+        sudo apt-get install git python-dev findutils gcc python-setuptools python-dev build-essential libssl-dev libffi-dev
 
 
 2. Install Python 2.7.9 as a dependency (For RHEL 6.6 & SLES 11 Only) 
@@ -44,7 +52,7 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 
    3.1. Install pip 
 	
-      RHEL 6.6: 
+      RHEL 6.6
 		
 		curl -o /tmp/ez_setup.py https://bootstrap.pypa.io/ez_setup.py
 		sudo /usr/local/bin/python2.7 /tmp/ez_setup.py   
@@ -53,11 +61,11 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
         sudo ln -s /usr/local/bin/pip /usr/bin/pip		
 
         
-      RHEL 7.1:
+      RHEL 7.1/Ubuntu 16.04
 		
 		sudo easy_install pip
 
-      SLES 11: 
+      SLES 11
 		
 		curl -o /tmp/ez_setup.py https://bootstrap.pypa.io/ez_setup.py
 		sudo /usr/local/bin/python2.7 /tmp/ez_setup.py
@@ -65,7 +73,7 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 		sudo rm -f /usr/bin/pip
 		sudo ln -s /usr/local/bin/pip /usr/bin/pip	
 		
-      SLES 12:
+      SLES 12
        
         cd /<source_root>/
 		rm -f ez_setup.py*
@@ -76,29 +84,28 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 
    3.2. Use pip to install other dependencies 
 	  
-	  RHEL 6.6/RHEL 7.1:
+	  RHEL 6.6/RHEL 7.1/Ubuntu 16.04
 		
-		sudo pip install pbr virtualenv
+		sudo pip install pbr virtualenv cryptography
 	    
 	  
-	  SLES 11/SLES 12:
+	  SLES 11/SLES 12
 		
-		sudo pip install funcsigs docutils jinja2 extras pyrsistent unittest2 testtools
+		sudo pip install funcsigs docutils jinja2 extras pyrsistent unittest2 testtools cryptography
 
-4. Download the version 2.4.0 of Python-Ceilometerclient
+4. Download the version 2.5.0 of Python-Ceilometerclient
 
 		cd /<source_root>/
         git clone https://github.com/openstack/python-ceilometerclient.git
 		cd python-ceilometerclient
-        git checkout 2.4.0
+        git checkout 2.5.0
 		  
 
 		  
 5. Install Python-Ceilometerclient's Python requirements
         
 		sudo pip install -r requirements.txt         
-
-
+      
 6. (Optional) Install test requirements and test
 
 	SLES 11 Only 
@@ -113,14 +120,12 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 		
 		
 		sudo pip install -r test-requirements.txt
-		./run_tests.sh -N
-	
-	**NOTE:** SLES 12 reports a syntax error while installing unittest2. However, the Client successfully installs and passes all 255 tests
-
+        python setup.py test
+			
 
 7. Install and verify
         
-    RHEL7 / SLES12 
+    RHEL7 / SLES12 / Ubuntu 16.04
 	
 		sudo python setup.py install
 		
