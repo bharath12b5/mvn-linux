@@ -14,7 +14,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ### Step 1: Install the Dependencies
 
-    sudo yum install git tar
+    sudo yum install git tar which
 
 ### Step 2: Install Docker 1.8.2 or higher
 See instructions [here](http://www.ibm.com/developerworks/linux/linux390/docker.html)
