@@ -92,9 +92,6 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 	 wget http://mirrors.ctan.org/support/epstopdf/epstopdf.pl  
      sudo mv epstopdf.pl /usr/local/bin/epstopdf  
      chmod a+x /usr/local/bin/epstopdf
-	  wget http://mirrors.ctan.org/macros/latex/contrib/pdftex-def/pdftex.def
-	  sudo mv pdftex.def /usr/local/bin/pdftex.def
-	  chmod a+x /usr/local/bin/pdftex.def
     ```      
  *  The files are made available to latex by placing at specific location:  
 
