@@ -54,6 +54,17 @@ Required build/runtime dependencies:
 			sudo make install
 			sudo cp /usr/local/bin/sed /usr/bin/sed
 			
+	**Note:-** Check the installed version of git. If the git version is <= 1.7.1, use the following steps to build and install higher version of git from source:-
+	
+			cd /<source_root>/
+			sudo yum install -y curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel
+			wget https://www.kernel.org/pub/software/scm/git/git-2.0.0.tar.gz
+			tar xvzf git-2.0.0.tar.gz
+			cd /<source_root>/git-2.0.0
+			./configure --prefix=/usr
+			make
+			sudo make install
+			
 #### Step 2: Set environment variables
  Set JAVA_HOME, ANT_HOME, ERL_TOP and PATH.
 
