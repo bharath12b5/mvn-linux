@@ -8,5 +8,6 @@
 R versions 3.1.3 and 3.2.5 have been ported to Linux on z Systems, and the following articles explain how to obtain and build the code:
 
 - [[Building R 3.2.5]] (RHEL 6/7, SLES 12 and Ubuntu 16.x)
-- [[Building R 3.1.3]] (SLES 11)
+
+<!--- - [[Building R 3.1.3]] (SLES 11) --->
 
