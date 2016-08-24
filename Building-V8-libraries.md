@@ -255,34 +255,73 @@ _**General Notes:**_
     ```shell
     cd /<source_root>/v8z
     sudo cp -vR include/* /usr/include/
-    sudo chmod -f 644 /usr/include/v8*h /usr/include/libplatform/libplatform.h
-    ```
-  
-9. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer) for RHEL 6.6/7.1, SLES 11/12 and into `/usr/local/lib/` for Ubuntu 16.04
+    ``` 
+
+    For V8 3.28 change the file permissions of the following files to 644
+
+    *  /usr/include/libplatform/libplatform.h
+    *  /usr/include/v8*h
+
+    For V8 3.14 change the file permissions of the following files to 644
+
+    * /usr/include/v8*h
+
+9. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer) for RHEL 6.6/7.1 and SLES 11/12
 
     ```shell
     cd /<source_root>/v8z
-    
-    sudo cp -v out/s390x.release/lib.target/lib*.so /usr/local/lib64/
-    sudo chmod -f 755 /usr/local/lib64/libv8.so /usr/local/lib64/libicu*.so
-    
+    sudo cp -v out/s390x.release/lib.target/lib*.so /usr/local/lib64/ 
+    sudo chmod -f 755 /usr/local/lib64/libv8.so
     sudo cp -v out/s390x.release/obj.target/tools/gyp/lib*.a /usr/local/lib64/
-    if [ -d out/s390x.release/obj.target/third_party/icu ] ; then \
-        sudo cp -v out/s390x.release/obj.target/third_party/icu/lib*.a /usr/local/lib64/ ; fi
-    sudo chmod -f 644 /usr/local/lib64/libv8*.a /usr/local/lib64/libpreparser_lib.a /usr/local/lib64/libicu*.a
 
-    sudo ldconfig -v
+    ```
+    For V8 3.28 follow below Instructions 
+
+    ```shell
+    sudo cp -v out/s390x.release/obj.target/third_party/icu/lib*.a /usr/local/lib64/
+    sudo chmod -f 755 /usr/local/lib64/libicu*.so
+    sudo chmod -f 644 /usr/local/lib64/libv8*.a /usr/local/lib64/libicu*.a
+    ```
+    For V8 3.14 follow below Instructions
+
+    ```shell
+    sudo chmod -f 644 /usr/local/lib64/libv8*.a /usr/local/lib64/libpreparser_lib.a
+    ```
+10. Install the V8 libraries into `/usr/local/lib/` for Ubuntu 16.04
+
+    ```shell
+    cd /<source_root>/v8z
+    sudo cp -v out/s390x.release/lib.target/lib*.so /usr/local/lib/
+    sudo chmod -f 755 /usr/local/lib/libv8.so
+    sudo cp -v out/s390x.release/obj.target/tools/gyp/lib*.a /usr/local/lib/
+
+    ```
+    For V8 3.28 follow below Instructions 
+
+    ```shell
+    sudo cp -v out/s390x.release/obj.target/third_party/icu/lib*.a /usr/local/lib/
+    sudo chmod -f 755 /usr/local/lib/libicu*.so
+    sudo chmod -f 644 /usr/local/lib/libv8*.a
+    ```
+    For V8 3.14 follow below Instructions
+
+    ```shell
+    sudo chmod -f 644 /usr/local/lib/libv8*.a /usr/local/lib/libpreparser_lib.a
     ```
 
-   Note that the above `cp` commands use the `-v` option in order to list the files that are being installed.
+11. List shared libraries
+    
+    ```shell
+	sudo ldconfig -v
+    ```
 
-10. **(Optional)** Check that the sample shell can be invoked and that it displays the expected V8 version. To exit from the shell, enter `quit()`.
+12. **(Optional)** Check that the sample shell can be invoked and that it displays the expected V8 version. To exit from the shell, enter `quit()`.
 
     ```shell
     /<source_root>/v8z/out/s390x.release/shell
     ```
 
-11. **(Optional)** Once you have installed the V8 libraries and header files outside `/<source_root>/` then `/<source_root>/` may be deleted.
+13. **(Optional)** Once you have installed the V8 libraries and header files outside `/<source_root>/` then `/<source_root>/` may be deleted.
 
 ## References
 
