@@ -1,20 +1,20 @@
 <!---PACKAGE:Jenkins--->
-<!---DISTRO:SLES 12:2.0--->
-<!---DISTRO:SLES 11:2.0--->
-<!---DISTRO:RHEL 7.1:2.0--->
-<!---DISTRO:RHEL 6.6:2.0--->
-<!---DISTRO:Ubuntu 16.x:2.0--->
+<!---DISTRO:SLES 12:2.7--->
+<!---DISTRO:SLES 11:2.7--->
+<!---DISTRO:RHEL 7.1:2.7--->
+<!---DISTRO:RHEL 6.6:2.7--->
+<!---DISTRO:Ubuntu 16.x:2.7--->
 
 # Building Jenkins
 
-Jenkins version 2.0 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Jenkins version 2.7.1 on Linux on the IBM z Systems for RHEL6.6 ,RHEL7.1, SLES11, SLES 12 and Ubuntu 16.04:
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-##### Step 1: Install the dependencies
+#### Step 1: Install the dependencies
 Following are the build dependencies for Jenkins:
 
 * git (RHEL6/7 and Ubuntu 16.04) or git-core (SLES11/12)
@@ -31,7 +31,7 @@ Following are the build dependencies for Jenkins:
 
 * Git can be installed on Ubuntu 16.04 using the command below
  
-            sudo apt-get install -y git
+            sudo apt-get install -y git wget
             
 * To install Maven
  
@@ -43,24 +43,51 @@ Following are the build dependencies for Jenkins:
          sudo apt-get install -y maven
 		 export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=1024m"	  
 		  
-* To install Java, use the command below,(Only for Ubuntu 16.04)
+* To install Java, use the command below(Only for Ubuntu 16.04)
 
             sudo apt-get install openjdk-8-jdk
  			export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x
 			export PATH=$JAVA_HOME/bin:$PATH
 
-##### Step 2: Build Jenkins
-* Get the source (clone branch 2.0)  
+* To install nodejs and npm
+ 
+ For RHEL6/7 and SLES11/12
+ 
+	Download the IBM Node.js SDK for Linux on System z 64-bit binary from [here](https://developer.ibm.com/node/sdk/#v4) and use the command below to install Node.js
+		
+			chmod +x ibm-4.4.7.0-node-v4.4.7-linux-s390x.bin
+			./ibm-4.4.7.0-node-v4.4.7-linux-s390x.bin
+	
+	Follow screen instruction to install `Node.js` to a folder (for example, `IBM_NODE_HOME`) and set PATH
+	
+			export PATH=$PATH:<IBM_NODE_HOME>/ibm/node/bin
+	
+	**_Note:_** _GCC 6 and above is required to install Node.js on RHEL6 and SLES11. Please refer the "Building and Installing GCC" part of the  [GCCGO](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo) recipe._
+ 
+ For Ubuntu 16.04
+ 	
+			sudo apt-get install nodejs npm
+			sudo ln -s `which nodejs` /usr/local/bin/node
+
+#### Step  2: Build Jenkins
+* Get the source (clone branch 2.7.1)  
 
 			cd /<source_root>/
 		    git clone https://github.com/jenkinsci/jenkins.git
 			cd /<source_root>/jenkins
-			git checkout jenkins-2.0
-			
-* Build the source code using mvn command
+			git checkout jenkins-2.7.1
 	
-			
-			
+* Build the gulp and node modules
+
+			cd /<source_root>/jenkins/war
+		    npm install -g gulp gulp-cli (install as a root user on Ubuntu 16.04)
+			npm install --save-dev gulp
+			npm install handlebars jenkins-js-modules window-handle bootstrap-detached jenkins-handlebars-rt jenkins-js-test jquery-detached
+			npm install jenkins-js-builder
+			gulp bundle
+
+* Build the source code using mvn command   
+   
    Comment out the nodejs plugin download and installation section in `/<source_root>/jenkins/war/pom.xml` file  as follows for jenkins war to build succesfully.
 			
 			
@@ -75,44 +102,19 @@ Following are the build dependencies for Jenkins:
 			</project>
    
    
-   Build the source
+   
+	Build the source
 	
 			cd /<source_root>/jenkins
 			mvn clean install -pl war -am -DskipTests 
-			
-*  To install nodejs plugin manually [optional]
 	
-	For RHEL7/RHEL6
-	
-			sudo yum install make gcc-c++
-			
-	For SLES12/SLES11
-	
-			sudo zypper install make gcc-c++
-	
-	For RHEL7/RHEL6/SLES12/SLES11
-	
-			cd /<source_root>/ 
-			git clone https://github.com/andrewlow/node.git
-			cd /<source_root>/node 
-			./configure && make && sudo make install
-	
-	For Ubuntu 16.04
-	
-			sudo apt-get install nodejs npm
-			
 * To execute test cases [optional]
 
 			mvn clean install -pl war -am
 	
-	Note: User can ignore intermittent test-case failures as it does not affect the functionality (jenkins.security.DefaultConfidentialStoreTest, hudson.LauncherTest and hudson.util.io.TarArchiverTest are the test cases that fail due to wrongly set file path permissions)
+	_**Note:** User can ignore intermittent test-case failures as it does not affect the functionality (jenkins.security.DefaultConfidentialStoreTest, hudson.LauncherTest and hudson.util.io.TarArchiverTest are the test cases that fail due to wrongly set file path permissions)_
 	
 	After building jenkins, a ``jenkins.war`` will be created in jenkins/war/target folder.
-   	
-##### Step 3: Deploy Jenkins 
-
-* Refer to the Deploy section of [Apache Tomcat](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-Tomcat) recipe for deploying jenkins.war on Apache Tomcat.
-
-    
+		   
 ### References:
 https://github.com/jenkinsci/jenkins.git
