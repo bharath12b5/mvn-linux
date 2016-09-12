@@ -90,22 +90,22 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
 3. Correct the gcc linking for SLES 11 with gcc 4.3 **only**
 
       ```shell
-    ln -s /usr/bin/cpp-4.7 /usr/bin/cpp
-    ln -s /usr/bin/g++-4.7 /usr/bin/g++
-    ln -s /usr/bin/gcc-4.7 /usr/bin/gcc
-    ln -s /usr/bin/gcc-ar-4.7 /usr/bin/gcc-ar
-    ln -s /usr/bin/gcc-nm-4.7 /usr/bin/gcc-nm
-    ln -s /usr/bin/gcc-ranlib-4.7 /usr/bin/gcc-ranlib
-    ln -s /usr/bin/gcc /usr/bin/cc
-    ln -s /usr/bin/g++ /usr/bin/c++
+    ln -sf /usr/bin/cpp-4.7 /usr/bin/cpp
+    ln -sf /usr/bin/g++-4.7 /usr/bin/g++
+    ln -sf /usr/bin/gcc-4.7 /usr/bin/gcc
+    ln -sf /usr/bin/gcc-ar-4.7 /usr/bin/gcc-ar
+    ln -sf /usr/bin/gcc-nm-4.7 /usr/bin/gcc-nm
+    ln -sf /usr/bin/gcc-ranlib-4.7 /usr/bin/gcc-ranlib
+    ln -sf /usr/bin/gcc /usr/bin/cc
+    ln -sf /usr/bin/g++ /usr/bin/c++
     ```
     _**Note:** This is necessary because the standard gcc version available on SLES 11 is 4.3, and chef requires 4.4+ to build, but the 4.7 gcc package available on SLES 11 suffixes all the executables._
 
-4. Build Ruby from source (**only for RHEL 6.6 / SLES 11 / SLES 12**)
+4. Build Ruby from source (**only for RHEL 7.1 / RHEL 6.6 / SLES 11 / SLES 12**)
 
     **WARNING:** Do not perform the Ruby install dependencies step as that specifies the tcl / tk / gdbm libraries. The dependencies above cover the Ruby build process. If you already have tcl-devel, tk-devel or gdbm-devel installed you'll need to remove them for the duration of this build.
     
-    *For SLES12:*  
+    *For RHEL7.1 and SLES12:*  
     The Ruby version available on SLES 12 has some configuration issues so build and install Ruby yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby).
 
     *For RHEL6.6 and SLES11:*  
@@ -116,6 +116,8 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     Once you have completed the Ruby installation continue to follow the process below
 5. Correct the gem environment and install bundler
 
+	On RHEL/SLES:
+	
     ```shell
     export GEM_HOME=<USER_HOME_DIR>/.gem/ruby
     export PATH=$GEM_HOME/bin:$PATH
@@ -123,7 +125,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```
     _Where `<USER_HOME_DIR>` is the home directory of the user you are installing under._  
 
-    on Ubuntu 16.04:
+    On Ubuntu 16.04:
 
     ```shell
     gem install bundler
@@ -146,7 +148,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     git clone https://github.com/chef/chef-server
     git clone https://github.com/chef/omnibus
     cd omnibus
-    git checkout v5.3.0
+    git checkout v5.5.0
     cd ..
     ```
     _**Note:** The `--depth 100` flag is used to reduce the amount downloaded, in the future this might mean that specific checkouts won't work (as the total number of commits has moved on), in that case either increase the value or omit the tag_  
@@ -156,6 +158,23 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     vi omnibus/lib/omnibus/packager.rb
     ```
     Update the packaging list to understand Ubuntu platforms as follows:
+	
+	From
+	```ruby
+	 PLATFORM_PACKAGER_MAP = {
+      "debian"   => DEB,
+      "fedora"   => RPM,
+      "suse"     => RPM,
+      "rhel"     => RPM,
+      "wrlinux"  => RPM,
+      "aix"      => BFF,
+      "solaris"  => Solaris,
+      "ips"      => IPS,
+      "windows"  => [MSI, APPX],
+      "mac_os_x" => PKG,
+    }.freeze
+	```
+	to
     ```ruby
     PLATFORM_PACKAGER_MAP = {
       'debian'   => DEB,
@@ -180,13 +199,41 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     vi Gemfile
     ```
     a. Update the Gemfile to add a couple of missing Gems and point omnibus to the git repo downloaded earlier. 
-    ```ruby
-    gem 'omnibus', path: '/<source_root>/omnibus'
-    gem 'omnibus-software', github: 'opscode/omnibus-software'
-    gem 'rake'
-    gem 'json'
+    
+	From 
+	```ruby
+	gem 'rake'
+	gem 'chefspec'
+	gem 'berkshelf'
+
+	# Install omnibus software
+	group :omnibus do
+		gem 'omnibus', github: 'chef/omnibus'
+		gem 'omnibus-software', github: 'chef/omnibus-software'
+	end
+
+	group :test do
+		gem 'rspec'
+	end
+	```
+	to
+	```ruby
+	gem 'rake'
+	gem 'chefspec'
+	gem 'berkshelf'
+	gem 'json'
     gem 'json_pure'
-    ```
+    
+	# Install omnibus software
+	group :omnibus do
+		gem 'omnibus', path: '/<source_root>/omnibus'
+		gem 'omnibus-software', github: 'opscode/omnibus-software'
+	end
+
+	group :test do
+		gem 'rspec'
+	end
+	```
     _**Note:** Add the `json` and `json_pure` gems on all platforms, change the `gem 'omnibus'` line. Also point the omnibus-software to the 'opscode/omnibus-software'._  
     
     b. Install following missing Gems only for **RHEL** 
@@ -236,18 +283,15 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
         vi omnibus.rb
         ```
         Turn off s3 caching (we need to build a number of items differently from the s3 cached version), and optionally turn off git caching (it is recommended to keep git caching on).
-        ```ruby
-        # Disable git caching
-        # ------------------------------
-        # use_git_caching false
         
-        # Enable S3 asset caching
-        # ------------------------------
+		From
+		```ruby
+        use_s3_caching true
+		```
+		to
+		```ruby
         use_s3_caching false
-        s3_access_key  ENV['AWS_ACCESS_KEY_ID']
-        s3_secret_key  ENV['AWS_SECRET_ACCESS_KEY']
-        s3_bucket      'opscode-omnibus-cache'
-        ```
+		```
         _**Note:** set `false` for `use_s3_caching`._
     2. Update chef-server.rb
     
@@ -256,14 +300,15 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
         vi config/projects/chef-server.rb
         ```
         Here we need to update the version of Ruby bundled - the `2.1.4` version of Ruby has some SSL issues:
-        ```ruby
-        override :rebar, version: "2.0.0"
-        override :berkshelf2, version: "2.0.18"
-        override :rabbitmq, version: "3.3.4"
-        override :erlang, version: "17.5"
-        override :ruby, version: "2.2.2"
-        override :chef, version: "9a3e6e04f3bb39c2b2f5749719f0c21dd3f3f2ec"
-        ```
+        
+		From
+		```ruby
+		override :ruby, version: "2.1.4"
+		```
+		to
+		```ruby
+		override :ruby, version: "2.2.2"
+		```
         _**Note:**  change the `:ruby` version to be `2.2.2`_
     3. Update openresty.rb
     
@@ -272,24 +317,43 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
         cp ../../omnibus-software/config/software/openresty.rb config/software/.
         vi config/software/openresty.rb
         ```
-        Copy the default `openresty.rb` file in order to be able to make the changes otherwise the build process will download a fresh copy. 2 changes are required to be done in the file as mentioned below.
+        Copy the default `openresty.rb` file in order to be able to make the changes otherwise the build process will download a fresh copy. Two changes are required to be done in the file as mentioned below.
+        
+		From
+		```ruby
+		# Options inspired by the OpenResty Cookbook
+		"--with-md5-asm",
+		"--with-sha1-asm",
+		"--with-pcre-jit",
+		"--without-http_ssi_module",
+		```
+		to
+		```ruby
+        # Options inspired by the OpenResty Cookbook
+        #'--with-md5-asm',
+        #'--with-sha1-asm',
+        #'--with-pcre-jit'
+        '--without-http_ssi_module'
+        ```
+		and from
+		```ruby
+		# Currently LuaJIT doesn't support POWER correctly so use Lua51 there instead
+		if ppc64? || ppc64le? || s390x?
+			configure << "--with-lua51=#{install_dir}/embedded/lib"
+		else
+			configure << "--with-luajit"
+		end
+		```
+		to
         ```ruby
-            # Options inspired by the OpenResty Cookbook
-            #'--with-md5-asm',
-            #'--with-sha1-asm',
-            #'--with-pcre-jit'
-            '--without-http_ssi_module'
-        ```
-
-        ```
-            if ppc64? || ppc64le? 
-                        configure << '--with-lua51' 
-                else 
-                        configure << '--with-lua51' 
-                end 
-        ``` 
-        _**Note:** Comment out the 3 `asm` and `jit` modules as they are not supported, also you have to change the `--with-luajit` option to `--with-lua51` in the else block as the default for lua (if not specified) is now with jit, which again is not supported._
-
+		# Currently LuaJIT doesn't support POWER correctly so use Lua51 there instead
+		if ppc64? || ppc64le? || s390x?
+			configure << "--with-lua51=#{install_dir}/embedded/lib"
+		else
+			configure << "--with-lua51"
+		end
+		```
+		
     4. Update opscode-solr4.rb
 
 		```shell
@@ -297,13 +361,20 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
 		vi config/software/opscode-solr4.rb
 		```
 		changes are required to be done in the file as mentioned below.
+		
+		From
 		```ruby
-		    source url: "http://archive.apache.org/dist/lucene/solr/#{version}/solr-#{version}.tgz",
-            md5: "8ae107a760b3fc1ec7358a303886ca06"
-           
-            dependency "server-jre"
-
-            relative_path "solr-#{version}"
+		if ppc64? || ppc64le?
+			dependency "ibm-jre"
+		elsif intel? && _64_bit?
+			dependency "server-jre"
+		else
+			raise "A JRE is required by opscode-solr4, but none are known for this platform"
+		end
+		```
+		to
+		```ruby
+		    dependency "server-jre"
 		```
 
     5. Update server-jre.rb
@@ -312,7 +383,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
         cd $SRCRT/chef-server/omnibus/
         cp ../../omnibus-software/config/software/server-jre.rb config/software/.
         ```
-      With IBM JDK :
+      On RHEL/SLES With IBM JDK :
        ```shell
         rpm -qa | grep java | xargs rpm -ql | grep "\/java$" | grep jre | sed "s#jre/bin/java##"
         vi config/software/server-jre.rb
@@ -373,13 +444,23 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         vi config/software/sqitch.rb
         ```
         Sqitch has updated a few times since the s3 caching version was stored and the original version is no longer available for download, so update the version and `md5` checksum
-        ```ruby
+        
+		From
+		```ruby
+		name "sqitch"
+		default_version "0.973"
+		```
+		to
+		```ruby
         name "sqitch"
         default_version "0.999"
-        
-        dependency "perl"
-        dependency "cpanminus"
-        
+        ```
+		and from
+		```ruby
+		source url: "https://github.com/theory/#{name}/releases/download/v#{version}/app-sqitch-#{version}.tar.gz"
+		```
+        to
+		```ruby
         source url: "http://www.cpan.org/authors/id/D/DW/DWHEELER/App-Sqitch-#{version}.tar.gz",
             md5: "b3a9cac1254e0e90e4cc09fc84a66c93"
         ```
@@ -418,7 +499,20 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         vi config/software/openresty-lpeg.rb
         ```
         As we turned off `--with-luajit` earlier we need to alter the `openresty` include path, so update the make command to be the same as below
-        ```ruby
+        
+		From
+		```ruby
+		 env = with_standard_compiler_flags(with_embedded_path)
+
+		if ppc64? || ppc64le?
+			make "LUADIR=#{install_dir}/embedded/include", env: env
+		else
+			make "LUADIR=#{install_dir}/embedded/luajit/include/luajit-2.1", env: env
+		end
+		command "install -p -m 0755 lpeg.so #{install_dir}/embedded/lualib", env: env
+		```
+		to
+		```ruby
         build do
             env = with_standard_compiler_flags(with_embedded_path)
             
@@ -434,15 +528,17 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         vi config/software/ohai.rb
         ```
         There is an issue with the available gems, the simplest solution is to convert the install to work within bundler - which guarantees that the relevant gems are in the correct location, so also update the file to match the below:
-        ```ruby
-        build do
-            env = with_standard_compiler_flags(with_embedded_path)
-            
-            bundle "install --without development", env: env
-            
-            gem "build ohai.gemspec", env: env
-            bundle "exec gem install ohai*.gem --no-ri --no-rdoc", env: env
-        end
+       
+	   From 
+		```ruby
+		gem "build ohai.gemspec", env: env
+		gem "install ohai*.gem" \
+		" --no-ri --no-rdoc", env: env
+		```
+		to
+		```ruby
+        gem "build ohai.gemspec", env: env
+        bundle "exec gem install ohai*.gem --no-ri --no-rdoc", env: env
         ```
         _**Note:** All we have done is perform the `gem install` inside of the `bundle exec`, this means that all the gems installed a few lines earlier with `bundle "install..` are available_
     10. Update opscode-chef-mover.rb
@@ -473,9 +569,18 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         vi files/private-chef-cookbooks/private-chef/recipes/opscode-solr4.rb
         ```
         Apache Solr relies on a non-standard option `-Xloggc` which doesn't exist on IBM's JDK, however there is an equivalent `-Xverbosegclog` so we replace it as below:
-        ```ruby
-        # Enable GC Logging (very useful for debugging issues)
-        node.default['private_chef']['opscode-solr4']['command'] << " -Xverbosegclog:#{File.join(solr_log_dir, "gclog.log")} -verbose:gc -XX:+PrintHeapAtGC -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:+PrintTenuringDistribution"
+     
+		From 
+		```ruby
+		if node['kernel']['machine'] == "x86_64"
+			node.default['private_chef']['opscode-solr4']['command'] << " -Xloggc:#{File.join(solr_log_dir, "gclog.log")}"
+		end
+		```
+		to
+		```ruby
+        if node['kernel']['machine'] == "x86_64"
+			node.default['private_chef']['opscode-solr4']['command'] << " -Xverbosegclog:#{File.join(solr_log_dir, "gclog.log")}"
+		end
         ```
         _**Note:** All we have done is replaced `-Xloggc` with `-Xverbosegclog`_
 
@@ -487,10 +592,17 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         vi config/software/ncurses.rb
         ```
         The default version specifies some patch files to be installed, which are not available, nor really needed for this build, so comment out the code which includes them:
-        ```ruby
+ 
+		From
+		```ruby
+		if version == "5.9"
+			# Patch to add support for GCC 5, doesn't break previous versions
+			patch source: "ncurses-5.9-gcc-5.patch", plevel: 1, env: env
+		end
+		```
+		to
+		```ruby
         #  if version == "5.9"
-        #    # Update config.guess to support platforms made after 2010 (like aarch64)
-        #
         #    # Patch to add support for GCC 5, doesn't break previous versions
         #    patch source: "ncurses-5.9-gcc-5.patch", plevel: 1
         #  end
@@ -606,23 +718,32 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         ```shell
         cd $SRCRT/chef-server/omnibus/
         vi ../src/oc_erchef/apps/depsolver/rebar.config
+		```
+		Update the erlware_commons to be a tag, not master branch:
+
+        From
+		```
+		{deps, [{erlware_commons, "",
+			{git, "https://github.com/erlware/erlware_commons.git", {branch, "master"}}}]}.
+		```
+		to
         ```
-        Update the erlware_commons to be a tag, not master branch:
-        ```ruby
-        {erl_opts, [debug_info, warnings_as_errors]}.
-
         {deps, [{erlware_commons, "",
-                 {git, "https://github.com/erlware/erlware_commons.git", {tag, "v0.16.1"}}}]}.
-
-        {cover_enabled, true}.
+			{git, "https://github.com/erlware/erlware_commons.git", {tag, "v0.16.1"}}}]}.
         ```
         _**Note:** We have changed both `branch` to `tag` and `master` to `v0.16.1`_
         ```shell
         vi ../src/oc_erchef/rebar.config
         ```
         Update erlware_commons to be a tag, not master branch, and also add an explicit dependency for cf tag:
-        ```ruby
 
+        From
+		```
+		{erlware_commons, "",
+         {git, "https://github.com/erlware/erlware_commons", {branch, "master"}}},
+		```
+		to
+		```
         {erlware_commons, "",
          {git, "https://github.com/erlware/erlware_commons", {tag, "v0.16.1"}}},
         {cf, ".*",
@@ -632,7 +753,7 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         ```shell
         vi ../src/oc_erchef/rebar.lock
         ```
-        ```ruby
+        ```
 		
 			 {<<"cf">>,
 			  {git,"https://github.com/project-fifo/cf",
@@ -652,14 +773,16 @@ _**Note:** Where `<x>` is the version of java (1.7.1 or 1.7.0 depending on platf
         vi config/software/openssl.rb
         ```
         Now change the URL so that it uses `http`:
-        ```ruby
-        default_version "1.0.1p"
-        
-        source url: "http://www.openssl.org/source/openssl-#{version}.tar.gz" 
-        
-        version("1.0.1m") { source md5: "d143d1555d842a069cb7cc34ba745a06" }
-        version("1.0.1p") { source md5: "7563e92327199e0067ccd0f79f436976" }
-        ```
+
+        From
+		```ruby
+		source url: "https://www.openssl.org/source/openssl-#{version}.tar.gz", extract: :lax_tar
+		```
+        to
+		```ruby
+		source url: "http://www.openssl.org/source/openssl-#{version}.tar.gz" 
+		```
+
         _**Note:** We do not change the `source md5:` entry for version `1.0.1p` so that we know the version we've downloaded is the version we were expecting_
 
     20. Add chef_objects to the applications in oc_chef_authz.app.src
