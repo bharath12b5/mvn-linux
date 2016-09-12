@@ -1,3 +1,15 @@
+<!---PACKAGE:gccgo--->
+<!---DISTRO:RHEL 6.6:1.4.2--->
+<!---DISTRO:RHEL 7.1:1.4.2--->
+<!---DISTRO:SLES 11:1.4.2--->
+<!---DISTRO:SLES 12:1.4.2--->
+<!---DISTRO:Ubuntu 16.x:Distro--->
+
+Below versions of gccgo are available in respective distributions at the time of this recipe creation:
+
+* Ubuntu 16.04 has `go1.6.1` and `gccgo 6.0.0`
+
+	
 These instructions describe how to build gccgo 1.4.2 for IBM Linux on z Systems (RHEL 6.6/RHEL 7.1 and SLES 11/SLES12).
 
 [GCC 5](https://gcc.gnu.org/gcc-5/changes.html) provides a complete implementation of Go 1.4.2. Until GCC 5 is officially released for RHEL and SLES, you can build the GCC source code to obtain a Go 1.4.2 compiler and run-time environment for testing on Linux on z Systems.  These instructions have been tested on both RHEL 6.6/7.1 and SLES 11/12.
