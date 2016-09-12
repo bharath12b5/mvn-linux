@@ -1,7 +1,7 @@
 <!---PACKAGE:cAdvisor--->
-<!---DISTRO:SLES 12:0.23.6--->
-<!---DISTRO:RHEL 7.1:0.23.6--->
-<!---DISTRO:Ubuntu 16.x:0.23.6--->
+<!---DISTRO:SLES 12:0.23.8--->
+<!---DISTRO:RHEL 7.1:0.23.8--->
+<!---DISTRO:Ubuntu 16.x:0.23.8--->
 
 # Building cAdvisor
 
@@ -9,7 +9,7 @@ Below versions of cAdvisor are available in respective distributions at the time
 
 *    Ubuntu 16.04 has `0.20.5`
 
-The instructions provided below specify the steps to build cAdvisor version 0.23.6 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build cAdvisor version 0.23.8 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_   
 _i) When following the steps below please use a standard permission user unless otherwise specified._     
@@ -45,8 +45,8 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
    ```
         export GOPATH=/<source_root>/ 
         export PATH=$PATH:$GOPATH/bin:$HOME/go/bin
-
    ```
+
 3. Install godep tool 
     ```
          cd /<source_root>/
@@ -65,7 +65,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
 6. Checkout the code from repository
     ```
-         git clone https://github.com/google/cadvisor.git -b v0.23.6
+         git clone https://github.com/google/cadvisor.git -b v0.23.8
     ```
 
 7. Change the work directory
@@ -107,7 +107,6 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ```
          cd $GOPATH/src/github.com/google/cadvisor 
          godep go test ./... -test.short
-    
     ```
 
    _**Note:**_ 
