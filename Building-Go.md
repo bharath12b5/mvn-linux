@@ -1,5 +1,9 @@
 # Building Go
 
+Below versions of Go are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `1.6`
+
 These instructions describe how to build the latest development version of the [Go programming language] (https://golang.org/) for Linux on IBM z Systems running SLES 12 or RHEL 7.0 or RHEL 7.1.
 
 _**NOTE**_: _When following the steps below please use a standard permission user unless otherwise specified._
