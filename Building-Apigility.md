@@ -1,13 +1,13 @@
 <!---PACKAGE:Apigility--->
-<!---DISTRO:SLES 12:1.3.2--->
-<!---DISTRO:SLES 11:1.3.2--->
-<!---DISTRO:RHEL 7.1:1.3.2--->
-<!---DISTRO:RHEL 6.6:1.3.2--->
-<!---DISTRO:Ubuntu 16.x:1.3.2--->
+<!---DISTRO:SLES 12:1.4.0--->
+<!---DISTRO:SLES 11:1.4.0--->
+<!---DISTRO:RHEL 7.1:1.4.0--->
+<!---DISTRO:RHEL 6.6:1.4.0--->
+<!---DISTRO:Ubuntu 16.x:1.4.0--->
 
 # Building Apigility
 
-Apigility can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and Ubuntu 16.04, by following these instructions. Version 1.3.2 has been successfully built & tested this way.
+The instructions provided below specify the steps to build Apigility 1.4.0 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 ##### General Notes:
       
@@ -52,28 +52,39 @@ sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxm
 ### Section 2: Build and Install
 1. Download, configure and install PHP with Openssl
   
-    * For RHEL 6.6/7.1 and SLES 11/12
+	Download PHP
 	
-	 ```
+	```
 	cd /<source_root>/
 	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
 	tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
+	```
+	
+	Configure PHP with Openssl
+	
+    * For RHEL 6.6/7.1 and SLES 12
+	
+	```
 	./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-	make
-	sudo make install
+	```
+	
+	* For SLES 11
+	
+	```
+	 ./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl --enable-opcache --with-ldap --with-libdir=lib64
 	```
 	
     * For Ubuntu 16.04
         
-        ```
-        cd /<source_root>/
-        wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-        tar xvzf php-5.6.8.tar.gz
-        cd php-5.6.8
-        ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-        make
-        sudo make install
-        ```
+    ```
+    ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+    ```
+	
+	Install PHP
+	```
+	make
+    sudo make install
+    ```
 
 2. Set environment path for the PHP
 
@@ -84,7 +95,7 @@ sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxm
         cd /<source_root>/
         git clone https://github.com/zfcampus/zf-apigility-skeleton.git 
         cd zf-apigility-skeleton 
-        git checkout 1.3.2
+        git checkout 1.4.0
 
 4. Install composer
 
@@ -94,7 +105,7 @@ sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxm
 
 5. Put the skeleton/app in development mode
 
-        php public/index.php development enable
+        ./vendor/bin/zf-development-mode enable
 
 
 6. Start the Apigility application
