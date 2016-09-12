@@ -1,11 +1,11 @@
 <!---PACKAGE:Kubernetes--->
-<!---DISTRO:SLES 12:1.3.2--->
-<!---DISTRO:RHEL 7.1:1.3.2--->
-<!---DISTRO:Ubuntu 16.x:1.3.2--->
+<!---DISTRO:SLES 12:1.3.5--->
+<!---DISTRO:RHEL 7.1:1.3.5--->
+<!---DISTRO:Ubuntu 16.x:1.3.5--->
 
 # Building Kubernetes
 
-The instructions provided below specify the steps to build Kubernetes Version v1.3.2 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Kubernetes Version v1.3.5 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
 
 More information on the Kubernetes is available at http://kubernetes.io/ and the source code can be obtained from https://github.com/kubernetes/kubernetes.
 
@@ -42,7 +42,7 @@ ii) _A directory /\<source_root\>/ will be referred to in these instructions, th
         $ cd /<source_root>/
         $ git clone https://github.com/kubernetes/kubernetes.git
         $ cd /<source_root>/kubernetes
-        $ git checkout v1.3.2
+        $ git checkout v1.3.5
         $ cd /<source_root>/kubernetes/vendor/golang.org/x 
         $ mv sys sys.bak 
         $ git clone https://github.com/linux-on-ibm-z/sys.git 
@@ -96,9 +96,9 @@ ii) _A directory /\<source_root\>/ will be referred to in these instructions, th
 
 ### Running Kubernetes on a single host machine
 
-**Note:** *Please use a root permission user to run services.* 
+**Note:** *Please use root user to run services.* 
 
-**Step 1:** Kubernetes have a dependency on etcd service. Please follow the below steps to run etcd service.
+**Step 1:** Kubernetes has a dependency on etcd service. Please follow the below steps to run etcd service.
 
 i) Checkout the etcd source code from repository
    ```
