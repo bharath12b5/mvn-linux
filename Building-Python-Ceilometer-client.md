@@ -1,9 +1,9 @@
 <!---PACKAGE:Ceilometer client--->
-<!---DISTRO:SLES 12:2.5.0--->
-<!---DISTRO:SLES 11:2.5.0--->
-<!---DISTRO:RHEL 7.1:2.5.0--->
-<!---DISTRO:RHEL 6.6:2.5.0--->
-<!---DISTRO:Ubuntu 16.x:2.5.0--->
+<!---DISTRO:SLES 12:2.5.x--->
+<!---DISTRO:SLES 11:2.5.x--->
+<!---DISTRO:RHEL 7.1:2.5.x--->
+<!---DISTRO:RHEL 6.6:2.5.x--->
+<!---DISTRO:Ubuntu 16.x:Distro, 2.5.x--->
 
 # Building Python Ceilometer Client
 
@@ -31,11 +31,11 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 		          
  For SLES 11 
  
-        sudo zypper install -y git-core wget gcc python-devel zlib-devel xz openssl-devel curl tar findutils ncurses-devel libbz2-devel libffi-devel python-devel 
+        sudo zypper install -y git-core wget gcc python-devel zlib-devel xz openssl-devel curl tar findutils ncurses-devel libbz2-devel libffi-devel  
  
  For SLES 12
 
-		sudo zypper install -y git-core wget gcc python-devel zlib-devel findutils  python-devel  python-cffi
+		sudo zypper install -y git-core wget gcc zlib-devel findutils python-devel python-cffi openssl-devel libffi-devel tar
 
  For Ubuntu 16.04
                 
@@ -92,21 +92,26 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 	  SLES 11/SLES 12
 		
 		sudo pip install funcsigs docutils jinja2 extras pyrsistent unittest2 testtools cryptography
+		  
+4. Install Netifaces(only for SLES 12 and SLES 11)
 
-4. Download the version 2.5.0 of Python-Ceilometerclient
+		cd /<source_root>/
+        wget -O "netifaces-0.10.4.tar.gz" "https://pypi.python.org/packages/source/n/netifaces/netifaces-0.10.4.tar.gz#md5=36da76e2cfadd24cc7510c2c0012eb1e"
+		tar xvzf netifaces-0.10.4.tar.gz
+        cd netifaces-0.10.4 && sudo python setup.py install
+
+5. Download the version 2.5.0 of Python-Ceilometerclient
 
 		cd /<source_root>/
         git clone https://github.com/openstack/python-ceilometerclient.git
 		cd python-ceilometerclient
         git checkout 2.5.0
-		  
 
-		  
-5. Install Python-Ceilometerclient's Python requirements
+6. Install Python-Ceilometerclient's Python requirements
         
 		sudo pip install -r requirements.txt         
       
-6. (Optional) Install test requirements and test
+7. (Optional) Install test requirements and test
 
 	SLES 11 Only 
 		
@@ -123,7 +128,7 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
         python setup.py test
 			
 
-7. Install and verify
+8. Install and verify
         
     RHEL7 / SLES12 / Ubuntu 16.04
 	
