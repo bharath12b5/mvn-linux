@@ -1,12 +1,18 @@
 <!---PACKAGE:Puppet--->
-<!---DISTRO:SLES 12:4.3.1--->
-<!---DISTRO:SLES 11:4.3.1--->
-<!---DISTRO:RHEL 7.1:4.3.1--->
-<!---DISTRO:RHEL 6.6:4.3.1--->
-<!---DISTRO:Ubuntu 16.x:4.3.1--->
+<!---DISTRO:SLES 12:4.5.3--->
+<!---DISTRO:SLES 11:4.5.3--->
+<!---DISTRO:RHEL 7.1:4.5.3--->
+<!---DISTRO:RHEL 6.6:4.5.3--->
+<!---DISTRO:Ubuntu 16.x:Distro, 4.5.3--->
+
 
 # Building Puppet
-Puppet version 4.3.1 has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 7.1/6.6 and SLES 12/11 and Ubuntu 16.04.
+
+Below versions of Puppet are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `3.8.5`
+
+The instructions provided below specify the steps to build Puppet version 4.5.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -26,7 +32,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 ````
    For Ubuntu 16.04:  
     ````
-    sudo apt-get install -y g++ libreadline6 libreadline6-dev tar openssl unzip libyaml-dev libssl-dev make git wget libsqlite3-dev  libc6-dev
+    sudo apt-get install -y g++ libreadline6 libreadline6-dev tar openssl unzip libyaml-dev libssl-dev make git wget libsqlite3-dev  libc6-dev cron
 ````
 
 2. Download and install Ruby
@@ -56,7 +62,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 5. Install Puppet
     ````
     cd /<source_root>/
-    sudo /usr/local/bin/gem install puppet -v 4.3.1	
+    sudo /usr/local/bin/gem install puppet -v 4.5.3	
 ````
 
 6. Locate the  $confdir  by command  
@@ -154,7 +160,7 @@ The output gives the directory. If such directory does not exist, create one.
 5. Install Puppet
     ````
     cd /<source_root>/
-    sudo /usr/local/bin/gem install puppet -v 4.3.1
+    sudo /usr/local/bin/gem install puppet -v 4.5.3
 ````
 
 6. Locate the  $confdir  by command    
@@ -221,7 +227,7 @@ Note: The following errors might be seen after execution of the above step
 
 	1) Disable the setting in the agent's 'puppet.conf' file by setting  pluginsyn=false. Or 
 
-	2) Create at least one plugin
+	2) Create at least one plugin ( By running puppet module install saz-sudo  on master)
 
 ## Testing  
 For testing, run the tests from the source code on Master machine. 
@@ -230,7 +236,7 @@ For testing, run the tests from the source code on Master machine.
     ````
      su puppet
      cd /home/puppet
-     git clone --branch 4.3.1 git://github.com/puppetlabs/puppet
+     git clone --branch 4.5.3 git://github.com/puppetlabs/puppet
      cd puppet
      bundle install --path .bundle/gems/
 ````
@@ -292,11 +298,19 @@ Replace it with
     ````
 
     3. Run the shell script
-        ````
-    export LC_ALL="en_US.UTF8"
-    ./rootuser_tests.sh
-    ````  
+ 
+      * For Ubuntu 16.04
 
+          ```
+          locale-gen "en_US.UTF-8"
+          ./rootuser_tests.sh
+          ```
+      * For RHEL 6/RHEL 7/SLES 11/SLES 12
+
+          ```
+          export LC_ALL="en_US.UTF8"
+          ./rootuser_tests.sh
+          ```
 
 	3.2. Execute testcases as puppet user  
 	
