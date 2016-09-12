@@ -1,14 +1,14 @@
 <!---PACKAGE:Logstash--->
-<!---DISTRO:RHEL 6.6:2.3.3--->
-<!---DISTRO:RHEL 7.1:2.3.3--->
-<!---DISTRO:SLES 11:2.3.3--->
-<!---DISTRO:SLES 12:2.3.3--->
-<!---DISTRO:Ubuntu 16.x:2.3.3--->
+<!---DISTRO:RHEL 6.6:2.3--->
+<!---DISTRO:RHEL 7.1:2.3--->
+<!---DISTRO:SLES 11:2.3--->
+<!---DISTRO:SLES 12:2.3--->
+<!---DISTRO:Ubuntu 16.x:2.3--->
 
 # Building Logstash
 [Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a build-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
 
-The instructions provided below specify the steps to build Apache Logstash v2.3.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apache Logstash v2.3.4 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -72,8 +72,8 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
    ```
        cd /<source_root>/
-       wget https://download.elastic.co/logstash/logstash/logstash-2.3.3.zip
-       unzip -u logstash-2.3.3.zip
+       wget https://download.elastic.co/logstash/logstash/logstash-2.3.4.zip
+       unzip -u logstash-2.3.4.zip
    ```
  3. Jruby runs on JVM and needs a native library (libjffi-1.2.so: java foreign language interface). Get `jffi` source code and build with `ant`
 
@@ -89,14 +89,14 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  4.  Copy libjffi-1.2.so to Logstash folder
     ```
        cd /<source_root>/
-       mkdir logstash-2.3.3/vendor/jruby/lib/jni/s390x-Linux
+       mkdir logstash-2.3.4/vendor/jruby/lib/jni/s390x-Linux
        cp jffi-master/build/jni/libjffi-1.2.so \
-       logstash-2.3.3/vendor/jruby/lib/jni/s390x-Linux/libjffi-1.2.so
+       logstash-2.3.4/vendor/jruby/lib/jni/s390x-Linux/libjffi-1.2.so
     ```
 
  5. Run Logstash
    ```
-      cd /<source_root>/logstash-2.3.3
+      cd /<source_root>/logstash-2.3.4
       bin/logstash version
    ```
 
