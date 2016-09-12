@@ -1,20 +1,20 @@
 <!---PACKAGE:Fluentd--->
-<!---DISTRO:SLES 12:0.12.20--->
-<!---DISTRO:SLES 11:0.12.20--->
-<!---DISTRO:RHEL 7.1:0.12.20--->
-<!---DISTRO:RHEL 6.6:0.12.20--->
-<!---DISTRO:Ubuntu 16.x:0.12.20--->
+<!---DISTRO:SLES 12:0.14--->
+<!---DISTRO:SLES 11:0.14--->
+<!---DISTRO:RHEL 7.1:0.14--->
+<!---DISTRO:RHEL 6.6:0.14--->
+<!---DISTRO:Ubuntu 16.x:0.14--->
 
 # Building Fluentd
 
-The instructions provided below specify the steps to build Fluentd 0.14.0 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Fluentd 0.14.2 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._  
 
-iii) _At the time of writing recipe, the version of Fluentd was 0.14.0 ._   
+iii) _At the time of writing recipe, the version of Fluentd was 0.14.2 ._   
 
 1. Install the dependencies for your specific platform
 
@@ -40,7 +40,7 @@ iii) _At the time of writing recipe, the version of Fluentd was 0.14.0 ._
 	
 	For RHEL, SLES and Ubuntu:  
     ```shell
-    gem install fluentd -v 0.14.0
+    gem install fluentd -v 0.14.2
     ```
 
     Once complete it should report that a number of gems including fluentd are installed. Verify the installed version with `gem list fluentd`.
@@ -53,7 +53,7 @@ iii) _At the time of writing recipe, the version of Fluentd was 0.14.0 ._
   fluentd -s conf
 ```
 
-	For version 0.14.0 while starting a fluentd service, an issue ```unexpected error error="undefined method to_sym for nil:NilClass\nDid you mean? to_s"``` occurs. Add sed command as follows to fix this issue.  
+	For version 0.14.2 while starting a fluentd service, an issue ```unexpected error error="undefined method to_sym for nil:NilClass\nDid you mean? to_s"``` occurs. Add sed command as follows to fix this issue.  
   ```
     sed -i "92 a\@type forward" conf/fluent.conf
     fluentd -c conf/fluent.conf &
