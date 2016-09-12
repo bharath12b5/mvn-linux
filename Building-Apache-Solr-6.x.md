@@ -1,5 +1,5 @@
 
-The instructions provided below specify the steps to build Apache Solr version 6.0.1 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apache Solr version 6.2.0 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 	
 
@@ -43,12 +43,12 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions. Th
 	
 ### Product Build - Apache Solr
 
-1. Download Apache Solr 6.0.1 source code
+1. Download Apache Solr 6.2.0 source code
 
 	```shell
 	cd /<source_root>/
-	wget http://archive.apache.org/dist/lucene/solr/6.0.1/solr-6.0.1-src.tgz
-	tar zxvf solr-6.0.1-src.tgz
+	wget http://archive.apache.org/dist/lucene/solr/6.2.0/solr-6.2.0-src.tgz
+	tar zxvf solr-6.2.0-src.tgz
 	```
 2. Configure and make
 
@@ -65,26 +65,15 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions. Th
 	
 	Configure and make
     ```shell
-	cd /<source_root>/solr-6.0.1/solr
+	cd /<source_root>/solr-6.2.0/solr
 	ant ivy-bootstrap
 	ant server
 	```
-	_**Note:** messages such as `Execute failed: java.io.IOException: Cannot run program "svnversion"` are expected (and can safely be ignored) as we are using a snapshot of the Apache Solr code - not directly from the subversion repository. This command refers to adding version stamping to some files - you may see `${svnversion}` later on due to this but it is purely cosmetic._
-3. Edit the solr and solr.cmd file (RHEL 7.1 and SLES 12 SP1 Only)
 
-    (Only for IBM Java)
-    ```shell
-    cd /<source_root>/solr-6.0.1/solr/bin
-    sed -i 's/Xloggc/Xverbosegclog/g' solr
-    sed -i 's/JAVA_VERSION:(-2)/JAVA_VERSION:(-1)/g' solr
-    sed -i 's/Xloggc/Xverbosegclog/g' solr.cmd
-    ```
-    The files solr and solr.cmd uses Xloggc which is not supported on IBM Java and hence we need to replace it with Xverbosegclog. Otherwise IBM java doesn't understand Xloggc and won't start. IBM java does not follow the version convention followed by Oracle and hence we get a syntax error while starting Solr, so we need to modify the IBM Java version check in solr script.
-
-4. Verification
+3. Verification
 
     ```shell
-    cd /<source_root>/solr-6.0.1/solr/bin
+    cd /<source_root>/solr-6.2.0/solr/bin
     chmod a+x solr
     ./solr start
     ./solr create -c samp
