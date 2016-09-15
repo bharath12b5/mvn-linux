@@ -1,11 +1,11 @@
-Swift is available on RHEL 7, SLES 12.1 and Ubuntu 16.04. Swift 3.0 has been built and tested on Linux on z Systems.
+Swift is available on RHEL 7.1, SLES 12.1 and Ubuntu 16.04. Swift 3.0 has been built and tested on Linux on z Systems.
 This is a Beta release to go in hand with the official Swift 3.0 release.
 
 ### Preparing to build LLVM/clang
 
 1. Install prerequisites:
 
-    For RHEL 7
+    For RHEL 7.1
 
         sudo yum install binutils-devel gcc-c++ git \
                          libcurl-devel bzip2-devel sqlite3-devel libbsd \
@@ -125,7 +125,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
    
 2. Run cmake outside the source tree to configure LLVM:
 
-    For SLES 12 & RHEL 7
+    For SLES 12 & RHEL 7.1
 
         cd ../..
         mkdir build
@@ -180,7 +180,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
         
 2. Run the update-checkout script to clone everything else from upstream (for now):
 
-    For SLES 12 & RHEL 7
+    For SLES 12 & RHEL 7.1
 
         ./utils/update-checkout --clone-with-ssh --branch swift-3.0-branch
         
@@ -196,7 +196,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
 
 4. Build the code (`$DESTDIR` can be any blank directory where the installable package is assembled, for example `$HOME/swift/install`):
 
-    For SLES 12 & RHEL 7
+    For SLES 12 & RHEL 7.1
 
         ./utils/build-script -j 2 -r \
         --lldb --foundation --xctest --llbuild --swiftpm --libdispatch -- \
@@ -237,11 +237,11 @@ LLVM 3.9 or above is needed for building Swift and its components.
         - Replace the -r option with -R to get a release build (no debugging symbols and no assert).
 
     
-    _Additional Notes **(For SLES 12 only)**:_ 
+    _Additional Notes **(For SLES 12 & RHEL 7.1)**:_ 
     
     Currently, the build will stop during the installation phase due to a known issue in LLDB's CMake files.
 
-    This is a LLDB bug (https://llvm.org/bugs/show_bug.cgi?id=23785), preventing the installation of REPL/LLDB on SLES (and most likely RHEL too):
+    This is a LLDB bug (https://llvm.org/bugs/show_bug.cgi?id=23785), preventing the installation of REPL/LLDB on SLES and RHEL:
     
         CMake Error at scripts/cmake_install.cmake:36 (file):
           file INSTALL cannot find
