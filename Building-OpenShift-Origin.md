@@ -16,7 +16,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
     sudo yum install git tar which
 
-### Step 2: Install Docker 1.8.2 or higher
+### Step 2: Install Docker 1.8.2
 See instructions [here](http://www.ibm.com/developerworks/linux/linux390/docker.html)
 
 ### Step 3: Install Go 1.6
