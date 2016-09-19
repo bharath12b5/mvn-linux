@@ -1,63 +1,80 @@
-#Building [CouchDB](https://couchdb.apache.org/) on SLES ( 11.3 & 12.0 ) and RHEL ( 6.6 & 7.1 )
+<!---PACKAGE:CouchDB--->
+<!---DISTRO:RHEL 6.6:1.6.1--->
+<!---DISTRO:RHEL 7.1:1.6.1--->
+<!---DISTRO:SLES 11:1.6.1--->
+<!---DISTRO:SLES 12:1.6.1--->
+<!---DISTRO:Ubuntu 16.x:Distro--->
 
-CouchDB can be built for a Linux on z System running SLES 11.3/12.0 & RHEL 6.6/7.1 by following these instructions.
+#Building Couchdb
+Below versions of Couchdb are available in respective distributions at the time of this recipe creation:
 
-_**NOTE:** When following the steps below please use a standard permission user unless otherwise specified._
+* Ubuntu 16.04 has  1.6.0
 
-1. First, install the build-time dependencies:
+The instructions provided below specify the steps to build Couchdb Version 1.6.1 on Linux on the IBM z Systems for RHEL 6/7 and SLES 11/12.
 
-    On SLES 11.3:
+### _**General Note:**_
+i)  _When following the steps below please use a standard permission user unless otherwise specified._
 
-        sudo zypper install libicu-devel libcurl4 libcurl-devel git wget mozilla-nspr mozilla-nspr-devel autoconf213 zip fontconfig fontconfig-devel pkg-config libasound2 yasm tar make gtk2-devel libXt-devel libIDL-2-0 libidl-devel libfreetype6 libgstreamer-1_0-0 dbus-1-devel dbus-1-glib-devel libnotify4 libnotify-devel python wget perl perl-base java-1_7_0-ibm java-1_7_0-ibm-devel libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel
+### Building and Installing Couchdb
+1. First, install the build dependencies
 
-    On SLES 12.0:
-
-        sudo zypper install libicu-devel libcurl4 libcurl-devel git wget mozilla-nspr mozilla-nspr-devel autoconf213 zip fontconfig fontconfig-devel pkg-config libasound2 yasm tar make gtk2-devel libXt-devel libIDL-2-0 libidl-devel libfreetype6 libgstreamer-1_0-0 dbus-1-devel dbus-1-glib-devel libnotify4 libnotify-devel python wget perl perl-base java-1_7_1-ibm java-1_7_1-ibm-devel libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel
-
+    On SLES 11:
+    ```
+    sudo zypper install libicu-devel libcurl-devel git wget autoconf213 zip fontconfig-devel pkg-config yasm tar make gtk2-devel libidl-devel  dbus-1-devel dbus-1-glib-devel libnotify-devel java-1_7_0-ibm  libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel libtool pkg-config automake curl
+    ```
+    
+    On SLES 12:
+    ```
+    sudo zypper install libicu-devel libcurl4 libcurl-devel git wget mozilla-nspr mozilla-nspr-devel autoconf213 zip fontconfig fontconfig-devel pkg-config libasound2 yasm tar make gtk2-devel libXt-devel libIDL-2-0 libidl-devel libfreetype6 libgstreamer-1_0-0 dbus-1-devel dbus-1-glib-devel libnotify4 libnotify-devel python wget perl perl-base java-1_7_1-ibm java-1_7_1-ibm-devel libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel libtool pkg-config curl
+    ```
+    
     On RHEL 6.6:
-
-    _**NOTE:** As root, add the RHEL 6 Server Optional repository to the yum repository list. This is required to get the IBM Java package. See the instructions in [Adding RHEL Optional and Supplementary Repositories](https://github.com/linux-on-ibm-z/docs/wiki/Adding-RHEL-Optional-and-Supplementary-Repositories)._
-
-        sudo yum install libicu-devel libcurl libcurl-devel git wget zip bzip2 tar nspr nspr-devel autoconf213 fontconfig fontconfig-devel pkgconfig make gtk2-devel libXt-devel libIDL libIDL-devel freetype freetype-devel gstreamer gstreamer-devel dbus dbus-devel dbus-glib dbus-glib-devel libnotify libnotify-devel python perl java-1.7.1-ibm java-1.7.1-ibm-devel
-
+    ```
+    sudo yum install libicu-devel libcurl libcurl-devel git wget zip bzip2 tar nspr nspr-devel autoconf213 fontconfig fontconfig-devel pkgconfig make gtk2-devel libXt-devel libIDL libIDL-devel freetype freetype-devel gstreamer gstreamer-devel dbus dbus-devel dbus-glib dbus-glib-devel libnotify libnotify-devel python perl java-1.7.1-ibm java-1.7.1-ibm-devel xz libtool perl-CPAN curl
+    ```
+    
     On RHEL 7.1:
-
-    _**NOTE:** As root, add the RHEL 7 Server Optional repository to the yum repository list. This is required to get the IBM Java package. See the instructions in [Adding RHEL Optional and Supplementary Repositories](https://github.com/linux-on-ibm-z/docs/wiki/Adding-RHEL-Optional-and-Supplementary-Repositories)._
-
-        sudo yum install libicu-devel libcurl libcurl-devel git wget zip bzip2 tar nspr nspr-devel autoconf213 fontconfig fontconfig-devel pkgconfig make gtk2-devel libXt-devel libIDL libIDL-devel freetype freetype-devel gstreamer1 gstreamer1-devel dbus dbus-devel dbus-glib dbus-glib-devel libnotify libnotify-devel python perl java-1.7.1-ibm java-1.7.1-ibm-devel
+    ```
+    sudo yum install libicu-devel libcurl libcurl-devel git wget zip bzip2 tar nspr nspr-devel autoconf213 fontconfig fontconfig-devel pkgconfig make gtk2-devel libXt-devel libIDL libIDL-devel freetype freetype-devel gstreamer1 gstreamer1-devel dbus dbus-devel dbus-glib dbus-glib-devel libnotify libnotify-devel python perl java-1.7.1-ibm java-1.7.1-ibm-devel xz libtool which texlive.s390x texlive-titlesec.noarch texlive-framed.noarch texlive-threeparttable.noarch texlive-wrapfig.noarch texlive-multirow.noarch texinfo.s390x curl
+    ```
 
 2. Now install gcc-c++
 
-    On SLES 11.3:
+    On SLES 11:
+    ```
+    sudo zypper install gcc47-c++
+    sudo ln -s /usr/bin/gcc-4.7 /usr/bin/gcc
+    sudo ln -s /usr/bin/gcc-4.7 /usr/bin/cc
+    sudo ln -s /usr/bin/g++-4.7 /usr/bin/g++
+    sudo ln -s /usr/bin/g++-4.7 /usr/bin/c++
+    ```
 
-        sudo zypper install gcc47-c++
-        sudo ln -s /usr/bin/gcc-4.7 /usr/bin/gcc
-        sudo ln -s /usr/bin/gcc-4.7 /usr/bin/cc
-        sudo ln -s /usr/bin/g++-4.7 /usr/bin/g++
-        sudo ln -s /usr/bin/g++-4.7 /usr/bin/c++
-
-    On SLES 12.0:
-
-        sudo zypper install gcc-c++
+    On SLES 12:
+    ```
+    sudo zypper install gcc-c++
+    ```
 
     On RHEL 6.6 & 7.1:
+    ```
+    sudo yum install gcc-c++
+    ```
 
-        sudo yum install gcc-c++
+3. Install SpiderMonkey
 
-3. Move to the location you wish to use as an installation workspace ( known as `<source_root>` from this point on )
+    i) Obtain the [SpiderMonkey](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Releases/1.8.5) source code
+    ```
+    cd /<source_root>/
+    wget http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
+    ```
+    
+    ii) Untar the archive and change working directory:
+    ```
+    tar zxf js185-1.0.0.tar.gz && cd js-1.8.5/js/src
+    ```
 
-        cd /<source_root>/
+    iii) Effect the following source code changes
 
-4. Obtain the [SpiderMonkey](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Releases/1.8.5) source code
-
-        wget http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
-
-5. Untar the archive and change working directory:
-
-        tar zxf js185-1.0.0.tar.gz && cd js-1.8.5/js/src
-
-6. Effect the following source code changes
-_**NOTE:** The given line numbers account for any previous action on the file._
+    _**NOTE:** The given line numbers account for any previous action on the file._
 
         Edit file /<source_root>/js-1.8.5/js/src/jsval.h
         Remove line 309 ( content: 'jsuword        word;' )
@@ -96,32 +113,28 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
 
     _For more info on the above see the [bugzilla diff](https://bugzilla.mozilla.org/attachment.cgi?id=520157&action=diff)_
 
-7. Prepare the src code using autoconf
+    iv) Prepare the src code using autoconf
 
         autoconf-2.13
 
-8. Create a workspace directory and cd into it
+    v) Create a workspace directory and cd into it
 
         mkdir /<source_root>/js-1.8.5/js/src/build_OPT.OBJ
         cd /<source_root>/js-1.8.5/js/src/build_OPT.OBJ
 
-9. Run the Configure step
+    vi) Run the Configure step
 
         ../configure --prefix=/usr
 
-10. Go ahead and make SpiderMonkey
+    vii) Go ahead and make SpiderMonkey
 
         make
 
-11. To verify the SpiderMonkey build, run the tests
-
-        make check
-
-12. If no error is found, install SpiderMonkey:
+    viii) If no error is found, install SpiderMonkey:
 
         sudo make install
 
-13. Install Erlang:
+4. Install Erlang
   
   _**NOTE:** Steps 1 & 2 within the following Erlang instruction links should be ignored ( as we have already covered those steps earlier in this recipe )._
 
@@ -129,52 +142,74 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
   - For SLES 11.3 & 12.0, build & install Erlang according to the instructions in [Building Erlang on SLES12](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-SLES12 "Building Erlang on SLES12").
   - For RHEL 6.6 & 7.1, build & install Erlang according to the instructions in [Building Erlang on RHEL7](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-RHEL7 "Building Erlang on RHEL7").
 
-14. Download ( into `/<source_root>/` ) IBM SDK for Node.js ( version 1.1 ) from [developerWorks](http://www.ibm.com/developerworks/web/nodesdk/). Be sure to select the binary for "Linux on System z". Ensure the user you are logged in with has execute permissions on the downloaded binary. Run the downloaded interactive installer and specify `/home/<user_name>/ibm/node/` as the installation directory.
 
-        /<source_root>/node-<VERSION_NUMBER_HERE>-linux-s390x.bin
+5. Build and install Rebar
 
-15. Set the PATH environment variable to include all required directories:
+     i) CouchDB requires `rebar`, build it from source by running:
 
-        export PATH=/home/<user_name>/ibm/node/bin:/usr/local/bin:$PATH
-
-16. Install Grunt using NPM:
-
-        npm install -g grunt-cli
-
-17. Building CouchDB requires `rebar`. Build it from source by running:
-
+        cd /<source_root>/
         git clone git://github.com/rebar/rebar.git
-        cd rebar
+        cd /<source_root>/rebar
         ./bootstrap
 
-18. The bootstrap command produces an Erlang escript named rebar. Copy it into a directory in your `$PATH`:
+    ii) The bootstrap command produces an Erlang escript named rebar. Copy it into a directory in your `$PATH`:
 
         sudo cp /<source_root>/rebar/rebar /usr/local/bin/
+		
+6. Install Autoconf-archive
 
-19. Now set up the CouchDB source tree:
+        cd /<source_root>/
+        wget http://infinity.kmeacollege.ac.in/gnu/autoconf-archive/autoconf-archive-2016.03.20.tar.xz
+        tar -xvf autoconf-archive-2016.03.20.tar.xz
+		cd autoconf-archive-2016.03.20
+		./configure
+		make
+		sudo make install
+		sudo cp ./m4/* /usr/share/aclocal (Only for RHEL)
+		
+
+7. Install "prove" module using CPAN (Only for RHEL6)
+    ````
+     /usr/bin/perl -MCPAN -e 'prove'
+    ````
+		
+8. Now set up the CouchDB source tree
 
         cd /<source_root>/
         git clone https://git-wip-us.apache.org/repos/asf/couchdb.git
-        cd couchdb
-    _**NOTE:** If you wish to build the developer preview version of CouchDB, run: `git checkout developer-preview-2.0`_
+        cd /<source_root>/couchdb
+        git checkout 1.6.1
 
-20. Configure the source tree (which will fetch more source code from version control), then run make to build CouchDB:
+9. Configure the source tree (which will fetch more source code from version control), then run make to build CouchDB
+     ```
+    ./bootstrap
+	./configure --prefix=/opt/couchdb
+    export LD_LIBRARY_PATH=/usr/lib
+    make		
+    ```
+10. Installing couchdb
 
-        ./configure -p /opt/couchdb -c
-        export LD_LIBRARY_PATH=/usr/lib
+    ``` 
+     sudo make install
+     ```   
+11. Now make and run some sanity tests
 
-21. Now make and run some sanity tests.
+     ````
+     make check
+     ````
+12. Generate an installable release with an embedded Erlang run-time system
 
-        make check
+     ```
+     make dist
+     ```
+13. Verify Couchdb by starting the server
 
-22. Verify that the build works by starting the test server (you can kill it with Ctrl-C):
-
-        /<source_root>/couchdb/dev/run
-
-23. Generate an installable release with an embedded Erlang run-time system:
-
-        make dist
-
-24. The `/<source_root>/couchdb/rel/` sub-directory should now contain a complete CouchDB installation. It can be installed simply by moving it into place:
-
-        sudo cp -R /<source_root>/couchdb/rel/couchdb /opt/couchdb
+    ```
+	 cd /opt/couchdb/bin
+     sudo ./couchdb &
+    ```
+ 
+    curl http://127.0.0.1:5984/ should display
+    ```
+    {"couchdb":"Welcome","uuid"="xxx","version":"1.6.1","vendor":{"name":"The Apache Software Foundation"}}
+    ```
