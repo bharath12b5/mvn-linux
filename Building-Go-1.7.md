@@ -39,7 +39,7 @@ Add ``$HOME/go/bin`` to the ``PATH`` environment variable. You can do this by ad
 export PATH=$PATH:$HOME/go/bin
    ```
 
-Redirect $GOROOT to $HOME/go from /usr/local/go by doing this:
+Redirect the ``GOROOT`` environment variable to ``$HOME/go`` from ``/usr/local/go`` by doing this:
 
    ```
 export GOROOT=$HOME/go
