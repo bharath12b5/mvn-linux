@@ -39,9 +39,22 @@ Add ``$HOME/go/bin`` to the ``PATH`` environment variable. You can do this by ad
 export PATH=$PATH:$HOME/go/bin
    ```
 
+Redirect $GOROOT to $HOME/go from /usr/local/go by doing this:
+
+   ```
+export GOROOT=$HOME/go
+   ```
+
 Also add this to your .profile file to enable CGO:
 
    ```
 export CC=gcc
    ```
 
+## To verify the go installation
+
+Simply run `go version`, it should return
+
+   ```
+go version go1.7.1 linux/s390x
+   ```
