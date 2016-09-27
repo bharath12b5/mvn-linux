@@ -60,20 +60,20 @@ _**General Notes:**_
     export PATH=$(pwd)/depot_tools:$PATH
     ``` 
 
-### Install OpenSSL 1.0.2h **(For V8 3.28 on SLES 11  only)** 
+### Install OpenSSL 1.0.2i **(For V8 3.28 on SLES 11  only)** 
 
 1. Download the OpenSSL source code
 
     ```shell
     cd /<source_root>/
-    wget ftp://ftp.openssl.org/source/openssl-1.0.2h.tar.gz
-    tar -xf openssl-1.0.2h.tar.gz
+    wget ftp://ftp.openssl.org/source/openssl-1.0.2i.tar.gz
+    tar -xf openssl-1.0.2i.tar.gz
     ```
 
 2. Build and install OpenSSL
  
     ```shell
-    cd /<source_root>/openssl-1.0.2h
+    cd /<source_root>/openssl-1.0.2i
     ./Configure linux64-s390x
     make
     sudo make install
@@ -223,13 +223,45 @@ _**General Notes:**_
     export SSL_CERT_FILE=/<src_root>/v8z/cacert.txt
     ```
 
-4. Fetch source code for dependent libraries
+4. Edit the `builddeps` section in Makefile as follows **(For V8 3.28 only)**
+	
+	**Note:** we need to change the the links to the icu repository since SVN link is no longer available.
+	
+	From
+	```
+	if svn info third_party/icu 2>&1 | grep -q icu46 ; then \
+	  svn switch --force \
+	      https://src.chromium.org/chrome/trunk/deps/third_party/icu52 \
+	      third_party/icu --revision 277999 ; \
+	else \
+	  svn checkout --force \
+	      https://src.chromium.org/chrome/trunk/deps/third_party/icu52 \
+	      third_party/icu --revision 277999 ; \
+	fi
+	```
+	
+	to
+	```
+	if svn info third_party/icu 2>&1 | grep -q icu46 ; then \
+          rm -rf third_party/icu; \
+          git clone https://chromium.googlesource.com/chromium/deps/icu52 third_party/icu; \
+          cd third_party/icu; git reset --hard 26d8859357ac0bfb86b939bf21c087b8eae22494; \
+        else \
+          rm -rf third_party/icu; \
+          git clone https://chromium.googlesource.com/chromium/deps/icu52 third_party/icu; \
+          cd third_party/icu; git reset --hard 26d8859357ac0bfb86b939bf21c087b8eae22494; \
+        fi
+        rm -rf testing/gmock
+	```
+	Note that the indented lines 2, 3, 4, 6, 7 and 8 must begin with a single tab character (not spaces).
+	
+5. Fetch source code for dependent libraries
 
     ```shell
     make dependencies
     ```
 
-5. Edit make.py file and replace crsT flags with crs using below sed command **(SLES 11 only)** 
+6. Edit make.py file and replace crsT flags with crs using below sed command **(SLES 11 only)** 
 
     ```shell
     sed -i "s/crsT/crs/g" /<src_root>/v8z/build/gyp/pylib/gyp/generator/make.py
@@ -237,12 +269,12 @@ _**General Notes:**_
 
    This is needed in order to prevent the `ar` command from failing when creating libraries during the build process.
 
-6. Build V8 Library
+7. Build V8 Library
     ```shell
 
     make s390x -j4
     ```
-7. Build V8 shared library
+8. Build V8 shared library
 
     ```shell
     make s390x -j4 library=shared
@@ -250,7 +282,7 @@ _**General Notes:**_
 
    The 64-bit shared library will be output as `v8z/out/s390x.release/lib.target/libv8.so`. When building V8 3.28, libicui18n.so and libicuuc.so are also created in the same directory as libv8.so.
 
-8. V8 header files will be required to build products invoking the V8 APIs. Issue the following commands to install the header files
+9. V8 header files will be required to build products invoking the V8 APIs. Issue the following commands to install the header files
 
     ```shell
     cd /<source_root>/v8z
@@ -266,7 +298,7 @@ _**General Notes:**_
 
     * /usr/include/v8*h
 
-9. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer) for RHEL 6.6/7.1 and SLES 11/12
+10. Install the V8 libraries into /usr/local/lib64/ (or /usr/lib64/ if you prefer) for RHEL 6.6/7.1 and SLES 11/12
 
     ```shell
     cd /<source_root>/v8z
@@ -287,7 +319,7 @@ _**General Notes:**_
     ```shell
     sudo chmod -f 644 /usr/local/lib64/libv8*.a /usr/local/lib64/libpreparser_lib.a
     ```
-10. Install the V8 libraries into `/usr/local/lib/` for Ubuntu 16.04
+11. Install the V8 libraries into `/usr/local/lib/` for Ubuntu 16.04
 
     ```shell
     cd /<source_root>/v8z
@@ -309,19 +341,19 @@ _**General Notes:**_
     sudo chmod -f 644 /usr/local/lib/libv8*.a /usr/local/lib/libpreparser_lib.a
     ```
 
-11. List shared libraries
+12. List shared libraries
     
     ```shell
-	sudo ldconfig -v
+	sudo /sbin/ldconfig -v
     ```
 
-12. **(Optional)** Check that the sample shell can be invoked and that it displays the expected V8 version. To exit from the shell, enter `quit()`.
+13. **(Optional)** Check that the sample shell can be invoked and that it displays the expected V8 version. To exit from the shell, enter `quit()`.
 
     ```shell
     /<source_root>/v8z/out/s390x.release/shell
     ```
 
-13. **(Optional)** Once you have installed the V8 libraries and header files outside `/<source_root>/` then `/<source_root>/` may be deleted.
+14. **(Optional)** Once you have installed the V8 libraries and header files outside `/<source_root>/` then `/<source_root>/` may be deleted.
 
 ## References
 
