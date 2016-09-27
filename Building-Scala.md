@@ -3,8 +3,14 @@
 <!---DISTRO:SLES 11:2.11.8--->
 <!---DISTRO:RHEL 7.1:2.11.8--->
 <!---DISTRO:RHEL 6.6:2.11.8--->
+<!---DISTRO:Ubuntu 16.x:2.11.8--->
+# Building Scala
 
-**Scala** can be installed on Linux on z Systems running RHEL 6.6/7.1 and SLES 11/12 by following these instructions. Version 2.11.8 of Scala has been successfully installed and tested this way.
+Below versions of Scala are available in respective distributions at the time of this recipe creation:
+
+*    Ubuntu 16.04 has `2.11.6`
+
+The instructions provided below specify the steps to build Scala version 2.11.8 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04. 
 
 _**General Notes:**_ 	
 
@@ -36,6 +42,11 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions.  
 	sudo zypper refresh	
  	sudo zypper install wget java-1_7_1-ibm-devel
 	```
+	On Ubuntu 16.04
+	```shell    
+	sudo apt-get update	
+ 	sudo apt-get install wget openjdk-8-jdk
+	```
     
 2. Create a working directory with write permission to use as a temporary installation workspace (Referred to as `/<source_root>/`)
 
@@ -48,9 +59,15 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions.  
 
 1. Download and install Scala using the following commands
 	
+	On Rhel 6.6/7.1/SLES 11/12
 	```shell
-	wget http://downloads.typesafe.com/scala/2.11.8/scala-2.11.8.rpm
+	wget http://www.scala-lang.org/files/archive/scala-2.11.8.rpm
 	sudo rpm -ivh scala-2.11.8.rpm
+	```
+	On Ubuntu 16.04
+	```shell
+	wget http://www.scala-lang.org/files/archive/scala-2.11.8.deb
+	sudo dpkg -i scala-2.11.8.deb
 	```
 2. *[Optionally]* Check Scala binary and compiler version
 	
@@ -60,7 +77,7 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions.  
 	```
 	The output of scala should be
 	```shell
-	Scala code runner version 2.11.8 -- Copyright 2002-2013, 	LAMP/EPFL
+	Scala code runner version 2.11.8 -- Copyright 2002-2016, LAMP/EPFL
 	```
 	Check scala compiler version by using following command
 	```shell
@@ -68,7 +85,7 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions.  
 	```
 	The output of scala compiler version should be 
 	```shell
-	Scala compiler version 2.11.8 -- Copyright 2002-2013, 	LAMP/EPFL
+	Scala compiler version 2.11.8 -- Copyright 2002-2016, LAMP/EPFL
 	```
 
 ## [Optional] Testing Scala Sample Program
