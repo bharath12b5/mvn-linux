@@ -1,26 +1,26 @@
 ### Building Apache Cassandra
 
-Apache Cassandra is a scalable and fault-tolerant distributed NoSQL database with support for column indexes and denormalized collections. The stable release of Cassandra 3.0 has been built and tested on Linux on z Systems.
+Apache Cassandra is a scalable and fault-tolerant distributed NoSQL database with support for column indexes and denormalized collections. The stable release of Cassandra 3.7 has been built and tested on Linux on z Systems.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-### Building Apache Cassandra 3.0 with OpenJDK
+### Building Apache Cassandra 3.7 with OpenJDK
 
-The following build instructions have been tested with Apache Cassandra 3.0 on Linux on z Systems with OpenJDK 1.8.
+The following build instructions have been tested with Apache Cassandra 3.7 on Linux on z Systems with OpenJDK 1.8.
 
 ### Step 1: Install the dependencies
 
 * RHEL 7.2:
 ```
-sudo yum install -y git which java-1.8.0-openjdk-devel.s390x gcc-c++ make automake autoconf libtool libstdc++-static tar wget patch words libXt-devel libX11-devel
+sudo yum install -y git which java-1.8.0-openjdk-devel.s390x gcc-c++ make automake autoconf libtool libstdc++-static tar wget patch words libXt-devel libX11-devel texinfo
 
 ```
 * SLES12 (SP1):
 ```
-sudo zypper in -y git which make wget tar zip unzip words gcc-c++ patch libtool automake autoconf ccache java-1_8_0-openjdk-devel xorg-x11-proto-devel xorg-x11-devel alsa-devel cups-devel libffi48-devel libstdc++6-locale glibc-locale libstdc++-devel libXt-devel libX11-devel 
+sudo zypper in -y git which make wget tar zip unzip words gcc-c++ patch libtool automake autoconf ccache java-1_8_0-openjdk-devel xorg-x11-proto-devel xorg-x11-devel alsa-devel cups-devel libffi48-devel libstdc++6-locale glibc-locale libstdc++-devel libXt-devel libX11-devel texinfo
  
 ```
 
@@ -53,17 +53,17 @@ cd /<source_root>/
 git clone https://github.com/xerial/snappy-java.git
 cd snappy-java
 git checkout develop
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk (Only for RHEL7.1)
-export JAVA_HOME=/usr/lib64/jvm/java-1.8.0-openjdk-1.8.0 (Only for SLES12-SP1)
+export JAVA_HOME=/usr/lib/jvm/java (Only for RHEL7.1)
+export JAVA_HOME=/usr/lib64/jvm/java (Only for SLES12-SP1)
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x (Only for Ubuntu 16.04)
 make IBM_JDK_7=1 USE_GIT=1 GIT_SNAPPY_BRANCH=master GIT_REPO_URL=https://github.com/google/snappy.git
 ```        
-### Step 5: Build Apache Cassandra 3.0
+### Step 5: Build Apache Cassandra 3.7
 ```
 cd /<source_root>/
 git clone https://github.com/apache/cassandra.git
 cd cassandra
-git checkout cassandra-3.0
+git checkout cassandra-3.7
 ```        
 * Replace the original Snappy-Java jar file in the lib folder with installed Snappy-Java:
 ```
@@ -97,16 +97,22 @@ _Use below commands to install IBM Java 1.8 and set it to Java Runtime Environme
 
 * RHEL 7.2:
 ```
-    yum install java-1.8.0-ibm-devel.s390x
-    export JAVA_HOME=/usr/lib/jvm/java-1.8.0-ibm-1.8.0.3.0-1jpp.1.el7.s390x/
-    update-alternatives --config java    (Enter number to select IBM Java 1.8) 
+    sudo yum install -y java-1.8.0-ibm-devel.s390x
+    export JAVA_HOME=/usr/lib/jvm/java-ibm/
+    sudo update-alternatives --config java    (Enter number to select IBM Java 1.8)
+	export JAVA_OPTS="-Xms1G -Xmx4G"
 ```
 * SLES 12 (SP1):
 ```
-    zypper install java-1_8_0-ibm-devel
-    export JAVA_HOME=/usr/lib64/jvm/java-1.8.0-ibm-1.8.0/
-    update-alternatives --config java   (Enter number to select IBM Java 1.8)
+    sudo zypper install -y java-1_8_0-ibm-devel
+    export JAVA_HOME=/usr/lib64/jvm/java-ibm/
+    sudo update-alternatives --config java   (Enter number to select IBM Java 1.8)
+	export JAVA_OPTS="-Xms1G -Xmx4G"
 ```
+* Ubuntu 16.04
+
+Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.
+	
 
 **Run Cassandra test suite**
 
@@ -131,7 +137,7 @@ _Ignore `LegacySSTableTest`, `ClientModeSSTableTest` failure as these are not re
   
 * Set per thread memory to higher value for cql-tests to execute smoothly or to avoid test case failure due to timeout and memory error 
 
-    `Edit the file /<source_root>/casssandra/build.xml`, and change jvmarg value (`<jvmarg value="-Xss256k"/> to <jvmarg value="-Xss512k"/>`)
+    Edit the file `/<source_root>/casssandra/build.xml`, and change jvmarg value (`<jvmarg value="-Xss256k"/> to <jvmarg value="-Xss512k"/>`)
     
     
 *  Add below content in `/<source_root>/cassandra/test/conf/cassandra.yaml` to change the key cache size as per requirement
@@ -145,5 +151,5 @@ _**Note:**_ To execute Cassandra binary with IBM Java (optional)
 Comment `JVM_OPTS="$JVM_OPTS -Xloggc:${CASSANDRA_HOME}/logs/gc.log"` line in `/<source_root>/casssandra/conf/cassandra-env.sh` file.
 
 ```
-nohup /<source_root>/bin/cassandra -f &
+nohup /<source_root>/cassandra/bin/cassandra -f &
 ```
