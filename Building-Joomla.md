@@ -1,12 +1,12 @@
 <!---PACKAGE:Joomla--->
-<!---DISTRO:SLES 12:3.5--->
-<!---DISTRO:SLES 11:3.5--->
-<!---DISTRO:RHEL 7.1:3.5--->
-<!---DISTRO:RHEL 6.6:3.5--->
-<!---DISTRO:Ubuntu 16.x:3.5--->
+<!---DISTRO:SLES 12:3.6.x--->
+<!---DISTRO:SLES 11:3.6.x--->
+<!---DISTRO:RHEL 7.1:3.6.x--->
+<!---DISTRO:RHEL 6.6:3.6.x--->
+<!---DISTRO:Ubuntu 16.x:3.6.x--->
 
 
-**Joomla** can be built for Linux on z Systems running RHEL 6, RHEL 7, SLES 11, SLES 12 and Ubuntu 16.04 by following these instructions.  Version 3.5.1 has been successfully built & tested this way.
+**Joomla** can be built for Linux on z Systems running RHEL 6, RHEL 7, SLES 11, SLES 12 and Ubuntu 16.04 by following these instructions.  Version 3.6.2 has been successfully built & tested this way.
 More information on Joomla is available at https://www.joomla.org and the source code can be downloaded from http://joomlacode.org
 
 _**General Notes:**_
@@ -28,7 +28,7 @@ sudo yum install -y httpd mysql mysql-server wget libjpeg-devel libpng-devel unz
 
 * RHEL 7
 ```
-sudo yum install -y wget httpd php php-mysql mariadb mariadb-server unzip
+sudo yum install -y wget httpd php php-mysql mariadb mariadb-server unzip tar
 ```
  
 * SLES 11
@@ -43,7 +43,7 @@ sudo zypper install -y apache2 apache2-devel tar wget mariadb gcc libtool autoco
 * Ubuntu 16.04
 ```
 sudo apt-get update
-sudo apt-get install wget apache2 mysql-server php7.0 php7.0-mysql libapache2-mod-php7.0 libapache2-mod-perl2  php7.0-cli php7.0-common php7.0-curl php7.0-dev
+sudo apt-get install wget apache2 mysql-server php7.0 php7.0-mysql libapache2-mod-php7.0 libapache2-mod-perl2  php7.0-cli php7.0-common php7.0-curl php7.0-dev unzip
 ```
 
 #####Create the `/<source_root>/` directory as mentioned above
@@ -147,8 +147,8 @@ RHEL 6, RHEL 7 and Ubuntu 16.04:
   cd /var/www/html
   sudo mkdir Joomla
   cd Joomla
-  sudo wget https://github.com/joomla/joomla-cms/releases/download/3.5.1/Joomla_3.5.1-Stable-Full_Package.zip
-  sudo unzip Joomla_3.5.1-Stable-Full_Package.zip
+  sudo wget https://github.com/joomla/joomla-cms/releases/download/3.6.2/Joomla_3.6.2-Stable-Full_Package.zip
+  sudo unzip Joomla_3.6.2-Stable-Full_Package.zip
   sudo chmod a+w /var/www/html/Joomla/
 ```
 
@@ -157,8 +157,8 @@ SLES 11 and SLES 12:
  cd /srv/www/htdocs
  sudo mkdir Joomla
  cd Joomla
- sudo wget -O Joomla_3.5.1-Stable-Full_Package.zip  https://github.com/joomla/joomla-cms/releases/download/3.5.1/Joomla_3.5.1-Stable-Full_Package.zip
- sudo unzip Joomla_3.5.1-Stable-Full_Package.zip
+ sudo wget -O Joomla_3.6.2-Stable-Full_Package.zip  https://github.com/joomla/joomla-cms/releases/download/3.6.2/Joomla_3.6.2-Stable-Full_Package.zip
+ sudo unzip Joomla_3.6.2-Stable-Full_Package.zip
  sudo chmod a+w /srv/www/htdocs/Joomla/
 ```
 
@@ -170,7 +170,7 @@ SLES 11 and SLES 12:
 
 ### Section 4: Start Apache HTTP Server and MySQL Sever
 
-1. Initialize MySQL server  
+1. Initialize MySQL server for RHEL6, RHEL7, SLES11, SLES12
 
 ```
  sudo /usr/bin/mysql_install_db --user=mysql
@@ -179,13 +179,24 @@ SLES 11 and SLES 12:
 2 . Start MySQL server
  ```
  sudo mkdir -p /var/log/mysql (For SLES 11 and SLES 12)
- sudo /usr/bin/mysqld_safe --user=mysql &  
+ sudo /usr/bin/mysqld_safe --user=mysql &
  ```
 
 3 . Grant privileges
+ 
+For RHEL6, SLES7, SLES11, SLES12
 ```
  sudo /usr/bin/mysql -u root -p
  GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'localhost'; 
+ exit
+```
+
+For Ubuntu 16.04
+```
+ sudo /usr/bin/mysql -u root -p
+ CREATE DATABASE joomladb;
+ CREATE USER mysql@localhost;
+ GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'localhost';
  exit
 ```
 
@@ -196,11 +207,12 @@ SLES 11 and SLES 12:
  sudo /usr/sbin/apachectl -k start   (For Ubuntu 16.04)
  ```
 
-### Section 5: Access the Joomla 3.5.1
+### Section 5: Access the Joomla 3.6.2
 Access the Joomla install file using a browser
 ```
-  	http://<host-ip>:<port>/installation/index.php
- ```
+ http://<host-ip>:<port>/installation/index.php (for RHEL and SLES)
+ http://<host-ip>:<port>/Joomla/installation/index.php (for Ubuntu)
+```
 
  _**Note:** if you get an error like "Forbidden You don't have permission to access / on this server" you may need to update the permissions of the parent directory where you installed Apache HTTP Server, for example `sudo chmod o+x <user parent directory>`_
 
@@ -209,7 +221,8 @@ Access the Joomla install file using a browser
 1. To Manage the site content visit the index file at 
 
     ```shell
-	 http://<host-ip>:<port>/index.php
+	 http://<host-ip>:<port>/index.php (for RHEL and SLES)
+	 http://<host-ip>:<port>/Joomla/index.php (for Ubuntu)
     ```
 
 ###_[Optional]_ Clean up.
@@ -217,7 +230,7 @@ Access the Joomla install file using a browser
 
     ```shell
     sudo rm -rf /<source_root>/
-    sudo rm /<http_build_location>/Joomla_3.5.1-Stable-Full_Package.zip
+    sudo rm /<http_build_location>/Joomla_3.6.2-Stable-Full_Package.zip
     ```
  
 
