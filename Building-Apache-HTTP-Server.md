@@ -1,13 +1,13 @@
 <!---PACKAGE:Apache HTTP--->
-<!---DISTRO:SLES 12:2.4.20--->
-<!---DISTRO:SLES 11:2.4.20--->
-<!---DISTRO:RHEL 7.1:2.4.20--->
-<!---DISTRO:RHEL 6.6:2.4.20--->
-<!---DISTRO:Ubuntu 16.x:2.4.20--->
+<!---DISTRO:SLES 12:2.4.x--->
+<!---DISTRO:SLES 11:2.4.x--->
+<!---DISTRO:RHEL 7.1:2.4.x--->
+<!---DISTRO:RHEL 6.6:2.4.x--->
+<!---DISTRO:Ubuntu 16.x:2.4.x--->
 
 ###Building Apache Http Web Server
 
-Apache HTTP Web Server is available on RHEL 7.1/6.6 or SLES 12/11 or Ubuntu 16.04. Should you require a different version from those listed below you will need to build it.
+Below versions of Apache Http Web Server are available in respective distributions at the time of this recipe creation:
 
 *    RHEL 7.1 has `2.4.6`
 *    RHEL 6.6 has `2.2.15`
@@ -15,7 +15,7 @@ Apache HTTP Web Server is available on RHEL 7.1/6.6 or SLES 12/11 or Ubuntu 16.0
 *    SLES 11.3 has `2.2.12`
 *    Ubuntu 16.04 has `2.4.18`
 
-The **Apache HTTP** web server can be built for Linux on z Systems running RHEL 7.1/6.6 or SLES 12/11 or Ubuntu 16.04 by following these instructions. Version 2.4.20 has been successfully built & tested this way.
+The instructions provided below specify the steps to build Apache Http Web Server version 2.4.23 on Linux on the IBM z Systems for RHEL 6.6/7.1 and SLES 11/12 and Ubuntu.
 
 **General Notes:**
 
@@ -48,12 +48,13 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 2. Build Openssl 1.0.2 (SLES 11 Only)
     
 		cd /<source_root>/
-		wget ftp://openssl.org/source/openssl-1.0.2h.tar.gz
-		tar zxf openssl-1.0.2h.tar.gz
-		cd openssl-1.0.2h
+		wget ftp https://www.openssl.org/source/old/1.0.2/openssl-1.0.2i.tar.gz
+		tar zxf openssl-1.0.2i.tar.gz
+		cd openssl-1.0.2i
 		./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib shared zlib-dynamic
 		make
 		sudo make install		
+		export PATH=/usr/local/ssl/bin:$PATH
 
 3. Build Libtool (SLES 11 & RHEL 6.6 Only)
 
@@ -73,7 +74,7 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 		cd /<source_root>/
 		git clone https://github.com/apache/httpd.git 
 		cd httpd
-		git checkout 2.4.20
+		git checkout 2.4.23
 		cd srclib
 		git clone https://github.com/apache/apr.git
 
