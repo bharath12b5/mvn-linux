@@ -3,7 +3,7 @@
 <!---DISTRO:RHEL 7.1:1.6.1--->
 <!---DISTRO:SLES 11:1.6.1--->
 <!---DISTRO:SLES 12:1.6.1--->
-<!---DISTRO:Ubuntu 16.x:Distro--->
+<!---DISTRO:Ubuntu 16.x:Distro,1.6.1--->
 
 #Building Couchdb
 Below versions of Couchdb are available in respective distributions at the time of this recipe creation:
@@ -38,6 +38,11 @@ i)  _When following the steps below please use a standard permission user unless
     sudo yum install libicu-devel libcurl libcurl-devel git wget zip bzip2 tar nspr nspr-devel autoconf213 fontconfig fontconfig-devel pkgconfig make gtk2-devel libXt-devel libIDL libIDL-devel freetype freetype-devel gstreamer1 gstreamer1-devel dbus dbus-devel dbus-glib dbus-glib-devel libnotify libnotify-devel python perl java-1.7.1-ibm java-1.7.1-ibm-devel xz libtool which texlive.s390x texlive-titlesec.noarch texlive-framed.noarch texlive-threeparttable.noarch texlive-wrapfig.noarch texlive-multirow.noarch texinfo.s390x curl
     ```
 
+	On Ubuntu 16.04
+    ```
+    sudo apt-get update
+    sudo apt-get install -y openjdk-8-jdk texlive-full ncurses-base gcc python git wget tar make autoconf2.13 automake autoconf g++ libmozjs185-1.0 libmozjs185-dev  openssl  libicu55  libicu-dev libcurl4-openssl-dev  build-essential unixodbc libncurses5-dev libncursesw5-dev fop libncurses5-dev unixodbc-dev libssl-dev pkg-config curl
+	```
 2. Now install gcc-c++
 
     On SLES 11:
@@ -142,6 +147,16 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
   - For SLES 11.3 & 12.0, build & install Erlang according to the instructions in [Building Erlang on SLES12](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-SLES12 "Building Erlang on SLES12").
   - For RHEL 6.6 & 7.1, build & install Erlang according to the instructions in [Building Erlang on RHEL7](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-RHEL7 "Building Erlang on RHEL7").
 
+  - For Ubuntu
+    ```
+    wget http://www.erlang.org/download/otp_src_17.4.tar.gz
+    tar zxvf otp_src_17.4.tar.gz
+    cd otp_src_17.4
+    export ERL_TOP=`pwd`
+    ./configure --prefix=/usr
+    make
+    sudo make install
+    ```
 
 5. Build and install Rebar
 
@@ -165,12 +180,12 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
 		./configure
 		make
 		sudo make install
-		sudo cp ./m4/* /usr/share/aclocal (Only for RHEL)
+		sudo cp ./m4/* /usr/share/aclocal (Only for RHEL / Ubuntu)
 		
 
 7. Install "prove" module using CPAN (Only for RHEL6)
     ````
-     /usr/bin/perl -MCPAN -e 'prove'
+    /usr/bin/perl -MCPAN -e 'prove'
     ````
 		
 8. Now set up the CouchDB source tree
@@ -190,23 +205,23 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
 10. Installing couchdb
 
     ``` 
-     sudo make install
+    sudo make install
      ```   
 11. Now make and run some sanity tests
 
      ````
-     make check
+    make check
      ````
 12. Generate an installable release with an embedded Erlang run-time system
 
      ```
-     make dist
+    make dist
      ```
 13. Verify Couchdb by starting the server
 
     ```
-	 cd /opt/couchdb/bin
-     sudo ./couchdb &
+    cd /opt/couchdb/bin
+    sudo ./couchdb &
     ```
  
     curl http://127.0.0.1:5984/ should display
