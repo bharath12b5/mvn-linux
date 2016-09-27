@@ -1,4 +1,4 @@
-The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7, RHEL 6 and Ubuntu 16.04 by following these instructions.  Versions 1.3.x has been successfully built & tested this way.
+The C MongoDB Driver can be built for Linux on z Systems running SLES 12, SLES 11, RHEL 7, RHEL 6 and Ubuntu 16.04 by following these instructions.  Versions 1.4.x has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
@@ -8,7 +8,7 @@ ii) Where the instructions refer to 'vi' you may, of course, use an editor of yo
 
 iii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it.
 
-iv) Version 1.3.x refers to the current stable version of 1.3 branch releases. At the time of writing recipe, it was 1.3.2.
+iv) Version 1.4.x refers to the current stable version of 1.4 branch releases. At the time of writing recipe, it was 1.4.1.
 
 # Building MongoDB C Driver
 
@@ -45,13 +45,13 @@ iv) Version 1.3.x refers to the current stable version of 1.3 branch releases. A
   
 2. **Download and configure the C Driver**
 
-   For version 1.3.x of the driver:
+   For version 1.4.x of the driver:
  
   ```
     cd /<source_root>/
-	wget -O mongo-c-driver-1.3.x.tar.gz  https://github.com/mongodb/mongo-c-driver/releases/download/1.3.x/mongo-c-driver-1.3.x.tar.gz
-	tar xzf mongo-c-driver-1.3.x.tar.gz
-	cd mongo-c-driver-1.3.x
+	wget -O mongo-c-driver-1.4.x.tar.gz  https://github.com/mongodb/mongo-c-driver/releases/download/1.4.x/mongo-c-driver-1.4.x.tar.gz
+	tar xzf mongo-c-driver-1.4.x.tar.gz
+	cd mongo-c-driver-1.4.x
 	./configure
   ```
 
