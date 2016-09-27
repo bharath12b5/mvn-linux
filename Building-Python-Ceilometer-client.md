@@ -23,7 +23,7 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 
  For RHEL 6.6 
  
-        sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv findutils gcc openssl-devel xz curl wget tar libffi-devel python-devel openssl-devel libffi python-cffi
+		sudo yum install -y git python-devel python-setuptools python-setuptools-devel python-virtualenv findutils gcc openssl-devel xz curl wget tar libffi-devel python-devel openssl-devel libffi python-cffi
  
  For RHEL 7.1
 
@@ -31,7 +31,7 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 		          
  For SLES 11 
  
-        sudo zypper install -y git-core wget gcc python-devel zlib-devel xz openssl-devel curl tar findutils ncurses-devel libbz2-devel libffi-devel  
+		sudo zypper install -y git-core wget gcc python-devel zlib-devel xz openssl-devel curl tar findutils ncurses-devel libbz2-devel libffi-devel  
  
  For SLES 12
 
@@ -39,8 +39,8 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 
  For Ubuntu 16.04
                 
-        sudo apt-get update
-        sudo apt-get install git python-dev findutils gcc python-setuptools python-dev build-essential libssl-dev libffi-dev
+		sudo apt-get update
+		sudo apt-get install git python-dev findutils gcc python-setuptools python-dev build-essential libssl-dev libffi-dev
 
 
 2. Install Python 2.7.9 as a dependency (For RHEL 6.6 & SLES 11 Only) 
@@ -89,9 +89,13 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 		sudo pip install pbr virtualenv cryptography
 	    
 	  
-	  SLES 11/SLES 12
+	  SLES 12
 		
 		sudo pip install funcsigs docutils jinja2 extras pyrsistent unittest2 testtools cryptography
+
+	  SLES 11
+		
+		sudo pip install funcsigs docutils jinja2 pytz extras pyrsistent unittest2 testtools imagesize babel coverage  mock oslosphinx reno python-subunit sphinx testrepository
 		  
 4. Install Netifaces(only for SLES 12 and SLES 11)
 
@@ -121,10 +125,13 @@ ii) A directory `<source_root>` will be referred to in these instructions, this 
 	**NOTE:** pip 1.2.1 install on SLES 11 sometimes has issues - if one of these fails to install, simply run the install a second time and it will complete
 		
 	
-	For all Platforms 
+	For all Platforms (except SLES 11)
 		
 		
 		sudo pip install -r test-requirements.txt
+
+	For all Platforms 
+		
         python setup.py test
 			
 
