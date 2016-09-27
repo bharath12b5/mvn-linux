@@ -11,8 +11,7 @@ Below versions of HAProxy are available in respective distributions at the time 
 
 *    Ubuntu 16.04 has `1.6.3`
 
-[HAProxy version 1.6.5](http://www.haproxy.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for RHEL 6.6/7.1 and SLES 11/12 and Ubuntu 16.04
-
+The instructions provided below specify the steps to build HAProxy 1.6.9 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 _i) When following the steps below please use a standard permission user unless otherwise specified._
@@ -40,9 +39,9 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 2.  Download and unpack the required HAProxy source package
 
         cd /<source_root>/
-        wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.5.tar.gz
-        tar xzvf haproxy-1.6.5.tar.gz
-        cd haproxy-1.6.5/
+        wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.9.tar.gz
+        tar xzvf haproxy-1.6.9.tar.gz
+        cd haproxy-1.6.9/
 
 3.  Build and install HAProxy
 
