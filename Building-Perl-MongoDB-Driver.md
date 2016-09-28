@@ -75,8 +75,12 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
       _**Note:** At the time of writing `Path::Tiny` failed a test on RHEL7.1 - The '-fi' options help force an install._
 
 ### Product Build - MongoDB_Perl_Driver
-
-   1. Use CPAN to install MongoDB, (Respond to dialog questions as they occur by accepting the default).
+   1. Install dependent modules **(For SLES 12 Only)**
+      ```shell
+	  sudo cpan -fi Moo Moo::Role Authen::SCRAM::Client 
+      ```
+   
+   2. Use CPAN to install MongoDB, (Respond to dialog questions as they occur by accepting the default).
    
       For RHEL7, SLES11/12 and Ubuntu 16.04
 	  ```shell
