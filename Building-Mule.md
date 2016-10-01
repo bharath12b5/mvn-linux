@@ -3,9 +3,9 @@
 <!---DISTRO:RHEL 7.1:3.8.x--->
 <!---DISTRO:Ubuntu 16.x:3.8.x--->
 
-## Building Mule ESB Standalone on RHEL 7.1, SLES 12-sp1 and Ubuntu 16.04
+## Building Mule ESB Standalone on RHEL 7, SLES 12-sp1 and Ubuntu 16.04
 
-The instructions provided below specify the steps to build Mule ESB Standalone version 3.8.x on Linux on the IBM z Systems for RHEL 7.1, SLES 12-sp1 and Ubuntu 16.04
+The instructions provided below specify the steps to build Mule ESB Standalone version 3.8.0-s390x on Linux on the IBM z Systems for RHEL 7, SLES 12-sp1 and Ubuntu 16.04
 
 ####General Notes:
 
@@ -16,19 +16,37 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 1. Install dependencies
 
-	On RHEL 7.1:
-  
-        sudo yum install -y wget tar unzip git java-1.8.0-openjdk.s390x java-1.8.0-openjdk-devel.s390x make gcc
-
+	On RHEL 7:
+     			
+	* Using Open-JDK:
+	
+		```
+		sudo yum install -y wget tar unzip git make gcc java-1.8.0-openjdk.s390x java-1.8.0-openjdk-devel.s390x 
+		```
+	* Using IBM-JDK:
+	
+		```
+		sudo yum install -y wget tar unzip git make gcc java-1.8.0-ibm.s390x java-1.8.0-ibm-devel.s390x
+		```	
+		
     On SLES 12-sp1:
-
-        sudo zypper install -y wget tar unzip git java-1_8_0-openjdk java-1_8_0-openjdk-devel make gcc 
-
+				
+	* Using Open-JDK:
+		
+		```
+		sudo zypper install -y wget tar unzip git make gcc java-1.8.0-openjdk.s390x java-1.8.0-openjdk-devel.s390x 
+		```
+	* Using IBM-JDK:
+	
+		```
+		sudo zypper install -y wget tar unzip git make gcc java-1.8.0-ibm.s390x java-1.8.0-ibm-devel.s390x
+		```
+		
 	On Ubuntu 16.04:
     
-        sudo apt-get install -y  wget tar unzip git openjdk-8-jdk openjdk-8-jre make gcc
+        sudo apt-get install -y  wget tar unzip git openjdk-8-jdk openjdk-8-jre make gcc maven
 
-2.  Install Maven
+2.  Install Maven (Only for RHEL7 and SLES12-sp1)
 	
 		cd /<source_root/
 		wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
@@ -52,12 +70,12 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 	
 		export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-s390x
 	
-4.  Checkout the Mule ESB Standalone 3.8.x source
+4.  Checkout the Mule ESB Standalone mule-3.8.0 for s390x source
 
 		cd /<source_root>/
 		git clone https://github.com/linux-on-ibm-z/mule
 		cd  mule
-		git checkout mule-3.8.x
+		git checkout mule-3.8.0-s390x
 		
 5.  Add the location of tls-default.conf to PATH  
 
@@ -68,7 +86,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
         cd /<source_root>/mule/transports/ssl
 		keytool -selfcert -alias Test -genkey -keystore myStore.keystore -keyalg RSA -validity 1
     
-	_**Note:**The above command will prompt for keystore password and details such as name of your organizational unit etc_
+	_**Note:**The above command will prompt for keystore password of your choice and details such as name of your organizational unit etc_
 
 7.  Build the code
         
