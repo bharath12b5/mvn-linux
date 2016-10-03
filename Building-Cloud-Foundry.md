@@ -169,7 +169,7 @@ make
 This will create the ```cflinuxfs2.tar.gz``` file which will be required by Cloud Foundry in the later steps
 
 #### Building Cloud Foundry Buildpacks
-Please use recipe [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-CloudFoundry-Buildpacks) to build Cloud Foundry Buildpacks
+Please use recipe [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Cloud-Foundry-Buildpacks) to build Cloud Foundry Buildpacks
 
 ## Building and Installing Cloud Foundry V2
 
