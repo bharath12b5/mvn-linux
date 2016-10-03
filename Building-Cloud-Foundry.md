@@ -3,7 +3,7 @@
 
 # Building Cloud Foundry V2
 
-[Cloud Foundry V2](https://github.com/cloudfoundry/cf-release) is an open platform as a service (PaaS) that provides a choice of clouds, developer frameworks, and application services. Cloud Foundry makes it faster and easier to build, test, deploy, and scale applications. Cloud Foundry v237 has been built and tested on Linux on z Systems using [cf_nise_installer](https://github.com/yudai/cf_nise_installer).  The following instructions can be used for Ubuntu 16.04.
+[Cloud Foundry V2](https://github.com/cloudfoundry/cf-release) is an open platform as a service (PaaS) that provides a choice of clouds, developer frameworks, and application services. Cloud Foundry makes it faster and easier to build, test, deploy, and scale applications. Cloud Foundry v237 has been built and tested on Linux on z Systems using [cf_nise_installer](https://github.com/yudai/cf_nise_installer).  This is a single node install best suited for Proof of concept purposes.  Production install using BOSH on OpenStack will be prioritized when Cloud Foundry moves to using Ubuntu 16.04 Xenial stemcells.  The following instructions can be used for Ubuntu 16.04.
 
 ### _**General Note:**_
 i) _When following the steps below please use a standard permission user unless otherwise specified._
