@@ -15,9 +15,9 @@ git clone https://github.com/cloudfoundry/go-buildpack.git
 
 ### Step 2 : Build necessary dependencies
 
-#### 1. [Build warden root filesystems](https://github.com/rishigits/MyFirstRepository/wiki#building-warden-root-filesystems)
+#### 1. [Build warden root filesystems](https://github.com/linux-on-ibm-z/docs/wiki/Building-Cloud-Foundry#building-warden-root-filesystems)
 
-#### 2. [Prepare Cloud Foundry Binary-Builder](https://github.com/rishigits/MyFirstRepository/wiki/Building-Cloud-Foundry-Ruby-Buildpack#2-preparing-cloud-foundry-binary-builder)
+#### 2. [Prepare Cloud Foundry Binary-Builder](https://github.com/linux-on-ibm-z/docs/wiki/Building-Cloud-Foundry-Ruby-Buildpack#2-prepare-cloud-foundry-binary-builder)
 
 #### 3. Glide
 
