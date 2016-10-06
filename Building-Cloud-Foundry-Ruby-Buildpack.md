@@ -31,7 +31,7 @@ tar czf ../openjdk-1.8.0.tar.gz ./*
 ```
 
 #### 2. Ruby
-##### 1. [Build warden root filesystems](https://github.com/rishigits/MyFirstRepository/wiki#building-warden-root-filesystems)
+##### 1. [Build warden root filesystems](https://github.com/linux-on-ibm-z/docs/wiki/Building-Cloud-Foundry#building-warden-root-filesystems)
 This root filesystems will be used in Cloud Foundry binary-builder.
 
 ##### 2. Prepare Cloud Foundry binary-builder
