@@ -107,9 +107,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
         git clone https://github.com/linux-on-ibm-z/clang.git
         cd clang
         git checkout clang-for-swift-3.0
-        cd ..
-        git clone https://github.com/linux-on-ibm-z/lldb.git  # OPTIONAL
-        cd ../projects
+        cd ../../projects
         git clone https://github.com/linux-on-ibm-z/compiler-rt.git
         cd compiler-rt
         git checkout compiler-rt-for-swift-3.0 && cd ..
