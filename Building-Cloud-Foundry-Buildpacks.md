@@ -6,3 +6,4 @@ The detailed instructions for each language are listed as follows:
 * [[Building Cloud Foundry Ruby Buildpack]]
 * [[Building Cloud Foundry Go Buildpack]]
 * [[Building Cloud Foundry Node.js Buildpack]]
+* [[Building Cloud Foundry Staticfile Buildpack]]
