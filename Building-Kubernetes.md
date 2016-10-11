@@ -1,17 +1,17 @@
 <!---PACKAGE:Kubernetes--->
-<!---DISTRO:SLES 12:1.3.5--->
-<!---DISTRO:RHEL 7.1:1.3.5--->
-<!---DISTRO:Ubuntu 16.x:1.3.5--->
+<!---DISTRO:SLES 12:1.4--->
+<!---DISTRO:RHEL 7.1:1.4--->
+<!---DISTRO:Ubuntu 16.x:1.4--->
 
 # Building Kubernetes
 
-The instructions provided below specify the steps to build Kubernetes Version v1.3.5 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Kubernetes Version v1.4.0 on Linux on the IBM z Systems for RHEL 7.2, SLES 12-SP1 and Ubuntu 16.04.
 
 More information on the Kubernetes is available at http://kubernetes.io/ and the source code can be obtained from https://github.com/kubernetes/kubernetes.
 
 ### Prerequisites:
   * Go (For RHEL7 and SLES12)
-  -- Instructions for building Go can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go).
+  -- Instructions for building Go can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7).
   * Docker
   -- Instructions for installing Docker can be found [here](https://www.ibm.com/developerworks/linux/linux390/docker.html).
 
@@ -23,11 +23,11 @@ ii) _A directory /\<source_root\>/ will be referred to in these instructions, th
 ### Building and Installing Kubernetes
 1. Install following dependencies
    
-   For RHEL7
+   For RHEL7.2
     ```
         $ sudo yum install --nogpgcheck -y git gcc-c++ which iptables make
     ```
-   For SLES12
+   For SLES12-SP1
     ```
         $ sudo zypper install -y git gcc-c++ which iptables make
     ```
@@ -42,76 +42,79 @@ ii) _A directory /\<source_root\>/ will be referred to in these instructions, th
         $ cd /<source_root>/
         $ git clone https://github.com/kubernetes/kubernetes.git
         $ cd /<source_root>/kubernetes
-        $ git checkout v1.3.5
+        $ git checkout v1.4.0
+		$ go get -u github.com/jteeuwen/go-bindata/go-bindata
         $ cd /<source_root>/kubernetes/vendor/golang.org/x 
         $ mv sys sys.bak 
         $ git clone https://github.com/linux-on-ibm-z/sys.git 
         $ cd /<source_root>/kubernetes
     ```
- 
-3. Build Kubernetes
+
+3. Set environment variables
+    ```
+	    $ export GOPATH=/<source_root>/kubernetes
+	    $ export PATH=$PATH:$GOPATH/bin:$GOPATH/_output/local/go/bin
+	```
+
+4. Make changes in the `Makefile`
+   
+   From 
+   ```
+   BIN_DIR := $(OUT_DIR)/bin
+   ```
+   
+   to
+   ```
+   BIN_DIR := $(OUT_DIR)/local/go/bin
+   ```
+   
+5. Build Kubernetes
 
     ```
         $ make
     ```
 
-4. Run test suites (Optional)
+6. Run test suites (Optional)
     ```
         $ make test
     ```
     **Note:** *Below changes are required to pass Kubernetes test cases on Linux on z*
 
-   i) If `k8s.io/kubernetes/pkg/kubelet` test case failure is observed then edit the file `/<source_root>/kubernetes/pkg/kubelet/kubelet_test.go` and follow the steps below.
-
-   a) Add `goruntime "runtime"` to import section as follow
-   ```
-        import(
-        ...
-        goruntime "runtime"
-        )
-   ```
-   b) Edit the following section 
-
-   From  
-   ```
-        OperatingSystem:         "linux",
-        Architecture:            "amd64",
-   ```  
-   to  
-   ```
-        OperatingSystem:         goruntime.GOOS,
-        Architecture:            goruntime.GOARCH,
-   ```  
-
-   ii) If `k8s.io/kubernetes/pkg/volume` test case failure is observed on Ubuntu 16.04 then edit the following line in a file `/<source_root>/kubernetes/pkg/volume/metrics_du_test.go`.
-
-   From  
-   ```
-        const expectedBlockSize = 4096
-   ```  
-   to  
-   ```
-        const expectedBlockSize = 0
-   ``` 
-
+     1. If test case execution fails because of `File system loop detected`, remove the `symlinkRecursiveParent` 
+	 ```
+	    $ rm ./src/github.com/jteeuwen/go-bindata/testdata/symlinkRecursiveParent/symlinkTarget
+	 ```
+	
+	 2. If `k8s.io/kubernetes/pkg/util/net` test case fails then add fields in `tls.Config` coming from Go 1.7 as shown [here](https://github.com/nhlfr/kubernetes/commit/c690ded4f7baaa55d8995ca22ef2f4093b28b4c0). 
+	
 ### Running Kubernetes on a single host machine
 
 **Note:** *Please use root user to run services.* 
 
 **Step 1:** Kubernetes has a dependency on etcd service. Please follow the below steps to run etcd service.
 
-i) Checkout the etcd source code from repository
-   ```
-        $ cd /<source_root>/
-        $ git clone -b release-2.1 https://github.com/coreos/etcd
-        $ cd etcd
-   ```
+i) Install etcd
 
-ii) Build and run etcd service
-   ```
-        $ ./build
-        $ ./bin/etcd --addr=127.0.0.1:4001 --bind-addr=0.0.0.0:4001 --data-dir=/var/etcd/data &
-   ```
+  * For RHEL/SLES 
+	
+	Instructions for building etcd can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-etcd).
+		
+  * For Ubuntu 16.04
+	```
+		$ sudo apt-get install etcd
+	```
+
+ii) Run etcd service
+
+   * For RHEL/SLES
+	```
+        $ ./bin/etcd -advertise-client-urls=127.0.0.1:4001 -advertise-client-urls=http://127.0.0.1:4001 -listen-client-urls=http://0.0.0.0:4001 --data-dir=/var/etcd/data &
+	```
+
+   * For Ubuntu 16.04
+	```
+        $ etcd --addr=127.0.0.1:4001 --bind-addr=0.0.0.0:4001 --data-dir=/var/etcd/data &
+	```
 
 **Step 2:** Start Kubernetes services.
   
