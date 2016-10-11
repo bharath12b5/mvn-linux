@@ -1,23 +1,23 @@
 <!---PACKAGE:Xerces-C--->
-<!---DISTRO:SLES 12:3.1--->
-<!---DISTRO:SLES 11:3.1--->
-<!---DISTRO:RHEL 7.1:3.1--->
-<!---DISTRO:RHEL 6.6:3.1--->
-<!---DISTRO:Ubuntu 16.x:3.1--->
+<!---DISTRO:SLES 12:3.1.4--->
+<!---DISTRO:SLES 11:3.1.4--->
+<!---DISTRO:RHEL 7.1:3.1.4--->
+<!---DISTRO:RHEL 6.6:3.1.4--->
+<!---DISTRO:Ubuntu 16.x:3.1.4--->
 
-#Building Xerces-C 3.1
+#Building Xerces-C 3.1.4
 
 Below version of Xerces is available in respective distributions at the time of this recipe creation:
 
-*    Ubuntu 16.04 has `3.1.1`
+*    Ubuntu 16.04 has `3.1.3`
 
-The instructions provided below specify the steps to build Xerces-C 3.1 on Linux on the IBM z Systems for RHEL 6/7 and SLES 11/12. More information on Xerces-C is available at https://xerces.apache.org/xerces-c/ and the source code can be downloaded from https://github.com/apache/xerces-c.
+The instructions provided below specify the steps to build Xerces-C 3.1.4 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04. More information on Xerces-C is available at https://xerces.apache.org/xerces-c/ and the source code can be downloaded from https://github.com/apache/xerces-c.
 
 _**General Notes:**_ 	
 
-i) When following the steps below please use a standard permission user unless otherwise specified._
+_i) When following the steps below please use a standard permission user unless otherwise specified._
 	 
-ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ## Building Xerces-C
 
@@ -28,42 +28,48 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
     For RHEL 6.6
 
     ```shell
-    yum install git automake libtool make gcc-c++ tar
+    sudo yum install git automake libtool make gcc-c++ tar
     ```
 	
 	For RHEL 7.1
 
     ```shell
-    yum install git automake libtool make gcc-c++
+    sudo yum install git automake libtool make gcc-c++
     ```
 	
     For SLES 11
 	
     ```shell
-    zypper install gcc-c++ make git-core tar wget m4
+    sudo zypper install gcc-c++ make git-core tar wget m4
     ```
 	
 	For SLES 12
 	
     ```shell
-    zypper install libtool automake gcc-c++ make git-core
+    sudo zypper install libtool automake gcc-c++ make git-core
     ```
+	
+	For Ubuntu 16.04
+	
+    ```shell
+	sudo apt-get update
+    sudo apt-get install libtool automake g++ make git-core
+    ```
+	
     
-2. Create the `/<source_root>/` as mentioned above.
+2. Create the `/<source_root>/` as mentioned above
 
    ```shell
       mkdir /<source_root>/
    ```
    
-### For SLES11 only
-### Dependency Build - libtool 2.4.6 - Only for SLES 11
+### Dependency Builds: libtool, autoconf, and automake - For SLES11 only
+ 
+_**Note:** These Dependency Builds for later/latest versions must be carried out in the order given in this recipe._
 
-_**Note:** These Dependency Builds to libtool, autoconf, and automake for later/latest versions must be carried out in the order given in this recipe._
-
+#### Install libtool 2.4.6
 
   1. Download libtool source code
-	 
-	 For SLES 11
 	 
      ```shell
 	 cd /<source_root>/
@@ -75,26 +81,21 @@ _**Note:** These Dependency Builds to libtool, autoconf, and automake for later/
      ```
 
   2. Configure and make
-
-	For SLES 11
 	
      ```shell
      ./configure
      make
      ```
   3. Install libtool
-  
-    For SLES 11
+
      ```shell
      sudo make install
 	 ```
 	
-### Dependency Build - autoconf 2.69 - Only for SLES 11
+#### Install autoconf 2.69 
 
   1. Download autoconf source code
-	 
-	 For SLES 11
-	 
+
      ```shell
 	 cd /<source_root>/
 	 mkdir autoconf
@@ -106,25 +107,20 @@ _**Note:** These Dependency Builds to libtool, autoconf, and automake for later/
 
   2. Configure and make
 
-	For SLES 11
-	
      ```shell
      ./configure
      make
      ```
   3. Install autoconf
-  
-    For SLES 11
+ 
      ```shell
      sudo make install
 	 ```
 
-### Dependency Build - automake 1.13.4 - Only for SLES 11
+#### Install automake 1.13.4 
 
   1. Download automake source code
-	 
-	 For SLES 11
-	 
+
      ```shell
 	 cd /<source_root>/
 	 mkdir automake
@@ -136,27 +132,25 @@ _**Note:** These Dependency Builds to libtool, autoconf, and automake for later/
 
   2. Configure and make
 
-	For SLES 11
-	
-     ```shell
+    ```shell
      ./configure
      make
      ```
   3. Install automake
-  
-    For SLES 11
+
      ```shell
      sudo make install
 	 ```
 
 ### Product Build - Xerces-C
 
-1. Download Xerces-C 3.1 source code
+1. Download Xerces-C 3.1.4 source code
 
 	 ```shell
 	 cd /<source_root>/
-     git clone https://github.com/apache/xerces-c.git --branch xerces-3.1
+     git clone https://github.com/apache/xerces-c.git 
      cd xerces-c
+	 git checkout Xerces-C_3_1_4 
      ```
 1. Set Environment variables
 
@@ -175,7 +169,20 @@ _**Note:** These Dependency Builds to libtool, autoconf, and automake for later/
     export LANG='en_US.UTF-8'
     export LANGUAGE='en_US.UTF-8'
     ```
-		 
+	
+	For Ubuntu 16.04
+
+    ```shell
+    export LANG='en_US.UTF-8'
+	export LANGUAGE='en_US.UTF-8'
+    ```
+
+1. Configure locale 'en_US.UTF-8' on Ubuntu 16.04
+    ```shell
+    sudo locale-gen en_US en_US.UTF-8
+	sudo dpkg-reconfigure locales 
+	```
+	
 1. Configure and make
 
     ```shell
