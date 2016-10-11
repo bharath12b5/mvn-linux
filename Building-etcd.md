@@ -1,7 +1,7 @@
 <!---PACKAGE:etcd--->
-<!---DISTRO:SLES 12:3.0.4--->
-<!---DISTRO:RHEL 7.1:3.0.4--->
-<!---DISTRO:Ubuntu 16.x:3.0.4--->
+<!---DISTRO:SLES 12:3.0.10--->
+<!---DISTRO:RHEL 7.1:3.0.10--->
+<!---DISTRO:Ubuntu 16.x:3.0.10--->
 
 # Building etcd
 
@@ -9,7 +9,7 @@ Below versions of etcd are available in the respective distributions at the time
 
 *    Ubuntu 16.04 has `2.2.5`
 
-The instructions provided below specify the steps to build etcd v3.0.4 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build etcd v3.0.10 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -18,18 +18,19 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ### Prerequisites (for RHEL 7.1 and SLES 12)
   * Go
-  -- Instructions for building Go can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go).
+  -- Instructions for building Go can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7).
 
 ### Building etcd
 1. Install the build dependencies
 
     For RHEL 7.1
     ```shell
-    sudo yum install curl git
+    sudo yum install curl git wget tar gcc which
     ```
+
     For SLES12
     ```shell
-    sudo zypper install curl git 
+    sudo zypper install curl git wget tar gcc which
     
     ```
     For Ubuntu 16.04
@@ -46,7 +47,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     cd /<source_root>/src/github.com/coreos
     git clone https://github.com/coreos/etcd
     cd etcd
-    git checkout v3.0.4
+    git checkout v3.0.10
     ```
 3. Set GOPATH
    
