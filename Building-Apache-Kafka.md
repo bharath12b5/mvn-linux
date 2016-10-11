@@ -88,7 +88,7 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     ```shell
     git clone https://github.com/apache/kafka
     cd kafka
-    git checkout 0.10.0
+    git checkout 0.10.0.0
     ```
     _**Note:** The github location is a mirror of the Apache location https://git-wip-us.apache.org/repos/asf/kafka.git_
    
