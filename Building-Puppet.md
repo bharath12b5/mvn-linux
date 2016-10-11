@@ -3,16 +3,18 @@
 <!---DISTRO:SLES 11:4.5.3--->
 <!---DISTRO:RHEL 7.1:4.5.3--->
 <!---DISTRO:RHEL 6.6:4.5.3--->
-<!---DISTRO:Ubuntu 16.x:Distro, 4.5.3--->
+<!---DISTRO:Ubuntu 16.x:4.5.3--->
 
 
 # Building Puppet
 
 Below versions of Puppet are available in respective distributions at the time of this recipe creation:
 
-*    Ubuntu 16.04 has `3.8.5`
+* SLES 11 has  `2.7.26`
+* Ubuntu 16.04 has `3.8.5`
+ 
 
-The instructions provided below specify the steps to build Puppet version 4.5.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Puppet v4.5.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -47,7 +49,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 3. Download and install RubyGems
     ````
     cd /<source_root>/
-    wget http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz
+    wget https://rubygems.org/rubygems/rubygems-2.2.2.tgz
     tar -xvf rubygems-2.2.2.tgz
     cd rubygems-2.2.2
 	sudo /usr/local/bin/ruby setup.rb                
@@ -145,7 +147,7 @@ The output gives the directory. If such directory does not exist, create one.
 3. Download and install RubyGems
     ````
      cd /<source_root>/
-     wget http://production.cf.rubygems.org/rubygems/rubygems-2.2.2.tgz
+     wget https://rubygems.org/rubygems/rubygems-2.2.2.tgz
      tar -xvf rubygems-2.2.2.tgz
      cd rubygems-2.2.2
      sudo /usr/local/bin/ruby  setup.rb
@@ -300,17 +302,17 @@ Replace it with
     3. Run the shell script
  
       * For Ubuntu 16.04
-
-          ```
+         ```
           locale-gen "en_US.UTF-8"
-          ./rootuser_tests.sh
-          ```
-      * For RHEL 6/RHEL 7/SLES 11/SLES 12
+    ./rootuser_tests.sh
 
-          ```
+         ```
+      * For RHEL 6/RHEL 7/SLES 11/SLES 12
+         ```
           export LC_ALL="en_US.UTF8"
-          ./rootuser_tests.sh
-          ```
+    ./rootuser_tests.sh
+
+         ```
 
 	3.2. Execute testcases as puppet user  
 	
