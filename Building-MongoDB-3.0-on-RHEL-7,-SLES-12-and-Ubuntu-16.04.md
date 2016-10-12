@@ -1,6 +1,11 @@
-[MongoDB](http://mongodb.org/) 3.0.4 has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 7.1, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build [MongoDB](http://mongodb.org/) 3.0.4 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
 
 ## Building MongoDB
+
+ _**General Notes:**_  
+_i) When following the steps below please use a standard permission user unless otherwise specified._
+
+_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 1. Building MongoDB requires a lot of disk space. Before attempting the build, ensure that you have 30GB of free space in the file system. You will also need root access to perform some of the steps below, e.g. installing libraries into system locations.
 
@@ -12,7 +17,7 @@
 
    When building on SLES 12, SCons is included in the SLES 12 SDK, and can be installed from the DVD or online repository like this:
 
-        zypper install scons
+        sudo zypper install scons
   
   	When building on Ubuntu 16.04, SCons can be installed from the online repository like this:
   
@@ -30,35 +35,43 @@
 		sudo update-alternatives --config g++
 
 4. Clone the latest MongoDB 3.0 branch from our GitHub repo, which includes the changes for big-endian platforms.
-
+		
+		cd /<source_root>/
         git clone https://github.com/linux-on-ibm-z/mongo mongo
         cd mongo
         git checkout v3.0-s390
 
 5. In order to use the V8 APIs in libv8.so, MongoDB requires the corresponding V8 headers. If you did not install the V8 header files in a system location (e.g. /usr/include/ or /usr/local/include/), copy them from the v8z/include directory into mongo/src/.
-
+		
+		cd /<source_root>/
         cp v8z/include/*.h mongo/src/
 
 6. In the mongo/ directory, execute the following command to build MongoDB:
-
+		
+		cd /<source_root>/mongo
         sudo scons --opt --use-system-v8 --allocator=system all
 
 ## Building MongoDB tools
 
 1. In version 3.0, tools such as mongodump, mongoexport, mongoimport and mongorestore have been rewritten in Go and moved to a different GitHub repository. Clone the source code and check out release 3.0.4:
-
+		
+		cd /<source_root>/
         git clone https://github.com/mongodb/mongo-tools
         cd mongo-tools
         git checkout r3.0.4
 
-2. Install gccgo according to the instructions in [[Building gccgo]].
+2. Install gccgo according to the instructions in [[Building gccgo]].( For RHEL 7.1 and SLES 12 )
 
-3. Make sure the gccgo executables are in your search path:
+	For Ubuntu 16.04:
+	
+		sudo apt-get install gccgo golang
+
+3. Make sure the gccgo executables are in your search path:( For RHEL 7.1 and SLES 12 )
 
         export PATH=/opt/gccgo/bin:$PATH
         export LD_LIBRARY_PATH=/opt/gccgo/lib64:$LD_LIBRARY_PATH
 
-4. Edit the script mongo-tools/build.sh to insert a gccgo flag into the `go build` command on line 22:
+4. Edit the script mongo-tools/build.sh to insert a gccgo flag into the `go build` command on line 22:( For RHEL 7.1 and SLES 12 )
 
     <pre>
 go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
@@ -66,25 +79,25 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 
 5. Run the script to build MongoDB tools:
 
-        cd mongo-tools
         ./build.sh
 
 ## Testing (Optional)
 
 1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo, build the driver from source:
 
+		cd /<source_root>/
         git clone git://github.com/mongodb/mongo-python-driver.git pymongo
         cd pymongo
         sudo python setup.py install
 
 2. To run the C++ unit tests, re-run the build command in the MongoDB build directory, but replace the target `all` with `smokeCppUnittests`:
 
-        cd mongo
+        cd /<source_root>/mongo
         sudo scons --opt --use-system-v8 --allocator=system smokeCppUnittests
               
    To run the server smoke tests, you must copy all the MongoDB tools into the MongoDB server build directory, e.g.
 
-        cd mongo
+        cd /<source_root>/mongo
         cp ../mongo-tools/bin/* .
 
    Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`:
@@ -96,14 +109,14 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 The binaries will be output in the mongo/ and mongo-tools/bin/ directories. To install them properly, execute these commands:
 
     for i in mongo mongobridge mongod mongoperf mongos ; do
-        cp mongo/$i /usr/local/bin/
-        chmod 755 /usr/local/bin/$i
+        sudo cp mongo/$i /usr/local/bin/
+        sudo chmod 755 /usr/local/bin/$i
     done
     
     for i in bsondump mongodump mongoexport mongofiles mongoimport \
             mongooplog mongorestore mongostat mongotop ; do
-        cp mongo-tools/bin/$i /usr/local/bin/
-        chmod 755 /usr/local/bin/$i
+        sudo cp mongo-tools/bin/$i /usr/local/bin/
+        sudo chmod 755 /usr/local/bin/$i
     done
 
 ## References
