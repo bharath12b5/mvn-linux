@@ -108,7 +108,7 @@ ii) Run etcd service
 
    * For RHEL/SLES
 	```
-        $ ./bin/etcd -advertise-client-urls=127.0.0.1:4001 -advertise-client-urls=http://127.0.0.1:4001 -listen-client-urls=http://0.0.0.0:4001 --data-dir=/var/etcd/data &
+        $ ./bin/etcd -advertise-client-urls=http://127.0.0.1:4001 -advertise-client-urls=http://127.0.0.1:4001 -listen-client-urls=http://0.0.0.0:4001 --data-dir=/var/etcd/data &
 	```
 
    * For Ubuntu 16.04
