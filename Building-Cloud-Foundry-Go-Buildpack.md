@@ -22,9 +22,6 @@ git clone https://github.com/cloudfoundry/go-buildpack.git
 #### 3. Glide
 
 We use Cloud Foundry binary-builder to build Glide.
-```
-cd /<source_root>/binary-builder
-```
 
 Make changes to the following files:
 
@@ -55,7 +52,7 @@ cp glide-v0.11.1-linux-s390x.tgz /<source_root>/go-buildpack
     
 Note the binary-builder will download the source code from `https://github.com/Masterminds/glide/archive/v0.11.1.tar.gz`, so the SHA-256 hash code is provided in the command to provide authenticity and integrity of the downloaded package.
 
-#### 2. Godep
+#### 4. Godep
 
 Change the following files:
 
@@ -84,7 +81,7 @@ cp godep-v14-linux-s390x.tgz /<source_root>/go-buildpack
 ```
 The binary-builder will download the source code from `https://github.com/tools/godep/archive/v74.tar.gz`, so the SHA-256 hash code is provided in the command to provide authenticity and integrity of the downloaded package.
 
-#### 3. Golang
+#### 5. Golang
 
 Install Golang,
 ```
