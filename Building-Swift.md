@@ -163,36 +163,21 @@ LLVM 3.9 or above is needed for building Swift and its components.
 
 ### Building Swift
 
-1. Clone the from the official repository:
+1. Clone the from the official repository and update the other swift components:
 
         git clone https://github.com/apple/swift.git
         cd swift
         git checkout swift-3.0-branch
+        ./utils/update-checkout --clone --branch swift-3.0-branch
 
     or from our team internal github site (which may have additional fixes pending upstream)
 
         git clone git@github.com:linux-on-ibm-z/swift.git
         cd swift
-        git checkout swift-3.0-branch
-   
+        git checkout swift-3.0-RELEASE-s390x
+        ./utils/update-checkout --clone --branch swift-3.0-RELEASE-s390x --config $PWD/utils/update-checkout-config-s390x.json
         
-2. Run the update-checkout script to clone everything else from upstream (for now):
-
-    For SLES 12 & RHEL 7.1
-
-        ./utils/update-checkout --clone-with-ssh --branch swift-3.0-branch
-        
-
-    For Ubuntu 16.04
-
-        ./utils/update-checkout --clone --branch swift-3.0-branch
-
-
-3. Apply this patch https://github.com/apple/swift-llvm/pull/21 if it has not been merged.  It was not picked up in time for swift-3.0-branch and when this recipe is published.
-
-    `cd ../llvm` to apply the patch and move back to the swift directory with `cd ../swift` when done.
-
-4. Build the code (`$DESTDIR` can be any blank directory where the installable package is assembled, for example `$HOME/swift/install`):
+3. Build the code (`$DESTDIR` can be any blank directory where the installable package is assembled, for example `$HOME/swift/install`):
 
     For SLES 12 & RHEL 7.1
 
