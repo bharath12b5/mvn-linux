@@ -8,7 +8,7 @@
 # Building Logstash
 [Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a build-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
 
-The instructions provided below specify the steps to build Apache Logstash v2.3.4 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apache Logstash v2.3.4 on Linux on the IBM z Systems for RHEL 6/7.2, SLES 11/12 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -18,7 +18,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ### 1. Dependencies:
 
- *	RHEL7:
+ *	RHEL7.2:
 
 	```
 		sudo yum install -y java-1.7.0-openjdk ant make wget unzip tar gcc
@@ -59,7 +59,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  	*  Set JAVA_HOME
 
     ```
-		export JAVA_HOME=/usr/lib/jvm/java (for RHEL6/7)
+		export JAVA_HOME=/usr/lib/jvm/java (for RHEL6/7.2)
         export JAVA_HOME=/usr/lib64/jvm/java (for SLES11/12)
 		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x/jre (for Ubuntu)
     ```
