@@ -1,9 +1,9 @@
-<!---PACKAGE:Ceilometer client--->
+<!---PACKAGE:MySQL--->
 <!---DISTRO:SLES 12:5.7--->
 <!---DISTRO:SLES 11:5.7--->
 <!---DISTRO:RHEL 7.1:5.7--->
 <!---DISTRO:RHEL 6.6:5.7--->
-<!---DISTRO:Ubuntu 16.x:5.7--->
+<!---DISTRO:Ubuntu 16.x:Distro, 5.7--->
 
 ## Building MySQL
 
@@ -13,7 +13,7 @@ Below versions of MySQL are available in respective distributions at the time of
 *    SLES 11 has `5.5.45-0.11.1`
 *    RHEL 6.6 has `5.1.73`
 
-The instructions provided below specify the steps to build MySQL version 5.7 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build MySQL version 5.7.16 on Linux on the IBM z Systems for RHEL 6.6/7.2, SLES 11, SLES 12-sp1 and Ubuntu 16.04.
 
 More information on MySQL is available at https://www.mysql.com and the source code can be downloaded from https://github.com/mysql/mysql-server.git.
 
@@ -32,7 +32,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	```shell
 	sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget zlib-devel bzip2.s390x libtool.s390x
 	```
-*	For RHEL 7.1
+*	For RHEL 7.2
 
 	```shell
 	sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel perl-Data-Dumper
@@ -42,7 +42,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     ```shell
     sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget glibc-devel-32bit zlib-devel
     ```
-*	For SLES 12
+*	For SLES 12-sp1
 
 	```shell
 	sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel wget tar
@@ -54,78 +54,82 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	sudo apt-get install git make cmake gcc g++ libncurses5-dev bison
 	```
 
-###Dependency Build -  GCC 4.8.2 and cmake 3.3.0
+###Dependency Build - GCC 4.8.2 and cmake 3.3.0  
 
-   _**Required on RHEL 6.6 and SLES 11**_  
-   
-   - Install GCC 4.8.2 by building from source.
-   
-   1. Download the GCC source code, then extract it.
-      ```shell
-      cd /<source_root>/
-      wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2
-	  bunzip2  gcc-4.8.2.tar.bz2
-	  tar xvf gcc-4.8.2.tar
-      ```
+* Install GCC 4.8.2 by building from source. (Required on RHEL 6.6 and SLES 11)
+      
+  * Download the GCC source code, then extract it.
 
-   2. Download the prerequisites needed for GCC.
-      ```shell
-      cd gcc-4.8.2/
-	  ./contrib/download_prerequisites
-	  mkdir build
-	  cd build
-      ```
-	  
-   3. Configure the Makefile. Then Make and Install the utility.
-      ```shell
-      ../configure --disable-multilib --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
-	  make 
-	  sudo make install 
-      ```
-
-   4. Set the environment variable.
-      ```shell
-      export PATH=/opt/gcc4.8/bin:$PATH
-      export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
-      ```
-   
-   5. Confirm the version of `GCC`.
-      ```shell
-      gcc --version
-      ```
-   
-   _**Only Required on SLES 11**_   
-   
-   - Update cmake to version 3.3.0 by building from source.
-
-   1. _[Optional]_ Check the version of any existing `cmake` executable.
     ```shell
-      which cmake
-      $(which cmake) --version
-    ```
-      _**Note:** A `cmake` at version 2.6.3 or later should be usable without upgrade._
+    cd /<source_root>/
+    wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2
+    bunzip2  gcc-4.8.2.tar.bz2
+    tar xvf gcc-4.8.2.tar
+  ```
 
-   2. Download the cmake source code, then extract it.
-      ```shell
-      cd /<source_root>/
-      wget http://www.cmake.org/files/v3.3/cmake-3.3.0.tar.gz
-      tar xzf cmake-3.3.0.tar.gz
-      ```
+  * Download the prerequisites needed for GCC.
 
-   3. Bootstrap to configure the Makefile. Then Make and Install the utility.
-      ```shell
-      cd cmake-3.3.0
-      ./bootstrap --prefix=/usr
-      gmake
-      sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
-      ```
-      _**Note:** To place `cmake` in the standard SLES location use `./bootstrap --prefix=/usr`._
+  ```shell
+  cd gcc-4.8.2/
+  ./contrib/download_prerequisites
+  mkdir build
+  cd build
+  ```	
+  
+  * Configure the Makefile. Then Make and Install the utility.
 
-   4. Confirm the location and version of the upgraded `cmake`.
-      ```shell
-      which cmake
-      $(which cmake) --version
-      ```
+  ```shell
+  ../configure --disable-multilib --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
+  make 
+  sudo make install 
+  ```
+  * Set the environment variable.
+
+  ```shell
+  export PATH=/opt/gcc4.8/bin:$PATH
+  export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
+  ```
+
+  * Confirm the version of `GCC`
+
+ ```shell
+ gcc --version
+ ```
+      
+* Update cmake to version 3.3.0 by building from source. (Required on SLES 11 only)
+
+  * _[Optional]_ Check the version of any existing `cmake` executable.
+
+ ```shell
+ which cmake
+ $(which cmake) --version
+ ```
+   _**Note:** A `cmake` at version 2.6.3 or later should be usable without upgrade._
+   
+  * Download the cmake source code, then extract it
+
+ ```shell
+ cd /<source_root>/
+ wget http://www.cmake.org/files/v3.3/cmake-3.3.0.tar.gz
+ tar xzf cmake-3.3.0.tar.gz
+ ```
+
+  * Bootstrap to configure the Makefile. Then Make and Install the utility
+
+ ```shell
+ cd cmake-3.3.0
+ ./bootstrap --prefix=/usr
+ gmake
+ sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
+ ```
+   _**Note:** To place `cmake` in the standard SLES location use `./bootstrap --prefix=/usr`._
+
+  * Confirm the location and version of the upgraded `cmake`
+
+ ```shell
+ which cmake
+ $(which cmake) --version
+ ```
 	  
 ###Product Build - MySQL
 
@@ -135,13 +139,12 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     git clone https://github.com/mysql/mysql-server.git
     ```
 
-   2. Move into the ` mysql-server` sub-directory, and checkout 5.7
+   2. Move into the ` mysql-server` sub-directory, and checkout 5.7.16
     ```shell
     cd mysql-server
     git branch
-    git checkout 5.7
+    git checkout tags/mysql-5.7.16
     ```
-    _**Note:** At the time of creating this recipe, branch 5.7 returned minor version 5.7.13, - this minor version is subject to change._
 
    3. Configure and Build the MySQL
     
@@ -151,7 +154,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     gmake
     ```
 	
-	For RHEL 7.1
+	For RHEL 7.2
 	```shell
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
@@ -171,7 +174,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     gmake
     ```
 	
-	For SLES 12
+	For SLES 12-sp1
 	```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz 
 	tar xzf boost_1_59_0.tar.gz 
@@ -183,7 +186,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
     The testing should take only a few seconds.
 
-    For RHEL6.6, RHEL7.1 , SLES 11 & SLES 12
+    For RHEL6.6, RHEL7.2 , SLES 11 & SLES 12-sp1
 	```shell
     gmake test
     ```
@@ -195,7 +198,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	
    5. Install MySQL into the standard location
 
-	For RHEL 7.1 & SLES 12
+	For RHEL 7.2 & SLES 12-sp1
 	```shell
     sudo gmake install
     ```
@@ -212,7 +215,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ###_[Optional]_ Post installation Setup and Testing
 
-   Refer to http://dev.mysql.com/doc/refman/5.7/en/postinstallation.html for the post installation Setup and Testing steps.
+   Refer http://dev.mysql.com/doc/refman/5.7/en/postinstallation.html for the post installation Setup and Testing steps.
 
 ###_[Optional]_ Clean up
 
@@ -229,4 +232,6 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 https://bugs.mysql.com/bug.php?id=72752 - Explanation of the cmake upgrade for SLES 11.
 
 http://www.mysql.com - MySQL Homepage with definitive Information and Documentation and configuration for non-test environments.
+
+
 
