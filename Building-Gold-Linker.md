@@ -8,11 +8,11 @@ Gold linker is available on RHEL 7, SLES 12.1 or Ubuntu 16.04. The 2.26 release 
         
     For SLES 12
     
-        sudo apt-get install bison flex texinfo
+        sudo zypper install bison flex texinfo
 
     For Ubuntu 16.04
     
-        sudo zypper install bison flex texinfo
+        sudo apt-get install bison flex texinfo
 
 2. Clone the code and check out the 2.26 branch:
 
