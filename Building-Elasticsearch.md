@@ -1,7 +1,8 @@
 <!---PACKAGE:Elasticsearch--->
-<!---DISTRO:SLES 12:2.3.3--->
-<!---DISTRO:RHEL 7.1:2.3.3--->
-<!---DISTRO:Ubuntu 16.x:2.3.3--->
+<!---DISTRO:SLES 12:2.3.x--->
+<!---DISTRO:RHEL 7.1:2.3.x--->
+<!---DISTRO:Ubuntu 16.x:2.3.x--->
+
 
 # Building Elasticsearch
 
@@ -9,7 +10,7 @@ Below versions of Elasticsearch are available in respective distributions at the
 
 *    Ubuntu 16.04 has `1.7.3`
 
-The instructions provided below specify the steps to build [Elasticsearch](https://www.elastic.co/products/elasticsearch) v2.3.3 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build [Elasticsearch](https://www.elastic.co/products/elasticsearch) v2.3.3 on Linux on the IBM z Systems for RHEL 7.2, SLES 12 and Ubuntu 16.04.
 
 ##### General Notes
       
@@ -19,7 +20,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 #### Install Build Dependencies
 
-1. RHEL7
+1. RHEL7.2
     
     	sudo yum install java-1.8.0-openjdk.s390x java-1.8.0-openjdk-devel.s390x tar wget unzip curl which
         
@@ -34,7 +35,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 #### Download Maven and add it to the path 
 
-1. Download Maven (Only for RHEL7 and SLES12)
+1. Download Maven (Only for RHEL7.2 and SLES12)
 	```
     cd /<source_root>/
     wget http://archive.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
@@ -43,7 +44,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 	
 2. Set the Environment variables
    
-   a. On RHEL7 and SLES12
+   a. On RHEL7.2 and SLES12
 
 	 ```
          MAVEN="/<source_root>/apache-maven-3.3.3/bin"
