@@ -6,7 +6,7 @@
 
 [Kibana](https://www.elastic.co/downloads/kibana) is an open source([Apache Licensed](https://github.com/elastic/kibana/blob/master/LICENSE.md)) analytics and visualization platform designed to work with Elasticsearch. It can easily perform advanced data analysis and visualize the data in a variety of charts, tables, and maps by searching, viewing, and interacting with data stored in Elasticsearch indices.
 
-This recipe is for building Kibana (4.5.1) for Linux on z Systems (SLES12/SLES11/RHEL6/RHEL7/Ubuntu 16.04)
+The instructions provided below specify the steps to build Kibana (4.5.1) on Linux on the IBM z Systems for RHEL 6/7.2, SLES 11/12 and Ubuntu 16.04.
 
 ### Dependencies:
    - IBM SDK for Node.js (0.12.7 or later)
@@ -18,7 +18,7 @@ This recipe is for building Kibana (4.5.1) for Linux on z Systems (SLES12/SLES11
 
 1. Use the following commands to obtain dependencies
 
-    For RHEL 6.6 and RHEL 7.1
+    For RHEL 6.6 and RHEL 7.2
     ```shell
     sudo yum install -y wget tar java-1.7.1-ibm-devel
     ```
