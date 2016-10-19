@@ -5,13 +5,11 @@
 <!---DISTRO:SLES 12:1.10--->
 <!---DISTRO:Ubuntu 16.x:Distro, 1.10--->
 
-# Building NGINX
-
 Below versions of NGINX are available in respective distributions at the time of this recipe creation:
 
 *    Ubuntu 16.04 has `1.10.0`
 
-The instructions provided below specify the steps to build NGINX version 1.10.1 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build NGINX version 1.10.1 on Linux on the IBM z Systems for RHEL 6.6/7.2, SLES 11/12 and Ubuntu 16.04.
 
 
 _**General Notes:**_ 	 
@@ -19,8 +17,8 @@ _i) When following the steps below please use a standard permission user unless 
 
 _ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-
-## Downloading, Building and Installing NGINX 1.10.1
+# Building NGINX
+### Downloading, Building and Installing NGINX 1.10.1
 
 1.  Install dependencies as needed for the specific platform
 
@@ -29,7 +27,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ```source-shell
     sudo yum -y install pcre-devel wget tar xz gcc make zlib-devel
     ```
-    RHEL 7.1
+    RHEL 7.2
 
     ```source-shell
     sudo yum -y install pcre-devel wget tar gcc make zlib-devel
@@ -74,7 +72,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
 4.  **(Optional)** NGINX will be installed in /usr/local/nginx/sbin/; depending upon user preferences and conventions, it may be necessary to either update PATH or create links to the executable files.
 
-## Simple Proxy Test
+### Simple Proxy Test
 
 1.  Prepare a test webpage `index.html` to serve in `/tmp/` folder.
 
