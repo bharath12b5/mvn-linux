@@ -9,13 +9,13 @@
 
 Below versions of Apache Http Web Server are available in respective distributions at the time of this recipe creation:
 
-*    RHEL 7.1 has `2.4.6`
+*    RHEL 7.2 has `2.4.6`
 *    RHEL 6.6 has `2.2.15`
 *    SLES 12 has `2.4.10`
 *    SLES 11.3 has `2.2.12`
 *    Ubuntu 16.04 has `2.4.18`
 
-The instructions provided below specify the steps to build Apache Http Web Server version 2.4.23 on Linux on the IBM z Systems for RHEL 6.6/7.1 and SLES 11/12 and Ubuntu.
+The instructions provided below specify the steps to build Apache Http Web Server version 2.4.23 on Linux on the IBM z Systems for RHEL 6.6/7.2 and SLES 11/12 and Ubuntu.
 
 **General Notes:**
 
@@ -29,7 +29,7 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 
 1. Install build dependencies
 
-	For RHEL 7.1 & 6.6
+	For RHEL 7.2 & 6.6
 
 		sudo yum install git openssl openssl-devel gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel expat-devel which wget tar
 
