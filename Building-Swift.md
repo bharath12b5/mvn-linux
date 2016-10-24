@@ -177,7 +177,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
         git checkout swift-3.0-RELEASE-s390x
         ./utils/update-checkout --clone --branch swift-3.0-RELEASE-s390x --config $PWD/utils/update-checkout-config-s390x.json
         
-3. Build the code (`$DESTDIR` can be any blank directory where the installable package is assembled, for example `$HOME/swift/install`):
+3. Build the code (`$MYDESTDIR` can be any blank directory where the installable package is assembled, for example `$HOME/swift/install`):
 
     For SLES 12 & RHEL 7.1
 
@@ -188,7 +188,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
         --swift-install-components='autolink-driver;compiler;clang-builtin-headers;stdlib;sdk-overlay;license' \
         --build-swift-static-stdlib=1 \
         --install-prefix=/usr \
-        --install-destdir=$DESTDIR
+        --install-destdir=$MYDESTDIR
 
     For Ubuntu 16.04
 
@@ -201,7 +201,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
         --swift-install-components='autolink-driver;compiler;clang-builtin-headers;stdlib;sdk-overlay;license' \
         --build-swift-static-stdlib=1 \
         --install-prefix=/usr \
-        --install-destdir=$DESTDIR
+        --install-destdir=$MYDESTDIR
 
    _Notes:_ 
    
@@ -209,7 +209,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
   
     2. --install-prefix must either be omitted or set to its default value of "/usr".
     
-    3. When the build completes, the Swift binaries will be laid out under $DESTDIR, with the complete prefix (i.e. usr). The contents of the installation destination can be moved to another location (e.g. /opt/swift), or tarred up and unpacked on another machine.
+    3. When the build completes, the Swift binaries will be laid out under $MYDESTDIR, with the complete prefix (i.e. usr). The contents of the installation destination can be moved to another location (e.g. /opt/swift), or tarred up and unpacked on another machine.
 
     4. Additional useful build options
 
@@ -254,7 +254,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
 
 To run the Swift compiler:
 
-    $ export PATH=$DESTDIR/opt/swift/bin:/opt/llvm/bin:/opt/binutils-2.26/bin:$PATH
+    $ export PATH=$MYDESTDIR/opt/swift/bin:/opt/llvm/bin:/opt/binutils-2.26/bin:$PATH
 
     $ swiftc -v hello.swift
 
