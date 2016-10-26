@@ -1,14 +1,15 @@
 <!---PACKAGE:Logstash--->
-<!---DISTRO:RHEL 6.6:2.3--->
-<!---DISTRO:RHEL 7.1:2.3--->
-<!---DISTRO:SLES 11:2.3--->
-<!---DISTRO:SLES 12:2.3--->
+<!---DISTRO:RHEL 6.x:2.3--->
+<!---DISTRO:RHEL 7.X:2.3--->
+<!---DISTRO:SLES 11.x:2.3--->
+<!---DISTRO:SLES 12.x:2.3--->
 <!---DISTRO:Ubuntu 16.x:2.3--->
+
 
 # Building Logstash
 [Logstash](https://www.elastic.co/products/logstash) is written in Ruby and it has a build-in Jruby (running on JVM) that needs a native library jffi-1.2.so for s390x platform.
 
-The instructions provided below specify the steps to build Apache Logstash v2.3.4 on Linux on the IBM z Systems for RHEL 6/7.2, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apache Logstash v2.3.4 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3 , SLES12/12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -18,23 +19,23 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ### 1. Dependencies:
 
- *	RHEL7.2:
+ *	RHEL 7.1/7.2:
 
 	```
 		sudo yum install -y java-1.7.0-openjdk ant make wget unzip tar gcc
 	```
- *	RHEL6:
+ *	RHEL 6.7:
 	```
 		sudo yum install -y java-1.7.1-ibm-devel.s390x wget make unzip gcc tar
 	```
 
- *	SLES12:
+ *	SLES12/12-SP1:
 	```
 		sudo zypper install -y --type pattern Basis-Devel
 		sudo zypper install -y java-1_7_0-openjdk ant make wget unzip gcc
 	```
 	
- *	SLES11:
+ *	SLES11-SP3:
 	```
         sudo zypper update
 		sudo zypper install -y --type pattern Basis-Devel
@@ -46,7 +47,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
         sudo apt-get  install -y  ant make wget unzip tar gcc openjdk-8-jdk
     ```
 	
- * Install appropriate version of Ant for SLES11 and RHEL6:
+ * Install appropriate version of Ant for SLES11-SP3 and RHEL6.7:
     ```
         export WORK_DIR=`pwd`
         wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.4-bin.tar.gz
@@ -59,12 +60,12 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  	*  Set JAVA_HOME
 
     ```
-		export JAVA_HOME=/usr/lib/jvm/java (for RHEL6/7.2)
-        export JAVA_HOME=/usr/lib64/jvm/java (for SLES11/12)
+		export JAVA_HOME=/usr/lib/jvm/java (for RHEL6.7 and RHEL7.1/7.2)
+        export JAVA_HOME=/usr/lib64/jvm/java (for SLES11-SP3 and SLES12/12-SP1)
 		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x/jre (for Ubuntu)
     ```
     
- 	* Set ANT PATH for RHEL6 and SLES11
+ 	* Set ANT PATH for RHEL6.7 and SLES11-SP3
     ```
         export PATH=$WORK_DIR/apache-ant-1.9.4/bin:$PATH
     ```
@@ -80,7 +81,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	```
        cd /<source_root>/
        wget https://github.com/jnr/jffi/archive/master.zip
-       mv master master.zip (Only for SLES11)
+       mv master master.zip (Only for SLES11-SP3)
        unzip  master.zip 
        cd jffi-master
        ant
