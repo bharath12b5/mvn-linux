@@ -1,16 +1,17 @@
 <!---PACKAGE:Scala--->
-<!---DISTRO:SLES 12:2.11.8--->
-<!---DISTRO:SLES 11:2.11.8--->
-<!---DISTRO:RHEL 7.1:2.11.8--->
-<!---DISTRO:RHEL 6.6:2.11.8--->
-<!---DISTRO:Ubuntu 16.x:2.11.8--->
+<!---DISTRO:SLES 12.x:2.11--->
+<!---DISTRO:SLES 11.x:2.11--->
+<!---DISTRO:RHEL 7.x:2.11--->
+<!---DISTRO:RHEL 6.x:2.11--->
+<!---DISTRO:Ubuntu 16.x:Distro, 2.11--->
+
 # Building Scala
 
 Below versions of Scala are available in respective distributions at the time of this recipe creation:
 
 *    Ubuntu 16.04 has `2.11.6`
 
-The instructions provided below specify the steps to build Scala version 2.11.8 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04. 
+The instructions provided below specify the steps to build Scala version 2.11.8 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1 and Ubuntu 16.04. 
 
 _**General Notes:**_ 	
 
@@ -28,16 +29,16 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions.  
 
 1. Install dependencies
 
-	On RHEL 7.1 & 6.6	
+	On RHEL 7.1/7.2 & 6.7	
 	```shell    
  	sudo yum install wget java-1.7.1-ibm-devel
 	```
-	On SLES 11	
+	On SLES 11-SP3	
 	```shell
 	sudo zypper refresh
  	sudo zypper install wget java-1_7_0-ibm-devel
 	```
-	On SLES 12
+	On SLES 12/12-SP1
 	```shell    
 	sudo zypper refresh	
  	sudo zypper install wget java-1_7_1-ibm-devel
@@ -59,7 +60,7 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions.  
 
 1. Download and install Scala using the following commands
 	
-	On Rhel 6.6/7.1/SLES 11/12
+	On Rhel 6.7/7.1/7.2 & SLES 11-SP3/12/12-SP1
 	```shell
 	wget http://www.scala-lang.org/files/archive/scala-2.11.8.rpm
 	sudo rpm -ivh scala-2.11.8.rpm
