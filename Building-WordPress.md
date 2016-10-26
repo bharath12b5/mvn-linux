@@ -1,9 +1,9 @@
 <!---PACKAGE:WordPress--->
-<!---DISTRO:SLES 12:4.5--->
-<!---DISTRO:SLES 11:4.5--->
-<!---DISTRO:RHEL 7.1:4.5--->
-<!---DISTRO:RHEL 6.6:4.5--->
-<!---DISTRO:Ubuntu 16.x:4.5--->
+<!---DISTRO:SLES 12:4.6--->
+<!---DISTRO:SLES 11:4.6--->
+<!---DISTRO:RHEL 7.1:4.6--->
+<!---DISTRO:RHEL 6.6:4.6--->
+<!---DISTRO:Ubuntu 16.x:4.6--->
 
 ## Building WordPress
 
@@ -11,7 +11,7 @@ Below versions of WordPress are available in respective distributions at the tim
 
 *    Ubuntu 16.04 has `4.4.2`
 
-The instructions provided below specify the steps to build WordPress version 4.5 on Linux on the IBM z Systems for RHEL 6/7.1, SLES11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build WordPress version 4.6.1 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES11-SP3/12/12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 
@@ -23,22 +23,22 @@ _iii) For convenience vi has been used in the instructions below when editing fi
 
 ### Section 1: Install dependencies
 
-* RHEL6
+* RHEL 6.7
 ```
 sudo yum install httpd php php-mysql git mysql mysql-server 
 ```
 
-* RHEL7
+* RHEL 7.1/7.2
 ```
 sudo yum install httpd php php-mysql git mariadb mariadb-server 
 ```
  
-* SLES11
+* SLES 11-SP3
 ```
 sudo zypper install apache2 apache2-devel tar wget git-core gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel mysql git
 ```
 	 
-* SLES12
+* SLES 12/12-SP1
 ```
 sudo zypper install apache2 apache2-devel tar wget git-core mariadb gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
 
@@ -50,12 +50,12 @@ sudo apt-get update
 sudo apt-get install -y git apache2 mysql-server php php-mysql libapache2-mod-php
 
 ```
-Build and Install PHP (for SLES11 and SLES12)
+Build and Install PHP (for SLES11-SP3 and SLES12/12-SP1)
 ```
 cd <source_root>
 wget http://www.php.net/distributions/php-5.6.8.tar.gz 
 tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 --with-config-file-path=/usr/local/php --with-mysql 
+./configure --prefix=/usr/local/php --with-apxs2=/usr/sbin/apxs2 --with-config-file-path=/usr/local/php --with-mysql --with-zlib
 make  
 sudo make install
 ```
@@ -64,7 +64,7 @@ sudo make install
 ###Section 2: Make changes in the configuration file 
 ( You should be root to do the below changes.) 
 
-* RHEL6 and RHEL7
+* RHEL 6.7 and RHEL 7.1/7.2
 
   1 . Edit configuration file `/etc/httpd/conf/httpd.conf` as follows.
        
@@ -82,7 +82,7 @@ sudo make install
           DirectoryIndex index.php 
       </Directory>
       ```
-* SLES11 and SLES12
+* SLES 11-SP3 and SLES 12/12-SP1
 
   1 . Replace `/srv/www/htdocs` by `/srv/www/htdocs/WordPress` in `/etc/apache2/default-server.conf` 
 
@@ -91,7 +91,7 @@ sudo make install
    * Remove below line in `/etc/apache2/httpd.conf`  	 
    
       ```
-       Include /etc/apache2/sysconfig.d/include.conf 
+       Include /etc/apache2/sysconfig.d/include.conf      (For SLES11-SP3 and SLES12 only)
       ```
    * Enable php module by adding the following lines in the  `/etc/apache2/httpd.conf` file
       ```
@@ -126,20 +126,20 @@ sudo make install
 
 1 . Download and install WordPress
 
-RHEL6, RHEL7 and Ubuntu 16.04
+RHEL 6.7, RHEL 7.1/7.2 and Ubuntu 16.04
 ```
 cd /var/www/html
 sudo git clone https://github.com/WordPress/WordPress.git
 cd WordPress
-sudo git checkout 4.5
+sudo git checkout 4.6.1
 ```
 
-SLES11 and SLES12
+SLES 11-SP3 and SLES 12/12-SP1
 ```	
 cd /srv/www/htdocs
 sudo git clone https://github.com/WordPress/WordPress.git
 cd WordPress
-sudo git checkout 4.5
+sudo git checkout 4.6.1
 ```
 
 2 . Rename `wp-config-sample.php` as `wp-config.php` 
@@ -157,7 +157,7 @@ sudo git checkout 4.5
 ```
 4 . Initialize MySQL server
 
-RHEL6/7, SLES11/12 
+RHEL 6.7/7.1/7.2, SLES 11/12-SP1 
 ```
 sudo /usr/bin/mysql_install_db --user=mysql
 ```
@@ -169,7 +169,7 @@ sudo /usr/sbin/mysqld --initialize --user=mysql --datadir=/var/lib/mysql/data
 
 5 . Create database and grant privileges to 'Wordpress' user	
 ```
-sudo mkdir -p  /var/log/mysql(For SLES11 and SLES12)
+sudo mkdir -p  /var/log/mysql(For SLES 11-SP3 , SLES 12/12-SP1)
 sudo /usr/bin/mysqld_safe --user=mysql & 
 sudo /usr/bin/mysql  -h <DB_HOST> -uroot -p -e "create database WORDPRESS" && sudo /usr/bin/mysql -h <DB_HOST> -uroot -p -e "create user 'Wordpress'@'localhost' identified by 'password'" 
 sudo /usr/bin/mysql  -h <DB_HOST> -uroot -p -e "grant all privileges on WORDPRESS.* to 'Wordpress'@'localhost' identified by 'password' with GRANT OPTION"
@@ -177,8 +177,8 @@ sudo /usr/bin/mysql  -h <DB_HOST> -uroot -p -e "grant all privileges on WORDPRES
 
 6 . Start httpd server
  ```
- sudo /usr/sbin/httpd -D BACKGROUND   (For RHEL6 and RHEL7)
- sudo /usr/sbin/httpd2 -D BACKGROUND  (For SLES11 and SLES12)
+ sudo /usr/sbin/httpd -D BACKGROUND   (For RHEL 6.7 , RHEL 7.1/7.2 and SLES 12-SP1)
+ sudo /usr/sbin/httpd2 -D BACKGROUND  (For SLES 11-SP3 , SLES 12)
  sudo service apache2 start           (For Ubuntu 16.04)
  ```
 
