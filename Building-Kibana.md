@@ -1,12 +1,13 @@
 <!---PACKAGE:Kibana--->
-<!---DISTRO:RHEL 6.6:4.5.1--->
-<!---DISTRO:RHEL 7.1:4.5.1--->
-<!---DISTRO:SLES 11:4.5.1--->
-<!---DISTRO:SLES 12:4.5.1--->
+<!---DISTRO:RHEL 6.x:4.x--->
+<!---DISTRO:RHEL 7.x:4.x--->
+<!---DISTRO:SLES 11.x:4.x--->
+<!---DISTRO:SLES 12.x:4.x--->
+<!---DISTRO:Ubuntu 16.x:4.x--->
 
 [Kibana](https://www.elastic.co/downloads/kibana) is an open source([Apache Licensed](https://github.com/elastic/kibana/blob/master/LICENSE.md)) analytics and visualization platform designed to work with Elasticsearch. It can easily perform advanced data analysis and visualize the data in a variety of charts, tables, and maps by searching, viewing, and interacting with data stored in Elasticsearch indices.
 
-The instructions provided below specify the steps to build Kibana (4.5.1) on Linux on the IBM z Systems for RHEL 6/7.2, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Kibana (4.5.1) on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP-SP3/12/12-SP1 and Ubuntu 16.04.
 
 ### Dependencies:
    - IBM SDK for Node.js (0.12.7 or later)
@@ -18,15 +19,15 @@ The instructions provided below specify the steps to build Kibana (4.5.1) on Lin
 
 1. Use the following commands to obtain dependencies
 
-    For RHEL 6.6 and RHEL 7.2
+    For RHEL 6.7 , RHEL 7.1/7.2
     ```shell
     sudo yum install -y wget tar java-1.7.1-ibm-devel
     ```
-    For SLES 11
+    For SLES 11-SP3
     ```shell
     sudo zypper install -y wget tar java-1.7.0-ibm-devel
     ```
-    For SLES 12
+    For SLES 12/12-SP1
     ```shell
     sudo zypper install -y wget tar java-1.7.1-ibm-devel
     ```
@@ -34,7 +35,7 @@ The instructions provided below specify the steps to build Kibana (4.5.1) on Lin
     ```shell
 	sudo apt-get update
     sudo apt-get install -y wget tar openjdk-8-jdk
-    ```
+    ```	
 
 2. If IBM SDK for Node.js is already installed, go to step 4; otherwise go to http://www.ibm.com/developerworks/web/nodesdk/, click `Download now` for `Linux on z Systems` and `Download Version 1.2`, follow the instruction to download IBM SDK for Node.js 64-bit version and move to Linux system.
 
