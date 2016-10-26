@@ -1,10 +1,10 @@
 ## Building AntLR 4.5.1
 Below versions of AntLR are available in respective distributions at the time of this recipe creation:
 
-  * RHEL6 has `2.7.7`  
+  * RHEL6.7 has `2.7.7`  
   * Ubuntu 16.04 has `4.5.1`
 
-The instructions provided below specify the steps to build [AntLR](http://www.antlr.org/) version 4.5.1 on Linux on the IBM z Systems for RHEL 6/7 & SLES 11/12.
+The instructions provided below specify the steps to build [AntLR](http://www.antlr.org/) version 4.5.1 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2 & SLES 11-SP3/12/12-SP1.
 
 #### _**General Notes:**_
 i) When following the steps below please use a standard permission user unless otherwise specified.
@@ -16,19 +16,19 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 ### Obtain pre-built dependencies 
 Use the following commands to obtain dependencies
  
- RHEL 7.1
+ RHEL 7.1/7.2
  
 ` yum install -y wget git java-1.7.1-ibm-devel ant`
 
- RHEL 6.6
+ RHEL 6.7
 	
 ` yum install -y wget git java-1.7.1-ibm-devel`
 
- SLES 12
+ SLES 12/12-SP1
 
 ` zypper install -y wget git-core java-1.7.1-ibm-devel ant`
 
- SLES 11
+ SLES 11-SP3
 
 ` zypper install -y wget git-core java-1_7_0-ibm-devel `
 	   
@@ -41,13 +41,13 @@ This recipe uses Maven (version >= 3.3.3) to build ANTLR so it is first necessar
 
     * Set JAVA_HOME and PATH
 
-        * RHEL 7.1 and RHEL 6.6
+        * RHEL 7.1/7.2 and RHEL 6.7
 		```
                 export JAVA_HOME=/usr/lib/jvm/java
                 export PATH=$PATH:$JAVA_HOME/bin
 		```		
 
-        * SLES 12 and SLES 11
+        * SLES 12/12-SP1 and SLES 11-SP3
 		```
                 export JAVA_HOME=/usr/lib64/jvm/java
                 export PATH=$PATH:$JAVA_HOME/bin
