@@ -3,66 +3,58 @@
 <!---DISTRO:SLES 12:1.8--->
 <!---DISTRO:Ubuntu 16.x:Distro, 1.8--->
 
-# Building Docker Compose
+# Installing Docker Compose
 
 Below versions of Docker Compose are available in respective distributions at the time of this recipe creation:
 
-*    Ubuntu 16.04 has `1.5.2`
+*    RHEL 7.1/7.2 has `1.8.1`
+*    SLES 12/12-sp1 has `1.8.1`
+*    Ubuntu 16.04 has `1.8.1`
 
-The instructions provided below specify the steps to build Docker Compose version 1.8.0 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to install Docker Compose version 1.8.1 on Linux on the IBM z Systems for RHEL 7.1/7.2, SLES 12/12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-##### 1. Install the following Dependencies
-For RHEL7.1 
+### 1. Install the following Dependencies
+For RHEL7.1/7.2 
 ```
-      sudo yum update -y -qq
-      sudo yum install -y git python-setuptools net-tools openssl-devel libffi-devel libxslt-devel libxml2-devel
-```        
-
+sudo yum install -y python-setuptools
+```
 For SLES12
 ```
-      sudo zypper install -y git libxslt-devel libxml2-devel python-setuptools libpipeline-devel python-lxml python-xml
-```	   
-
+sudo zypper install -y python-setuptools python-xml
+```
+For SLES12-SP1
+```
+sudo zypper install -y python-setuptools
+```
 For Ubuntu16.04
 ```
-      sudo apt-get update
-      sudo apt-get install -y git python-pip
-      pip install --upgrade pip
+sudo apt-get update
+sudo apt-get install -y python-pip
+pip install --upgrade pip
 ```
 	
-##### 2. Install pip with easy_install (For RHEL7.1 & SLES12)
+### 2. Install pip with easy_install (For RHEL7.1/7.2 & SLES 12/12-SP1)
 ```
-      sudo easy_install pip
+sudo easy_install pip
 ```
-
-##### 3. Create a working directory as a Docker Compose installation workspace  
+   
+### 3. Upgrade backports.ssl_match_hostname(For RHEL7.1/7.2)
 ```
-      mkdir /<source_root>/
-      cd /<source_root>/
+sudo pip install backports.ssl_match_hostname --upgrade
 ```
-
-##### 4. Get Docker Compose source from github
+### 4. Install docker-compose	
 ```
-      git clone --branch 1.8.0 https://github.com/docker/compose.git
-      cd /<source_root>/compose
-```
-
-##### 5. Build and Install Docker Compose
-```
-      sudo pip install -r requirements.txt
-      sudo pip install -r requirements-dev.txt
-
-      sudo python setup.py install
+sudo pip install docker-compose
 ```
 		
-##### 6. Verify Docker Compose version
+### 5. To verify the Docker Compose installation
 ```
-      docker-compose version
+docker-compose version
 ```
         
 # References  
