@@ -1,13 +1,13 @@
 #Building AntLR 3.5.2
 Below versions of AntLR are available in respective distributions at the time of this recipe creation:
 
-*	RHEL 6.6 has `2.7.7-6.5.el6`
-*	RHEL 7.1 has `	2.7.7-30.el7`
-*	SLES 11 has `2.7.7-1.27`
-*	SLES 12 has `2.7.7-98.147`
+*	RHEL 6.7 has `2.7.7-6.5.el6`
+*	RHEL 7.1/7.2 has `	2.7.7-30.el7`
+*	SLES 11-SP3 has `2.7.7-1.27`
+*	SLES 12/12-SP1 has `2.7.7-98.147`
 *	Ubuntu 16.04 has `3.5.2`
 
-The instructions provided below specify the steps to build [AntLR](http://www.antlr.org/) 3.5.2 on Linux on the IBM z Systems for RHEL 6/7 and SLES 11/12.
+The instructions provided below specify the steps to build [AntLR](http://www.antlr.org/) 3.5.2 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2 and SLES 11-SP3/12/12-SP1.
 
 _**General Notes:**_ 	
 
@@ -21,25 +21,25 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 1. Use the following commands to obtain dependencies
 
-    For RHEL 7.1
+    For RHEL 7.1/7.2
 
   ```shell
   sudo yum install -y git java-1.7.1-ibm-devel tar
   ```
 	
-    For RHEL 6.6
+    For RHEL 6.7
 
   ```shell
   sudo yum install -y git java-1.7.1-ibm-devel tar
   ```
 	
-    For SLES 12
+    For SLES 12/12-SP1
 
   ```shell
   sudo zypper install -y git java-1_7_1-ibm-devel tar 
   ```
 	
-    For SLES 11
+    For SLES 11-SP3
 
   ```shell
   sudo zypper install -y git java-1_7_0-ibm-devel tar
@@ -53,19 +53,19 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 1. Set environment variables and working directory
 
-  For **SLES 11 and SLES 12**
+  For **SLES 11-SP3 and SLES 12/12-SP1**
   
   ```shell
   export JAVA_HOME=/usr/lib64/jvm/java
   ```
   
-  For **RHEL 6.6 and RHEL 7.1**
+  For **RHEL 6.7 and RHEL 7.1/7.2**
   
   ```shell
   export JAVA_HOME=/usr/lib/jvm/java
   ```
   
-  For **RHEL 6.6, RHEL 7.1, SLES 11 and SLES 12**
+  For **RHEL 6.7, RHEL 7.1/7.2 , SLES 11-SP3 and SLES 12/12-SP1**
   
   ```shell
   cd /<source_root>/
