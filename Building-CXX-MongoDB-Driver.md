@@ -1,6 +1,6 @@
 #Building C++ MongoDB Driver
 
-The instructions provided below specify the steps to build C++ MongoDB Driver legacy-1.1.1 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04
+The instructions provided below specify the steps to build C++ MongoDB Driver legacy-1.1.2 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1 and Ubuntu 16.04
 
 
 _**General Notes:**_ 	 
@@ -10,19 +10,19 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
 
 1. **Install build dependencies**
 
-  For **RHEL 7.1**
+  For **RHEL 7.1/7.2**
   ```shell
   sudo yum install automake boost-devel libtool gcc-c++ git make wget
   ```
-   For **RHEL 6**
+   For **RHEL 6.7**
   ```shell
   sudo yum install automake boost-devel libtool gcc-c++ git make tar wget which
   ```
-  For **SLES 12**
+  For **SLES 12/12-SP1**
   ```shell
   sudo zypper install automake boost-devel libtool gcc-c++ git make scons
   ```
-  For **SLES 11**
+  For **SLES 11-SP3**
   ```shell
   Known not to work on SLES 11
   ```
@@ -49,7 +49,7 @@ Add following repos in `/etc/apt/sources.list` file and upgrade the system, if a
 
 	The C++ build system uses SCons. On Suse, this is available via normal package install. On Redhat, download and install package manually:
 
-   On RHEL6 and RHEL7, download scons-2.5.0-1.noarch.rpm from [SCons 2.5.0 Downloads](https://sourceforge.net/projects/scons/files/scons/2.5.0) and install it like this:
+   On RHEL6.7 and RHEL7.1/7.2, download scons-2.5.0-1.noarch.rpm from [SCons 2.5.0 Downloads](https://sourceforge.net/projects/scons/files/scons/2.5.0) and install it like this:
 
         cd /<source_root>/
 		wget https://sourceforge.net/projects/scons/files/scons/2.5.0/scons-2.5.0-1.noarch.rpm
@@ -65,7 +65,7 @@ Add following repos in `/etc/apt/sources.list` file and upgrade the system, if a
     cd /<source_root>/
     git clone https://github.com/mongodb/mongo-cxx-driver
     cd /<source_root>/mongo-cxx-driver
-    git checkout legacy-1.1.1
+    git checkout legacy-1.1.2
     ```
     
 2. ***Build and Install***
