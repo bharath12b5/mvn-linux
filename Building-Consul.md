@@ -1,9 +1,9 @@
 <!---PACKAGE:Consul--->
-<!---DISTRO:SLES 12:0.6.4--->
-<!---DISTRO:RHEL 7.1:0.6.4--->
+<!---DISTRO:SLES 12.x:0.6.4--->
+<!---DISTRO:RHEL 7.x:0.6.4--->
 <!---DISTRO:Ubuntu 16.x:0.6.4--->
 
-The instructions provided below specify the steps to build Consul v0.6.4 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Consul v0.6.4 on Linux on the IBM z Systems for RHEL 7.1/7.2, SLES 12/12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 	 
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -11,12 +11,12 @@ i) _When following the steps below please use a standard permission user unless 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 ## Install Dependencies
 
-For RHEL 7.1
+For RHEL 7.1/7.2
    ```
    sudo yum install git vi gcc tar wget make unzip
    ```
    
-For SLES 12
+For SLES 12/12-SP1
    ```
    sudo zypper install git vi gcc tar wget make unzip
    ```
@@ -28,7 +28,7 @@ For Ubuntu 16.04
    ```
    
 ## Install GO Dependencies
-   For RHEL 7.1 and SLES 12, refer [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe to install Go.
+   For RHEL 7.1/7.2 and SLES 12/12-SP1, refer [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe to install Go.
 
    For Ubuntu 16.04, install following dependency:    
    
@@ -76,7 +76,7 @@ For Ubuntu 16.04
    ```
 5. Build consul
 
-   For RHEL 7.1 and SLES 12
+   For RHEL 7.1/7.2 and SLES 12/12-SP1
    ```
    cd $GOPATH/src/github.com/hashicorp/consul/
    make
