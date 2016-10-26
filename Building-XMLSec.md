@@ -1,19 +1,19 @@
 <!---PACKAGE:XMLSec--->
-<!---DISTRO:SLES 12:1.2.22--->
-<!---DISTRO:SLES 11:1.2.22--->
-<!---DISTRO:RHEL 7.1:1.2.22--->
-<!---DISTRO:RHEL 6.6:1.2.22--->
-<!---DISTRO:Ubuntu 16.x:1.2.22--->
+<!---DISTRO:SLES 12.x:1.2.x--->
+<!---DISTRO:SLES 11.x:1.2.x--->
+<!---DISTRO:RHEL 7.x:1.2.x--->
+<!---DISTRO:RHEL 6.x:1.2.x--->
+<!---DISTRO:Ubuntu 16.x:Distro, 1.2.x--->
 
 # Building XMLSec
 
 Below versions of XMLSec are available in respective distributions:
 
-*    RHEL 6     has `1.2.20`
-*    RHEL 7     has `1.2.20`
+*    RHEL 6.7     has `1.2.20`
+*    RHEL 7.1/7.2     has `1.2.20`
 *    Ubuntu 16.04     has `1.2.20`
 
-The instructions provided below specify the steps to build XMLSec 1.2.22 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build XMLSec 1.2.22 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 
 
@@ -27,25 +27,25 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 1. Use the following commands to obtain dependencies
 
-  For RHEL 7.1
+  For RHEL 7.1/7.2
   
   ```shell
   sudo yum install git make libtool libxslt-devel libtool-ltdl-devel
   ```
   
-  For SLES 12
+  For SLES 12/12-SP1
   
   ```shell
-  sudo zypper install git-core gcc make libtool libxslt-devel libopenssl-devel-1.0.1i-2.12.s390x
+  sudo zypper install git-core gcc make libtool libxslt-devel libopenssl-devel
   ```
   
-  For RHEL 6.6
+  For RHEL 6.7
   
   ```shell
   sudo yum install tar git make libtool libxslt-devel libtool-ltdl-devel
   ```
   
-  For SLES 11
+  For SLES 11-SP3
   
   ```shell
   sudo zypper install tar pkg-config autoconf automake git-core gcc make libtool libxslt-devel
