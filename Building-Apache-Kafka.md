@@ -1,11 +1,11 @@
 <!---PACKAGE:Apache Kafka--->
-<!---DISTRO:SLES 12:0.10.0--->
-<!---DISTRO:SLES 11:0.10.0--->
-<!---DISTRO:RHEL 7.1:0.10.0--->
-<!---DISTRO:RHEL 6.6:0.10.0--->
+<!---DISTRO:SLES 12.x:0.10.0--->
+<!---DISTRO:SLES 11.x:0.10.0--->
+<!---DISTRO:RHEL 7.x:0.10.0--->
+<!---DISTRO:RHEL 6.x:0.10.0--->
 <!---DISTRO:Ubuntu 16.x:0.10.0--->
 
-The instructions provided below specify the steps to build Apache Kafka 0.10.0.0 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apache Kafka 0.10.0.0 on Linux on the IBM z Systems for RHEL 6.7, RHEL 7.1, RHEL 7.2, SLES 11-SP3, SLES 12, SLES 12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 	
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
@@ -17,16 +17,16 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
 
 1. Install the dependencies
 
-    On RHEL 6.6 systems
+    On RHEL 6.7 systems
 	 ```shell
-     sudo yum install git wget unzip java-1.7.1-ibm-devel.s390x
+     sudo yum install git wget unzip java-1.8.0-ibm-devel.s390x
      ```
 	
-	RHEL 7.1 systems
+	On RHEL 7.1 and RHEL 7.2 systems
 	
 	 * With IBM JDK  
       ```shell
-      sudo yum install git wget unzip java-1.7.1-ibm-devel.s390x
+      sudo yum install git wget unzip java-1.8.0-ibm-devel.s390x
       ```
 	
 	 * With OpenJDK 
@@ -46,7 +46,19 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
       sudo zypper install git wget unzip java-1_7_0-openjdk-devel
       ```
     
-	On SLES 11 systems
+	On SLES 12-SP1 systems
+    
+	 * With IBM JDK
+	  ```shell
+      sudo zypper install git wget unzip java-1_8_0-ibm-devel
+      ```
+	
+	 * With OpenJDK 
+      ```shell
+      sudo zypper install git wget unzip java-1_8_0-openjdk-devel
+      ```
+    
+	On SLES 11-SP3 systems
 	 ```shell
      sudo zypper install git wget unzip java-1_7_0-ibm-devel java-1_7_0-ibm
      ```
