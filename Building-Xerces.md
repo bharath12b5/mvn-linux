@@ -1,9 +1,9 @@
 <!---PACKAGE:Xerces-C--->
-<!---DISTRO:SLES 12:3.1.4--->
-<!---DISTRO:SLES 11:3.1.4--->
-<!---DISTRO:RHEL 7.1:3.1.4--->
-<!---DISTRO:RHEL 6.6:3.1.4--->
-<!---DISTRO:Ubuntu 16.x:3.1.4--->
+<!---DISTRO:SLES 12.x:3.1--->
+<!---DISTRO:SLES 11.x:3.1--->
+<!---DISTRO:RHEL 7.x:3.1--->
+<!---DISTRO:RHEL 6.x:3.1--->
+<!---DISTRO:Ubuntu 16.x:Distro, 3.1--->
 
 #Building Xerces-C 3.1.4
 
@@ -11,7 +11,7 @@ Below version of Xerces is available in respective distributions at the time of 
 
 *    Ubuntu 16.04 has `3.1.3`
 
-The instructions provided below specify the steps to build Xerces-C 3.1.4 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12 and Ubuntu 16.04. More information on Xerces-C is available at https://xerces.apache.org/xerces-c/ and the source code can be downloaded from https://github.com/apache/xerces-c.
+The instructions provided below specify the steps to build Xerces-C 3.1.4 on Linux on the IBM z Systems for RHEL 6.6/7.1/7.2, SLES 11.3/12/12-SP1 and Ubuntu 16.04. More information on Xerces-C is available at https://xerces.apache.org/xerces-c/ and the source code can be downloaded from https://github.com/apache/xerces-c.
 
 _**General Notes:**_ 	
 
@@ -31,19 +31,19 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     sudo yum install git automake libtool make gcc-c++ tar
     ```
 	
-	For RHEL 7.1
+	For RHEL 7.1/7.2
 
     ```shell
     sudo yum install git automake libtool make gcc-c++
     ```
 	
-    For SLES 11
+    For SLES 11.3
 	
     ```shell
     sudo zypper install gcc-c++ make git-core tar wget m4
     ```
 	
-	For SLES 12
+	For SLES 12/12-SP1
 	
     ```shell
     sudo zypper install libtool automake gcc-c++ make git-core
@@ -63,8 +63,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
       mkdir /<source_root>/
    ```
    
-### Dependency Builds: libtool, autoconf, and automake - For SLES11 only
- 
+### Dependency Builds: libtool, autoconf, and automake - For SLES11.3 only 
 _**Note:** These Dependency Builds for later/latest versions must be carried out in the order given in this recipe._
 
 #### Install libtool 2.4.6
@@ -154,7 +153,7 @@ _**Note:** These Dependency Builds for later/latest versions must be carried out
      ```
 1. Set Environment variables
 
-	For RHEL 6.6/7.1
+	For RHEL 6.6/7.1/7.2
 	
 	_**Note:** On RHEL7.1, if the command `locale -a` does not return a list including 'en_US.UTF-8' then try try to reload  glibc-common using the command `sudo yum reinstall glibc-common`._ 
 
@@ -163,7 +162,7 @@ _**Note:** These Dependency Builds for later/latest versions must be carried out
     export LC_ALL='en_US.UTF-8'
     ```
 	
-	For SLES 11/12
+	For SLES 11.3/12/12-SP1
 
     ```shell
     export LANG='en_US.UTF-8'
