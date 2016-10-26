@@ -1,21 +1,21 @@
 <!---PACKAGE:Apache HTTP--->
-<!---DISTRO:SLES 12:2.4.x--->
-<!---DISTRO:SLES 11:2.4.x--->
-<!---DISTRO:RHEL 7.1:2.4.x--->
-<!---DISTRO:RHEL 6.6:2.4.x--->
-<!---DISTRO:Ubuntu 16.x:2.4.x--->
+<!---DISTRO:SLES 12:2.4--->
+<!---DISTRO:SLES 11:2.4--->
+<!---DISTRO:RHEL 7.1:2.4--->
+<!---DISTRO:RHEL 6.6:2.4--->
+<!---DISTRO:Ubuntu 16.x:2.4--->
 
 ###Building Apache Http Web Server
 
 Below versions of Apache Http Web Server are available in respective distributions at the time of this recipe creation:
 
-*    RHEL 7.2 has `2.4.6`
-*    RHEL 6.6 has `2.2.15`
-*    SLES 12 has `2.4.10`
-*    SLES 11.3 has `2.2.12`
+*    RHEL 7.1/7.2 have `2.4.6`
+*    RHEL 6.7 has `2.2.15`
+*    SLES 12/12-SP1 have `2.4.10`
+*    SLES 11-SP3 has `2.2.12`
 *    Ubuntu 16.04 has `2.4.18`
 
-The instructions provided below specify the steps to build Apache Http Web Server version 2.4.23 on Linux on the IBM z Systems for RHEL 6.6/7.2 and SLES 11/12 and Ubuntu.
+The instructions provided below specify the steps to build Apache Http Web Server version 2.4.23 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2 and SLES 11-SP3/12/12-SP1 and Ubuntu.
 
 **General Notes:**
 
@@ -29,15 +29,15 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 
 1. Install build dependencies
 
-	For RHEL 7.2 & 6.6
+	For RHEL 7.1, 7.2 & 6.7
 
 		sudo yum install git openssl openssl-devel gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel expat-devel which wget tar
 
-	For SLES 12 
+	For SLES 12 & SLES 12-SP1
 
 		sudo zypper install git openssl openssl-devel gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel wget tar
 	
-	For SLES 11
+	For SLES 11-SP3
 	
 	    sudo zypper install git gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel wget tar
 	
@@ -45,7 +45,7 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 	   
 		sudo apt-get install git python openssl gcc autoconf make libtool-bin libpcre3-dev libxml2  libexpat1 libexpat1-dev wget tar 
 
-2. Build Openssl 1.0.2 (SLES 11 Only)
+2. Build Openssl 1.0.2 (SLES 11-SP3 Only)
     
 		cd /<source_root>/
 		wget ftp https://www.openssl.org/source/old/1.0.2/openssl-1.0.2i.tar.gz
@@ -56,9 +56,9 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 		sudo make install		
 		export PATH=/usr/local/ssl/bin:$PATH
 
-3. Build Libtool (SLES 11 & RHEL 6.6 Only)
+3. Build Libtool (SLES 11-SP3 & RHEL 6.7 Only)
 
-	SLES 11 and RHEL 6.6 has an older version of libtool available. Apache HTTP Server needs a later version of libtool.
+	SLES 11-SP3 and RHEL 6.7 has an older version of libtool available. Apache HTTP Server needs a later version of libtool.
 
 		cd /<source_root>/
 		wget http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz
