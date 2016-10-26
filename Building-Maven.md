@@ -1,8 +1,8 @@
 <!---PACKAGE:Apache Maven--->
-<!---DISTRO:SLES 12:3.x--->
-<!---DISTRO:SLES 11:3.x--->
-<!---DISTRO:RHEL 7.1:3.x--->
-<!---DISTRO:RHEL 6.6:3.x--->
+<!---DISTRO:SLES 12.x:3.x--->
+<!---DISTRO:SLES 11.x:3.x--->
+<!---DISTRO:RHEL 7.x:3.x--->
+<!---DISTRO:RHEL 6.x:3.x--->
 <!---DISTRO:Ubuntu 16.x:3.x--->
 
 # Building Maven
@@ -11,7 +11,7 @@ Below versions of Maven are available in respective distributions at the time of
 
 *    Ubuntu 16.04 has `3.3.9`
 
-The instructions provided below specify the steps to build Maven version 3.3.9 on Linux on the IBM z Systems for RHEL 6.6/7.1, SLES 11/12.
+The instructions provided below specify the steps to build Maven version 3.3.9 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1.
 
 _**General Notes:**_
 
@@ -23,31 +23,31 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 1. Use the following commands to obtain dependencies
 
-    For RHEL 7.1
+    For RHEL 7.1/7.2
 
   ```shell
   sudo yum install ant java-1.7.1-ibm-devel tar wget
   ```
 	
-    For RHEL 6.6
+    For RHEL 6.7
 
   ```shell
   sudo yum install java-1.7.1-ibm-devel tar wget
   ```
 	
-    For SLES 12
+    For SLES 12/12-SP1
 
   ```shell
   sudo zypper install ant java-1_7_1-ibm-devel tar wget
   ```
 	
-    For SLES 11
+    For SLES 11-SP3
 
   ```shell
   sudo zypper install java-1_7_0-ibm-devel tar wget
   ```
 
-  Note: Ant is not listed for SLES 11 or RHEL 6.6 as they provide an older version of Ant than is required to build Maven. Hence for SLES 11 and RHEL 6.6, Ant is installed in a subsequent step below.
+  Note: Ant is not listed for SLES 11-SP3 or RHEL 6.7 as they provide an older version of Ant than is required to build Maven. Hence for SLES 11-SP3 and RHEL 6.7, Ant is installed in a subsequent step below.
   
 1. Create a temporary installation directory 
 
@@ -57,7 +57,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
   export WORK_DIR=`pwd`
   ```
 
-1. For **SLES 11 and RHEL 6.6** install appropriate version of Ant 
+1. For **SLES 11-SP3 and RHEL 6.7** install appropriate version of Ant 
 
   ```shell
   cd $WORK_DIR
@@ -70,19 +70,19 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 1. Set environment variables and working directory
 
-  For **RHEL 7.1 and RHEL 6.6**
+  For **RHEL 7.1/7.2 and RHEL 6.7**
   
   ```shell
   export JAVA_HOME=/usr/lib/jvm/java
   ```
   
-  For **SLES 12 and SLES 11**
+  For **SLES 12/12-SP1 and SLES 11-SP3**
   
   ```shell
   export JAVA_HOME=/usr/lib64/jvm/java
   ```
   
-  For **RHEL 7.1, RHEL 6.6, SLES 12 and SLES 11**
+  For **RHEL 7.1/7.2, RHEL 6.7, SLES 12/12-SP1 and SLES 11-SP3**
   
   ```shell
   export M2_HOME=$WORK_DIR/maven
