@@ -7,7 +7,7 @@
 
 # Building Apigility
 
-The instructions provided below specify the steps to build Apigility 1.4.0 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apigility 1.4.0 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12 , SLES12-SP1 and Ubuntu 16.04.
 
 ##### General Notes:
       
@@ -18,27 +18,27 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 
 ### Section 1: Install the following dependencies
 
-* For RHEL 6.6/7.1 and SLES 11/12 
+* For RHEL 6.7/7.1/7.2 , SLES 11-SP3/12 and SLES12-SP1
 
     Install Apache Http Server from [here.](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
     
 * Other dependencies
 
-	RHEL7.1:
+	RHEL7.1/7.2:
 	```
 	sudo yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  
 	```
-	RHEL6.6:
+	RHEL6.7:
 	```
 	sudo yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
 	```
 
-	SLES12:
+	SLES12 and SLES12-SP1:
 	```
 	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
 	```
 	
-	SLES11:
+	SLES11-SP3:
 	```
 	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
 	```
@@ -62,13 +62,13 @@ sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxm
 	
 	Configure PHP with Openssl
 	
-    * For RHEL 6.6/7.1 and SLES 12
+    * For RHEL 6.7/7.1/7.2 , SLES 12 and SLES12-SP1
 	
 	```
 	./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
 	```
 	
-	* For SLES 11
+	* For SLES 11-SP3
 	
 	```
 	 ./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl --enable-opcache --with-ldap --with-libdir=lib64
