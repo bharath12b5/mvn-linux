@@ -10,10 +10,10 @@
 Below versions of MySQL are available in respective distributions at the time of this recipe creation:
 
 *    Ubuntu 16.04 has `5.7.12-0ubuntu1`
-*    SLES 11 has `5.5.45-0.11.1`
+*    SLES 11-SP3 has `5.5.45-0.11.1`
 *    RHEL 6.6 has `5.1.73`
 
-The instructions provided below specify the steps to build MySQL version 5.7.16 on Linux on the IBM z Systems for RHEL 6.6/7.2, SLES 11, SLES 12-sp1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build MySQL version 5.7.16 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3, SLES 12/12-SP1 and Ubuntu 16.04.
 
 More information on MySQL is available at https://www.mysql.com and the source code can be downloaded from https://github.com/mysql/mysql-server.git.
 
@@ -27,22 +27,22 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ###Obtain pre-built dependencies
 
-*	For RHEL 6.6
+*	For RHEL 6.7
 
 	```shell
 	sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget zlib-devel bzip2.s390x libtool.s390x
 	```
-*	For RHEL 7.2
+*	For RHEL 7.1/7.2
 
 	```shell
 	sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel perl-Data-Dumper
 	```
-*	For SLES 11 - _(Additional support packages are needed to update cmake)_
+*	For SLES 11-SP3 - _(Additional support packages are needed to update cmake)_
 
     ```shell
     sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget glibc-devel-32bit zlib-devel
     ```
-*	For SLES 12-sp1
+*	For SLES 12/12-SP1
 
 	```shell
 	sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel wget tar
@@ -56,7 +56,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ###Dependency Build - GCC 4.8.2 and cmake 3.3.0  
 
-* Install GCC 4.8.2 by building from source. (Required on RHEL 6.6 and SLES 11)
+* Install GCC 4.8.2 by building from source. (Required on RHEL 6.7 and SLES 11-SP3)
       
   * Download the GCC source code, then extract it.
 
@@ -96,7 +96,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  gcc --version
  ```
       
-* Update cmake to version 3.3.0 by building from source. (Required on SLES 11 only)
+* Update cmake to version 3.3.0 by building from source. (Required on SLES 11-SP3 only)
 
   * _[Optional]_ Check the version of any existing `cmake` executable.
 
@@ -148,13 +148,13 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
    3. Configure and Build the MySQL
     
-	For RHEL 6.6
+	For RHEL 6.7
 	```shell
     cmake -DCMAKE_C_COMPILER=/opt/gcc4.8/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gcc4.8/bin/g++ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
 	
-	For RHEL 7.2
+	For RHEL 7.1/7.2
 	```shell
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
@@ -166,7 +166,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     make
     ```
 	
-	For SLES 11
+	For SLES 11-SP3
 	```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
 	tar xzf boost_1_59_0.tar.gz
@@ -174,7 +174,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     gmake
     ```
 	
-	For SLES 12-sp1
+	For SLES 12/12-SP1
 	```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz 
 	tar xzf boost_1_59_0.tar.gz 
@@ -186,7 +186,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
     The testing should take only a few seconds.
 
-    For RHEL6.6, RHEL7.2 , SLES 11 & SLES 12-sp1
+    For RHEL6.7, RHEL 7.1/7.2 , SLES 11-SP3 & SLES 12/12-SP1
 	```shell
     gmake test
     ```
@@ -198,12 +198,12 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 	
    5. Install MySQL into the standard location
 
-	For RHEL 7.2 & SLES 12-sp1
+	For RHEL 7.1/7.2 & SLES 12/12-SP1
 	```shell
     sudo gmake install
     ```
 	
-	For RHEL 6.6 & SLES 11
+	For RHEL 6.7 & SLES 11-SP3
 	```shell
     sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
     ```
