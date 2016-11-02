@@ -1,12 +1,13 @@
 Swift is available on RHEL 7.1, SLES 12.1 and Ubuntu 16.04. Swift 3.0 has been built and tested on Linux on z Systems.
 This is a Beta release to go in hand with the official Swift 3.0 release.
 
-### Preparing to build LLVM/clang
+### Preparing to build
 
 1. Install prerequisites:
 
     For RHEL 7.1
 
+    ```
         sudo yum install binutils-devel gcc-c++ git \
                          libcurl-devel bzip2-devel sqlite3-devel libbsd \
                          libicu-devel libuuid-devel libxml2-devel ncurses-devel \
@@ -25,7 +26,30 @@ This is a Beta release to go in hand with the official Swift 3.0 release.
         git checkout release      
         /configure.py --bootstrap
         export PATH=$PATH:`pwd`
-        
+    ```
+
+    Upgrade to curl version 7.37 from https://github.com/curl/curl/tree/curl-7_37_0, this is required to build swift-foundation and swift-pm
+
+    ```
+        git clone https://github/com/curl/curl
+        cd curl
+        git checkout curl-7_37_0
+        ./configure --prefix=/opt/curl
+        make
+        make install
+
+        export PATH=$PATH:/opt/curl/bin
+        export LD_LIBRARY_PATH=/opt/curl/lib
+        wget http://ftp.rrzn.uni-hannover.de/pub/mirror/linux/opensuse/repositories/server:/mail/CentOS_6/src/libbsd-0.7.0-2.1.src.rpm
+        rpmbuild --rebuild libbsd-0.7.0-2.1.src.rpm
+        cd $HOME/rpmbuild/RPMS/s390x/
+        sudo rpm -i libbsd0-0.7.0-2.1.s390x.rpm \
+          libbsd-devel-0.7.0-2.1.s390x.rpm \ 
+    ```
+    ***Note:*** The link to wget is tested at the time when this recipe is verified.  If the above link does not work, try to search for a similar source rpm.
+
+
+
 
     For SLES 12
 
@@ -305,4 +329,3 @@ To run Swift code in Swift LinuxONE Sandbox
 * Put or load Swift code in the left pane
    
 * Click the Play icon in the bottom to see the code at work
-
