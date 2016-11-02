@@ -86,6 +86,19 @@ iii) Where the instructions refer to 'vi' you may, of course, use an editor of y
 		make
 		sudo make install
 
+	_**Note:** The apache2-utils binaries are created in `/<source_root>/httpd/support/` folder. Following is the list of binaries that are created:_
+     * ab 
+     * logresolve
+     * htpasswd
+     * htdigest
+     * htdbm
+     * rotatelogs
+     * checkgid
+     * dbmmanage
+     * split-logfile
+     * check_forensic
+     * httxt2dbm
+
 6. Build and Install Apache HTTP Server
 
 		cd /<source_root>/httpd
