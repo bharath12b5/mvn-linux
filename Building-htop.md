@@ -51,5 +51,8 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     sudo  make install
 ```
 
-
-
+### 6. Launch htop to monitor system
+```
+    htop 
+```
+  _**Note:** For a list of supported key commands see the manual page `man htop`._
