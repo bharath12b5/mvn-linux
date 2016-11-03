@@ -1,10 +1,10 @@
-<!---PACKAGE:Hyper Ledger--->
+<!---PACKAGE:Hyperledger--->
 <!---DISTRO:SLES 12:0.6--->
 <!---DISTRO:RHEL 7.2:0.6--->
 
-# Building Hyper Ledger
+# Building Hyperledger
 
-Hyper Ledger has been successfully built on Linux on z Systems.  The following instructions can be used for RHEL 7.2 and SLES 12.
+Hyperledger has been successfully built on Linux on z Systems.  The following instructions can be used for RHEL 7.2 and SLES 12.
 
 
 _**General Notes:**_
@@ -13,7 +13,7 @@ _When following the steps below please use a standard permission user unless oth
 
 ## Prerequisites: ##
 
-Hyper ledger is written in `GO` and uses `Docker` to run chain code. It is required to build `Go` and install `Docker` first. Node.js (npm) is used for unit and behave test.
+Hyperledger is wrtten in `GO` and uses `Docker` to run chain code. It is required to build `Go` and install `Docker` first. Node.js (npm) is used for unit and behave test.
 
 - Go -- Instructions for building Go can be found [here]( https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7).
 - Docker -- Instructions for installing Docker can be found [here](https://www.ibm.com/developerworks/linux/linux390/docker.html).
@@ -22,7 +22,7 @@ Hyper ledger is written in `GO` and uses `Docker` to run chain code. It is requi
 If your system is RHEL 7.2, you may follow [Building outside of Vagrant](http://hyperledger-fabric.readthedocs.io/en/latest/dev-setup/build/) section to install docker, rocksdb, pip, docker-compose as well as build base images. Then skip to the `Unit Test` below.
 
 ## Install Rocksdb and dependencies ##
-Rocksdb is an open source DB software used by Hyper Ledger.
+Rocksdb is an open source DB software used by Hyperledger.
 
 1) Install dependent software of  `Rocksdb`
 
@@ -53,8 +53,8 @@ or
     pip install behave nose docker-compose
     pip install -I flask==0.10.1 python-dateutil==2.2 pytz==2014.3 pyyaml==3.10 couchdb==1.0 flask-cors==2.0.1 requests==2.4.3
 
-## Build Hyper Ledger and docker images ##
-1) Download Hyper Ledger source code. A directory *op_wk* will be referred to working home directory of Hyper Ledger in these instructions, this is a  writable directory anywhere you'd like to place it..
+## Build Hyperledger and docker images ##
+1) Download Hyperledger source code. A directory *op_wk* will be referred to working home directory of Hyperledger in these instructions, this is a  writable directory anywhere you'd like to place it..
 
     mkdir  <op_wk>   # op_wk is home directory of hyperledger
     cd <op_wk>
@@ -86,7 +86,7 @@ or
 
 
 ## Build Base Image ##
-Hyper ledger uses docker container  to hold  each chaincode, we need  to build  docker images that contain  `Golang` on IBM z Systems and `Rocksdb`.
+Hyperledger uses docker container  to hold  each chaincode, we need  to build  docker images that contain  `Golang` on IBM z Systems and `Rocksdb`.
 
 
 
@@ -99,7 +99,7 @@ Hyper ledger uses docker container  to hold  each chaincode, we need  to build  
     docker daemon  -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock  &
 
 
-2) Build Hyper Ledger docker images
+2) Build Hyperledger docker images
 
     cd $GOPATH/src/github.com/hyperledger/fabric/
     make clean peer          # build base images
