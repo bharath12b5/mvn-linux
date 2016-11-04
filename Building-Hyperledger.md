@@ -1,6 +1,6 @@
 <!---PACKAGE:Hyperledger--->
 <!---DISTRO:SLES 12:0.6--->
-<!---DISTRO:RHEL 7.2:0.6--->
+<!---DISTRO:RHEL 7.2:0.6-->
 
 # Building Hyperledger
 
@@ -13,13 +13,32 @@ _When following the steps below please use a standard permission user unless oth
 
 ## Prerequisites: ##
 
-Hyperledger is wrtten in `GO` and uses `Docker` to run chain code. It is required to build `Go` and install `Docker` first. Node.js (npm) is used for unit and behave test.
+Hyperledger is written in `GO` and uses `Docker` to run chain code. It is required to build `Go` and install `Docker` first. Node.js (npm) is used for unit and behave test.
 
-- Go -- Instructions for building Go can be found [here]( https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7).
+- Go -- Instructions for building Go can be found below.
 - Docker -- Instructions for installing Docker can be found [here](https://www.ibm.com/developerworks/linux/linux390/docker.html).
 - Node.js -- Instructions for installing Node.js can be found [here](https://developer.ibm.com/node/sdk/).
 
-If your system is RHEL 7.2, you may follow [Building outside of Vagrant](http://hyperledger-fabric.readthedocs.io/en/latest/dev-setup/build/) section to install docker, rocksdb, pip, docker-compose as well as build base images. Then skip to the `Unit Test` below.
+
+## Build and Install Golang  ##
+To build  golang first to get a bootstrap that is a built package. 
+
+      cd /tmp
+      wget --quiet --no-check-certificate https://storage.googleapis.com/golang/go1.7.1.linux-s390x.tar.gz
+      tar -xvf go1.7.1.linux-s390x.tar.gz
+
+Then get golang 1.6 and an optimization branch, and start to build. Here "*golang_home*" is the golang home directory.
+
+      cd <golang_home> 
+      git clone http://github.com/linux-on-ibm-z/go.git go
+      cd go/src
+      git checkout release-branch.go1.6-p256
+      export GOROOT_BOOTSTRAP=/tmp/go
+      ./make.bash
+      rm -rf /tmp/go1.7.1.linux-s390x.tar.gz /tmp/go
+      export GOROOT=<golang_home>
+
+
 
 ## Install Rocksdb and dependencies ##
 Rocksdb is an open source DB software used by Hyperledger.
@@ -63,15 +82,15 @@ or
     cd $GOPATH/src
     mkdir -p github.com/hyperledger
     cd github.com/hyperledger
-    git clone https://github.com/hyperledger/fabric   # clone and check out master branch
+    git clone https://github.com/vpaprots/fabric   # clone and check out master branch
     cd fabric
-    git checkout v0.6               # check out v0.6 branch
+    git checkout debian_s390x_v0.6                 # check out v0.6 branch for s390x
 
 
 2) Setup environment variables
 
 
-    export GOROOT=<golang_home>           # <golang_home> is home directory of the installed golang
+    export GOROOT=<golang_home>            # <golang_home> is home directory of the installed golang
     export PATH=<golang_home>/bin:$PATH
     export GOPATH=<op_wk>                  # hyperledger home directory
  
@@ -85,7 +104,7 @@ or
 
 
 
-## Build Base Image ##
+## Build docker Images ##
 Hyperledger uses docker container  to hold  each chaincode, we need  to build  docker images that contain  `Golang` on IBM z Systems and `Rocksdb`.
 
 
@@ -102,8 +121,8 @@ Hyperledger uses docker container  to hold  each chaincode, we need  to build  d
 2) Build Hyperledger docker images
 
     cd $GOPATH/src/github.com/hyperledger/fabric/
-    make clean peer          # build base images
-    make peer-image          # build "hyperledger/fabric-peer" image
+    make clean peer          # build base and hyperledger/fabric-peer images
+    
     # may need root permission as it calls docker
  
 
@@ -112,6 +131,7 @@ Use `docker images` to confirm that a few base images and a image named **hyperl
 #### Unit Test ####
 
     cd $GOPATH/src/github.com/hyperledger/fabric
+    export PATH=$GOPATH/bin:$PATH
     make unit-test           # run unit test
 
 #### Running multiple peers ####
