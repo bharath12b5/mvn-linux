@@ -1,9 +1,9 @@
 _For updated instructions on MongoDB 3.0, see:_
 
 - _[[Building MongoDB 3.0 on RHEL 6 and SLES 11]]_
-- _[[Building MongoDB 3.0 on RHEL 7 and SLES 12]]_
+- _[[Building MongoDB 3.0 on RHEL 7, SLES 12 and Ubuntu 16.04]]_
 
-[MongoDB](http://mongodb.org/) can be built for a Linux on z System running RHEL 7.1/6.6 and SLES 12/11 by following the instructions below.
+[MongoDB](http://mongodb.org/) can be built for a Linux on z System running RHEL 7.1/7.2/6.6 and SLES 12/12-SP1/11-SP3 by following the instructions below.
 Note that [V8z](https://github.com/andrewlow/v8z/) will also need to be built, as referenced below.
 These instructions have been used to successfully build versions 2.4.9 and 2.6.6 of MongoDB.
 
@@ -73,7 +73,7 @@ General purpose smoke tests are available from [MongoDB Tests](http://www.mongod
         git clone git://github.com/mongodb/mongo-python-driver.git pymongo
         cd pymongo
 
-    As of May 2015, the latest version of pymongo for running the smoke tests was found to be v2.7 (for RHEL 7 and RHEL 6) and v2.6 (for SLES 12 and SLES 11). To revert to the relevant version e.g. for SLES 12 :
+    As of May 2015, the latest version of pymongo for running the smoke tests was found to be v2.7 (for RHEL 7.1/7.2 and RHEL 6) and v2.6 (for SLES 12/12-SP1 and SLES 11-SP3). To revert to the relevant version e.g. for SLES 12 :
     
         git checkout v2.6
 
