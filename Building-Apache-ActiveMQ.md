@@ -7,10 +7,9 @@
 
 The below versions are available in respective Distributions at the time of this recipe Creation. 
 
-• Ubuntu 16.04 has `5.13.2`
+* Ubuntu 16.04 has `5.13.2`
 
-# **Building Apache ActiveMQ**
-[Apache ActiveMQ](http://activemq.apache.org/) is an open source message broker written in Java together with a full Java Message Service (JMS) client. The stable release of ActiveMQ 5.14.0 has been built and tested on Linux on z Systems. The following instructions can be used for RHEL 7.1, SLES 12 and Ubuntu 16.04.
+[Apache ActiveMQ](http://activemq.apache.org/) is an open source message broker written in Java together with a full Java Message Service (JMS) client. The stable release of ActiveMQ 5.14.0 has been built and tested on Linux on z Systems. The following instructions can be used for RHEL 7.1/7.2, SLES 12/12-SP1 and Ubuntu 16.04.
 
 ###Prerequisites: ###
 *    Maven v3.0.0 or above -- Instructions for building Maven can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Maven).
@@ -27,13 +26,13 @@ _ii) A directory /<source_root>/ will be referred to in these instructions, this
 
 ### Step 1: Install the Dependencies
 
-For RHEL 7.1
+For RHEL 7.1/7.2
 
 ```
 sudo yum install java-1.7.0-openjdk-devel tar wget git 
 ```
 
-For SLES 12
+For SLES 12/12-SP1
 
 ```
 sudo zypper install java-1_7_0-openjdk-devel tar wget git
@@ -47,11 +46,11 @@ sudo apt-get install maven git openjdk-8-jdk
 ```
 
 ### Step 2: Set JAVA_HOME
-For RHEL 7.1
+For RHEL 7.1/7.2
 ```
 export JAVA_HOME=/usr/lib/jvm/java
 ```
-For SLES 12
+For SLES 12/12-SP1
 ```
 export JAVA_HOME=/usr/lib64/jvm/java-openjdk
 ```
