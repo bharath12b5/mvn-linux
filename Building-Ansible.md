@@ -5,7 +5,7 @@
 <!---DISTRO:SLES 12:2.1.x--->
 <!---DISTRO:Ubuntu 16.x:2.1.x--->
 
-## Building Ansible on RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and Ubuntu 16.04
+## Building Ansible
 
 Below versions of Ansible are available in respective distributions at the time of this recipe creation:
 
@@ -13,7 +13,7 @@ Below versions of Ansible are available in respective distributions at the time 
 
 Latest Ubuntu builds are available [in a PPA here](http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-apt-ubuntu).
 
-The instructions provided below specify the steps to build [Ansible](http://www.ansible.com/) version 2.1.0.0 on Linux on the IBM z Systems for RHEL 6.6, RHEL 7.1, SLES 11, SLES 12.
+The instructions provided below specify the steps to build [Ansible](http://www.ansible.com/) version 2.1.0.0 on Linux on the IBM z Systems for RHEL 6.7, RHEL 7.1/7.2, SLES 11-SP3, SLES 12/12-SP1.
 
 
 _**General Notes:**_ 	 
@@ -23,19 +23,19 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 1. Install dependencies:
 
-    On RHEL 6.6 and RHEL 7.1:
+    On RHEL 6.7 and RHEL 7.1/7.2:
   
         sudo yum install -y git wget tar svn bzip2 unzip gcc python-devel make which autoconf net-tools ssh python-setuptools python-lxml python-ldap sqlite-devel openldap-devel libxslt-devel openssl-devel libffi-devel openssl
       
-    On SLES 11:
+    On SLES 11-SP3:
 
         sudo zypper install -y git tar bzip2 unzip python-devel make autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc libffi-devel openssl libopenssl-devel mercurial
 
-    On SLES 12:
+    On SLES 12/12-SP1:
 
         sudo zypper install -y git tar bzip2 unzip python-devel make which autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc openssl libopenssl-devel libffi-devel 
 
-2. Build Openssl (**only** on SLES 11)
+2. Build Openssl (**only** on SLES 11-SP3)
 	
 		cd /<source_root>/
 		git clone https://github.com/openssl/openssl.git
@@ -45,9 +45,9 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
         make
         sudo make install
 
-3. Build Python (**only** on SLES 11)
+3. Build Python (**only** on SLES 11-SP3)
 
-	The Python version available on the SLES 11 package repositories is too low level so build and install Python yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-3.5.x).
+	The Python version available on the SLES 11-SP3 package repositories is too low level so build and install Python yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-3.5.x).
 
 	Make sure that Python 3.5 is used. Update /usr/bin/python link.
 
@@ -61,22 +61,22 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
        
 4.  In order to install certain Python modules for Ansible later on, *pip* is required:
 
-    On RHEL 6.6:
+    On RHEL 6.7:
 	
         wget https://bootstrap.pypa.io/ez_setup.py
         sudo python ez_setup.py
         sudo easy_install pip
 		
-    On RHEL 7.1:
+    On RHEL 7.1/7.2:
 	
 		wget https://bootstrap.pypa.io/get-pip.py
 		sudo python get-pip.py 
 	        
-	On SLES 11:
+	On SLES 11-SP3:
 	
 		sudo pip3 install --upgrade pip
 		
-    On SLES 12:
+    On SLES 12/12-SP1:
 
         wget https://pypi.python.org/packages/c3/a2/a63244da32afd9ce9a8ca1bd86e71610039adea8b8314046ebe5047527a6/pip-1.2.1.tar.gz
 		tar zxvf pip-1.2.1.tar.gz
@@ -99,15 +99,15 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 7.  Ansible uses the following Python modules which need to be installed:
 
-    On RHEL 6.6 and RHEL 7.1:
+    On RHEL 6.7 and RHEL 7.1/7.2:
   
         sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pycrypto
 
-    On SLES11:
+    On SLES 11-SP3:
 
         sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock six patch call coverage==3.7.1 coveralls funcsigs pycrypto
 
-    On SLES12:
+    On SLES 12/12-SP1:
 
 		cd /<source_root>/
 		wget https://pypi.python.org/packages/f7/83/377e3dd2e95f9020dbd0dfd3c47aaa7deebe3c68d3857a4e51917146ae8b/pyasn1-0.1.9.tar.gz#md5=f00a02a631d4016818659d1cc38d229a
