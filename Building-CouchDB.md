@@ -5,12 +5,19 @@
 <!---DISTRO:SLES 12:1.6.1--->
 <!---DISTRO:Ubuntu 16.x:Distro,1.6.1--->
 
+<!---PACKAGE:CouchDB--->
+<!---DISTRO:RHEL 6.6:1.6.1--->
+<!---DISTRO:RHEL 7.1:1.6.1--->
+<!---DISTRO:SLES 11:1.6.1--->
+<!---DISTRO:SLES 12:1.6.1--->
+<!---DISTRO:Ubuntu 16.x:Distro--->
+
 #Building Couchdb
 Below versions of Couchdb are available in respective distributions at the time of this recipe creation:
 
 * Ubuntu 16.04 has  1.6.0
 
-The instructions provided below specify the steps to build Couchdb Version 1.6.1 on Linux on the IBM z Systems for RHEL 6/7 and SLES 11/12.
+The instructions provided below specify the steps to build Couchdb Version 1.6.1 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1 and Ubuntu16.04.
 
 ### _**General Note:**_
 i)  _When following the steps below please use a standard permission user unless otherwise specified._
@@ -18,22 +25,22 @@ i)  _When following the steps below please use a standard permission user unless
 ### Building and Installing Couchdb
 1. First, install the build dependencies
 
-    On SLES 11:
+    On SLES 11-SP3:
     ```
     sudo zypper install libicu-devel libcurl-devel git wget autoconf213 zip fontconfig-devel pkg-config yasm tar make gtk2-devel libidl-devel  dbus-1-devel dbus-1-glib-devel libnotify-devel java-1_7_0-ibm  libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel libtool pkg-config automake curl
     ```
     
-    On SLES 12:
+    On SLES 12/12-SP1:
     ```
     sudo zypper install libicu-devel libcurl4 libcurl-devel git wget mozilla-nspr mozilla-nspr-devel autoconf213 zip fontconfig fontconfig-devel pkg-config libasound2 yasm tar make gtk2-devel libXt-devel libIDL-2-0 libidl-devel libfreetype6 libgstreamer-1_0-0 dbus-1-devel dbus-1-glib-devel libnotify4 libnotify-devel python wget perl perl-base java-1_7_1-ibm java-1_7_1-ibm-devel libopenssl-devel libssh-devel ncurses-devel unixODBC unixODBC-devel libtool pkg-config curl
     ```
     
-    On RHEL 6.6:
+    On RHEL 6.7:
     ```
     sudo yum install libicu-devel libcurl libcurl-devel git wget zip bzip2 tar nspr nspr-devel autoconf213 fontconfig fontconfig-devel pkgconfig make gtk2-devel libXt-devel libIDL libIDL-devel freetype freetype-devel gstreamer gstreamer-devel dbus dbus-devel dbus-glib dbus-glib-devel libnotify libnotify-devel python perl java-1.7.1-ibm java-1.7.1-ibm-devel xz libtool perl-CPAN curl
     ```
     
-    On RHEL 7.1:
+    On RHEL 7.1/7.2:
     ```
     sudo yum install libicu-devel libcurl libcurl-devel git wget zip bzip2 tar nspr nspr-devel autoconf213 fontconfig fontconfig-devel pkgconfig make gtk2-devel libXt-devel libIDL libIDL-devel freetype freetype-devel gstreamer1 gstreamer1-devel dbus dbus-devel dbus-glib dbus-glib-devel libnotify libnotify-devel python perl java-1.7.1-ibm java-1.7.1-ibm-devel xz libtool which texlive.s390x texlive-titlesec.noarch texlive-framed.noarch texlive-threeparttable.noarch texlive-wrapfig.noarch texlive-multirow.noarch texinfo.s390x curl
     ```
@@ -45,7 +52,7 @@ i)  _When following the steps below please use a standard permission user unless
 	```
 2. Now install gcc-c++
 
-    On SLES 11:
+    On SLES 11-SP3:
     ```
     sudo zypper install gcc47-c++
     sudo ln -s /usr/bin/gcc-4.7 /usr/bin/gcc
@@ -54,12 +61,12 @@ i)  _When following the steps below please use a standard permission user unless
     sudo ln -s /usr/bin/g++-4.7 /usr/bin/c++
     ```
 
-    On SLES 12:
+    On SLES 12/12-SP1:
     ```
     sudo zypper install gcc-c++
     ```
 
-    On RHEL 6.6 & 7.1:
+    On RHEL 6.7 & 7.1/7.2:
     ```
     sudo yum install gcc-c++
     ```
@@ -144,18 +151,18 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
   _**NOTE:** Steps 1 & 2 within the following Erlang instruction links should be ignored ( as we have already covered those steps earlier in this recipe )._
 
       cd /<source_root>/
-  - For SLES 11.3 & 12.0, build & install Erlang according to the instructions in [Building Erlang on SLES12](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-SLES12 "Building Erlang on SLES12").
-  - For RHEL 6.6 & 7.1, build & install Erlang according to the instructions in [Building Erlang on RHEL7](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-RHEL7 "Building Erlang on RHEL7").
+  - For SLES 11-SP3 & 12/12-SP1, build & install Erlang according to the instructions in [Building Erlang on SLES12](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-SLES12 "Building Erlang on SLES12").
+  - For RHEL 6.7 & 7.1/7.2, build & install Erlang according to the instructions in [Building Erlang on RHEL7](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-RHEL7 "Building Erlang on RHEL7").
 
   - For Ubuntu
-    ```
-    wget http://www.erlang.org/download/otp_src_17.4.tar.gz
-    tar zxvf otp_src_17.4.tar.gz
-    cd otp_src_17.4
-    export ERL_TOP=`pwd`
-    ./configure --prefix=/usr
-    make
-    sudo make install
+  ```
+	wget http://www.erlang.org/download/otp_src_17.4.tar.gz
+	tar zxvf otp_src_17.4.tar.gz
+	cd otp_src_17.4
+	export ERL_TOP=`pwd`
+	./configure --prefix=/usr
+	make
+	sudo make install
     ```
 
 5. Build and install Rebar
@@ -183,7 +190,7 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
 		sudo cp ./m4/* /usr/share/aclocal (Only for RHEL / Ubuntu)
 		
 
-7. Install "prove" module using CPAN (Only for RHEL6)
+7. Install "prove" module using CPAN (Only for RHEL6.7)
     ````
     /usr/bin/perl -MCPAN -e 'prove'
     ````
@@ -220,7 +227,7 @@ https://bugzilla.mozilla.org/attachment.cgi?id=517107&action=diff)_
 13. Verify Couchdb by starting the server
 
     ```
-    cd /opt/couchdb/bin
+	cd /opt/couchdb/bin
     sudo ./couchdb &
     ```
  
