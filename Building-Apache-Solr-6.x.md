@@ -1,5 +1,5 @@
 
-The instructions provided below specify the steps to build Apache Solr version 6.2.0 on Linux on the IBM z Systems for RHEL 7.1, SLES 12 SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apache Solr version 6.2.0 on Linux on the IBM z Systems for RHEL 7.1/7.2, SLES 12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 	
 
@@ -13,12 +13,12 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions. Th
 
 1. Use the following commands to obtain dependencies
 
-    For RHEL 7.1
+    For RHEL 7.1/7.2
     ```shell
     sudo yum install -y wget tar java-1.8.0-ibm-devel.s390x
     ```
     
-    For SLES 12 SP1
+    For SLES 12-SP1
     ```shell
     sudo zypper install -y wget tar java-1_8_0-ibm-devel
     ```
@@ -33,7 +33,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions. Th
     mkdir /<source_root>/
     cd /<source_root>/
     ```
-3. Download and Install ant 1.9.6 ( Only for RHEL 7.1 and SLES 12 SP1 )
+3. Download and Install ant 1.9.6 ( Only for RHEL 7.1/7.2 and SLES 12-SP1 )
 
 	```
 	wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.6-bin.tar.gz
@@ -52,7 +52,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions. Th
 	```
 2. Configure and make
 
-	For RHEL7.1 and SLES12 SP1 
+	For RHEL 7.1/7.2 and SLES 12-SP1 
     
 	If it throws error as JAVA_HOME is not defined correctly, export the JAVA_HOME as below
     ```shell
