@@ -1,10 +1,10 @@
 <!---PACKAGE:Apache JMeter--->
-<!---DISTRO:SLES 11:2.13--->
-<!---DISTRO:RHEL 6.6:2.13--->
+<!---DISTRO:SLES 11.X:2.13--->
+<!---DISTRO:RHEL 6.X:2.13--->
 
 # Building Apache JMeter
 
-The instructions provided below specify the steps to build Apache JMeter 2.13 on Linux on the IBM z Systems for RHEL6.6 & SLES11:
+The instructions provided below specify the steps to build Apache JMeter 2.13 on Linux on the IBM z Systems for RHEL 6.8 & SLES 11-SP4:
 
 _**General Notes:**_ 	 
 _i) When following the steps below please use a standard permission user unless otherwise specified._
@@ -13,12 +13,12 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
 ### Section 1: Install the following dependencies
 
-RHEL6.6:
+RHEL 6.8:
 ```
 	sudo yum install -y git wget tar java-1.7.1-ibm-devel.s390x subversion
 ```
 
-SLES11:
+SLES 11-SP4:
 ```
 	sudo zypper refresh
 	sudo zypper install -y  git wget openssl libtool autoconf make pcre pcre-devel libxml2-devel tar java-1_7_0-ibm-devel subversion
@@ -35,7 +35,7 @@ SLES11:
 	sudo zypper remove -y dbus-1-x11 libX11-xcb1
 ```
 
-##### Install Ant on SLES11 and RHEL6.6 only using following steps:
+##### Install Ant on SLES11-SP4 and RHEL6.8 only using following steps:
 ```
     cd /<source_root>
 	wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.9.3-bin.tar.gz 
@@ -45,19 +45,19 @@ SLES11:
 
 ##### Set environment variables:
 
-SLES11:
-```
-	export ANT_HOME=/<source_root>/apache-ant-1.9.3
-	export PATH=$PATH:$ANT_HOME/bin
-	export JAVA_HOME=/usr/lib64/jvm/java
-```
-
-RHEL6.6:
+RHEL 6.8:
 ```
 	export ANT_HOME=/<source_root>/apache-ant-1.9.3
 	export PATH=$PATH:$ANT_HOME/bin
 	export JAVA_HOME=/usr/lib/jvm/java
 	export PATH=$PATH:$JAVA_HOME/bin
+```
+
+SLES 11-SP4:
+```
+	export ANT_HOME=/<source_root>/apache-ant-1.9.3
+	export PATH=$PATH:$ANT_HOME/bin
+	export JAVA_HOME=/usr/lib64/jvm/java
 ```
 
 ### Section 2: Build and Install Apache JMeter
