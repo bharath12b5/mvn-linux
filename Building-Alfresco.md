@@ -7,7 +7,7 @@
 
 ## Building Alfresco
 
-The instructions provided below specify the steps to build [Alfresco](https://www.alfresco.com/) version 5.1 on Linux on the IBM z Systems for RHEL 7.1, SLES 12(sp1), RHEL 6, SLES 11 and Ubuntu 16.04
+The instructions provided below specify the steps to build [Alfresco](https://www.alfresco.com/) version 5.1 on Linux on the IBM z Systems for RHEL 7.1/7.2, SLES 12 SP1, RHEL 6, SLES 11 SP3 and Ubuntu 16.04
 
 
 _**General Notes:**_ 	 
@@ -17,7 +17,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 1. Install dependencies
 
-    * RHEL 7.1
+    * RHEL 7.1 and RHEL 7.2
 		
 		With IBM JDK:
 		
@@ -30,7 +30,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 			sudo yum install -y wget tar subversion java-1.8.0-openjdk.s390x java-1.8.0-openjdk-devel.s390x java-1.8.0-openjdk-headless.s390x
 			
 		
-    * SLES 12(sp1)
+    * SLES 12 SP1
 		
 		With IBM JDK:
 		
@@ -48,7 +48,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 		sudo yum install -y wget tar subversion  java-1.8.0-ibm.s390x  java-1.8.0-ibm-devel.s390x
 		```
 		
-	* SLES 11
+	* SLES 11 SP3
 	
 		```
 		sudo zypper install -y wget tar subversion
