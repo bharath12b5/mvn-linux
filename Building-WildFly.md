@@ -4,7 +4,7 @@
 
 ### Building WildFly 10.0.0.Final
 
-The instructions provided below specify the steps to build WildFly 10 on Linux on the IBM z Systems for RHEL 7 or Ubuntu 16.04. More information on WildFly is available at https://wildfly.org and the source code can be downloaded from https://github.com/wildfly/wildfly.git
+The instructions provided below specify the steps to build WildFly 10 on Linux on the IBM z Systems for RHEL 7.1/7.2 or Ubuntu 16.04. More information on WildFly is available at https://wildfly.org and the source code can be downloaded from https://github.com/wildfly/wildfly.git
 
 _**General Notes:**_
 
@@ -14,12 +14,12 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions. Th
 
 ### Section 1: Install the following dependencies
 	
-RHEL7:
+RHEL 7.1/7.2:
 ```
 sudo yum install -y git wget tar java-1.8.0-openjdk-devel
 ```
 
-Ubuntu16.04:
+Ubuntu 16.04:
 ```
 sudo apt-get install -y git wget tar maven openjdk-8-jdk 
 ```
@@ -34,7 +34,7 @@ sudo apt-get install -y git wget tar maven openjdk-8-jdk
 		git checkout 10.0.0.Final
 		cd <source_dir>
         
-2. Download apache-maven 3.3.3 (for RHEL7 only)
+2. Download apache-maven 3.3.3 (for RHEL 7.1/7.2 only)
 
 		wget https://archive.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
 		tar -xvzf apache-maven-3.3.3-bin.tar.gz
@@ -45,13 +45,13 @@ sudo apt-get install -y git wget tar maven openjdk-8-jdk
 		export MAVEN_OPTS="-Xmx512m -XX:MaxPermSize=1024m"
 		export JBOSS_HOME=<source_dir>/wildfly/build/target/wildfly-10.0.0.Final/
 		
-  RHEL7:
+  RHEL 7.1/7.2:
   ```
 		export PATH=$PATH:<source_dir>/apache-maven-3.3.3/bin
 		export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
 		export PATH=$PATH:$JAVA_HOME/bin
   ```
-  Ubuntu16.04:
+  Ubuntu 16.04:
   ```  
 		export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x/jre
 		export PATH=$PATH:$JAVA_HOME/bin
@@ -74,7 +74,7 @@ sudo apt-get install -y git wget tar maven openjdk-8-jdk
 	sudo sh ./dist/target/wildfly-10.0.0.Final/bin/domain.sh -b 0.0.0.0 -bmanagement 0.0.0.0
 	```		
 	
-After starting WildFly, direct your Web browser to the WildFly Console at: http://<HOST_IP>:8080
+After starting WildFly, direct your Web browser to the WildFly Console at: ```http://<HOST_IP>:8080```
 
 ### References:
 https://wildfly.org
