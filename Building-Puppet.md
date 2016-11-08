@@ -5,16 +5,15 @@
 <!---DISTRO:RHEL 6.6:4.5.3--->
 <!---DISTRO:Ubuntu 16.x:4.5.3--->
 
-
 # Building Puppet
 
 Below versions of Puppet are available in respective distributions at the time of this recipe creation:
 
-* SLES 11 has  `2.7.26`
+* SLES 11-SP3 has  `2.7.26`
 * Ubuntu 16.04 has `3.8.5`
  
 
-The instructions provided below specify the steps to build Puppet v4.5.3 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Puppet v4.5.3 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_  
 i) _When following the steps below please use a standard permission user unless otherwise specified._
@@ -24,11 +23,11 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 ## Puppet Master Installation
 1. Install following dependencies  
   
-   For RHEL6 & RHEL7:  
+   For RHEL6.7 & RHEL7.1/7.2:  
     ```
     sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
 ```
-   For SLES11 & SLES12:  
+   For SLES11-SP3 & SLES12/12-SP1:  
     ````
     sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
 ````
@@ -113,7 +112,7 @@ The output gives the directory. If such directory does not exist, create one.
           autosign = true
 ````
 
-11. The Puppet master runs on TCP port 8140. This port needs to be open on your master’s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall
+11. The Puppet master runs on TCP port 8140. This port needs to be open on your masterâ€™s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall
     ````
     sudo iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT 
 ````
@@ -121,12 +120,12 @@ The output gives the directory. If such directory does not exist, create one.
 ## Puppet Agent Installation
 1. Install following dependencies
   
-  For RHEL6 & RHEL7:  
+  For RHEL6.7 & RHEL7.1/7.2:  
 
     ````
     sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
 ````
-  For SLES11 & SLES12:
+  For SLES11-SP3 & SLES12/12-SP1:
     ````
     sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
 ````
@@ -307,7 +306,7 @@ Replace it with
     ./rootuser_tests.sh
 
          ```
-      * For RHEL 6/RHEL 7/SLES 11/SLES 12
+      * For RHEL 6.7/RHEL 7.1/RHEL 7.2/SLES 11-SP3/SLES 12/SLES 12-SP1
          ```
           export LC_ALL="en_US.UTF8"
     ./rootuser_tests.sh
