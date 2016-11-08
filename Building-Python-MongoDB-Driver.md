@@ -1,4 +1,6 @@
-The Python driver for MongoDB (PyMongo) can be built for Linux on z Systems running RHEL 6.6, RHEL 7.1, SLES 11, SLES 12 and  Ubuntu 16.04 by following these instructions. Version 3.2 of PyMongo has been successfully built & tested this way.
+## Building PyMongo 3.2
+
+The instructions provided below specify the steps to build Python driver for MongoDB (PyMongo) version 3.2 on Linux on the IBM z Systems for RHEL 6.7, RHEL 7.1, RHEL 7.2, SLES 11-SP3, SLES 12, SLES 12-SP1 and Ubuntu 16.04.
 
 _**General Notes:**_ 	
 
@@ -8,20 +10,18 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 iii) _Where the instructions refer to 'vi' you may, of course, use an editor of your choice._
 
-## Building PyMongo 3.2
-
 1. Install standard utilities and platform specific dependencies :
 
-   RHEL 6.6/ RHEL 7.1
+   RHEL 6.7, RHEL 7.1/7.2
    ```shell
    sudo yum install git openssl openssl-devel pyOpenSSL
    ``` 
 
-   SLES 11
+   SLES 11-SP3
    ```shell
    sudo zypper install git python-xml python-openssl openssl-devel openssl
    ```
-   SLES 12
+   SLES 12/12-SP1
    ```shell
    sudo zypper install git python-xml
    ```
@@ -79,11 +79,11 @@ iii) _Where the instructions refer to 'vi' you may, of course, use an editor of 
   
    Install dependencies as follows:
    
-   On RHEL 6.6/ RHEL 7.1:
+   On RHEL 6.6, RHEL 7.1/7.2:
    ```shell
    sudo yum install tar xz wget zlib-devel
    ``` 
-   On SLES11/ SLES12:
+   On SLES 11-SP3, SLES 12/12-SP1:
    ```shell
    sudo zypper install tar xz wget zlib-devel
    ```
