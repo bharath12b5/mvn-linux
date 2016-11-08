@@ -1,4 +1,8 @@
-The PHP driver for MongoDB can be built for Linux on z Systems running RHEL 7.1, RHEL 6.6, SLES 12, SLES 11 and Ubuntu 16.04 by following these instructions. Version 1.6.12 has been successfully built & tested this way. More information on the PHP driver is available at http://docs.mongodb.org/ecosystem/drivers/php/ and the source code can be obtained from http://github.com/mongodb/mongo-php-driver
+##  Building the PHP Driver for MongoDB
+
+The instructions provided below specify the steps to build PHP driver for MongoDB version 1.6.12 on Linux on the IBM z Systems for RHEL 7.1, RHEL 7.2, RHEL 6.7, SLES 12, SLES 12-SP1, SLES 11-SP3 and Ubuntu 16.04.
+
+More information on the PHP driver is available at http://docs.mongodb.org/ecosystem/drivers/php/ and the source code can be obtained from http://github.com/mongodb/mongo-php-driver
 
 **_General Notes_:**
 
@@ -7,8 +11,6 @@ i) _When following the steps below please use a standard permission user unless 
 ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary write-able directory anywhere you'd like to place it._
 
 
-##  Building the PHP Driver for MongoDB
-
 ***
 ### Obtain pre-built dependencies and create working directory
 1. Use the following commands to obtain required pre-built dependencies
@@ -16,15 +18,15 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
      Note that if you intend to "Build with Cyrus SASL (MongoDB Enterprise Authentication) support" then you will need to add cyrus-sasl-devel to the list of dependencies shown below.
 
 
-  For RHEL 7.1 & RHEL 6.6
+  For RHEL 7.1/7.2 & RHEL 6.7
 
 		sudo yum install gcc make openssl-devel php-devel php-pear tar wget git
 		              
-  For SLES 12
+  For SLES 12 & SLES 12-SP1
 
 		sudo zypper install gcc make php5-devel php5-pear tar wget git
 		
-  For SLES 11
+  For SLES 11-SP3
 
 		sudo zypper install gcc make php53-devel php53-pear tar wget git
 		
