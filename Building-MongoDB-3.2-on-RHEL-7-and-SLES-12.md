@@ -1,10 +1,10 @@
-[MongoDB](http://mongodb.org/) 3.2.0 has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 7.1 and SLES 12.
+[MongoDB](http://mongodb.org/) 3.2.0 has been ported to Linux on IBM z Systems. The following build instructions have been tested on RHEL 7.1/7.2 and SLES 12/12-SP1.
 
 ## Building MongoDB
 
 1. Building MongoDB requires a lot of disk space. Before attempting the build, ensure that you have 30GB of free space. You will also need root access to perform some of the steps below, e.g. installing libraries into system locations.
 
-2. Building MongoDB requires SCons. On RHEL 7, download scons-2.3.4-1.noarch.rpm from [SCons project page](http://prdownloads.sourceforge.net/scons/scons-2.3.4-1.noarch.rpm) and install it like this:
+2. Building MongoDB requires SCons. On RHEL 7.1/7.2, download scons-2.3.4-1.noarch.rpm from [SCons project page](http://prdownloads.sourceforge.net/scons/scons-2.3.4-1.noarch.rpm) and install it like this:
 
         rpm -i scons-2.3.4-1.noarch.rpm
 
@@ -68,17 +68,17 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 
    If both modules are installed already, nothing will be printed to the console. Otherwise, the console will print an error message, such as "No module named yaml" or "No module named pymongo".
 
-   To install PyMongo on RHEL 7 or SLES 12, build the driver from source:
+   To install PyMongo on RHEL 7.1/7.2 or SLES 12/12-SP1, build the driver from source:
 
         git clone git://github.com/mongodb/mongo-python-driver.git pymongo
         cd pymongo
         python setup.py install
 
-   PyYAML should be included in RHEL 7 by default. In case you do not have PyYAML installed, install it with YUM:
+   PyYAML should be included in RHEL 7.1/7.2 by default. In case you do not have PyYAML installed, install it with YUM:
 
         sudo yum install PyYAML
 
-   To install PyYAML on SLES 12, build it from source:
+   To install PyYAML on SLES 12/12-SP1, build it from source:
 
         git clone https://github.com/yaml/pyyaml.git
         cd pyyaml
