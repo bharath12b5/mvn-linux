@@ -9,46 +9,46 @@
 
 Below versions of Doxygen are available in respective distributions at the time of this recipe creation:
 
-• RHEL 7 has  1.8.5  
-• RHEL 6.6 has  1.6.1  
-• SLES 12 has  1.8.6-1.20  
-• SLES 11.3 has  1.5.6-1.19  
-• Ubuntu 16.04 has 1.8.11-1
+* RHEL 7.1 & 7.2 have  1.8.5  
+* RHEL 6.8 has  1.6.1  
+* SLES 12 and SLES 12-SP1 have  1.8.6-1.20  
+* SLES 11-SP3 has  1.5.6-1.19  
+* Ubuntu 16.04 has 1.8.11-1
 
-The instructions provided below specify the steps to build Doxygen 1.8.11 on Linux on the IBM z Systems for RHEL 6.6/7.1 and SLES11/12 .
+The instructions provided below specify the steps to build Doxygen 1.8.11 on Linux on the IBM z Systems for RHEL 6.8, RHEL 7.1/7.2 and SLES 11-SP3, SLES 12 and SLES 12-SP1:
 
 ##### General Notes:
       
-i) When following the steps below please use a standard permission user unless otherwise specified.
+_1. When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it.
+_2. A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ### Building Doxygen
 
 1. Install standard utilities, packages and platform specific dependencies:
 
-    RHEL7.1:
+    RHEL 7.1/7.2:
 
     ```
     sudo yum install -y git flex bison gcc gcc-c++ texlive-bibtex-bin make perl-Test-Simple.noarch openssl wget tar cpan qt-devel latex ghostscript texlive unzip texlive-epstopdf.noarch texlive.s390x python-argparse.noarch
      ```
 
-    RHEL6.6:
+    RHEL 6.8:
     ```
     sudo yum install -y git flex bison gcc gcc-c++ texlive-latex.s390x make python-argparse.noarch openssl wget tar qt-devel-4.6.2-28.el6_5.s390x
     ```
 
-    SLES12:
+    SLES 12/12-SP1:
     ```
     sudo zypper install -y git flex bison gcc gcc-c++ python-xml libxml2-tools libxml2-devel texlive-bibtex-bin make perl-Test-Simple.noarch  openssl wget tar libqt4-devel ghostscript texlive unzip graphviz perl perl-YAML zip texlive*
     ```
  
-    SLES11:
+    SLES 11-SP3:
     ```
     sudo zypper install -y git flex bison gcc gcc-c++ make openssl wget tar libqt4-devel libxml2-devel texlive ghostscript-devel texlive-bin-tools unzip graphviz python-xml libxml2-devel perl perl-YAML zip texlive*
     ```
 
-2. Use CPAN to install Perl modules (Only for RHEL7, SLES11, SLES12):
+2. Use CPAN to install Perl modules (Only for RHEL 7.1/7.2, SLES 11-SP3, SLES 12/12-SP1):
    ```	
     sudo cpan Test::More
     sudo cpan File::Path
@@ -59,7 +59,11 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
 3. Install dependencies(latex) for make docs command:
 
      ```
-    wget http://mirrors.ctan.org/macros/latex/contrib/multirow/multirow.sty
+	wget http://mirrors.ctan.org/macros/latex/contrib/multirow/multirow.dtx
+	wget http://mirrors.ctan.org/macros/latex/contrib/multirow/multirow.ins
+	wget http://mirrors.ctan.org/macros/latex/contrib/multirow/multirow.pdf
+	latex multirow.ins
+    
     wget  http://mirrors.ctan.org/macros/latex/contrib/import/import.sty 
     wget http://mirrors.ctan.org/macros/latex/contrib/xtab/xtab.dtx
     wget http://mirrors.ctan.org/macros/latex/contrib/xtab/xtab.ins 
@@ -76,7 +80,8 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
     wget http://mirrors.ctan.org/macros/latex/contrib/tocloft/tocloft.pdf 
     latex tocloft.ins 
 	
-    wget http://mirrors.ctan.org/macros/latex/contrib/appendix/appendix.dtx 
+    
+	wget http://mirrors.ctan.org/macros/latex/contrib/appendix/appendix.dtx
     wget http://mirrors.ctan.org/macros/latex/contrib/appendix/appendix.ins 
     wget http://mirrors.ctan.org/macros/latex/contrib/appendix/appendix.pdf 
     latex appendix.ins 
@@ -86,7 +91,18 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
     wget http://mirrors.ctan.org/macros/latex/contrib/tabu/tabu.pdf 
     latex tabu.ins
     ```
- *  Perform the following steps for SLES12:  
+    
+     **_Note_**: If the appendix.dtx fails to download please use the following steps to install appendix.sty
+    ```
+    wget http://mirrors.ctan.org/macros/latex/contrib/appendix.zip  
+    unzip appendix.zip  
+    cd appendix 
+    latex appendix.ins
+    mv appendix.sty ../
+    cd ..
+    ```
+
+ *  Perform the following steps for SLES 12/12-SP1:  
 
     ```  
 	 wget http://mirrors.ctan.org/support/epstopdf/epstopdf.pl  
@@ -96,7 +112,7 @@ ii) A directory `/<source_root>/` will be referred to in these instructions, thi
  *  The files are made available to latex by placing at specific location:  
 
     ```  
-    sudo mkdir -p /usr/share/texmf/tex/latex/ (Only for RHEL-7)
+    sudo mkdir -p /usr/share/texmf/tex/latex/ (Only for RHEL 7.1/7.2)
     sudo cp *.sty /usr/share/texmf/tex/latex/  
     sudo mktexlsr
     ```
