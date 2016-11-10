@@ -1,5 +1,11 @@
-Swift is available on RHEL 7.1, SLES 12.1 and Ubuntu 16.04. Swift 3.0 has been built and tested on Linux on z Systems.
+Swift is available on RHEL 7.1, SLES 12-SP1 and Ubuntu 16.04. Swift 3.0 has been built and tested on Linux on z Systems.
 This is a Beta release to go in hand with the official Swift 3.0 release.
+
+##### General Notes:
+      
+_1. When following the steps below please use a standard permission user unless otherwise specified._
+
+_2. Building Swift requires a lot of disk space.  Before attempting the build, ensure that you have at least 30GB of free space in `/<source_root>/` and sufficient space in the root partition for the prerequisites._
 
 ### Preparing to build
 
@@ -51,7 +57,7 @@ This is a Beta release to go in hand with the official Swift 3.0 release.
 
 
 
-    For SLES 12
+    For SLES 12-SP1
 
         sudo zypper install binutils-devel gcc-c++ git \
                             libarchive-devel libbz2-devel libcurl-devel \
@@ -102,7 +108,7 @@ This is a Beta release to go in hand with the official Swift 3.0 release.
 
         export PATH=/opt/binutils-2.26/bin:$PATH
 
-4. (For SLES 12 only) If your system has libstdc++ 6.0.21 but older GCC/binutils (< GCC 5), then you should downgrade libstdc++ to work around this issue:
+4. (For SLES 12-SP1 only) If your system has libstdc++ 6.0.21 but older GCC/binutils (< GCC 5), then you should downgrade libstdc++ to work around this issue:
 
     https://bugs.swift.org/browse/SR-23
 
@@ -147,7 +153,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
    
 2. Run cmake outside the source tree to configure LLVM:
 
-    For SLES 12 & RHEL 7.1
+    For SLES 12-SP1 & RHEL 7.1
 
         cd ../..
         mkdir build
@@ -203,7 +209,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
         
 3. Build the code (`$MYDESTDIR` can be any blank directory where the installable package is assembled, for example `$HOME/swift/install`):
 
-    For SLES 12 & RHEL 7.1
+    For SLES 12-SP1 & RHEL 7.1
 
         ./utils/build-script -j 2 -r \
         --lldb --foundation --xctest --llbuild --swiftpm --libdispatch -- \
@@ -244,7 +250,7 @@ LLVM 3.9 or above is needed for building Swift and its components.
         - Replace the -r option with -R to get a release build (no debugging symbols and no assert).
 
     
-    _Additional Notes **(For SLES 12 & RHEL 7.1)**:_ 
+    _Additional Notes **(For SLES 12-SP1 & RHEL 7.1)**:_ 
     
     Currently, the build will stop during the installation phase due to a known issue in LLDB's CMake files.
 
