@@ -1,11 +1,11 @@
 <!---PACKAGE:PostgreSQL--->
-<!---DISTRO:SLES 12:9.4, 9.5--->
-<!---DISTRO:SLES 11:9.4, 9.5--->
-<!---DISTRO:RHEL 7.1:9.4, 9.5--->
-<!---DISTRO:RHEL 6.6:9.4, 9.5--->
+<!---DISTRO:SLES 12:9.4, 9.6--->
+<!---DISTRO:SLES 11:9.4, 9.6--->
+<!---DISTRO:RHEL 7.1:9.4, 9.6--->
+<!---DISTRO:RHEL 6.6:9.4, 9.6--->
 
-The latest stable version of [PostgreSQL](http://www.postgresql.org/) is version 9.5. The following articles explain how to obtain and build the code:
-* [[Building PostgreSQL 9.5]]
+The latest stable version of [PostgreSQL](http://www.postgresql.org/) is version 9.6. The following articles explain how to obtain and build the code:
+* [[Building PostgreSQL 9.6]]
 
 
 The instructions for building from PostgreSQL 9.4 RPMs are included here for completeness:
