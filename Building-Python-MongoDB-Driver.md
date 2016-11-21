@@ -1,23 +1,23 @@
-## Building PyMongo 3.2
+## Building PyMongo 3.3.1
 
-The instructions provided below specify the steps to build Python driver for MongoDB (PyMongo) version 3.2 on Linux on the IBM z Systems for RHEL 6.7, RHEL 7.1, RHEL 7.2, SLES 11-SP3, SLES 12, SLES 12-SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Python driver for MongoDB (PyMongo) version 3.3.1 on Linux on the IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_ 	
 
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+* _When following the steps below please use a standard permission user unless otherwise specified._
 	 
-ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
+* _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
-iii) _Where the instructions refer to 'vi' you may, of course, use an editor of your choice._
+* _Where the instructions refer to 'vi' you may, of course, use an editor of your choice._
 
 1. Install standard utilities and platform specific dependencies :
 
-   RHEL 6.7, RHEL 7.1/7.2
+   RHEL 6.8/7.1/7.2/7.3
    ```shell
    sudo yum install git openssl openssl-devel pyOpenSSL
    ``` 
 
-   SLES 11-SP3
+   SLES 11-SP4
    ```shell
    sudo zypper install git python-xml python-openssl openssl-devel openssl
    ```
@@ -26,7 +26,7 @@ iii) _Where the instructions refer to 'vi' you may, of course, use an editor of 
    sudo zypper install git python-xml
    ```
    
-   Ubuntu 16.04
+   Ubuntu 16.04/16.10
    ```shell
    sudo apt-get update
    sudo apt-get install git openssl libssh-dev python python-openssl python-setuptools
@@ -45,7 +45,7 @@ iii) _Where the instructions refer to 'vi' you may, of course, use an editor of 
    ```shell
    git clone git://github.com/mongodb/mongo-python-driver.git pymongo
    cd pymongo
-   git checkout 3.2
+   git checkout 3.3.1
    ```
 
 4. Configure and install PyMongo :
@@ -79,11 +79,11 @@ iii) _Where the instructions refer to 'vi' you may, of course, use an editor of 
   
    Install dependencies as follows:
    
-   On RHEL 6.6, RHEL 7.1/7.2:
+   On RHEL 6.8/7.1/7.2/7.3:
    ```shell
    sudo yum install tar xz wget zlib-devel
    ``` 
-   On SLES 11-SP3, SLES 12/12-SP1:
+   On SLES 11-SP4/12/12-SP1:
    ```shell
    sudo zypper install tar xz wget zlib-devel
    ```
@@ -170,7 +170,7 @@ The example code section given below is used to perform a basic test to ensure t
     header = {"company": "IBM",
               "project": "MongoDB Driver",
               "language": "python",
-              "version": "3.2"};
+              "version": "3.3.1"};
 
     db[collection].insert_one(header);
 
@@ -196,7 +196,7 @@ The example code section given below is used to perform a basic test to ensure t
      u'company': u'IBM',
      u'language': u'python',
      u'project': u'MongoDB Driver',
-     u'version': u'3.2'}
+     u'version': u'3.3.1'}
     {u'_id': ObjectId('560eb1ff051ba90001d927a1'), u'line': 0}
     {u'_id': ObjectId('560eb1ff051ba90001d927a2'), u'line': 1}
     {u'_id': ObjectId('560eb1ff051ba90001d927a3'), u'line': 2}
