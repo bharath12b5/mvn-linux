@@ -1,81 +1,70 @@
 <!---PACKAGE:Ansible--->
-<!---DISTRO:RHEL 6.6:2.1.x--->
-<!---DISTRO:RHEL 7.1:2.1.x--->
-<!---DISTRO:SLES 11:2.1.x--->
-<!---DISTRO:SLES 12:2.1.x--->
-<!---DISTRO:Ubuntu 16.x:2.1.x--->
+<!---DISTRO:RHEL 6.6:2.2.x--->
+<!---DISTRO:RHEL 7.1:2.2.x--->
+<!---DISTRO:SLES 11:2.2.x--->
+<!---DISTRO:SLES 12:2.2.x--->
+<!---DISTRO:Ubuntu 16.x:2.2.x--->
 
 ## Building Ansible
 
 Below versions of Ansible are available in respective distributions at the time of this recipe creation:
 
-*    Ubuntu 16.04 has `	2.0.0.2-2`
+*    Ubuntu 16.04 has `	2.2.0.0-1`
+*    Ubuntu 16.10 has ` 2.2.0.0-1`
 
 Latest Ubuntu builds are available [in a PPA here](http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-apt-ubuntu).
 
-The instructions provided below specify the steps to build [Ansible](http://www.ansible.com/) version 2.1.0.0 on Linux on the IBM z Systems for RHEL 6.7, RHEL 7.1/7.2, SLES 11-SP3, SLES 12/12-SP1.
+*    _**Note:**_  Following the step `sudo apt-add-repository ppa:ansible/ansible`, make below changes in file`/etc/apt/sources.list.d/ansible-ubuntu-ansible-yakkety.list`.  
+    Replace  
+
+    ```
+    deb http://ppa.launchpad.net/ansible/ansible/ubuntu yakkety main
+    ```     			 
+
+    with           			
+
+    ```
+    deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main
+    ```    
+
+    Above change is required for Ansible ppa repository to use xenial as there is no release avaialble for yakkety yet.
+
+
+The instructions provided below specify the steps to build [Ansible](http://www.ansible.com/) version 2.2.0.0 on Linux on the IBM z Systems for RHEL 7.1/7.2/7.3 and SLES 12/12-SP1.
 
 
 _**General Notes:**_ 	 
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+* _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+* _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 1. Install dependencies:
 
-    On RHEL 6.7 and RHEL 7.1/7.2:
+    On RHEL 7.1/7.2/7.3:
   
         sudo yum install -y git wget tar svn bzip2 unzip gcc python-devel make which autoconf net-tools ssh python-setuptools python-lxml python-ldap sqlite-devel openldap-devel libxslt-devel openssl-devel libffi-devel openssl
-      
-    On SLES 11-SP3:
-
-        sudo zypper install -y git tar bzip2 unzip python-devel make autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc libffi-devel openssl libopenssl-devel mercurial
 
     On SLES 12/12-SP1:
 
-        sudo zypper install -y git tar bzip2 unzip python-devel make which autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc openssl libopenssl-devel libffi-devel 
+        sudo zypper install -y git tar bzip2 unzip python-devel make which autoconf net-tools wget python-setuptools python-lxml python-ldap libxslt-devel gcc openssl libopenssl-devel libffi-devel python-xml
 
-2. Build Openssl (**only** on SLES 11-SP3)
-	
-		cd /<source_root>/
-		git clone https://github.com/openssl/openssl.git
-		cd /<source_root>/openssl
-		git checkout OpenSSL_1_0_2d
-		./config --prefix=/usr --openssldir=/usr/local/openssl shared
-        make
-        sudo make install
-
-3. Build Python (**only** on SLES 11-SP3)
-
-	The Python version available on the SLES 11-SP3 package repositories is too low level so build and install Python yourself following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-3.5.x).
-
-	Make sure that Python 3.5 is used. Update /usr/bin/python link.
-
-		sudo /usr/sbin/update-alternatives --install /usr/bin/python python /usr/bin/python2 1
-        sudo /usr/sbin/update-alternatives --install /usr/bin/python python /usr/local/bin/python3.5 2
-        sudo /usr/sbin/update-alternatives --list python
-        sudo /usr/sbin/update-alternatives --config python  (Select the option pointing to python3.5)
-             
-
-       
-       
-4.  In order to install certain Python modules for Ansible later on, *pip* is required:
-
-    On RHEL 6.7:
-	
-        wget https://bootstrap.pypa.io/ez_setup.py
-        sudo python ez_setup.py
-        sudo easy_install pip
 		
-    On RHEL 7.1/7.2:
+2.  Install Docker 1.10.0
+	See instructions [here](http://www.ibm.com/developerworks/linux/linux390/docker.html)
+	
+	On SLES 12-SP1
+		
+		sudo zypper install -y docker
+		
+3.  In order to install certain Python modules for Ansible later on, *pip* is required:
+
+   
+    On RHEL 7.1/7.2/7.3:
 	
 		wget https://bootstrap.pypa.io/get-pip.py
 		sudo python get-pip.py 
 	        
-	On SLES 11-SP3:
-	
-		sudo pip3 install --upgrade pip
-		
+
     On SLES 12/12-SP1:
 
         wget https://pypi.python.org/packages/c3/a2/a63244da32afd9ce9a8ca1bd86e71610039adea8b8314046ebe5047527a6/pip-1.2.1.tar.gz
@@ -83,29 +72,25 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 		cd pip-1.2.1
 		sudo python setup.py install
 		
-
-5.  Clone the latest stable Ansible 2.1.0.0 GitHub source tree:
+		
+4.  Clone the latest stable Ansible 2.2.0.0 GitHub source tree:
 
         cd /<source_root>/
         git clone https://github.com/ansible/ansible.git
         cd /<source_root>/ansible
-        git checkout v2.1.0.0-1
+        git checkout v2.2.0.0-1
 
-6.  Setup the environment and get Ansible modules:
+5.  Setup the environment and get Ansible modules:
 
         source ./hacking/env-setup
         git submodule update --init --recursive
         source ./hacking/env-setup -q
 
-7.  Ansible uses the following Python modules which need to be installed:
+6.  Ansible uses the following Python modules which need to be installed:
 
-    On RHEL 6.7 and RHEL 7.1/7.2:
+    On RHEL 7.1/7.2/7.3:
   
-        sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pycrypto
-
-    On SLES 11-SP3:
-
-        sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock six patch call coverage==3.7.1 coveralls funcsigs pycrypto
+        sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pycrypto boto3 botocore
 
     On SLES 12/12-SP1:
 
@@ -116,8 +101,8 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 		sudo python setup.py install
 		cd /<source_root>/ansible 
         sudo pip install --upgrade setuptools        
-		sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pycrypto
-      
+		sudo pip install paramiko PyYAML jinja2 httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pycrypto boto3 botocore
+    
 ## Installation
 
 1.  Run this command
