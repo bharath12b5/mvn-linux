@@ -11,7 +11,7 @@ Below versions of R are available in respective distributions at the time of thi
 
 *    Ubuntu 16.04 has `3.2.3`
 
-The instructions provided below specify the steps to build R 3.3.1 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3, SLES 12/12-SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build R 3.3.1 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2/7.3, SLES 11-SP3, SLES 12/12-SP1 and Ubuntu 16.04.
 
 **General Notes:**	 
 i)  _When following the steps below please use a standard permission user unless otherwise specified._
@@ -19,7 +19,7 @@ i)  _When following the steps below please use a standard permission user unless
 
 1. Installing Build Dependencies
 
-      a) RHEL 7.1/7.2
+      a) RHEL 7.1/7.2/7.3
 
      * With IBM JDK 
      ```
@@ -51,7 +51,7 @@ i)  _When following the steps below please use a standard permission user unless
   
   d) SLES 11-SP3
    ```
-   sudo zypper install  wget tar help2man ncurses-devel make cairo-devel gcc-c++   libjpeg-devel libpng-devel libtiff-devel readline-devel fdupes   xdg-utils pango-devel tcl-devel tk-devel xorg-x11-devel texinfo posix_cc posix_cc-debuginfo posix_cc-debugsource php5-posix php5-posix java-1_7_0-ibm gcc-fortran git php53-posix man-pages-posix
+   sudo zypper install wget tar help2man ncurses-devel make cairo-devel gcc-c++ libjpeg-devel libpng-devel libtiff-devel readline-devel fdupes xdg-utils pango-devel tcl-devel tk-devel xorg-x11-devel texinfo posix_cc posix_cc-debuginfo posix_cc-debugsource java-1_7_0-ibm gcc-fortran git php53-posix man-pages-posix
    ```
   e) Ubuntu 16.04
 
@@ -75,7 +75,7 @@ i)  _When following the steps below please use a standard permission user unless
       
 2. Set environmental variables 
   
-   RHEL 7.1/7.2
+   RHEL 7.1/7.2/7.3
    ```
    export JAVA_HOME=/usr/lib/jvm/java
    ```
@@ -116,14 +116,11 @@ i)  _When following the steps below please use a standard permission user unless
    _**Note:** Where `<source_root>` is the directory defined at the top of this document - if you wish to clean up the `<source_root>` at the end of the install you may want to place ibm-java-s390x-80 in a different location, if so just update the JAVA_HOME_
 
       
-3. Build and install perl-Text-Unidecode (for SLES 12/12-SP1) 
+3. Build and install perl-Text-Unidecode (for **SLES 12**) 
    
    Download the latest version of perl-Text-Unidecode 
     ```
-    wget http://download.opensuse.org/repositories/devel:/languages:/R:/patched/SLE_12/src/perl-Text-Unidecode-*.src.rpm   (* indicates the latest version number) 
-    sudo zypper refresh
-    rpmbuild --rebuild perl-Text-Unidecode-*.src.rpm
-    cp $HOME/rpmbuild/RPMS/noarch/perl-Text-Unidecode-*.noarch.rpm .
+    wget http://ftp.gwdg.de/pub/opensuse/repositories/devel:/languages:/R:/patched/SLE_12/noarch/perl-Text-Unidecode-*.noarch.rpm    (* indicates the latest version number) 
     sudo zypper refresh
     sudo zypper install -y perl-Text-Unidecode-*.noarch.rpm
          
@@ -189,7 +186,7 @@ i)  _When following the steps below please use a standard permission user unless
 	  wget --no-check-certificate https://curl.haxx.se/download/curl-7.47.1.tar.gz
 	  tar xzvf curl-7.47.1.tar.gz
 	  cd curl-7.47.1
-	  ./configure --with-ssl && make && sudo make install
+	  LDFLAGS=-R/usr/local/ssl/lib ./configure --with-ssl && make && sudo make install
 	  export LD_LIBRARY_PATH=<source_root>/curl-7.47.1/lib/.libs:$LD_LIBRARY_PATH 
 	  sudo ldconfig    
       ```
