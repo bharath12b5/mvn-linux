@@ -1,30 +1,41 @@
 # Building PostgreSQL
 
-Below versions of PostgreSQL are available in respective distributions at the time of this recipe creation.
+Below versions of PostgreSQL are available in respective distributions at the time of this recipe creation:  
 
-• RHEL 7.1 has  9.2.15  
-• RHEL 6.6 has  8.4.20    
-• SLES 11 has  8.3.23-0.4.1  	 
-• Ubuntu 16.04 has  9.5+173  
+* RHEL 7.1 & 7.2 have 9.2.15  
+* RHEL 7.3 has 9.2.18
+* RHEL 6.8 has  8.4.20    
+* SLES 11-SP4 has 8.3.23-0.4.1  
+* SLES 12 & SLES 12-SP1 have 9.4.6-7.2	 
+* Ubuntu 16.04 has  9.5+173  
+* Ubuntu 16.10 has  9.5.5 
 
-[PostgreSQL version 9.5.4](http://www.postgresql.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for SLES 11/12 and RHEL 6.6/7.1 .
+[PostgreSQL version 9.6.0](http://www.postgresql.org/) has been successfully built and tested for Linux on z Systems. The following instructions can be used for SLES 11-SP4/12/12-SP1 and RHEL 6.8/7.1/7.2/7.3 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_ 	 
-_i) When following the steps below please use a standard permission user unless otherwise specified._
+- _When following the steps below please use a standard permission user unless otherwise specified._
 
-_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._ 
+- _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._ 
 
 1. Install the build dependencies:
 
-      (SLES 11/12)
+      (SLES 11-SP4/12/12-SP1)
      ```
     sudo zypper in -y git gcc  gcc-c++ make readline-devel  zlib-devel bison flex
     ```
 
-       (RHEL 6.6/7.1)
+       (RHEL 6.8/7.1/7.2/7.3)
       ```
     sudo yum install -y git wget build-essential gcc gcc-c++ make readline-devel zlib-devel bison flex
       ```
+	  
+	  (Ubuntu 16.04/16.10)
+      ```
+    sudo apt-get update
+    sudo apt-get install -y  bison flex wget build-essential git gcc make zlib1g-dev libreadline6 libreadline6-dev
+      ```
+	  
+	  
 2. Create postgres user, group and home directory:
  	
      ```
@@ -33,7 +44,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 	sudo passwd postgres
      ```
 	 
-    **Note:** *Password for SLES11 should be up to 7 characters. Please note that `/usr/sbin` is available in `PATH` environment variable.*
+    **Note:** *Password for SLES11-SP4 should be up to 7 characters. Please note that `/usr/sbin` is available in `PATH` environment variable.*
 	
 3. Build and install PostgreSQL:
  	  * Download PostgreSQL source code from github:
@@ -43,7 +54,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
          cd /home/postgres
          git clone https://github.com/postgres/postgres.git 
          cd postgres/
-         git checkout REL9_5_4
+         git checkout REL9_6_0
          ```   
      
    		 **Note:** *Login as postgres user and download the source in postgres home directory.* 
