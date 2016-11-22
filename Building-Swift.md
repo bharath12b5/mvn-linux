@@ -90,19 +90,6 @@ _2. Building Swift requires a lot of disk space.  Before attempting the build, e
                              libsqlite3-dev swig libpython-dev libncurses5-dev \
                              pkg-config libcurl4-nss-dev
        
-2.  Install other prerequisites from Github:
-
-        git clone https://github.com/mackyle/blocksruntime
-        cd blocksruntime
-        ./buildlib
-        sudo ./installlib
-      
-        git clone https://github.com/mheily/libkqueue
-        cd libkqueue
-        autoreconf -i
-        ./configure
-        make
-        sudo make install
 
 3. You will also need the gold linker (part of the binutils package), which was ported to z in late 2015.  See [[Building Gold Linker]] for details on building binutils from source and installing it. Then, add the binutils installation directory to the PATH variable:
 
