@@ -1,6 +1,6 @@
-# Building pm2
+# Building PM2
 
-The instructions provided below specify the steps to install pm2 v2.0.19 on Linux on the IBM z Systems for RHEL 7.1/7.2, SLES 12/12-SP1, and Ubuntu 16.04/16.10.
+The instructions provided below specify the steps to install PM2 v2.0.19 on Linux on the IBM z Systems for RHEL 7.1/7.2, SLES 12/12-SP1, and Ubuntu 16.04/16.10.
 
 _**General Notes:**_  
 _When following the steps below please use a standard permission user unless otherwise specified._
@@ -40,7 +40,7 @@ For Ubuntu 16.04/16.10
 	
 			export PATH=$PATH:<IBM_NODE_HOME>/ibm/node/bin
 		
-**2. Install pm2**  
+**2. Install PM2**  
 
 * RHEL 7.1/7.2 and SLES 12/12-SP1
      ```
@@ -52,7 +52,7 @@ For Ubuntu 16.04/16.10
      sudo npm install pm2@2.0.19 -g
      ```
 
-  _**Note:** You can also install previous versions of pm2. Example(To install version 2.0.18): `sudo npm install pm2@2.0.18 -g`_
+  _**Note:** You can also install previous versions of PM2. Example(To install version 2.0.18): `sudo npm install pm2@2.0.18 -g`_
 
 **3. Verification**
 
