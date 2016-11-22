@@ -60,6 +60,15 @@ More information on the Kubernetes is available at http://kubernetes.io/ and the
     ```
         $ make
     ```
+**Note:** *Execute the following commands if you get the error message `cannot touch '_output/bin/deepcopy-gen': No such file or directory`.* 
+
+    ```
+        $ mkdir -p _output/bin
+        $ touch _output/bin/deepcopy-gen
+        $ touch _output/bin/conversion-gen
+        $ chmod 777 _output/bin/deepcopy-gen
+        $ chmod 777 _output/bin/conversion-gen
+    ```
 
 5. Run test suites (Optional)
     ```
