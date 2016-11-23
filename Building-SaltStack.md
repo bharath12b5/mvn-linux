@@ -1,6 +1,6 @@
 # Building SaltStack
 
-Below versions of SaltStack are available in respective distributions at the time of this recipe creation:  
+Below versions of SaltStack(Salt) are available in respective distributions at the time of this recipe creation:  
 
 * Ubuntu 16.04 has  2015.8.8  
 * Ubuntu 16.10 has  2016.3.1
