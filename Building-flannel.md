@@ -48,5 +48,4 @@ _When following the steps below please use a standard permission user unless oth
         ./test
 
 
-   _**Note**: There are few test case failures which are also observed on Intel x86. These failures can be ignored._
-
+   _**Note**: There is one test case(Module `github.com/coreos/flannel/remote`) failures which is also observed on Intel x86. This failure can be ignored._
