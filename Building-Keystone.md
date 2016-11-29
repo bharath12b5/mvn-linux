@@ -1,6 +1,10 @@
 # Building Keystone
 
-The instructions provided below specify the steps to build Keystone stable/Mitaka (9.0.0) on IBM z Systems for RHEL 7.2/7.3, SLES 12-SP1/12-SP2 and Ubuntu 16.04
+Below versions of Keystone is available in respective distributions at the time of this recipe creation  
+
+* Ubuntu 16.04 has `9.0.0`
+
+The instructions provided below specify the steps to build Keystone stable/Mitaka (9.2.0) on IBM z Systems for RHEL 7.2/7.3, SLES 12-SP1/12-SP2 and Ubuntu 16.04
 
 _**General notes:**_ 
 
@@ -95,46 +99,13 @@ Follow below instruction to create Keystone database and grant required privileg
 ## Step 4: Download source code and install Keystone
 	
     cd /<source_root>/
-    git clone https://github.com/openstack/keystone.git
+	git clone https://github.com/openstack/keystone.git
     cd keystone/
-    git checkout 9.0.0
-
-* Edit `requirements.txt` file as shown below
-
-	```diff	
-	@@ -16,7 +16,7 @@ SQLAlchemy<1.1.0,>=1.0.10 # MIT 
-	 sqlalchemy-migrate>=0.9.6 # Apache-2.0 
-	 stevedore>=1.5.0 # Apache-2.0 
-	 passlib>=1.6 # BSD 
-	-python-keystoneclient!=1.8.0,!=2.1.0,>=1.6.0 # Apache-2.0 
-	+python-keystoneclient!=1.8.0,!=2.1.0,<3.0.0,>=1.6.0 # Apache-2.0 
-	 keystonemiddleware!=4.1.0,>=4.0.0 # Apache-2.0 
-	 oslo.cache>=1.5.0 # Apache-2.0 
-	 oslo.concurrency>=3.5.0 # Apache-2.0 
-	```
-
-* Edit `test-requirements.txt` file as shown below 
-
-	```diff	
-	@@ -11,7 +11,7 @@ os-testr>=0.4.1 # Apache-2.0 
-	 # computes code coverage percentages 
-	 coverage>=3.6 # Apache-2.0 
-	 # fixture stubbing 
-	-fixtures>=1.3.1 # Apache-2.0/BSD 
-	+fixtures<2.0,>=1.3.1 # Apache-2.0/BSD 
-	 # xml parsing 
-	 lxml>=2.3 # BSD 
-	 # mock object framework 
-	```      
-
-* Install Keystone
-
-    ```
+    git checkout 9.2.0
     sudo pip install -r requirements.txt
-    sudo pip install -r test-requirements.txt
+    sudo pip install -r test-requirements.txt 
     sudo python setup.py install
-	```
-
+	
 ## Step 5: Configure Keystone  
 
     sudo cp -r etc/ /etc/keystone
