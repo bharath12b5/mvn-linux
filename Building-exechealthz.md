@@ -1,6 +1,6 @@
 #Building exechealthz
 
-The instructions provided below specify the steps to build exechealthz version 0.7.0 on IBM z Systems for RHEL 7.2/7.3, SLES 12-SP1/12-SP2 and Ubuntu 16.04/16.10
+The instructions provided below specify the steps to build exechealthz version 1.1 on IBM z Systems for RHEL 7.2/7.3, SLES 12-SP1/12-SP2 and Ubuntu 16.04/16.10
 
 ### Prerequisites
   * Go (RHEL 7.2/7.3 & SLES 12-SP1/12-SP2)
