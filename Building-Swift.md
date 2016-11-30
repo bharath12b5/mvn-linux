@@ -1,5 +1,5 @@
-Swift is available on RHEL 7.1, SLES 12-SP1 and Ubuntu 16.04. Swift 3.0 has been built and tested on Linux on z Systems.
-This is a Beta release to go in hand with the official Swift 3.0 release.
+Swift is available on RHEL 7.1, SLES 12-SP1 and Ubuntu 16.04. Swift 3.0.1 has been built and tested on Linux on z Systems.
+This is a Beta release to go in hand with the official Swift 3.0.1 release.
 
 ##### General Notes:
       
@@ -184,15 +184,8 @@ LLVM 3.9 or above is needed for building Swift and its components.
 
         git clone https://github.com/apple/swift.git
         cd swift
-        git checkout swift-3.0-branch
-        ./utils/update-checkout --clone --branch swift-3.0-branch
-
-    or from our team internal github site (which may have additional fixes pending upstream)
-
-        git clone git@github.com:linux-on-ibm-z/swift.git
-        cd swift
-        git checkout swift-3.0-RELEASE-s390x
-        ./utils/update-checkout --clone --branch swift-3.0-RELEASE-s390x --config $PWD/utils/update-checkout-config-s390x.json
+        git checkout tags/swift-3.0.1-RELEASE
+        ./utils/update-checkout --clone --tag swift-3.0.1-RELEASE
         
 3. Build the code (`$MYDESTDIR` can be any blank directory where the installable package is assembled, for example `$HOME/swift/install`):
 
@@ -312,12 +305,14 @@ Currently, validation test pass rate is at 99.8% and there are 13 test failures.
 
 ### Swift LinuxONE Sandbox
 
-IBM Swift Sandbox (https://swiftlang.ng.bluemix.net/#/repl) also supports running Swift code in LoZ.  
+IBM Swift Sandbox (https://swiftlang.ng.bluemix.net/#/repl) also supports running Swift code in LinuxONE.  Version 3.0.1 is created using the steps outlined in this recipe. 
 
 To run Swift code in Swift LinuxONE Sandbox
 
 
-* Click on "Settings" in the bottom right corner, select LinuxONE as the architecture
+* Click on "Settings" in the bottom right corner, select `LinuxONE (s390x) Beta` as the architecture
+
+* Select a version to use, such as `Ver. 3.0.1 (Release)`
 
 * Put or load Swift code in the left pane
    
