@@ -27,9 +27,11 @@ _**General Notes:**_
 		 
 	* Ubuntu 16.04/16.10
 	
-			apt-get install wget tar gcc cmake g++ lua5.1 lua5.1-dev linux-headers-4.4.0-21 linux-headers-4.4.0-21-generic
+			apt-get install wget tar gcc cmake g++ lua5.1 lua5.1-dev linux-headers
 		
-2. Download  Source code
+		Note : For linux headers, multiple versions might be present, user can select latest version to install.
+		
+2. Download Source code
     
         cd  /<source_root>/
         wget https://github.com/draios/sysdig/archive/0.12.1.tar.gz
