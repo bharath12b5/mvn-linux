@@ -154,14 +154,24 @@ More information on the Kubernetes is available at http://kubernetes.io/ and the
         $ ./hyperkube proxy --master=http://127.0.0.1:8080 --v=2 &
    ```
 
-**Step 3:** Kubernetes requires `gcr.io/google_containers/pause-s390x:3.0` image present in docker library. To get the pause image in docker library, follow the steps below.
+**Step 3:** Build pause
 
-
-   ```
+**Note:** *Kubernetes requires `gcr.io/google_containers/pause-s390x:3.0` image while deploying an application in a Kubernets pod. Following are 2 ways to create the required pause image.* 
+ 
+1. Pull the image from repository and tag it to `gcr.io/google_containers/pause-s390x:3.0`
+   ``` 
         $ docker pull brunswickheads/kubernetes-s390x
         $ docker tag brunswickheads/kubernetes-s390x:latest gcr.io/google_containers/pause-s390x:3.0
-        
    ```
+  
+2. Create pause image by following the instructions mentioned [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Pause)
 
-After performing all the above steps, kubectl (binary will be found at `/<source_root>/kubernetes/_output/local/go/bin/`) command can be used for various purpose like deploying application, getting cluster nodes etc. More info about kubectl can be found [here](http://kubernetes.io/docs/user-guide/kubectl/kubectl/).
+After performing all the above steps, kubectl (binary will be found at `/<source_root>/kubernetes/_output/local/go/bin/`) command can be used for various purpose like deploying application, getting cluster nodes etc. More info about kubectl can be found [here](http://kubernetes.io/docs/user-guide/kubectl-overview/)
+
+### Building kube-dns (Optional)
+
+Build instructions for kube-dns can be found [here] (https://github.com/linux-on-ibm-z/docs/wiki/Building-kube-dns)
+
+### References:
+http://kubernetes.io/
 
