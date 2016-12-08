@@ -1,4 +1,4 @@
-The [Erlang/OTP 17.4](http://www.erlang.org/download_release/27) can be built on RHEL 7 on IBM z System by following these instructions.
+The [Erlang/OTP 17.4](http://www.erlang.org/download_release/27) can be built on RHEL 6.8 and RHEL 7 on IBM z System by following these instructions.
 
 1. As root, add the RHEL 7 Server Optional repository to the yum repository list. This is required to get the IBM Java package. See the instructions in [[Adding RHEL Optional and Supplementary Repositories]].
 
