@@ -5,7 +5,7 @@
 
 # Building Couchbase
 
-Couchbase 4.1.0 can be built and tested on Linux on z Systems (RHEL 7.1/7.2/7.3, SLES 12/12-SP1 and Ubuntu 16.04/16.10) by following these instructions.
+Couchbase 4.1.0 can be built and tested on Linux on z Systems (RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 12/12-SP1 and Ubuntu 16.04/16.10) by following these instructions.
 
 _**General Notes:**_  
 
@@ -13,8 +13,11 @@ _**General Notes:**_
 
 * _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-##### Step 1 : Install the Dependencies
+#### Step 1 : Install the Dependencies
 
+*	RHEL 6.8 
+ 
+		sudo yum install wget tar git gcc-c++ make curl openssl-devel libcurl-devel snappy-devel ncurses-devel openssl unixODBC unixODBC-devel cmake  libevent  libtool bunzip2
 
 *	RHEL 7.1/7.2/7.3
      
@@ -40,41 +43,87 @@ _**General Notes:**_
 		export PATH=$JAVA_HOME/bin:$PATH
 
 		
-**Other Dependencies**
+**Other dependencies**
 
-*	To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7) recipe
+  *	To install Go, please refer to the [Go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7) recipe
 
-*   To install Erlang, please refer to 
-  
-    [Erlang RHEL7](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-RHEL7)  recipe 
-	
-	[Erlang SLES12](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-SLES12) recipe     
-	
-	For Ubuntu 16.04/16.10 follow the instructions below
-	
+  *   To install Erlang 17.4,  
+    * For RHEL 6.8 and RHEL 7.x, refer [Erlang 17.4](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-RHEL7)  recipe
+
+    * For SLES12, refer [Erlang 17.4](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-SLES12) recipe 
+    
+    * For Ubuntu 16.04/16.10 follow the instructions below
+	    ```
 		cd /<source_root>/
-	
-	As Root user,
-	
+	    ```
+
+	    As Root user,
+	    ```	
 		wget http://www.erlang.org/download/otp_src_17.4.tar.gz  
-	
-	As regular user,
-        	
+	    ```
+
+	    As regular user,  
+	    ```
 		tar zxvf otp_src_17.4.tar.gz
 		cd /<source_root>/otp_src_17.4
 		export ERL_TOP=`pwd`
 		./configure --prefix=/usr
 		make
-		
-	As Root user,
-		
+	  ```  
+As Root user,  
+	    ```		
 		cd /<source_root>/otp_src_17.4
 		make install
-		
+```		
     
-*   To install V8 libraries, please refer to the [V8 3.14](https://github.com/linux-on-ibm-z/docs/wiki/Building-V8-libraries) recipe
+  *   To install V8 libraries, please refer to the [V8 3.14](https://github.com/linux-on-ibm-z/docs/wiki/Building-V8-libraries) recipe
 
-##### Step 2 : Update configuration to use gcc-6 and g++-6 **(Ubuntu 16.10 Only)**    
+  *  For RHEL 6.8, install following additional dependencies:
+
+    * **gcc**(4.8.2)
+
+      ```
+      wget http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2
+      bunzip2  gcc-4.8.2.tar.bz2
+      tar xvf gcc-4.8.2.tar
+      cd gcc-4.8.2
+      ./contrib/download_prerequisites
+      mkdir build
+      cd build/
+      ../configure --disable-multilib --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
+      make && sudo make install
+      export PATH=/opt/gcc4.8/bin:$PATH
+      export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/:$LD_LIBRARY_PATH
+      ```
+    * **git**(2.0.0)
+
+      ```
+      sudo yum install -y curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel  
+      wget https://www.kernel.org/pub/software/scm/git/git-2.0.0.tar.gz  
+      tar xvzf git-2.0.0.tar.gz  
+      cd git-2.0.0  
+      ./configure --prefix=/usr && make && sudo make install  
+      git --version  
+      ```
+
+    * **libevent**(2.0.22)
+
+      ```
+      git clone https://github.com/libevent/libevent.git
+      cd libevent/
+      git checkout release-2.0.22-stable
+      ACLOCAL="aclocal -I /usr/share/aclocal" autoreconf -if
+      ./autogen.sh && ./configure && make && sudo make install
+      ```
+
+    * **libicu**(50.1.2)
+      ```
+      wget https://kojipkgs.fedoraproject.org/rhel/rc/7/Server/s390x/os/Packages/libicu-devel-50.1.2-11.el7.s390x.rpm
+      wget https://kojipkgs.fedoraproject.org/rhel/rc/7/Server/s390x/os/Packages/libicu-50.1.2-11.el7.s390x.rpm
+      sudo rpm -ivh libicu-devel-50.1.2-11.el7.s390x.rpm libicu-50.1.2-11.el7.s390x.rpm
+      ```
+
+#### Step 2 : Update configuration to use gcc-6 and g++-6 **(Ubuntu 16.10 Only)**    
      
 	  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 40
 	  sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 40
@@ -82,7 +131,7 @@ _**General Notes:**_
 	  sudo update-alternatives --config g++
 	  export PATH=$PATH:/usr/local/go/bin
 		
-##### Step 3 : Download the Repo tool
+#### Step 3 : Download the Repo tool
 
 *   Download the Repo tool using cURL tool and ensure that it has execute permissions
         
@@ -91,7 +140,7 @@ _**General Notes:**_
 		chmod a+x repo
 		
             
-##### Step 4 : Build, install and test Couchbase
+#### Step 4 : Build, install and test Couchbase
 
 *	Create a directory couchbase
 
@@ -145,7 +194,7 @@ _**General Notes:**_
 		ctest
             
 
-##### Step 4 : Start the server
+#### Step 5 : Start the server
 			
 *	Use the below command to start Couchbase Server
 
