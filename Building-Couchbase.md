@@ -53,28 +53,18 @@ _**General Notes:**_
     * For SLES12, refer [Erlang 17.4](https://github.com/linux-on-ibm-z/docs/wiki/Building-Erlang-on-SLES12) recipe 
     
     * For Ubuntu 16.04/16.10 follow the instructions below
+
 	    ```
 		cd /<source_root>/
-	    ```
-
-	    As Root user,
-	    ```	
 		wget http://www.erlang.org/download/otp_src_17.4.tar.gz  
-	    ```
-
-	    As regular user,  
-	    ```
 		tar zxvf otp_src_17.4.tar.gz
 		cd /<source_root>/otp_src_17.4
 		export ERL_TOP=`pwd`
 		./configure --prefix=/usr
 		make
-	  ```  
-As Root user,  
-	    ```		
 		cd /<source_root>/otp_src_17.4
-		make install
-```		
+		sudo make install
+           ```		
     
   *   To install V8 libraries, please refer to the [V8 3.14](https://github.com/linux-on-ibm-z/docs/wiki/Building-V8-libraries) recipe
 
@@ -122,6 +112,16 @@ As Root user,
       wget https://kojipkgs.fedoraproject.org/rhel/rc/7/Server/s390x/os/Packages/libicu-50.1.2-11.el7.s390x.rpm
       sudo rpm -ivh libicu-devel-50.1.2-11.el7.s390x.rpm libicu-50.1.2-11.el7.s390x.rpm
       ```
+
+    * **Python**(2.7.12)
+      * Please refer [this](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-2.7.x) recipe to build Python 2.7.12
+      * Couchbase 4.1.0 has a dependency on Python 2.7.12:  
+      ```
+        sudo mv /usr/bin/python /usr/bin/python_old
+        sudo ln -s <python-2.7.12-build-location>/bin/python /usr/bin/  
+        python -V  
+      ```    
+      _**Note:** ```python -V``` should show ```2.7.12```._
 
 #### Step 2 : Update configuration to use gcc-6 and g++-6 **(Ubuntu 16.10 Only)**    
      
@@ -190,9 +190,11 @@ As Root user,
 		
 *   Run the test cases using ctest tool
 
-		cd /<source_root>/couchbase/build/
-		ctest
-            
+    ```
+	cd /<source_root>/couchbase/build/
+	ctest
+    ```    
+
 
 #### Step 5 : Start the server
 			
