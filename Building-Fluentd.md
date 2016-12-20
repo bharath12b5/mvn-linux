@@ -7,22 +7,20 @@
 
 # Building Fluentd
 
-The instructions provided below specify the steps to build Fluentd 0.14.6 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Fluentd 0.14.9 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_  
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+* _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._  
+* _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._  
 
-iii) _At the time of writing recipe, the version of Fluentd was 0.14.6 ._   
+1. Install the dependencies
 
-1. Install the dependencies for your specific platform
-
-	Ubuntu 16.04:
+	Ubuntu 16.04/16.10
 	```
 	sudo apt-get install -y ruby ruby-dev gcc make
 	```
-2. For platforms RHEL and SLES, build Ruby 2.3.1 from the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby)
+2. For platforms RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 build Ruby 2.3.1 from the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby)
 
     Once the Ruby build is completed and installed continue with the instructions below
 
@@ -32,22 +30,20 @@ iii) _At the time of writing recipe, the version of Fluentd was 0.14.6 ._
     export GEM_HOME=/home/<USER>/.gem/ruby
     export PATH=/home/<USER>/.gem/ruby/bin:$PATH
     ```  
-    Where `<USER>` is the standard user you are logged in as.
+    Where `<USER>` is the standard user you are logged in as
 	
-4. Build & install the latest stable fluentd gem and dependencies
+4. Build and install the latest stable fluentd gem and dependencies
 
-    Fluentd is a gem based product, so the rubygem install process will automatically build the necessary native parts.
+    Fluentd is a gem based product, so the rubygem install process will automatically build the necessary native parts
 	
-	For RHEL, SLES and Ubuntu:  
     ```shell
-    gem install fluentd -v 0.14.6
+    gem install fluentd -v 0.14.9
     ```
+    Once complete it should report that a number of gems including fluentd are installed. Verify the installed version with `gem list fluentd`
 
-    Once complete it should report that a number of gems including fluentd are installed. Verify the installed version with `gem list fluentd`.
+5. Quick test of the fluentd installation(Optional)
 
-5. _**Optional:**_ Quick test of the fluentd installation.
-
-	This test is to setup/install a config directory, then start a fluent process which is put into the background. Finally a message is piped to `fluent-cat`.
+	This test is to setup/install a config directory, then start a fluent process which is put into the background. Finally a message is piped to `fluent-cat`
 
   ```shell
   fluentd -s conf
