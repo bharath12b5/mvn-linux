@@ -1,119 +1,120 @@
 <!---PACKAGE:Apigility--->
-<!---DISTRO:SLES 12:1.4.0--->
-<!---DISTRO:SLES 11:1.4.0--->
-<!---DISTRO:RHEL 7.1:1.4.0--->
-<!---DISTRO:RHEL 6.6:1.4.0--->
-<!---DISTRO:Ubuntu 16.x:1.4.0--->
+<!---DISTRO:SLES 12:1.4.1--->
+<!---DISTRO:SLES 11:1.4.1--->
+<!---DISTRO:RHEL 7.1:1.4.1--->
+<!---DISTRO:RHEL 6.6:1.4.1--->
+<!---DISTRO:Ubuntu 16.x:1.4.1--->
 
 # Building Apigility
 
-The instructions provided below specify the steps to build Apigility 1.4.0 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12 , SLES12-SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Apigility 1.4.1 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
-##### General Notes:
+_**General Notes:**_
       
-i) When following the steps below please use a standard permission user unless otherwise specified.
+* _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it.
+* _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
 
-### Section 1: Install the following dependencies
+##Step 1: Building and Installing Apigility
+####1.1) Install dependencies
 
-* For RHEL 6.7/7.1/7.2 , SLES 11-SP3/12 and SLES12-SP1
+* For RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2
 
     Install Apache Http Server from [here.](https://github.com/linux-on-ibm-z/docs/wiki/Building-Apache-HTTP-Server)
     
 * Other dependencies
 
-	RHEL7.1/7.2:
-	```
-	sudo yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  
-	```
-	RHEL6.7:
-	```
-	sudo yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  httpd-devel
-	```
-
-	SLES12 and SLES12-SP1:
-	```
-	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
-	```
+	* RHEL 6.8
+	  ```
+	  sudo yum install -y curl openssl openssl-devel git wget gcc tar ibtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel httpd-devel
+	  ```
 	
-	SLES11-SP3:
-	```
-	sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libxml2-devel pkg-config apache2 apache2-devel
-	```
+	* RHEL 7.1/7.2/7.3
+	  ```
+	  sudo yum install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel  
+	  ```
+	
+	* SLES 11-SP4
+	  ```
+	  sudo zypper install -y git gcc libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel wget tar awk
+	  ```
 
-    Ubuntu16.04:
-	```
-	sudo apt-get update
-sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
-	```
+	* SLES 12/12-SP1/12-SP2
+	  ```
+	  sudo zypper install -y curl openssl openssl-devel git wget gcc tar libtool autoconf make pcre pcre-devel libxml2 libxml2-devel libexpat-devel
+	  ```
+	
+    * Ubuntu 16.04/16.10
+	  ```
+	  sudo apt-get update
+      sudo apt-get install git apache2 curl openssl make wget tar gcc libssl-dev libxml2 libxml2-dev libxml-parser-perl pkg-config
+	  ```
 
-### Section 2: Build and Install
-1. Download, configure and install PHP with Openssl
+####1.2) Install PHP
   
-	Download PHP
-	
-	```
-	cd /<source_root>/
-	wget http://www.php.net/distributions/php-5.6.8.tar.gz 
-	tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
-	```
-	
-	Configure PHP with Openssl
-	
-    * For RHEL 6.7/7.1/7.2 , SLES 12 and SLES12-SP1
-	
-	```
-	./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
-	```
-	
-	* For SLES 11-SP3
-	
-	```
-	 ./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl --enable-opcache --with-ldap --with-libdir=lib64
-	```
-	
-    * For Ubuntu 16.04
-        
+  * Download PHP
     ```
-    ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+    cd /<source_root>/
+    wget http://www.php.net/distributions/php-5.6.8.tar.gz 
+    tar xvzf php-5.6.8.tar.gz && cd php-5.6.8
     ```
+
+  * Configure PHP with Openssl
 	
-	Install PHP
+    * RHEL 6.8/7.1/7.2/7.3 and SLES 12/12-SP1/12-SP2
+	  ```
+      ./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+      ```
+	
+    * SLES 11-SP4
+      ```
+      ./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache2/bin/apxs --with-config-file-path=/usr/local/php --with-mysql --with-openssl --enable-opcache --with-ldap --with-libdir=lib64
+      ```
+	
+    * Ubuntu 16.04/16.10  
+      ```
+      ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php --with-mysql --with-openssl
+      ```
+	
+  * Install PHP
 	```
 	make
     sudo make install
     ```
 
-2. Set environment path for the PHP
+  * Set environment path for the PHP
+    ```
+    export PATH=/usr/local/php/bin:$PATH
+    ```
 
-		export PATH=/usr/local/php/bin:$PATH
+####1.3) Get the source for Apigility
+  ```
+  cd /<source_root>/
+  git clone https://github.com/zfcampus/zf-apigility-skeleton.git 
+  cd zf-apigility-skeleton 
+  git checkout 1.4.1
+  ```
 
-3. Get the source for Apigility
+####1.4) Install composer
+  ```
+  curl -s https://getcomposer.org/installer | php --
+  ./composer.phar -n update
+  ./composer.phar -n install
+  ```
 
-        cd /<source_root>/
-        git clone https://github.com/zfcampus/zf-apigility-skeleton.git 
-        cd zf-apigility-skeleton 
-        git checkout 1.4.0
+####1.5) Put the `skeleton/app` in development mode
+  ```
+  ./vendor/bin/zf-development-mode enable
+  ```
 
-4. Install composer
-
-        curl -s https://getcomposer.org/installer | php --
-        ./composer.phar -n update
-        ./composer.phar -n install
-
-5. Put the skeleton/app in development mode
-
-        ./vendor/bin/zf-development-mode enable
-
-
-6. Start the Apigility application
-
-        export IP=$(hostname -i)
-        cd  /<source_root>/zf-apigility-skeleton
-        php -S $IP:8080 -t public public/index.php
-
+##Step 2: Start the Apigility application
+  ```
+  export IP=$(hostname -i)
+  cd  /<source_root>/zf-apigility-skeleton
+  php -S $IP:8080 -t public public/index.php
+  ```
+  
 ## References:
 
 https://github.com/zfcampus/zf-apigility-skeleton
