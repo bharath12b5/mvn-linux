@@ -1,15 +1,15 @@
-# Building MariaDB 10.1
-[MariaDB](https://mariadb.org/) is already available for Linux on z Systems from the official RHEL 7.1 and SLES 12 repositories, but it is not available for RHEL 6 or SLES 11 SP3. Moreover, RHEL 7.1 ships only MariaDB 5.5, rather than the latest stable branch, 10.1. This article describes the procedure for building and configuring MariaDB Galera Cluster 10.1 on Linux on z Systems. The instructions have been tested on SLES 11 SP3.
+# Building MariaDB 10.1.19
+[MariaDB](https://mariadb.org/) is already available for Linux on z Systems from the official RHEL 7.1/7.2/7.3, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10 repositories, but it is not available for RHEL 6.8 or SLES 11-SP4. Moreover, RHEL 7.1/7/2 ships only MariaDB 5.5, rather than the latest stable branch, 10.1.19. This article describes the procedure for building and configuring MariaDB Galera Cluster 10.1.19 on Linux on z Systems. The instructions have been tested on SLES 11-SP4.
 
 _**General Notes:**_ 	 
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+ * _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) _A directory  `/<source_root>/`  will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
+ * _A directory  `/<source_root>/`  will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
-_**Note:** At the time of writing the recipe the version was 10.1.11._
+_**Note:** At the time of writing the recipe the version was 10.1.19._
  
-### Building MariaDB 10.1
-1. Install the prerequisites for building the code
+### Building MariaDB 10.1.19
+1. Install the prerequisites for building the code:
     ```
       sudo zypper install -y  git wget tar patch openssl-devel boost-devel check-devel gcc make gcc-c++ ncurses-devel bison libxml2-devel libcurl-devel libexpat-devel libarchive-devel glib-devel fdupes 
     ```
@@ -18,15 +18,15 @@ _**Note:** At the time of writing the recipe the version was 10.1.11._
 
         cd /<source_root>/
         wget http://download.opensuse.org/repositories/openSUSE:/13.1/standard/src/cmake-2.8.11.2-4.1.2.src.rpm
-        rpmbuild --rebuild cmake-2.8.11.2-4.1.2.src.rpm
-        sudo rpm -i /usr/src/packages/RPMS/s390x/cmake-2.8.11.2-4.1.2.s390x.rpm
+		rpmbuild --rebuild cmake-2.8.11.2-4.1.2.src.rpm
+		sudo rpm -i /usr/src/packages/RPMS/s390x/cmake-2.8.11.2-4.1.2.s390x.rpm
 
 3. MariaDB uses [jemalloc](http://www.canonware.com/jemalloc/), a scalable concurrent memory allocator. This needs to be built first:
 
         cd /<source_root>/
-        wget -O jemalloc  https://github.com/jemalloc/jemalloc/releases/download/3.6.0/jemalloc-3.6.0.tar.bz2
-        tar xjf jemalloc
-        cd jemalloc-3.6.0
+        wget -O jemalloc https://github.com/jemalloc/jemalloc/releases/download/3.6.0/jemalloc-3.6.0.tar.bz2
+		tar xjf jemalloc
+		cd jemalloc-3.6.0 
         ./configure
         make
         sudo make install
@@ -37,8 +37,9 @@ _**Note:** At the time of writing the recipe the version was 10.1.11._
 4. Get the source code of MariaDB:
 
         cd /<source_root>/
-        git clone -b 10.1 https://github.com/MariaDB/server.git
-        cd server
+        wget https://github.com/MariaDB/server/archive/mariadb-10.1.19.tar.gz
+		tar xzf mariadb-10.1.19
+		cd server-mariadb-10.1.19
         BUILD/autorun.sh
         ./configure
         
@@ -48,18 +49,18 @@ _**Note:** At the time of writing the recipe the version was 10.1.11._
         make
 		sudo make install
         sudo make package
-        sudo cp mariadb-10.1.11-linux-s390x.tar.gz /opt/
+        sudo cp mariadb-10.1.19-linux-s390x.tar.gz /opt/
 
-    The  `make package`  command takes a while to complete; it might seem to hang but it will finish, and generate a tarball named mariadb-10.1.11-linux-s390x.tar.gz.
+    The  `make package`  command takes a while to complete; it might seem to hang but it will finish, and generate a tarball named mariadb-10.1.19-linux-s390x.tar.gz.
 
-    _**Note:** Above command may give `cannot stat mariadb-10.1.11-linux-s390x.tar.gz: No such file or directory` as name of this tarball may have been changed with its version. Please check tarball name using `ls` command and modify above command accordingly. Same applies to later commands too._  
+    _**Note:** Above command may give `cannot stat mariadb-10.1.19-linux-s390x.tar.gz: No such file or directory` as name of this tarball may have been changed with its version. Please check tarball name using `ls` command and modify above command accordingly. Same applies to later commands too._  
 
 6. To install MariaDB Galera Cluster, simply unpack the tarball in the installation directory prefix:
 
         cd /opt
-        sudo tar xzvf mariadb-10.1.11-linux-s390x.tar.gz
+        sudo tar xzvf mariadb-10.1.19-linux-s390x.tar.gz
 
-    This will create the directory mariadb-10.1.11-linux-s390x/ under /opt/, and install all programs, data files and scripts underneath it.
+    This will create the directory mariadb-10.1.19-linux-s390x/ under /opt/, and install all programs, data files and scripts underneath it.
     
     When installing the MariaDB package on a different system which runs the same version of Linux, the dependencies must also be installed (libjemalloc.so.1 should be copied from the original build system):
     
@@ -69,23 +70,23 @@ _**Note:** At the time of writing the recipe the version was 10.1.11._
 1. Copy the sample configuration file to /etc/ and rename it to my.cnf:
         
 		cd /<source_root>/
-        sudo cp /opt/mariadb-10.1.11-linux-s390x/support-files/my-innodb-heavy-4G.cnf /etc/my.cnf
+        sudo cp /opt/mariadb-10.1.19-linux-s390x/support-files/my-innodb-heavy-4G.cnf /etc/my.cnf
     Edit my.cnf to configure MariaDB according to your needs. Refer to the [configuration help](https://mariadb.com/kb/en/mariadb/mysqld-configuration-files-and-groups/) and the [full option list](https://mariadb.com/kb/en/mariadb/mysqld-options/) for more information.
 
-2. Before starting the server, created and populated the data directory. The default location for the data directory is /opt/mariadb--10.1.10-linux-s390x/data/ but it can be changed with the  `--datadir`  command-line option. You might also want to create a non-privileged user named "mysql" for running the server, instead of running it as root. For example, you could issue following commands to create the user and initialize the data directory:
+2. Before starting the server, created and populated the data directory. The default location for the data directory is /opt/mariadb--10.1.19-linux-s390x/data/ but it can be changed with the  `--datadir`  command-line option. You might also want to create a non-privileged user named "mysql" for running the server, instead of running it as root. For example, you could issue following commands to create the user and initialize the data directory:
 
         cd /<source_root>/
 		sudo /usr/sbin/useradd -m mysql
         sudo mkdir /home/mysql/data
         sudo chown mysql /home/mysql/data
-        cd /opt/mariadb-10.1.11-linux-s390x
-        sudo scripts/mysql_install_db --user=mysql --basedir=/opt/mariadb-10.1.11-linux-s390x --datadir=/home/mysql/data
+        cd /opt/mariadb-10.1.19-linux-s390x
+        sudo scripts/mysql_install_db --user=mysql --basedir=/opt/mariadb-10.1.19-linux-s390x --datadir=/home/mysql/data
 
     When this script finishes, it will print additional instructions to set the password for the MariaDB root user, and for securing a MariaDB installation.
     
 3. To start the server, run:
 
-        cd /opt/mariadb-10.1.11-linux-s390x
+        cd /opt/mariadb-10.1.19-linux-s390x
         sudo bin/mysqld_safe --user=mysql --datadir=/home/mysql/data &
         
     To shut down the server, send SIGTERM to its process ID, e.g. (replace "localhost" with the actual hostname)
@@ -105,7 +106,7 @@ The Galera wsrep ("write set replication") provider is a library that extends a 
 
         cd /<source_root>/
         wget https://ftp.gnu.org/gnu/gcc/gcc-4.8.3/gcc-4.8.3.tar.gz
-        tar xzf gcc-4.8.3.tar.gz
+        tar -xzvf gcc-4.8.3.tar.gz
         cd gcc-4.8.3
         ./contrib/download_prerequisites
         cd ..
@@ -118,11 +119,11 @@ The Galera wsrep ("write set replication") provider is a library that extends a 
 		
 	Commands to set gcc-4.8.3 as default gcc:
 
-		sudo update-alternatives --install /usr/bin/gcc gcc /<source_root>/gcc-4.8.3/bin/gcc 50
-		sudo update-alternatives --install /usr/bin/g++ g++ /<source_root>/gcc-4.8.3/bin/g++ 50
-		sudo update-alternatives --install /usr/bin/cpp cpp /<source_root>/gcc-4.8.3/bin/cpp 50
-		sudo update-alternatives --install /usr/bin/c++ c++ /<source_root>/gcc-4.8.3/bin/c++ 50
-		export LD_LIBRARY_PATH=/<source_root>/gcc-4.8.3/lib64   
+		sudo update-alternatives --install /usr/bin/gcc gcc $HOME/gcc-4.8.3/bin/gcc 50
+		sudo update-alternatives --install /usr/bin/g++ g++ $HOME/gcc-4.8.3/bin/g++ 50
+		sudo update-alternatives --install /usr/bin/cpp cpp $HOME/gcc-4.8.3/bin/cpp 50
+		sudo update-alternatives --install /usr/bin/c++ c++ $HOME/gcc-4.8.3/bin/c++ 50
+		export LD_LIBRARY_PATH=$HOME/gcc-4.8.3/lib64   
 
 3. Clone the Galera source code from the [official GitHub repository](https://github.com/codership/galera), then check out the 25.3.10 branch:
 
@@ -187,3 +188,7 @@ The Galera wsrep ("write set replication") provider is a library that extends a 
 * [Blog: Getting started with MariaDB Galera Cluster and Percona XtraDB Cluster](http://blog.yannickjaquier.com/mysql/getting-started-with-mariadb-galera-cluster-and-percona-xtradb-cluster.html) 
 * [MariaDB documentation ](https://mariadb.com/kb/en/mariadb/getting-started-with-mariadb-galera-cluster/)
 * [Galera documentation](http://galeracluster.com/documentation-webpages/dbconfiguration.html)
+
+
+##References:
+https://mariadb.com
