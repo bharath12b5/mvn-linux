@@ -1,11 +1,11 @@
-The instructions provided below specify the steps to build [MongoDB](http://mongodb.org/) 3.0.4 on Linux on the IBM z Systems for RHEL 6 and SLES 11 SP3.
+The instructions provided below specify the steps to build [MongoDB](http://mongodb.org/) 3.0.4 on IBM z Systems for RHEL 6.8 and SLES 11-SP4.
 
 ## Building MongoDB
 
  _**General Notes:**_  
-_i) When following the steps below please use a standard permission user unless otherwise specified._
+_* When following the steps below please use a standard permission user unless otherwise specified._
 
-_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+_* A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 1. Building MongoDB requires a lot of disk space. Before attempting the build, ensure that you have 30GB of free space in the file system. You will also need root access to perform some of the steps below, e.g. installing libraries into system locations.
 
@@ -13,13 +13,20 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
 3. Building MongoDB requires SCons. Download scons-2.3.1-1.noarch.rpm from [SCons 2.3.1 Downloads](http://sourceforge.net/projects/scons/files/scons/2.3.1) and install it like this:
 
-        rpm -i scons-2.3.1-1.noarch.rpm
+        sudo rpm -i scons-2.3.1-1.noarch.rpm
 		
-4. Install dependency 
+4. Install the dependencies
 		
-		sudo zypper install zlib-devel
-			
-5. Building MongoDB 3.0 requires GCC 4.8.2 or newer. However, RHEL 6 and SLES 11 ship older versions of GCC, so it is necessary to build and install a newer GCC first. Download the [GCC 5.1.0 source code](ftp://gcc.gnu.org/pub/gcc/releases/gcc-5.1.0/gcc-5.1.0.tar.bz2) and issue the following commands:
+	RHEL 6.8
+		     
+		sudo yum install -y bzip2 zlib-devel
+	      
+	SLES 11-SP4
+	     
+		sudo zypper install -y zlib-devel python awk libffi-devel gcc-c++ 
+		    
+		
+5. Building MongoDB 3.0 requires GCC 4.8.2 or newer. However, RHEL 6.8 and SLES 11-SP4 ship older versions of GCC, so it is necessary to build and install a newer GCC first. Download the [GCC 5.1.0 source code](ftp://gcc.gnu.org/pub/gcc/releases/gcc-5.1.0/gcc-5.1.0.tar.bz2) and issue the following commands:
 
         tar xjf gcc-5.1.0.tar.bz2
         cd gcc-5.1.0
@@ -40,7 +47,6 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 		cd /<source_root>/
         git clone https://github.com/linux-on-ibm-z/mongo mongo
         cd mongo
-        git checkout v3.0-s390
 
 7. In order to use the V8 APIs in libv8.so, MongoDB requires the corresponding V8 headers. If you did not install the V8 header files in a system location (e.g. /usr/include/ or /usr/local/include/), copy them from the v8z/include directory into mongo/src/.
         
@@ -56,38 +62,38 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
 
 ## Building MongoDB tools
 
-1. In version 3.0, tools such as mongodump, mongoexport, mongoimport and mongorestore have been rewritten in Go and moved to a different GitHub repository. Clone the source code and check out release 3.0.4:
+1. In version 3.0, tools such as mongodump, mongoexport, mongoimport and mongorestore have been rewritten in Go and moved to a different GitHub repository. Clone the source code and check out release 3.0.4
         
 		cd /<source_root>/
         git clone https://github.com/mongodb/mongo-tools
         cd mongo-tools
         git checkout r3.0.4
 
-2. Make sure the gccgo executables are in your search path:
+2. Make sure the gccgo executables are in your search path
 
         export PATH=/opt/gcc-5.1.0/bin:$PATH
         export LD_LIBRARY_PATH=/opt/gcc-5.1.0/lib64:$LD_LIBRARY_PATH
 
-3. Edit the script build.sh to insert a gccgo flag into the `go build` command on line 22:
-
-    <pre>
-go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
-</pre>
-
-4. Run the script to build MongoDB tools:
+3. Run the script to build MongoDB tools
 
         ./build.sh
 
 ## Testing (Optional)
 
-1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo, build the driver from source:
+1. To run self-verifying tests, [PyMongo](http://api.mongodb.org/python/current/) must be installed. To install PyMongo, build the driver from source
 		
 		cd /<source_root>/
         git clone git://github.com/mongodb/mongo-python-driver.git pymongo
         cd pymongo
-        python setup.py install
+        sudo python setup.py install
+		
+2. Copy the libv8.so file to /usr/lib and add it to the library path
 
-2. To run the C++ unit tests, re-run the build command in the MongoDB build directory, but replace the target `all` with `smokeCppUnittests`:
+		export LD_LIBRARY_PATH=/usr/lib:LD_LIBRARY_PATH
+		sudo cp -v /usr/local/lib64/libv8.so /usr/lib/
+		sudo /sbin/ldconfig -v
+		
+3. To run the C++ unit tests, re-run the build command in the MongoDB build directory, but replace the target `all` with `smokeCppUnittests`
 
         cd /<source_root>/mongo
         scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
@@ -96,10 +102,9 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
               
    To run the server smoke tests, you must copy all the MongoDB tools into the MongoDB server build directory, e.g.
 
-        cd /<source_root>/mongo
         cp /<source_root>/mongo-tools/bin/* .
 
-   Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`:
+   Then you can run the server smoke tests by re-running the build command with `--smokedbprefix=/tmp smoke`
 
         scons --cc=/opt/gcc-5.1.0/bin/gcc --cxx=/opt/gcc-5.1.0/bin/g++ \
               --static-libstdc++ --disable-warnings-as-errors --opt \
@@ -108,7 +113,7 @@ go build -o "bin/$i" <b><i>-gccgoflags '-static-libgo'</i></b> -ldflags ...
 
 ## Installation
 
-The binaries will be output in the mongo/ and mongo-tools/bin/ directories. To install them properly, execute these commands:
+The binaries will be output in the mongo/ and mongo-tools/bin/ directories. To install them properly, execute the below commands:
 
     cd /<source_root>/
     for i in mongo mongobridge mongod mongoperf mongos ; do
