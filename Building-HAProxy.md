@@ -1,9 +1,9 @@
 <!---PACKAGE:HAProxy--->
-<!---DISTRO:SLES 12:1.6--->
-<!---DISTRO:SLES 11:1.6--->
-<!---DISTRO:RHEL 7.1:1.6--->
-<!---DISTRO:RHEL 6.6:1.6--->
-<!---DISTRO:Ubuntu 16.x:Distro, 1.6--->
+<!---DISTRO:SLES 12:1.7--->
+<!---DISTRO:SLES 11:1.7--->
+<!---DISTRO:RHEL 7.1:1.7--->
+<!---DISTRO:RHEL 6.6:1.7--->
+<!---DISTRO:Ubuntu 16.x:Distro, 1.7--->
 
 # Building HAProxy
 
@@ -11,37 +11,37 @@ Below versions of HAProxy are available in respective distributions at the time 
 
 *    Ubuntu 16.04 has `1.6.3`
 
-The instructions provided below specify the steps to build HAProxy 1.6.9 on Linux on the IBM z Systems for RHEL 6/7, SLES 11/12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build HAProxy 1.7.0 on the IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP4 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_ 	 
-_i) When following the steps below please use a standard permission user unless otherwise specified._
+ * When following the steps below please use a standard permission user unless otherwise specified._
 
-_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+ * A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ## Downloading, Building and Installing HAProxy
 1. Install the build dependencies
 
-      (RHEL 6.6/7.1)
-     ```
+    RHEL 6.8/7.1/7.2/7.3
+    ```
     sudo yum install  wget tar make  gcc 
-     ```
+    ```
      
-     (SLES 11/12)
-     ```
+    SLES 11-SP4/12/12-SP1/12-SP2
+    ```
     sudo zypper install  wget tar make  gcc
-     ```
+    ```
 	 
-	 (Ubuntu 16.04)
-     ```
-	 sudo apt-get update
-     sudo apt-get install  wget tar make  gcc
-     ```
+	Ubuntu 16.04/16.10
+    ```
+	sudo apt-get update
+    sudo apt-get install  wget tar make  gcc
+    ```
 2.  Download and unpack the required HAProxy source package
 
         cd /<source_root>/
-        wget http://www.haproxy.org/download/1.6/src/haproxy-1.6.9.tar.gz
-        tar xzvf haproxy-1.6.9.tar.gz
-        cd haproxy-1.6.9/
+        wget http://www.haproxy.org/download/1.7/src/haproxy-1.7.0.tar.gz
+		tar xzvf haproxy-1.7.0.tar.gz
+		cd haproxy-1.7.0/
 
 3.  Build and install HAProxy
 
