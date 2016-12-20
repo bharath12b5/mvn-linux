@@ -2,33 +2,31 @@
 
 Below versions of MariaDB are available in respective distributions at the time of this recipe creation:
 
-*    RHEL   7     has `5.5.47`
-*    SLES   12    has `10.0.25-20.6.1`
-*    Ubuntu 16.04 has `10.0.25`
+*    RHEL   7.1/7.2   has `5.5.47`
+*    SLES   12/12-SP1 has `10.0.26-9.2`
+*    Ubuntu 16.04     has `10.0.25`
 
-The instructions provided below specify the steps to build MariaDB v10.1 on Linux on the IBM z Systems for RHEL 6/7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build MariaDB v10.1.19 on IBM z Systems for RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_ 	 
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+ * _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) _A directory  `/<source_root>/`  will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
+ * _A directory  `/<source_root>/`  will be referred to in these instructions, this is a temporary writable directory anywhere you'd like to place it._
 
 
 ### Section 1: Install following dependencies
 
-*   RHEL7/RHEL6: 
+*   RHEL 6.8/7.1/7.2/7.3
     ```
         sudo yum install -y git wget cmake gcc gcc-c++ make ncurses-devel bison tar boost-devel check-devel openssl-devel perl-CPAN 'perl(Test::More)'
-                      
     ```
 
-*   SLES12:
+*   SLES 12/12-SP1/12-SP2
     ```
         sudo zypper install -y git wget tar cmake gcc gcc-c++ make ncurses-devel boost-devel check-devel openssl-devel bison scons
- 
     ```
 
-*   Ubuntu 16.04
+*   Ubuntu 16.04/16.10
 
       _**Note:** Add following repos in `/etc/apt/sources.list` file and upgrade the system, if any of the mentioned
       package on Ubuntu is missing._ 
@@ -49,27 +47,29 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
 
 ### Section 2: Build and Install
 1. Get MariaDB source
-
+	```
         cd /<source_root>/
-        git clone -b 10.1 https://github.com/MariaDB/server.git
-        cd server 
-        
+        wget https://github.com/MariaDB/server/archive/mariadb-10.1.19.tar.gz
+		tar xzf mariadb-10.1.19.tar.gz
+		cd server-mariadb-10.1.19
+    ```
+	
 2. Build and install the source
- *  For RHEL/SLES12
-     ```
+ *  RHEL 6.8/7.1/7.2/7.3 & SLES 12/12-SP1/12-SP2
+    ```
     BUILD/autorun.sh 
     ./configure 
     make 
     sudo make install 
-     ```
+    ```
 
- *   For Ubuntu 16.04
-     ```
-     BUILD/autorun.sh 
+ *  Ubuntu 16.04/16.10
+    ```
+    BUILD/autorun.sh 
     ./configure --WITH_SAFEMALLOC=ON --with-debug
-     make 
-     sudo make install 
-     ```
+    make 
+    sudo make install 
+    ```
 3. Execute test cases
 
         make test
@@ -109,14 +109,14 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
 ### Section 3: Building the Galera wsrep provider
  The Galera wsrep ("write set replication") provider is a library that extends a number of database products (including MariaDB) with replication capabilities. We have patched it so that it can be built on Linux on z Systems. It will need to be installed before MariaDB clustering can be enabled.
  
-1. Building Galera requires SCons. Download the SCons RPM and install it:(Only for **RHEL7/RHEL6**)
+1. Building Galera requires SCons. Download the SCons RPM and install it:(Only for **RHEL 6.8/7.1/7.2/7.3**)
 
     ```
         cd /<source_root>/
         wget http://downloads.sourceforge.net/project/scons/scons/2.3.4/scons-2.3.4-1.noarch.rpm
         sudo rpm -i scons-2.3.4-1.noarch.rpm
     ``` 
-2. Install the following dependencies required for galera:(Only for **Ubuntu 16.04**)
+2. Install the following dependencies required for galera:(Only for **Ubuntu 16.04/16.10**)
  *   Install makeinfo
 
     ```
@@ -154,22 +154,21 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
     ```
     
 4. Patch the Galera code so that it will build on z. Edit the file SConstruct, and replace the  `if... elif... else`  block on lines 90 to lines 108 with following:
- *  For RHEL7/SLES12/Ubuntu 16.04
+ *  For RHEL 7.1/7.2/7.3, SLES 12/12-SP1/12-SP2 & Ubuntu 16.04/16.10
      ```
         compile_arch = ' -march=z196 -mtune=zEC12'
         link_arch    = ''
         x86 = 0
      ```
 
- *   For RHEL6
+ *   For RHEL6.8
      ```
         compile_arch = ' -march=z196 '
         link_arch    = ''
         x86 = 0
      ```
 
-     Then edit chromium/build_config.h, and add following text after line 127:(For RHEL6/RHEL7/SLES12/Ubuntu 16.04
-)
+     Then edit chromium/build_config.h, and add following text after line 127:(For RHEL 6.8/7.1/7.2/7.3, SLES 12/12-SP1/12-SP2 & Ubuntu 16.04/16.10)
     
      ```
         #elif defined(__s390__)
@@ -204,7 +203,7 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
         sudo cp libgalera_smm.so /usr/local/lib64/
         sudo /sbin/ldconfig -v
     ```
- _**Note:** For Ubuntu 16.04, if `/usr/local/lib64/` path does not exist then using `mkdir -p /usr/local/lib64/` command create the path and copy `libgalera_smm.so`._
+ _**Note:** For Ubuntu 16.04/16.10, if `/usr/local/lib64/` path does not exist then using `mkdir -p /usr/local/lib64/` command create the path and copy `libgalera_smm.so`._
 
 7. The MariaDB configuration file  '/server/support-files/my-innodb-heavy-4G.cnf' needs to be updated as well. The exact configuration values will be different for each installation. Following is an example for a two-node cluster:
 
@@ -230,4 +229,7 @@ ii) _A directory  `/<source_root>/`  will be referred to in these instructions, 
 * [MariaDB documentation ](https://mariadb.com/kb/en/mariadb/getting-started-with-mariadb-galera-cluster/)
 * [Galera documentation](http://galeracluster.com/documentation-webpages/dbconfiguration.html)
 
+
+##References:
+https://mariadb.com
 
