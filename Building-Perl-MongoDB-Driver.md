@@ -1,14 +1,14 @@
 ### Building Perl MongoDB Driver
 
-The instructions provided below specify the steps to build Perl MongoDB Driver v1.4.5 on Linux on the IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1 and Ubuntu 16.04/16.10.
+The instructions provided below specify the steps to build Perl MongoDB Driver v1.6.0 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 
-More information on MongoDB_Perl_Driver can be found on http://docs.mongodb.org/ecosystem/drivers/perl/ and the source code can be obtained from the Perl code repository, CPAN, at http://search.cpan.org/dist/MongoDB/.
+More information on Perl MongoDB Driver can be found on http://docs.mongodb.org/ecosystem/drivers/perl/ and the source code can be obtained from the Perl code repository, CPAN, at http://search.cpan.org/dist/MongoDB/.
 
 _**General Notes:**_
 
 * _This recipe provides the required Perl MongoDB Driver Linux on z Systems pre-requisites, a MongoDB Test script and directs the user to install a Perl module using tools from the Perl code repository CPAN.
-The guidance to install the Perl module given here should work in most circumstances, but as details of a CPAN download are environment specific, the reader is referred to a documentation on the CPAN site (etc.) for further details._
+The guidelines to install the Perl module given here should work in most circumstances, but as details of a CPAN download are environment specific, the reader is referred to a documentation on the CPAN site (etc.) for further details._
 
 * _While implementing the steps given below please use a standard permission user unless otherwise specified._
 
@@ -21,36 +21,34 @@ Depending on the environment employed, it may be possible to run the CPAN comman
 
 ### Obtain pre-built dependencies
 
-1. Use the following commands to obtain dependencies:
+1. Install the dependencies
 
-   For RHEL 6.8/7.1/7.2/7.3
+   RHEL 6.8/7.1/7.2/7.3
    ```shell
-   sudo yum upgrade
    sudo yum install -y make gcc tar zip perl perl-YAML cpan
    ```
 
-   For SLES 11-SP4/12/12-SP1 (Note : On SLES CPAN is bundled with Perl)
+   SLES 11-SP4/12/12-SP1/12-SP2 (Note : On SLES CPAN is bundled with Perl)
    ```shell
    sudo zypper install -y make gcc tar zip perl perl-YAML
    ```
 
-   For Ubuntu 16.04/16.10
+   Ubuntu 16.04/16.10
    ```shell
-   sudo apt-get update
    sudo apt-get install make gcc tar zip perl-modules-5.22 libyaml-perl libtest-yaml-perl
    ```
 
 
-### **OPTIONAL** Dependency Build - Install latest CPAN
+### Dependency Build - Install latest CPAN (Optional)
 
-Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modules to help the Build/Make process.
+Recommended - Update CPAN (Currently upgrade to  version 2.14) and also two modules to help the Build/Make process.
 
    1. Check the version of CPAN that is installed.
       ```shell
       perl -MCPAN -le 'print "CPAN Version -> $CPAN::VERSION"'
       ```
 
-   1. Install the latest CPAN version - (The -fi flags force install to over-ride some failures).
+   2. Install the latest CPAN version - (The -fi flags force install to over-ride some failures).
       ```shell
       sudo cpan -fi Bundle::CPAN
       ```
@@ -61,38 +59,41 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
      * _**Note:** Once the CPAN configuration is complete the installation of `Bundle::CPAN` will begin .  Depending on the software already installed, some Perl modules will likely need to be installed or updated. 
 	  CPAN will ask to follow sub-dependencies automatically, store data on the system permanently, and will report any test failures (etc.). A working system will generally be obtained by accepting the default answers offered but keeping a note of the errors reported is recommended as they might be useful in later testing._
 
-   1. Confirm the version of CPAN  has been updated correctly.
+   3. Confirm the version of CPAN  has been updated correctly.
       ```shell
       perl -MCPAN -le 'print "CPAN Version -> $CPAN::VERSION"'
       ```
 
-   1. These two modules are bundled with the Perl install - It makes sense bring them up to the latest versions.
+   4. These two modules are bundled with the Perl install - It makes sense bring them up to the latest versions.
       ```shell
       sudo cpan Config::AutoConf
       sudo cpan -fi Path::Tiny
-      ```
+	```
+	_**Note:** At the time of writing `Path::Tiny` failed a test on RHEL7.1 - The '-fi' options help force an install._
 
-      _**Note:** At the time of writing `Path::Tiny` failed a test on RHEL7.1 - The '-fi' options help force an install._
-
-### Product Build - MongoDB_Perl_Driver
-   1. Install dependent modules **(For SLES 12/SLES 12-SP1 Only)**
+### Product Build - Perl MongoDB Driver
+   1. Install dependent modules 
+   
+    SLES 12/12-SP1/12-SP2
       ```shell
-	  sudo cpan -fi Moo Moo::Role Authen::SCRAM::Client 
+	  sudo cpan -fi Moo Moo::Role Authen::SCRAM::Client BSON::Decimal128 BSON::Types 
       ```
+	RHEL 7.1/7.2/7.3, SLES 11-SP4 and Ubuntu 16.04/16.10
+	  ```shell
+	  sudo cpan -fi BSON::Decimal128 BSON::Types   
+	  ```
+   2. Use CPAN to install MongoDB, (Respond to dialog questions as they occur by accepting the default)
    
-   2. Use CPAN to install MongoDB, (Respond to dialog questions as they occur by accepting the default).
-   
-      For RHEL 7.1/7.2/7.3, SLES 11-SP4/12/12-SP1 and Ubuntu 16.04/16.10
+      RHEL 7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10
 	  ```shell
       sudo cpan MongoDB
       ```
 	  
-	  For RHEL 6.8
+	  RHEL 6.8        
+	  
+	Install PerlMongoDB drivers
 	  ```
-	  # Install PerlMongoDB drivers.
-	  sudo cpan -fi MongoDB
-      # Copy library file boolean.pm generated by CPan into perl lib64 folder.
-	  sudo cp -f /home/test/.cpan/build/boolean-0.46-0/blib/lib/boolean.pm /usr/local/lib64/perl5/.
+	  sudo cpan -fi MongoDB      
 	  ```
      * _**Note:** The CPAN dialog for the MongoDB module install follows the pattern described above for `Bundle::CPAN`. In the first instance to accept the default answers offered, taking note of any failures._
 
@@ -142,7 +143,7 @@ Recommended - Update CPAN (Currently upgrade to  version 2.10) and also two modu
       rm -rf  /<source_root>/
       ```
 
-### Reference Files used for Testing:
+### Reference Files used for Testing
 
    Perl script for 'cut and paste' into text file 'test_MongoDB.pl'.
 
@@ -563,12 +564,12 @@ Dropped Database - 'tutorial' = $VAR1 = {
 ```
 ### References:
 
-http://search.cpan.org/dist/MongoDB - Source Code download site for MongoDB Perl Driver.
+http://search.cpan.org/dist/MongoDB - Source Code download site for Perl MongoDB Driver.
 
 http://www.cpan.org/misc/cpan-faq.html - CPAN Frequently asked questions.
 
 http://docs.mongodb.org/manual/installation - Installation manual for MongoDB database.
 
-http://docs.mongodb.org/ecosystem/drivers/perl - Source  For information about the MongoDB Perl Driver.
+http://docs.mongodb.org/ecosystem/drivers/perl - Source  For information about the Perl MongoDB Driver.
 
-https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod - Tutorial for MongoDB Perl Driver.
+https://metacpan.org/pod/distribution/MongoDB/lib/MongoDB/Tutorial.pod - Tutorial for Perl MongoDB Driver.
