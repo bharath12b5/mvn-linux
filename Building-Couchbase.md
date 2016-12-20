@@ -5,7 +5,7 @@
 
 # Building Couchbase
 
-Couchbase 4.1.0 can be built and tested on Linux on z Systems (RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 12/12-SP1 and Ubuntu 16.04/16.10) by following these instructions.
+The instructions provided below specify the steps to build Couchbase 4.1.0 can be built and tested on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 12/12-SP1 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_  
 
@@ -83,8 +83,12 @@ _**General Notes:**_
       ../configure --disable-multilib --disable-checking --enable-languages=c,c++ --enable-multiarch --enable-shared --enable-threads=posix --without-included-gettext --with-system-zlib --prefix=/opt/gcc4.8
       make && sudo make install
       export PATH=/opt/gcc4.8/bin:$PATH
-      export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/:$LD_LIBRARY_PATH
+      export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/:$LD_LIBRARY_PATH  
+      sudo sh -c "echo '/opt/gccgo/lib64' >> /etc/ld.so.conf.d/gccgo.conf"  
+      sudo /sbin/ldconfig  
+      gcc --version
       ```
+
     * **git**(2.0.0)
 
       ```
