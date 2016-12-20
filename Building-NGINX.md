@@ -11,36 +11,36 @@ Below versions of NGINX are available in respective distributions at the time of
 
 *    Ubuntu 16.04 has `1.10.0`
 
-The instructions provided below specify the steps to build NGINX version 1.10.1 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build NGINX version 1.10.2 on the IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 
 _**General Notes:**_ 	 
-_i) When following the steps below please use a standard permission user unless otherwise specified._
+ * When following the steps below please use a standard permission user unless otherwise specified._
 
-_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+ * A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-### Downloading, Building and Installing NGINX 1.10.1
+### Downloading, Building and Installing NGINX 1.10.2
 
 1.  Install dependencies as needed for the specific platform
 
-    RHEL 6.7
+    RHEL 6.8
 
     ```source-shell
     sudo yum -y install pcre-devel wget tar xz gcc make zlib-devel
     ```
-    RHEL 7.1/7.2
+    RHEL 7.1/7.2/7.3
 
     ```source-shell
     sudo yum -y install pcre-devel wget tar gcc make zlib-devel
     ```
 
-    SLES 11-SP3/12/12-SP1
+    SLES 11-SP4/12/12-SP1/12-SP2
 
     ```source-shell
     sudo zypper install -y pcre-devel wget tar gcc make zlib-devel
     ```
 	
-    Ubuntu 16.04
+    Ubuntu 16.04/16.10
 
     ```source-shell
 	sudo apt-get update
@@ -48,14 +48,14 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     ``` 
     
 
-2.  Download and unpack the NGINX 1.10.1 source package
+2.  Download and unpack the NGINX 1.10.2 source package
 
     ```source-shell
 	mkdir /<source_root>/
     cd /<source_root>/
-    wget http://nginx.org/download/nginx-1.10.1.tar.gz
-    tar xvf nginx-1.10.1.tar.gz
-    cd nginx-1.10.1
+    wget http://nginx.org/download/nginx-1.10.2.tar.gz
+    tar xvf nginx-1.10.2.tar.gz
+    cd nginx-1.10.2
     ```
 
 3.  Build and install NGINX
@@ -71,7 +71,7 @@ _ii) A directory `/<source_root>/` will be referred to in these instructions, th
     sudo make install
     ```
 
-4.  **(Optional)** NGINX will be installed in /usr/local/nginx/sbin/; depending upon user preferences and conventions, it may be necessary to either update PATH or create links to the executable files.
+4.  **(Optional)** NGINX will be installed in /usr/local/nginx/sbin/; depending upon user preferences and conventions, it may be necessary to either update PATH or create links to the executable files
 
 ### Simple Proxy Test
 
