@@ -14,7 +14,7 @@ Below versions of Apache Tomcat are available in respective distributions at the
 *    Ubuntu 16.04 has `8.0.32`
 *    Ubuntu 16.10 has `8.0.37`
 
-The instructions provided below specify the steps to build Apache Tomcat v8.5.9 on IBM z Systems for RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
+The instructions provided below specify the steps to build Apache Tomcat v8.5.9 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_  
 * _When following the steps below please use a standard permission user unless otherwise specified._
