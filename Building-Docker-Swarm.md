@@ -4,30 +4,30 @@
 <!---DISTRO:Ubuntu 16.x:1.2.5--->
 
 # Building Docker Swarm
-The instructions provided below specify the steps to build Docker Swarm 1.2.5 on Linux on the IBM z Systems for RHEL 7, SLES 12 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Docker Swarm 1.2.5 on Linux on the IBM z Systems for RHEL 7.1/7.2/7.3, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_  
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
 _ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._   
 
 ### Section 1: Install the following Dependencies
-* go (Refer [go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go) recipe)  _For Ubuntu, use apt-get to install golang package from the repository._
+* go (Refer [go](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7) recipe)  _For Ubuntu, use apt-get to install golang package from the repository._
 * git
 
-RHEL7:
+RHEL 7.1/7.2/7.3:
 ```
-    sudo yum install git
-```
-
-SLES12:
-```
-    sudo zypper install git
+    sudo yum install git tar wget
 ```
 
-Ubuntu 16.04:
+SLES 12/12-SP1/12-SP2:
+```
+    sudo zypper install git tar wget
+```
+
+Ubuntu 16.04/16.10:
 ```
     sudo apt-get update
-	sudo apt-get install git golang
+	sudo apt-get install git golang tar wget
 ```
 
 _**Note:**_ 
