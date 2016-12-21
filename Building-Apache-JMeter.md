@@ -7,6 +7,6 @@
 
 Apache JMeter versions 2.13 and 3.0 have been ported to Linux on z Systems, and the following articles explain how to obtain and build the code:
 
-- [[Building Apache JMeter 3.0]] (RHEL 7, SLES 12 and Ubuntu 16.x)
+- [[Building Apache JMeter 3.1]] (RHEL 7, SLES 12 and Ubuntu 16.x)
 - [[Building Apache JMeter 2.13]] (RHEL 6, SLES 11)
 
