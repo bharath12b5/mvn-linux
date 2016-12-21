@@ -9,50 +9,60 @@
 
 Below versions of Ruby on Rails are available in respective distributions at the time of this recipe creation:
 
-*    Ubuntu 16.04 has `4.2.6`
+  * Ubuntu 16.04 has `4.2.6`
+  * Ubuntu 16.10 has `4.2.7`
 
-The instructions provided below specify the steps to build Rails version 5.0.0 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12 , SLES12-SP1 and Ubuntu 16.04.  
+The instructions provided below specify the steps to build Rails version 5.0.0.1 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.  
 
 _**General Notes:**_   
-_i) When following the steps below please use a standard permission user unless otherwise specified._     
-_ii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+* _When following the steps below please use a standard permission user unless otherwise specified._     
+* _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
-1. First build Ruby 1.9.3+ (the available yum / zypper version of ruby is too low level) from [these instructions](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby) (For RHEL6.7/7.1/7.2 , SLES11-SP3, SLES12 and SLES12-SP1)
+##Step 1: Build Ruby
+####1.1) Build Ruby 1.9.3+ 
+ * [Building Ruby](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby) (For RHEL6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2)
 
-2. Correct the gem environment for a standard user (For RHEL6.7/7.1 , SLES11/12 and SLES12-SP1)
+_**Note:** The available yum / zypper version of Ruby is too low level for the distros._
+####1.2) Correct the gem environment for a standard user
 
-        export GEM_HOME=/home/<USER>/.gem/ruby
-        export PATH=/home/<USER>/.gem/ruby/bin:$PATH
+  * RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2
+		
+          export GEM_HOME=/home/<USER>/.gem/ruby
+          export PATH=/home/<USER>/.gem/ruby/bin:$PATH
+		
+_**Note:** Where `<USER>` is the standard user you are installing under._
+
+##Step 2: Installing Ruby on Rails
+####2.1) Add build dependencies
     
- Where `<USER>` is the standard user you are installing under
+   * RHEL 6.8/7.1/7.2/7.3
 
-3. Add build dependencies
+          sudo yum install -y patch make gcc
     
-    For RHEL6.7/7.1/7.2:
+   * SLES 11-SP4/12/12-SP1/SP2
 
-        sudo yum install -y patch make gcc
-    
-    For SLES11-SP3, SLES12 and SLES12-SP1:
-
-        sudo zypper install -y patch make gcc
+          sudo zypper install -y patch make gcc
         
-    For Ubuntu 16.04:
+   * Ubuntu 16.04/16.10
  
-        sudo apt-get install -y ruby ruby-dev patch make gcc zlib1g-dev
+          sudo apt-get install -y ruby ruby-dev patch make gcc zlib1g-dev
  
 
-4. Install Ruby on Rails via gem
+####2.2) Install Ruby on Rails via gem
 
-      RHEL6.7/7.1/7.2 , SLES11-SP-3, SLES12 and SLES12-SP1
+   * RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2
       
-          gem install rails -v 5.0
+          gem install rails -v 5.0.0.1
           
-      Ubuntu 16.04
+   * Ubuntu 16.04/16.10
            
-          sudo gem install rails -v 5.0
+          sudo gem install rails -v 5.0.0.1
     
-5. Ruby on Rails is now installed. Verify version with command `rails -v` (Output should be as follows):
-     ```
-    5.0.0
-     ```
-	 
+####2.3) Ruby on Rails is now installed. Verify version with command `rails -v`
+    
+   * (Output)
+      
+          5.0.0.1
+     
+##References:	 
+* http://rubyonrails.org/
