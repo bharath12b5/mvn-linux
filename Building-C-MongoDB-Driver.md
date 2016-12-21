@@ -1,4 +1,4 @@
-The C MongoDB Driver can be built for Linux on z Systems running SLES 12/12-SP1, SLES 11-SP3, RHEL 7.1/7.2, RHEL 6.7 and Ubuntu 16.04 by following these instructions.  Versions 1.4.x has been successfully built & tested this way.
+The C MongoDB Driver can be built for Linux on z Systems running RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10 by following these instructions.  Versions 1.5.x has been successfully built & tested this way.
 
 _**General Notes:**_ 	
 
@@ -8,33 +8,33 @@ ii) Where the instructions refer to 'vi' you may, of course, use an editor of yo
 
 iii) A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it.
 
-iv) Version 1.4.x refers to the current stable version of 1.4 branch releases. At the time of writing recipe, it was 1.4.1.
+iv) Version 1.5.x refers to the current stable version of 1.5 branch releases. At the time of writing recipe, it was 1.5.0.
 
 # Building MongoDB C Driver
 
 1. **Install build dependencies**
 
-  For **SLES 12/12-SP1**
+  For **SLES 12/12-SP1/12-SP2**
   ```
   sudo zypper install -y autoconf automake gcc libtool make wget
   ```
   
-  For **SLES 11-SP3**
+  For **SLES 11-SP4**
   ```
   sudo zypper install -y autoconf automake gcc libtool make pkg-config tar wget
   ```
   
-  For **RHEL 7.1/7.2**
+  For **RHEL 7.1/7.2/7.3**
   ```
   sudo yum install -y autoconf automake gcc libtool make which wget
   ```
   
-  For **RHEL 6.7**
+  For **RHEL 6.8**
   ```
   sudo yum install -y autoconf automake gcc libtool make tar which wget
   ```
   
-  For **Ubuntu 16.04**
+  For **Ubuntu 16.04/16.10**
   ```
   sudo apt-get update
   sudo apt-get install autoconf automake gcc libtool make wget pkg-config
@@ -45,13 +45,13 @@ iv) Version 1.4.x refers to the current stable version of 1.4 branch releases. A
   
 2. **Download and configure the C Driver**
 
-   For version 1.4.x of the driver:
+   For version 1.5.x of the driver:
  
   ```
     cd /<source_root>/
-	wget -O mongo-c-driver-1.4.x.tar.gz  https://github.com/mongodb/mongo-c-driver/releases/download/1.4.x/mongo-c-driver-1.4.x.tar.gz
-	tar xzf mongo-c-driver-1.4.x.tar.gz
-	cd mongo-c-driver-1.4.x
+	wget -O mongo-c-driver-1.5.x.tar.gz  https://github.com/mongodb/mongo-c-driver/releases/download/1.5.x/mongo-c-driver-1.5.x.tar.gz
+	tar xzf mongo-c-driver-1.5.x.tar.gz
+	cd mongo-c-driver-1.5.x
 	./configure
   ```
 
