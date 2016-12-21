@@ -1,6 +1,11 @@
+<!---PACKAGE:Beats--->
+<!---DISTRO:SLES 12.x:5.x--->
+<!---DISTRO:RHEL 7.x:5.x--->
+<!---DISTRO:Ubuntu 16.x:5.x--->
+
 # Building Beats
 
-Beats 5.0.0 can be built and tested on Linux on z Systems for RHEL 7.2 , SLES 12-SP1 and Ubuntu 16.04 by following these instructions.
+Beats 5.0.0 can be built and tested on Linux on z Systems for RHEL 7.1/7.2 , SLES 12/12-SP1 and Ubuntu 16.04 by following these instructions.
 
 _**General Notes:**_  
 
@@ -11,22 +16,26 @@ _**General Notes:**_
 
 ### Prerequisites 
  
-* Go 1.7.1 (RHEL 7.2 , SLES 12-SP1 and Ubuntu 16.04)
+* Go 1.7.1 (RHEL 7.1/7.2 , SLES 12/12-SP1 and Ubuntu 16.04)
+
        -- Instructions for building Go can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7).
 
-* Docker >=1.10.0 (RHEL 7.2 , SLES 12-SP1 ) 
+* Docker >=1.10.0 (RHEL 7.1/7.2 , SLES 12/12-SP1 ) 
+       
        -- Instructions for building Docker can be found [here](http://www.ibm.com/developerworks/linux/linux390/docker.html).
 
-* Python >=2.7.9 (RHEL 7.2 , SLES 12-SP1) 
+* Python >=2.7.9 (RHEL 7.1/7.2 , SLES 12/12-SP1)
+ 
       -- Instructions for building Python can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Python-2.7.x).
 
-* Docker-Compose >= 1.7.0  (RHEL 7.2 , SLES 12-SP1 and Ubuntu 16.04)
+* Docker-Compose >= 1.7.0  (RHEL 7.1/7.2 , SLES 12/12-SP1 and Ubuntu 16.04)
+
       -- Instructions for building Docker-Compose can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Docker-Compose).
  
 
 ### Step 1 : Install the Dependencies 
 
-* RHEL 7.2 
+* RHEL 7.1/7.2 
 
     ```
     sudo yum install -y git make wget tar gcc libpcap.s390x libpcap-devel.s390x  python-setuptools
@@ -37,7 +46,7 @@ _**General Notes:**_
    sudo pip install virtualenv 
    ````  
   
-* SLES 12-SP1
+* SLES 12/12-SP1
 
     ```
     sudo zypper install -y git make wget tar gcc libpcap.s390x libpcap-devel.s390x  python-setuptools
@@ -52,7 +61,7 @@ _**General Notes:**_
 
     ```
     sudo apt-get update
-    sudo apt-get install -y git make wget tar gcc docker python python-setuptools libcap-dev
+    sudo apt-get install -y git make wget tar gcc docker python python-setuptools libcap-dev libpcap0.8-dev
     ```
    * Install virtualenv for Python
    ``` 
@@ -80,8 +89,9 @@ To compile, test and generate configuration files for a particular Beat use the 
     make unit-tests
     make system-tests
     make integration-tests
-    make update
+    make update (only for filebeat, packetbeat, metricbeat)
   ```
+  _**Note:**_ libbeat is used as a base for developing customized Beats. Hence, ```make update``` cannot be executed for this beat.
 
 For example, for Packetbeat:
    ```
@@ -104,6 +114,7 @@ For example, for Packetbeat:
   cd $GOPATH/src/github.com/elastic/beats/packetbeat
   sudo ./packetbeat -e -c packetbeat.yml -d "publish"
   ```
+  _**Note:**_ Above command cannot be used for libbeat.
   
 ###Reference:
 https://github.com/elastic/beats/blob/v5.0.0/CONTRIBUTING.md
