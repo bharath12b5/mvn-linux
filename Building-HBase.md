@@ -8,16 +8,19 @@ _**General Notes:**_
 
 * _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
+### Prerequisites(For IBM SDK only):
+
+  * HBase needs Hadoop jar while building. To build HBase with IBM sdk, Hadoop (2.5.1) should be built first with IBM sdk. If it not compiled then while starting the HBase shell, it will throw an error message saying `Unable to find JAAS classes:com.ibm.security.auth.LinuxPrincipal`
 
 ### Step 1: Install the dependencies 
 
  * Ubuntu 16.04
+    
+ _**Note:** Set JAVA_HOME to your defined java path. Also set JAVA_HOME/bin to PATH variable properly._
 	
-	*  With IBM JDK   
+	*  With IBM SDK   
 
-	   Download IBM Java 8 sdk binary from [IBM Java 8](http://www.ibm.com/developerworks/java/jdk/linux/download.html) and follow the instructions as per given in the link.  
-
-    	_**Note:** Set JAVA_HOME to your defined java path. Also set JAVA_HOME/bin to PATH variable properly._
+	   Download IBM Java 8 sdk binary from [IBM SDK 8](https://developer.ibm.com/javasdk/downloads/) and follow the instructions as per given in the link.  
 
 			sudo apt-get update
 			sudo apt-get install -y git wget maven tar make gcc ant
@@ -28,7 +31,15 @@ _**General Notes:**_
 			sudo apt-get install -y git openjdk-8-jdk wget maven tar make gcc ant
 			
 
-### Step 2: Build and install HBase
+### Step 2: Set Environment Variable( for IBM SDK only)
+   
+   To start HBase shell and there are some test cases which require `HADOOP_USER_NAME` environment variable set 
+
+   ```
+      export HADOOP_USER_NAME="hadoop"
+   ```
+
+### Step 3: Build and install HBase
   1. Get the source
      ```
         cd /<source_root>/
@@ -51,17 +62,12 @@ _**General Notes:**_
 
        _**Note:**_ 
 
-       * There are some test cases which require `HADOOP_USER_NAME`environment variable set ( for IBM java only)
-
-        ```
-        export HADOOP_USER_NAME="hadoop"
-        ```  
        * Following test failures are observed on s390x and investigation is in progress
 
           * org.apache.hadoop.hbase.filter.TestFuzzyRowFilter (fails consistently with openjdk)
-          * org.apache.hadoop.hbase.thrift.TestThriftHttpServer (fails intermittently with openjdk and IBM java)
+          * org.apache.hadoop.hbase.thrift.TestThriftHttpServer (fails intermittently with openjdk and IBM sdk)
 
-### Step 3: Start HBase shell
+### Step 4: Start HBase shell
 
   1. HBase needs a native library (libjffi-1.0.so: java foreign language interface). Get `jffi` source code and build with `ant`
 
@@ -129,25 +135,12 @@ _**General Notes:**_
 
       ```
 
-      ```diff
-         CFLAGS += -mwin32 -D_JNI_IMPLEMENTATION_
-         LDFLAGS += -Wl,--add-stdcall-alias
-         PICFLAGS=
--    SOFLAGS += -shared -mimpure-text -static-libgcc
-+    SOFLAGS += -shared -static-libgcc
-         PREFIX =
-         LIBEXT = dll
-      endif
-
-
-      ```
-
   4. Build jffi 
 
      ```
         ant
      ```
-     _**Note:** There are some test case failures. The jar file is created in `/<source_root>/jffi-1.0.0/build/jni/libjffi-1.0.so`_ 
+     _**Note:** There are some test case failures. The library file is created in `/<source_root>/jffi-1.0.0/build/jni/libjffi-1.0.so`_ 
 
   5. Modify `jruby-complete-1.6.8.jar` 
 
