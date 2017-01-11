@@ -1,40 +1,40 @@
 <!---PACKAGE:Puppet--->
-<!---DISTRO:SLES 12:4.5.3--->
-<!---DISTRO:SLES 11:4.5.3--->
-<!---DISTRO:RHEL 7.1:4.5.3--->
-<!---DISTRO:RHEL 6.6:4.5.3--->
-<!---DISTRO:Ubuntu 16.x:4.5.3--->
+<!---DISTRO:SLES 12:4.8.x--->
+<!---DISTRO:SLES 11:4.8.x--->
+<!---DISTRO:RHEL 7.1:4.8.x--->
+<!---DISTRO:RHEL 6.6:4.8.x--->
+<!---DISTRO:Ubuntu 16.x:4.8.x--->
 
 # Building Puppet
 
 Below versions of Puppet are available in respective distributions at the time of this recipe creation:
 
-* SLES 11-SP3 has  `2.7.26`
+* SLES 11-SP4 has  `2.7.26`
 * Ubuntu 16.04 has `3.8.5`
  
 
-The instructions provided below specify the steps to build Puppet v4.5.3 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3/12/12-SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build Puppet 4.8.1 on IBM z Systems for RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_  
-i) _When following the steps below please use a standard permission user unless otherwise specified._
+ * _When following the steps below please use a standard permission user unless otherwise specified._
 
-ii) _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
+ * _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ## Puppet Master Installation
 1. Install following dependencies  
   
-   For RHEL6.7 & RHEL7.1/7.2:  
+	RHEL 6.8 & RHEL 7.1/7.2/7.3:  
     ```
     sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
-```
-   For SLES11-SP3 & SLES12/12-SP1:  
+	```
+	SLES 11-SP4 & SLES 12/12-SP1/12-SP2:  
     ````
     sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
-````
-   For Ubuntu 16.04:  
+	````
+	Ubuntu 16.04/16.10:  
     ````
     sudo apt-get install -y g++ libreadline6 libreadline6-dev tar openssl unzip libyaml-dev libssl-dev make git wget libsqlite3-dev  libc6-dev cron
-````
+	````
 
 2. Download and install Ruby
     ````
@@ -43,7 +43,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     tar -xvf ruby-2.2.2.tar.gz
     cd ruby-2.2.2   
 	./configure && make && sudo make install
-````
+	````
 
 3. Download and install RubyGems
     ````
@@ -52,32 +52,32 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     tar -xvf rubygems-2.2.2.tgz
     cd rubygems-2.2.2
 	sudo /usr/local/bin/ruby setup.rb                
-````
+	````
 
 4. Install bundler
     ````
     cd /<source_root>/
     sudo /usr/local/bin/gem install bundler rake-compiler	
-````
+	````
 
 5. Install Puppet
     ````
     cd /<source_root>/
-    sudo /usr/local/bin/gem install puppet -v 4.5.3	
-````
+    sudo /usr/local/bin/gem install puppet -v 4.8.1	
+	````
 
 6. Locate the  $confdir  by command  
 **Note:** *Please make sure the directory `/usr/local/lib` has sufficient read and execute permissions to run the above command.Incase it doesn't,run`sudo chown 755 /usr/local/lib` to give the necessary permissions* 
     ````
     confdir=`puppet master --configprint confdir`
 	echo $confdir
-````
+	````
 The output gives the directory. If such directory does not exist, create one. 
     ````	
     mkdir -p $confdir
-````
+	````
 
-7. Create necessary directories and files in  $confdir
+7. Create necessary directories and files in $confdir
     ````
     mkdir $confdir/modules
     mkdir $confdir/manifests
@@ -86,18 +86,18 @@ The output gives the directory. If such directory does not exist, create one.
     wget https://raw.githubusercontent.com/puppetlabs/puppet/master/conf/auth.conf
     mkdir -p $confdir/opt/puppetlabs/puppet
     mkdir -p $confdir/var/log/puppetlabs
-````
+	````
 
-9. Create "puppet" user and group
+8. Create "puppet" user and group
     ````
     sudo useradd -d /home/puppet -m -s /bin/bash puppet
     sudo /usr/local/bin/puppet resource group puppet ensure=present
-````
-```Note```: Set a user specified password for puppet user .Running **sudo passwd puppet** will prompt for new password
+	````
+	```Note```: Set a user specified password for puppet user .Running **sudo passwd puppet** will prompt for new password
     
 
 
-10. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com)    
+9. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com)    
 **Note:** *Hostname can found by running the command `hostname -f`* 
     ````
     [main]
@@ -110,29 +110,28 @@ The output gives the directory. If such directory does not exist, create one.
      [master]
           certname = master.myhost.com
           autosign = true
-````
+	````
 
-11. The Puppet master runs on TCP port 8140. This port needs to be open on your masterâ€™s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall
+10. The Puppet master runs on TCP port 8140. This port needs to be open on your masterÃ¢â‚¬â„¢s firewall (and any intervening firewalls and network devices), and your agent must be able to route and connect to the master. To do this, you need to have an appropriate firewall rule on your master, such as the following rule for the Netfilter firewall
     ````
     sudo iptables -A INPUT -p tcp -m state --state NEW --dport 8140 -j ACCEPT 
-````
+	````
 
 ## Puppet Agent Installation
 1. Install following dependencies
   
-  For RHEL6.7 & RHEL7.1/7.2:  
-
+	RHEL 6.8 & RHEL 7.1/7.2/7.3: 
     ````
     sudo yum install -y gcc-c++ readline-devel tar openssl unzip libyaml-devel PackageKit-cron openssl-devel make git wget sqlite-devel glibc-common
-````
-  For SLES11-SP3 & SLES12/12-SP1:
+	````
+	SLES 11-SP4 & SLES 12/12-SP1/12-SP2:  
     ````
     sudo zypper install -y gcc-c++ readline-devel tar openssl unzip openssl-devel make git wget sqlite-devel glibc-locale
-````
-  For Ubuntu 16.04:  
+	````
+	Ubuntu 16.04/16.10:  
     ````
-    sudo apt-get install -y g++ libreadline6 libreadline6-dev tar openssl unzip libyaml-dev libssl-dev make git wget libsqlite3-dev  libc6-dev
-````
+	sudo apt-get install -y g++ libreadline6 libreadline6-dev tar openssl unzip libyaml-dev libssl-dev make git wget libsqlite3-dev libc6-dev cron
+	````
 
 2. Download and install Ruby
     ````
@@ -141,7 +140,7 @@ The output gives the directory. If such directory does not exist, create one.
     tar -xvf ruby-2.2.2.tar.gz
     cd ruby-2.2.2
     ./configure && make && sudo make install
-````
+	````
 
 3. Download and install RubyGems
     ````
@@ -150,30 +149,30 @@ The output gives the directory. If such directory does not exist, create one.
      tar -xvf rubygems-2.2.2.tgz
      cd rubygems-2.2.2
      sudo /usr/local/bin/ruby  setup.rb
-````
+	````
 
 4. Install bundler
     ````
     cd /<source_root>/
     sudo /usr/local/bin/gem install bundler rake-compiler
-````
+	````
 
 5. Install Puppet
     ````
     cd /<source_root>/
-    sudo /usr/local/bin/gem install puppet -v 4.5.3
-````
+    sudo /usr/local/bin/gem install puppet -v 4.8.1
+	````
 
 6. Locate the  $confdir  by command    
 **Note:** *Please make sure the directory `/usr/local/lib` has sufficent read and execute permissions to run the above command.Incase it doesn't,run `sudo chown 755 /usr/local/lib` to give the necessary permissions* 
     ````
     confdir=`puppet agent --configprint confdir`
 	echo $confdir
-````
+	````
 The output gives the directory. If such directory does not exist, create one. 
     ````	
     mkdir -p $confdir
-````
+	````
 
 7. Create necessary directories and files in  $confdir
     ````
@@ -181,7 +180,7 @@ The output gives the directory. If such directory does not exist, create one.
     mkdir -p $confdir/opt/puppetlabs/puppet
     mkdir -p $confdir/var/log/puppetlabs
     touch puppet.conf
-````
+	````
 
 8. Add the following parameters to $confdir/puppet.conf (assuming hostname of the master machine is master.myhost.com and hostname of the agent machine is agent.myhost.com)    
 **Note:** *Hostname can found by running the command `hostname -f`* 
@@ -197,26 +196,26 @@ The output gives the directory. If such directory does not exist, create one.
           certname = agent.myhost.com
           report = true
           pluginsync = false
-````
+	````
 
 9. Add an entry in /etc/hosts file with ipaddress and hostname of master node
     ````
      sudo vi /etc/hosts
      <master ipaddress> <master hostname>
-````
+	````
 
 ## Connecting the Master and Agent for the first time
 
 1. Run the master application on master machine (assuming with hostname master.myhost.com)
     ````
     puppet master --verbose --no-daemonize 
-````
+	````
 The --verbose option outputs verbose logging and the --no-daemonize option keeps the daemon in the foreground and redirects output to standard output. You can also add the --debug option to produce more verbose debug output from the daemon.
 
 2. On the agent application (assuming the hostname of the agent is agent.myhost.com)
     ````
     puppet agent --test 
-````
+	````
 Note: The following errors might be seen after execution of the above step
 
     Info: Retrieving pluginfacts
@@ -235,26 +234,26 @@ For testing, run the tests from the source code on Master machine.
  
 1. Switch user to puppet, clone Puppet git repository in /home/puppet and execute "bundle install" to install the required gems    
     ````
-     su puppet
-     cd /home/puppet
-     git clone --branch 4.5.3 git://github.com/puppetlabs/puppet
-     cd puppet
-     bundle install --path .bundle/gems/
-````
+    su puppet
+    cd /home/puppet
+    git clone --branch 4.8.1 git://github.com/puppetlabs/puppet
+    cd puppet
+    bundle install --path .bundle/gems/
+	````
 
 2. Edit file_spec.rb to support the testcases in environment  
     ````
     cd /home/puppet/puppet
-````  
+	````  
 Change the below line at number 59 in ```spec/unit/indirector/file_bucket_file/file_spec.rb  ```
     ````
     end.to raise_error(Puppet::FileBucket::BucketError, /Got passed new contents/)
-````
+	````
 Replace it with  
     ````
     should compile.and_raise_error(Puppet::FileBucket::BucketError, /Got passed new contents/)
         end
-````  
+	````  
 3. Running the test cases  
 
 	Few testcases need to be executed as root user and others as puppet user.  
@@ -265,17 +264,17 @@ Replace it with
     _* The integration testcases for provider and type should be executed as root user._  
     _* ```Note```: Run the  below commands as root user.You can switch to root user by running **exit**, if you are currently switched to puppet user._  
 
-    1. Create a shell script   
+    * Create a shell script   
     For example,` rootuser_tests.sh `
 
-        ````
+		````
     cd /home/puppet/puppet  
     touch rootuser_tests.sh  
     chmod +x rootuser_tests.sh  
-    ````
+		````
 
-    2. Add the following content to the shell script         
-        ````
+    * Add the following content to the shell script         
+		````
     #!/bin/bash
     set -e
         
@@ -296,22 +295,20 @@ Replace it with
     do
       bundle exec rspec --exclude-pattern ./spec/integration/provider/service/systemd_spec.rb "spec/integration/$j"
     done
-    ````
+		````
 
-    3. Run the shell script
+    * Run the shell script
  
-      * For Ubuntu 16.04
-         ```
+        Ubuntu 16.04/16.10
+        ```
           locale-gen "en_US.UTF-8"
     ./rootuser_tests.sh
-
-         ```
-      * For RHEL 6.7/RHEL 7.1/RHEL 7.2/SLES 11-SP3/SLES 12/SLES 12-SP1
-         ```
+        ```
+        RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4 & SLES 12/12-SP1/12-SP2
+        ```
           export LC_ALL="en_US.UTF8"
     ./rootuser_tests.sh
-
-         ```
+        ```
 
 	3.2. Execute testcases as puppet user  
 	
@@ -319,7 +316,7 @@ Replace it with
     _* The integration testcases except provider and type related testcases should be executed as puppet user._  
     _* data_binding.rb file is not executed as it does not involve any testcases to be invoked directly._  
     
-	1. Create a shell script  
+	* Create a shell script  
     For example `puppetuser_tests.sh` 
         ````
     cd /home/puppet/puppet
@@ -327,7 +324,7 @@ Replace it with
     chmod +x puppetuser_tests.sh
     ````
 
-    2. Add the following content to the script  
+    * Add the following content to the script  
         ````
     #!/bin/bash
     set -e
@@ -349,17 +346,17 @@ Replace it with
     do
       bundle exec rspec "spec/integration/$j"
     done
-    ````
+		````
 
-    3. Switch user to puppet  
+    * Switch user to puppet  
         ````
     su puppet
-    ````
+		````
 
-    4. Run the shell script  
+    * Run the shell script  
         ````
     ./puppetuser_tests.sh
-    ````
+		````
     
 ## References:
     [https://puppetlabs.com/](https://puppetlabs.com/)
