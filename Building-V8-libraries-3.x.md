@@ -1,11 +1,4 @@
-<!---PACKAGE:V8 JavaScript--->
-<!---DISTRO:SLES 11:V8--->
-<!---DISTRO:SLES 12:V8--->
-<!---DISTRO:RHEL 7.1:V8--->
-<!---DISTRO:RHEL 6.6:V8--->
-<!---DISTRO:Ubuntu 16.x:V8--->
-
-# Building v8
+# Building v8 3.14/3.28
 
 The instructions provided below specify the steps to build V8 JavaScript engine Versions 3.14 and 3.28 on Linux on the IBM z Systems for RHEL 6.8/7.1/7.2, SLES 11/12/12-SP1 and Ubuntu 16.04/16.10. It can be built as a set of shared libraries so that it can be used by multiple applications.
 (Note: If you are building V8 for use with [MongoDB](../Building MongoDB), you need V8 3.14.)
