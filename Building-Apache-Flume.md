@@ -1,36 +1,36 @@
 <!---PACKAGE:Apache Flume--->
-<!---DISTRO:SLES 12:1.6--->
-<!---DISTRO:RHEL 7.1:1.6--->
-<!---DISTRO:Ubuntu 16.x:1.6--->
+<!---DISTRO:SLES 12.x:1.7--->
+<!---DISTRO:RHEL 7.x.1:1.7--->
+<!---DISTRO:Ubuntu 16.x:1.7--->
 
 # Building Apache Flume
 
-The instructions describe how to build the [Apache Flume](https://flume.apache.org/) version 1.6 on IBM z Systems for SLES 12 or RHEL 7 or Ubuntu 16.04.
+The instructions describe how to build the [Apache Flume](https://flume.apache.org/) version 1.7 on IBM z Systems for RHEL 7.1/7.2/7.3, SLES12-SP1/SP2 or Ubuntu 16.04/16.10.
 
 _**GENERAL NOTE:** When following the steps below please use a standard permission user unless otherwise specified. 90MB of local disk space is required._
 
 Building Apache Flume for Linux on z Systems is a two-stage process
 
-1. Obtain the Flume dependencies including IBM JDK 1.6.0 or above, Maven and Google Protocol Buffer.
+1. Obtain the Flume dependencies including IBM JDK 1.8.0 or above, Maven and Google Protocol Buffer.
 2. Build Flume from source code.
 
 For more generic information on how the Flume Data flow works take a look at this [Flume Architecture](https://flume.apache.org/FlumeUserGuide.html).
 
 ## Obtaining Build Dependencies
 
-Dependencies include IBM JDK, Open JDK, Maven and Google Protocol Buffer. This guide has been tested on SLES 12 and RHEL 7.x and Ubuntu 16.04.
+Dependencies include IBM JDK, Open JDK, Maven and Google Protocol Buffer. This guide has been tested on SLES 12-SP1/SP2 and RHEL 7.x and Ubuntu 16.04/16.10.
 
 1. Install Dependencies
 
-  For RHEL 7
+  For RHEL 7.1/7.2/7.3
     ```
-	sudo yum install java-1.7.1-ibm-devel tar wget ant tar git telnet
+	sudo yum install java-1_8_0-ibm java-1.8.0-ibm-devel tar wget ant tar git telnet
     ```
-  For SLES 12
+  For SLES 12-SP1/SP2
     ```
-	sudo zypper install java-1_7_1-ibm-devel  ant tar wget git telnet
+	sudo zypper install java-1_8_0-ibm  java-1_8_0-ibm-devel ant tar wget git telnet
     ```
-  For Ubuntu 16.04
+  For Ubuntu 16.04/16.10
 	```
 	sudo apt-get update
 	sudo apt-get install openjdk-8-jdk maven protobuf-compiler ant tar wget git telnet
@@ -44,26 +44,26 @@ Dependencies include IBM JDK, Open JDK, Maven and Google Protocol Buffer. This g
 	```
 3. Path Configuration
 
-  For SLES12
+  For SLES12-SP1/SP2
 	```
 	export JAVA_HOME=/usr/lib64/jvm/java
 	export M2_HOME=<source_root>/apache-maven-3.2.5/maven
 	export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin
 	```
-  For RHEL7
+  For RHEL7.1/7.2/7.3
 	```
-	export JAVA_HOME=/usr/lib/jvm/java
+	export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0_ibm
 	export M2_HOME=<source_root>/apache-maven-3.2.5/maven
 	export PATH=$JAVA_HOME/bin:$PATH:$M2_HOME/bin
 	```
-  For Ubuntu 16.04
+  For Ubuntu 16.04/16.10
 	```
 	export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-s390x
 	export M2_HOME=/usr/share/maven
 	export PATH=$PATH:$JAVA_HOME:$JAVA_HOME/bin:$M2_HOME/bin
 	```
 
-4. Build Maven (Only for RHEL7 and SLES12)
+4. Build Maven (Only for RHEL7.1/7.2/7.3 and SLES12-SP1/SP2)
     ```
 	wget http://apache.cs.utah.edu/maven/maven-3/3.2.5/source/apache-maven-3.2.5-src.tar.gz 
 	tar -zxvf apache-maven-3.2.5-src.tar.gz 
@@ -72,7 +72,7 @@ Dependencies include IBM JDK, Open JDK, Maven and Google Protocol Buffer. This g
 	```
 
 
-5. Build ProtoBuf(Only for RHEL7 and SLES12), by following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-ProtoBuf).
+5. Build ProtoBuf(Only for RHEL7.1/7.2/7.3 and SLES12-SP1/SP2), by following the instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-ProtoBuf).
 
 ## Building Flume
 
@@ -81,7 +81,7 @@ Dependencies include IBM JDK, Open JDK, Maven and Google Protocol Buffer. This g
     ```
    git clone https://github.com/apache/flume.git flume
    cd flume
-   git checkout flume-1.6 
+   git checkout flume-1.7
     ```
 
 2. Configure the Maven option setting
@@ -114,7 +114,7 @@ Apache Flume build requires more memory than the default configuration.
 
 1. Create example.conf to set up a single node data streaming server
   ```
-   cd /<source_root>/flume/flume-ng-dist/target/apache-flume-1.6.0-bin/apache-flume-1.6.0-bin
+   cd /<source_root>/flume/flume-ng-dist/target/apache-flume-1.7.0-bin/apache-flume-1.7.0-bin
    vi example.conf
   ```
   Input the following content to example.conf
