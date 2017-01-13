@@ -13,7 +13,7 @@ Below versions of MySQL are available in respective distributions at the time of
 *    SLES 11-SP3 has `5.5.45-0.11.1`
 *    RHEL 6.6 has `5.1.73`
 
-The instructions provided below specify the steps to build MySQL version 5.7.16 on Linux on the IBM z Systems for RHEL 6.7/7.1/7.2, SLES 11-SP3, SLES 12/12-SP1 and Ubuntu 16.04.
+The instructions provided below specify the steps to build MySQL version 5.7.17 on Linux on the IBM z Systems for RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 More information on MySQL is available at https://www.mysql.com and the source code can be downloaded from https://github.com/mysql/mysql-server.git.
 
@@ -27,27 +27,27 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ###Obtain pre-built dependencies
 
-*	For RHEL 6.7
+*	For RHEL 6.8
 
 	```shell
 	sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget zlib-devel bzip2.s390x libtool.s390x
 	```
-*	For RHEL 7.1/7.2
+*	For RHEL 7.1/7.2/7.3
 
 	```shell
 	sudo yum install git gcc gcc-c++ make cmake bison ncurses-devel perl-Data-Dumper
 	```
-*	For SLES 11-SP3 - _(Additional support packages are needed to update cmake)_
+*	For SLES 11-SP4 - _(Additional support packages are needed to update cmake)_
 
     ```shell
     sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel util-linux tar zip wget glibc-devel-32bit zlib-devel
     ```
-*	For SLES 12/12-SP1
+*	For SLES 12/12-SP1/12-SP2
 
 	```shell
 	sudo zypper install git gcc gcc-c++ make cmake bison ncurses-devel wget tar
 	```
-*	For Ubuntu 16.04
+*	For Ubuntu 16.04/16.10
 
 	```shell
 	sudo apt-get update
@@ -56,7 +56,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
 ###Dependency Build - GCC 4.8.2 and cmake 3.3.0  
 
-* Install GCC 4.8.2 by building from source. (Required on RHEL 6.7 and SLES 11-SP3)
+* Install GCC 4.8.2 by building from source. (Required on RHEL 6.8 and SLES 11-SP4)
       
   * Download the GCC source code, then extract it.
 
@@ -96,7 +96,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
  gcc --version
  ```
       
-* Update cmake to version 3.3.0 by building from source. (Required on SLES 11-SP3 only)
+* Update cmake to version 3.3.0 by building from source. (Required on SLES 11-SP4 only)
 
   * _[Optional]_ Check the version of any existing `cmake` executable.
 
@@ -139,34 +139,34 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     git clone https://github.com/mysql/mysql-server.git
     ```
 
-   2. Move into the ` mysql-server` sub-directory, and checkout 5.7.16
+   2. Move into the ` mysql-server` sub-directory, and checkout 5.7.17
     ```shell
     cd mysql-server
     git branch
-    git checkout tags/mysql-5.7.16
+    git checkout tags/mysql-5.7.17
     ```
 
    3. Configure and Build the MySQL
     
-	For RHEL 6.7
+	For RHEL 6.8
 	```shell
     cmake -DCMAKE_C_COMPILER=/opt/gcc4.8/bin/gcc -DCMAKE_CXX_COMPILER=/opt/gcc4.8/bin/g++ -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
 	
-	For RHEL 7.1/7.2
+	For RHEL 7.1/7.2/7.3
 	```shell
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     gmake
     ```
 	
-	For Ubuntu 16.04
+	For Ubuntu 16.04/16.10
 	```shell
     cmake . -DDOWNLOAD_BOOST=1 -DWITH_BOOST=.
     make
     ```
 	
-	For SLES 11-SP3
+	For SLES 11-SP4
 	```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz
 	tar xzf boost_1_59_0.tar.gz
@@ -174,7 +174,7 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
     gmake
     ```
 	
-	For SLES 12/12-SP1
+	For SLES 12/12-SP1/12-SP2
 	```shell
 	wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.gz 
 	tar xzf boost_1_59_0.tar.gz 
@@ -186,29 +186,29 @@ ii) _A directory `/<source_root>/` will be referred to in these instructions, th
 
     The testing should take only a few seconds.
 
-    For RHEL6.7, RHEL 7.1/7.2 , SLES 11-SP3 & SLES 12/12-SP1
+    For RHEL6.8, RHEL 7.1/7.2/7.3 , SLES 11-SP4 & SLES 12/12-SP1/12-SP2
 	```shell
     gmake test
     ```
 	
-	For Ubuntu 16.04
+	For Ubuntu 16.04/16.10
 	```shell
     make test
     ```
 	
    5. Install MySQL into the standard location
 
-	For RHEL 7.1/7.2 & SLES 12/12-SP1
+	For RHEL 7.1/7.2/7.3 & SLES 12/12-SP1/12-SP2
 	```shell
     sudo gmake install
     ```
 	
-	For RHEL 6.7 & SLES 11-SP3
+	For RHEL 6.8 & SLES 11-SP4
 	```shell
     sudo gmake install -e LD_LIBRARY_PATH=/opt/gcc4.8/lib64/
     ```
 	
-	For Ubuntu 16.04
+	For Ubuntu 16.04/16.10
 	```shell
     sudo make install
     ```
