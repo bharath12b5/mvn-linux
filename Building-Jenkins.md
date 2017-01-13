@@ -1,13 +1,13 @@
 <!---PACKAGE:Jenkins--->
-<!---DISTRO:SLES 12:2.19--->
-<!---DISTRO:SLES 11:2.19--->
-<!---DISTRO:RHEL 7.1:2.19--->
-<!---DISTRO:RHEL 6.6:2.19--->
-<!---DISTRO:Ubuntu 16.x:2.19--->
+<!---DISTRO:SLES 12:2.32--->
+<!---DISTRO:SLES 11:2.32--->
+<!---DISTRO:RHEL 7.1:2.32--->
+<!---DISTRO:RHEL 6.6:2.32--->
+<!---DISTRO:Ubuntu 16.x:2.32--->
 
 # Building Jenkins
 
-The instructions provided below specify the steps to build Jenkins version 2.19.3 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
+The instructions provided below specify the steps to build Jenkins version 2.32.1 on IBM z Systems for RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_  
 * _When following the steps below please use a standard permission user unless otherwise specified._
@@ -16,11 +16,11 @@ _**General Notes:**_
 
 #### Step 1: Install the dependencies
 
-*	RHEL 6.8/7.1/7.2/7.3
+*	RHEL 6.8 and RHEL 7.1/7.2/7.3
      
             sudo yum install -y git 
 
-*	SLES 11-SP4/12/12-SP1/12-SP2
+*	SLES 11-SP4 and SLES 12/12-SP1/12-SP2
 
             sudo zypper install -y git-core
 
@@ -30,7 +30,7 @@ _**General Notes:**_
             
 * To install Maven
  
-	RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2
+	RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4 and SLES 12/12-SP1/12-SP2
           Please refer to the [Maven](https://github.com/linux-on-ibm-z/docs/wiki/Building-Maven) recipe.
  
 	Ubuntu 16.04/16.10
@@ -50,7 +50,7 @@ _**General Notes:**_
 		
 			sudo zypper install -y awk
  
-	RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2
+	RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4 and SLES 12/12-SP1/12-SP2
  
 	Download the IBM Node.js SDK for Linux on System z 64-bit binary from [here](https://developer.ibm.com/node/sdk/#v4) and use the command below to install Node.js
 		
@@ -74,7 +74,7 @@ _**General Notes:**_
 			cd /<source_root>/
 		    git clone https://github.com/jenkinsci/jenkins.git
 			cd /<source_root>/jenkins
-			git checkout jenkins-2.19.3
+			git checkout jenkins-2.32.1
 
 * Nodejs requires GCC 4.8 or newer.RHEL 6.8 and SLES 11-SP4 ship older versions of GCC, so it is necessary to build and install a newer GCC.Refer the "Building and Installing GCC" part of the  [GCCGO](https://github.com/linux-on-ibm-z/docs/wiki/Building-gccgo) recipe.
   
