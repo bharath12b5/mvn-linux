@@ -1,10 +1,10 @@
 # Building kube-dns 
 
 
-The instructions provided below specify the steps to build kube-dns 1.6 on IBM z Systems for RHEL 7.2/7.3,SLES 12-SP1/12-SP2 and Ubuntu 16.04/16.10
+The instructions provided below specify the steps to build kube-dns 1.9 on IBM z Systems for RHEL 7.1/7.2/7.3, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10
 
 ### Prerequisites:
-  * Go (For RHEL 7.2/7.3 and SLES 12-SP1/12-SP2)
+  * Go (For RHEL 7.1/7.2/7.3 and SLES 12/12-SP1/12-SP2)
   -- Instructions for building Go can be found [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7)
 
 _**General Notes:**_  
@@ -14,13 +14,13 @@ _**General Notes:**_
 
 ###  Step 1: Install the dependencies
    
-   * RHEL 7.2/7.3
+   * RHEL 7.1/7.2/7.3
 
         sudo yum install -y git gcc-c++ which iptables make
 
     Install docker by following instruction [here](https://www.ibm.com/developerworks/linux/linux390/docker.html)
 
-   * SLES 12-SP1/12-SP2
+   * SLES 12/12-SP1/12-SP2
 
         sudo zypper install -y git gcc-c++ which iptables make docker
 
@@ -37,35 +37,31 @@ _**General Notes:**_
 
 	cd /<source_root>/
 	git clone https://github.com/linux-on-ibm-z/kubernetes.git
-    cd kubernetes
-    git checkout v1.4.0-s390x
-    go get -u github.com/jteeuwen/go-bindata/go-bindata
-    cd vendor/golang.org/x 
-    mv sys sys.bak 
-    git clone https://github.com/linux-on-ibm-z/sys.git         
-
-###  Step 4: Edit Makefile in Kubernetes `/<source_root>/kubernetes/Makefile`
- 
-
-  ```diff
-
-@@ -39,7 +39,7 @@ MAKEFLAGS += --no-builtin-rules
-#   Constants used throughout.
-    .EXPORT_ALL_VARIABLES:
-    OUT_DIR ?= _output
--   BIN_DIR := $(OUT_DIR)/bin
-+   BIN_DIR := $(OUT_DIR)/local/go/bin
-    PRJ_SRC_PATH := k8s.io/kubernetes
-    GENERATED_FILE_PREFIX := zz_generated.
- 
-  ```
+	cd /<source_root>/kubernetes
+	git checkout v1.5.1-s390x
+	go get -u github.com/jteeuwen/go-bindata/go-bindata
+	cd /<source_root>/kubernetes/vendor/golang.org/x 
+	mv sys sys.bak 
+	git clone https://github.com/linux-on-ibm-z/sys.git 
    
-###  Step 5: Build Kubernetes
+###  Step 4: Build Kubernetes
 
     cd /<source_root>/kubernetes
-	make ARCH=s390x
+	make 
 
-###  Step 6: Edit `/<source_root>/kubernetes/build/kube-dns/Makefile`
+ **Note:** *Execute the following commands if you get the error message `cannot touch '_output/bin/deepcopy-gen': No such file or directory`.* 
+```
+ mkdir -p _output/bin
+ touch _output/bin/deepcopy-gen
+ touch _output/bin/conversion-gen
+ touch _output/bin/defaulter-gen
+ touch _output/bin/openapi-gen
+ chmod 777 _output/bin/deepcopy-gen
+ chmod 777 _output/bin/conversion-gen
+ chmod 777 _output/bin/defaulter-gen
+ chmod 777 _output/bin/openapi-gen
+```
+###  Step 5: Edit `/<source_root>/kubernetes/build-tools/kube-dns/Makefile`
 
 ```diff
 @@ -49,7 +49,7 @@ all: container
@@ -79,12 +75,12 @@ _**General Notes:**_
  	# Replace BASEIMAGE with the real base image
 
 ```
-###  Step 7: Build kube-dns image
+###  Step 6: Build kube-dns image
 
-	cd /<source_root>/kubernetes/build/kube-dns 
+	cd /<source_root>/kubernetes/build-tools/kube-dns 
     make ARCH=s390x
 
-### Step 8: Test the kube-dns image (Optional)
+### Step 7: Test the kube-dns image (Optional)
 
 ####Run kube-dns in Kubernetes pod
 
