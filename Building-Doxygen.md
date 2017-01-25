@@ -1,9 +1,9 @@
 <!---PACKAGE:Doxygen--->
-<!---DISTRO:SLES 12:1.8.12--->
-<!---DISTRO:SLES 11:1.8.12--->
-<!---DISTRO:RHEL 7.1:1.8.12--->
-<!---DISTRO:RHEL 6.6:1.8.12--->
-<!---DISTRO:Ubuntu 16.x:1.8.12--->
+<!---DISTRO:SLES 12.x:Distro, 1.8--->
+<!---DISTRO:SLES 11.x:Distro, 1.8--->
+<!---DISTRO:RHEL 7.x:Distro, 1.8--->
+<!---DISTRO:RHEL 6.x:Distro, 1.8--->
+<!---DISTRO:Ubuntu 16.x:Distro, 1.8--->
 
 # Building Doxygen
 
@@ -15,7 +15,7 @@ Below versions of Doxygen are available in respective distributions at the time 
 * SLES 11-SP4 has  `1.5.6-1.19` 
 * Ubuntu 16.04/16.10 have `1.8.11-1` 
 
-The instructions provided below specify the steps to build Doxygen version 1.8.12 on the IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
+The instructions provided below specify the steps to build Doxygen version 1.8.13 on the IBM z Systems for RHEL 6.8, RHEL 7.1/7.2/7.3, SLES 11-SP4, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General Notes:**_
       
@@ -114,11 +114,12 @@ _**General Notes:**_
   latex tabu.ins
   ```
 	
-  *  Perform the following steps for SLES 12
+  *  Perform the following steps for SLES 12/12-SP1/12-SP2
   ```  sh
   wget http://mirrors.ctan.org/support/epstopdf/epstopdf.pl  
   sudo mv epstopdf.pl /usr/local/bin/epstopdf  
   chmod a+x /usr/local/bin/epstopdf
+  export PATH=/usr/local/bin:$PATH
   ```      
  
   *  The files are made available to latex by placing at specific location
@@ -133,7 +134,7 @@ _**General Notes:**_
   cd /<source_root>/
   git clone https://github.com/doxygen/doxygen.git
   cd doxygen
-  git checkout Release_1_8_12
+  git checkout Release_1_8_13
   ```
 
 ####1.7) Apply changes to the following file (**Only** for Ubuntu)
