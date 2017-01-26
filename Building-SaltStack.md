@@ -1,9 +1,9 @@
 <!---PACKAGE:Salt--->
-<!---DISTRO:RHEL 6.6:2016.11.0--->
-<!---DISTRO:RHEL 7.1:2016.11.0--->
-<!---DISTRO:SLES 11:2016.11.0--->
-<!---DISTRO:SLES 12:2016.11.0--->
-<!---DISTRO:Ubuntu 16.x:2016.11.0--->
+<!---DISTRO:RHEL 6.6:2016.11.1--->
+<!---DISTRO:RHEL 7.1:2016.11.1--->
+<!---DISTRO:SLES 11:2016.11.1--->
+<!---DISTRO:SLES 12:2016.11.1--->
+<!---DISTRO:Ubuntu 16.x:2016.11.1--->
 
 # Building SaltStack
 
@@ -12,12 +12,12 @@ Below versions of SaltStack(Salt) are available in respective distributions at t
 * Ubuntu 16.04 has  2015.8.8  
 * Ubuntu 16.10 has  2016.3.1
 
-The instructions provided below specify the steps to build SaltStack v2016.11.0 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
+The instructions provided below specify the steps to build SaltStack v2016.11.1 on IBM z Systems for RHEL 6.8/7.1/7.2/7.3, SLES 11-SP4/12/12-SP1/12-SP2 and Ubuntu 16.04/16.10.
 
 _**General notes:**_ 
 
-* When following the steps below please use a standard permission user unless otherwise specified.  
-* A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it.
+* _When following the steps below please use a standard permission user unless otherwise specified._  
+* _A directory `/<source_root>/` will be referred to in these instructions, this is a temporary writeable directory anywhere you'd like to place it._
 
 ### Step 1: Install the dependencies
 
@@ -50,10 +50,10 @@ _**General notes:**_
     sudo easy_install pip
 	```
 
-* Install pip packages for all distribution which are missing from distribution repo using pip 
+* Install required packages using pip
 
     ```
-    sudo pip install paramiko httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pyzmq PyYAML pycrypto msgpack-python jinja2 psutil futures tornado`
+    sudo pip install paramiko httplib2 passlib nose mock mercurial six patch django call coverage==3.7.1 coveralls funcsigs pyzmq PyYAML pycrypto msgpack-python jinja2 psutil futures tornado
     ```
 
 ### Step 2: Clone the repository and install SaltStack 
@@ -61,8 +61,8 @@ _**General notes:**_
     cd /<source_root>/
     git clone https://github.com/saltstack/salt
     cd salt        
-    git checkout v2016.11.0
-    cd ..
+    git checkout v2016.11.1
+    cd /<source_root>/
     sudo pip install -e ./salt  
     USE_SETUPTOOLS=1 sudo easy_install salt
   
@@ -84,7 +84,7 @@ _**General notes:**_
     +	    root_dir: /<src_root>/
 
     ```
-    _**Note**_:  Change the publish_port and ret_port values if required  
+    _**Note**:  Change the publish_port and ret_port values if required_  
 
    * Edit config file `minion` as shown below  
 
@@ -97,7 +97,7 @@ _**General notes:**_
     +	    root_dir: /<src_root>/
 
     ```
-_**Note**_: If the ret_port value in the master config file is changed than, set the same value to master_port value in the minion config file
+_**Note**: If the ret_port value in the master config file is changed then, set the same value to master_port value in the minion config file_
 
    * Start the master and minion, accept the minion's key, and verify your local Salt installation is working 
 
@@ -155,8 +155,8 @@ _**Note**_: If the ret_port value in the master config file is changed than, set
                          check_ports.remove(port)
     ```
 
-_**Note:** Test failures seen in the following modules can be ignore as these are not related to IBM z Systems:_ 
-           _Module Tests, State Tests, Shell Tests, NetAPI Tests, Salt Unit Test_
+_**Note:** Test failures seen in the following modules can be ignored as those are not related to IBM z Systems:              
+            Module Tests, State Tests, Shell Tests, NetAPI Tests, Salt Unit Test_
   
 ### References: 
 
