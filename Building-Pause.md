@@ -1,6 +1,6 @@
 # Building Pause
 
-The instructions provided below specify the steps to build Pause Version 3.0 on IBM z Systems for RHEL 7.2/7.3, SLES 12-SP1/12-SP2 and Ubuntu 16.04/16.10
+The instructions provided below specify the steps to build Pause Version 3.0 on IBM z Systems for RHEL 7.1/7.2/7.3, SLES 12/12-SP1/12-SP2 and Ubuntu 16.04/16.10
 
 
 ### Prerequisites
@@ -15,11 +15,11 @@ The instructions provided below specify the steps to build Pause Version 3.0 on 
 
 ### Step 1: Install the dependencies
    
-* RHEL 7.2/7.3
+* RHEL 7.1/7.2/7.3
 
         sudo yum install -y git gcc gcc-c++ which make
 
-* SLES 12-SP1/12-SP2
+* SLES 12/12-SP1/12-SP2
 
         sudo zypper install -y git gcc gcc-c++ which make docker
 
@@ -30,18 +30,18 @@ The instructions provided below specify the steps to build Pause Version 3.0 on 
 ### Step 2: Download the source code for kubernetes  
 
     cd /<source_root>/
-    git clone https://github.com/kubernetes/kubernetes.git
+    git clone https://github.com/linux-on-ibm-z/kubernetes.git
     cd /<source_root>/kubernetes
-    git checkout v1.3.7
+    git checkout v1.5.1-s390x
 
 ### Step 3: Build Pause 
 
-    cd /<source_root>/kubernetes/build/pause 
+    cd /<source_root>/kubernetes/build-tools/pause 
     gcc -o pause-s390x pause.c
 
 ### Step 4: Create `gcr.io/google_containers/pause-s390x:3.0` image using below Dockerfile
 
-   * Create Dockerfile with the following contents 
+   * Replace the contents of existing `Dockerfile` with the following contents 
 
         #Dockerfile to create Pause image
         FROM s390x/ubuntu:16.04
