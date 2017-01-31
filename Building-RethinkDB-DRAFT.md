@@ -54,6 +54,8 @@ Modify ./src/rdb_protocol/datum.cc and comment out these lines
 Use 3.28 V8 packages for s390x and modify v8.sh as follows
 ```
 vi ./mk/support/pkg/v8.sh
+```
+```
     cd $build_dir
     rm -rf $build_dir/v8z
     rm -rf $build_dir/depot_tools
