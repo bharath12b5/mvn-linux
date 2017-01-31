@@ -62,6 +62,18 @@ static bool is_whitespace_character(char32_t c) {
     //return u_isUWhiteSpace(c);
     return std::isspace(c); //replace with non-ICU library
 }
+```
+Modify ./external/v8_3.30.33.16/include/v8.h
+```
+Local<String> Value::ToString() const {
+  //return ToString(Isolate::GetCurrent());
+  return ToString(); // s390x - for v8.28
+}
+
+Local<Object> Value::ToObject() const {
+  //return ToObject(Isolate::GetCurrent());
+  return ToObject(); // s390X - for v8.28
+}
 
 ```
 Use 3.28 V8 packages for s390x and modify v8.sh as follows
@@ -101,23 +113,5 @@ Configure and make RethinkDB
 ```
 ./configure --allow-fetch --dynamic jemalloc
 make
-```
-
-Currently ```make``` step is failing with following error:
-
-```
-root@lozlnxk:/localbox/rishi/rethinkdb-2.3.5# make
-    [1/9] CC build/release/obj/extproc/js_job.o
-    [2/9] LD build/release/rethinkdb
-./build/release/obj/extproc/js_job.o: In function `v8::Value::ToString() const':
-/localbox/rishi/rethinkdb-2.3.5/./build/external/v8_3.30.33.16/include/v8.h:6860: undefined reference to `v8::Value::ToString(v8::Isolate*) const'
-./build/release/obj/extproc/js_job.o: In function `v8::Value::ToObject() const':
-/localbox/rishi/rethinkdb-2.3.5/./build/external/v8_3.30.33.16/include/v8.h:6870: undefined reference to `v8::Value::ToObject(v8::Isolate*) const'
-./build/release/obj/extproc/js_job.o: In function `v8::Value::ToString() const':
-/localbox/rishi/rethinkdb-2.3.5/./build/external/v8_3.30.33.16/include/v8.h:6860: undefined reference to `v8::Value::ToString(v8::Isolate*) const'
-collect2: error: ld returned 1 exit status
-src/build.mk:335: recipe for target 'build/release/rethinkdb' failed
-make[1]: *** [build/release/rethinkdb] Error 1
-Makefile:52: recipe for target 'make' failed
-make: *** [make] Error 2
+make install
 ```
