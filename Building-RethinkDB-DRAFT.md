@@ -168,7 +168,7 @@ index d5433a6..4c92b3c 100644
  }
 
 ```
-Modify ./src/extproc/js_job.cc b/src/extproc/js_job.cc
+Modify ./src/extproc/js_job.cc
 ```diff
 index 1a0b7db..b715a7c 100644
 --- a/src/extproc/js_job.cc
@@ -187,7 +187,7 @@ index 1a0b7db..b715a7c 100644
  js_instance_t::~js_instance_t() {
 
 ```
-Use 3.28 V8 packages for s390x and modify v8.sh as follows
+Use 3.28 V8 packages for s390x and modify ./mk/support/pkg/v8.sh as follows
 ```diff
 index dc339ad..4081959 100644
 --- a/mk/support/pkg/v8.sh
