@@ -14,12 +14,13 @@
 ### Step 1: Install the Dependencies
 
 ```
+sudo apt-get update
 sudo apt-get install build-essential protobuf-compiler python \
                      libprotobuf-dev libcurl4-openssl-dev \
                      libboost-all-dev libncurses5-dev \
-                     libjemalloc-dev wget m4
+                     libjemalloc-dev wget m4 libssl-dev git
 ```
-    
+   
 ### Step 2: Download and build RethinkDB
 ```
 wget https://download.rethinkdb.com/dist/rethinkdb-2.3.5.tgz
@@ -43,7 +44,7 @@ index 728c2a6..48e64ba 100755
              true ;;
          arm*)
              var_append LDFLAGS -ldl
-```        
+```       
 Modify ./src/rpc/connectivity/cluster.cc
 ```diff
 index b43f7ab..c418fab 100644
@@ -51,13 +52,13 @@ index b43f7ab..c418fab 100644
 +++ b/src/rpc/connectivity/cluster.cc
 @@ -103,7 +103,7 @@ static bool resolve_protocol_version(const std::string &remote_version_string,
      return false;
- }
+}
 
 -#if defined (__x86_64__) || defined (_WIN64)
 +#if defined (__x86_64__) || defined (_WIN64) || defined(__s390x__)
- const std::string connectivity_cluster_t::cluster_arch_bitsize("64bit");
- #elif defined (__i386__) || defined(__arm__)
- const std::string connectivity_cluster_t::cluster_arch_bitsize("32bit");
+const std::string connectivity_cluster_t::cluster_arch_bitsize("64bit");
+#elif defined (__i386__) || defined(__arm__)
+const std::string connectivity_cluster_t::cluster_arch_bitsize("32bit");
 
 ```
 Modify ./src/arch/runtime/context_switching.cc
@@ -73,16 +74,16 @@ index d729575..3da8b06 100644
 +#elif defined(__arm__) || defined (__s390x__)
      /* We must preserve r4, r5, r6, r7, r8, r9, r10, and r11. Because we have to store the LR (r14) in swapcontext as well, we also store r12 in swapcontext to keep the stack double-word-aligned. However, we already accounted for both of those by decrementing sp twice above (once for r14 and once for r12, say). */
      sp -= 8;
- #else
+#else
 @@ -262,7 +262,7 @@ void context_switch(artificial_stack_context_ref_t *current_context_out, artific
- }
+}
 
- asm(
+asm(
 -#if defined(__i386__) || defined(__x86_64__) || defined(__arm__)
 +#if defined(__i386__) || defined(__x86_64__) || defined(__arm__) || defined (__s390x__)
- // We keep the i386, x86_64, and ARM stuff interleaved in order to enforce commonality.
- #if defined(__x86_64__)
- #if defined(__LP64__) || defined(__LLP64__)
+// We keep the i386, x86_64, and ARM stuff interleaved in order to enforce commonality.
+#if defined(__x86_64__)
+#if defined(__LP64__) || defined(__LLP64__)
 
 ```
 Modify ./src/rdb_protocol/datum.cc and comment out these lines
@@ -91,7 +92,7 @@ index 7fbd7aa..a0b988d 100644
 --- a/src/rdb_protocol/datum.cc
 +++ b/src/rdb_protocol/datum.cc
 @@ -1118,9 +1118,10 @@ std::string datum_t::mangle_secondary(
- std::string datum_t::encode_tag_num(uint64_t tag_num) {
+std::string datum_t::encode_tag_num(uint64_t tag_num) {
      static_assert(sizeof(tag_num) == tag_size,
              "tag_size constant is assumed to be the size of a uint64_t.");
 -#ifndef BOOST_LITTLE_ENDIAN
@@ -102,7 +103,7 @@ index 7fbd7aa..a0b988d 100644
 +//    static_assert(false, "This piece of code will break on big-endian systems.");
 +//#endif
      return std::string(reinterpret_cast<const char *>(&tag_num), tag_size);
- }
+}
 
 @@ -1244,9 +1245,10 @@ components_t parse_secondary(const std::string &key) THROWS_NOTHING {
      std::string tag_str = key.substr(start_of_tag, key.size() - (start_of_tag + 2));
@@ -126,23 +127,23 @@ index a17e443..0bebd6c 100644
 --- a/src/rdb_protocol/terms/string.cc
 +++ b/src/rdb_protocol/terms/string.cc
 @@ -16,7 +16,7 @@ namespace ql {
- // Combining characters in Unicode have a character class starting with M. There
- // are three types, which affect layout; we don't distinguish between them here.
- static bool is_combining_character(char32_t c) {
+// Combining characters in Unicode have a character class starting with M. There
+// are three types, which affect layout; we don't distinguish between them here.
+static bool is_combining_character(char32_t c) {
 -    return (U_GET_GC_MASK(c) & U_GC_M_MASK) > 0;
 +    return (c!=' '); // s390x - remove ICU ref
- }
+}
 
- // ICU provides several different whitespace functions.  We use
+// ICU provides several different whitespace functions.  We use
 @@ -26,7 +26,7 @@ static bool is_combining_character(char32_t c) {
- // (Z designating separators) and some of the Z category marks do not
- // have the WSpace=Y property; principally zero width spacers).
- static bool is_whitespace_character(char32_t c) {
+// (Z designating separators) and some of the Z category marks do not
+// have the WSpace=Y property; principally zero width spacers).
+static bool is_whitespace_character(char32_t c) {
 -    return u_isUWhiteSpace(c);
 +    return std::isspace(c); // s390x - replace with non-ICU libraray
- }
+}
 
- class match_term_t : public op_term_t {
+class match_term_t : public op_term_t {
 
 ```
 Modify ./external/v8_3.30.33.16/include/v8.h
@@ -153,19 +154,19 @@ index d5433a6..4c92b3c 100644
 @@ -6857,7 +6857,7 @@ Local<Number> Value::ToNumber() const {
 
 
- Local<String> Value::ToString() const {
+Local<String> Value::ToString() const {
 -  return ToString(Isolate::GetCurrent());
 +  return ToString(); // s390x - V8 3.28 has no support for Isolate
- }
+}
 
 
 @@ -6867,7 +6867,7 @@ Local<String> Value::ToDetailString() const {
 
 
- Local<Object> Value::ToObject() const {
+Local<Object> Value::ToObject() const {
 -  return ToObject(Isolate::GetCurrent());
 +  return ToObject(); // s390x has no support for Isolate
- }
+}
 
 ```
 Modify ./src/extproc/js_job.cc
@@ -182,9 +183,9 @@ index 1a0b7db..b715a7c 100644
 +    // Disable Isolate for s390x v8 3.28
 +    //isolate_ = v8::Isolate::New();
 +    //isolate_->Enter();
- }
+}
 
- js_instance_t::~js_instance_t() {
+js_instance_t::˜js_instance_t() {
 
 ```
 Use 3.28 V8 packages for s390x and modify ./mk/support/pkg/v8.sh as follows
@@ -226,7 +227,7 @@ index dc339ad..4081959 100644
 +    #for lib in libicu{i18n,uc,data}; do
 +    #    echo "$install_dir/lib/$lib.a"
 +    #done
- }
+}
 
 ```
 Configure and make RethinkDB
