@@ -3,7 +3,7 @@
 
 # Building RethinkDB v2.3.5
 
-[rethinkDB](https://www.rethinkdb.com/) RethinkDB is the first open-source scalable database built for realtime applications. The instructions provided below specify the steps to build RethinkDB v2.3.5 on IBM z Systems for Ubuntu 16.04:
+[RethinkDB](https://www.rethinkdb.com/) is the first open-source scalable database built for realtime applications. The instructions provided below specify the steps to build RethinkDB v2.3.5 on IBM z Systems for Ubuntu 16.04:
 
 ### _**General Note:**_
 * _When following the steps below please use a standard permission user unless otherwise specified_
@@ -13,7 +13,8 @@
 
 ### Step 1: Install the dependencies
 ```
-apt-get install build-essential protobuf-compiler python libprotobuf-dev libcurl4-openssl-dev libboost-all-dev libncurses5-dev libjemalloc-dev wget m4
+apt-get update
+apt-get install build-essential python libcurl4-openssl-dev libboost-all-dev libncurses5-dev wget m4
 ```
 
 Build `jemalloc 4.4.0` from source
@@ -26,7 +27,7 @@ make
 make install_bin install_include install_lib
 ```
 
-Install Node.js from https://developer.ibm.com/node/sdk/. You need to download `ibm-1.2.0.17-node-v0.12.18-linux-s390x.bin`, then
+Install Node.js from https://developer.ibm.com/node/sdk/. You need to download `ibm-6.9.4.0-node-v6.9.4-linux-s390x.bin`, then
 ```
 chmod +x ibm-6.9.4.0-node-v6.9.4-linux-s390x.bin
 ./ibm-6.9.4.0-node-v6.9.4-linux-s390x.bin
@@ -188,7 +189,7 @@ const std::string connectivity_cluster_t::cluster_arch_bitsize("64bit");
 const std::string connectivity_cluster_t::cluster_arch_bitsize("32bit");
 ```
 
-Install v8-3.28 for s390x, follow https://github.com/linux-on-ibm-z/docs/wiki/Building-V8-libraries-3.x. Assuming you have finished the building and installation, and the install directory is `/<source_root>/v8-3.28-z`
+Install v8-3.28 for s390x, following https://github.com/linux-on-ibm-z/docs/wiki/Building-V8-libraries-3.x. Assuming you have finished the building and installation, and the install directory is `/<source_root>/v8-3.28-z`
 ```
 cp -RL /<source_root>/v8-3.28-z/* /<source_root>/rethinkdb/external/v8_3.30.33.16/
 ```
@@ -201,8 +202,6 @@ Make changes to `/usr/include/libplatform/libpliatform.h`,
 
 Rewrite `mk/support/pkg/v8.sh` as following
 ```
-version=3.30.33.16
-
 pkg_install-include () {
 }
 
@@ -228,12 +227,18 @@ else ifeq ($(COMPILER),GCC)
 
 Then
 ```
-make
-make install
+make -j 8 THREADED_COROUTINES=1
+make install -j 8 THREADED_COROUTINES=1
+```
+
+To start a server
+```
+rethinkdb --bind-all
 ```
 
 For unit testing
 ```
-./test/run unit
+make -j 8 THREADED_COROUTINES=1 DEBUG=1
+./test/run unit -j 8
 ```
  
