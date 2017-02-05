@@ -224,6 +224,18 @@ else ifeq ($(COMPILER),GCC)
    ifeq ($(STATICFORCE),1)
 ```
 
+Make changes to `src/client_protocol/server.cc`
+```diff
+@@ -280,6 +280,7 @@ void query_server_t::handle_conn(const scoped_ptr_t<tcp_conn_descriptor_t> &ncon
+         int32_t client_magic_number;
+         conn->read_buffered(
+             &client_magic_number, sizeof(client_magic_number), &ct_keepalive);
++        client_magic_number = __builtin_bswap32(client_magic_number); 
+
+         switch (client_magic_number) {
+             case VersionDummy::V0_1:
+```
+
 Make changes to `src/perfmon/perfmon.cc`
 ```diff
 @@ -159,7 +159,7 @@ stddev_t::stddev_t()
