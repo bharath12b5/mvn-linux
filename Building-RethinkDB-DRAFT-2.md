@@ -14,7 +14,7 @@
 ### Step 1: Install the dependencies
 ```
 apt-get update
-apt-get install build-essential python libcurl4-openssl-dev libboost-all-dev libncurses5-dev wget m4
+apt-get install build-essential protobuf-compiler python libprotobuf-dev libcurl4-openssl-dev libboost-all-dev libncurses5-dev wget m4 autoconf openjdk-8-jdk
 ```
 
 Build `jemalloc 4.4.0` from source
@@ -27,17 +27,14 @@ make
 make install_bin install_include install_lib
 ```
 
-Install Node.js from https://developer.ibm.com/node/sdk/. You need to download `ibm-6.9.4.0-node-v6.9.4-linux-s390x.bin`, then
+Install Node.js from https://developer.ibm.com/node/sdk/v12/. You need to download `Linux on System z 64-bit (file name: ibm-1.2.0.17-node-v0.12.18-linux-s390x.bin)`, then
 ```
-chmod +x ibm-6.9.4.0-node-v6.9.4-linux-s390x.bin
-./ibm-6.9.4.0-node-v6.9.4-linux-s390x.bin
+chmod +x ibm-1.2.0.17-node-v0.12.18-linux-s390x.bin
+./ibm-1.2.0.17-node-v0.12.18-linux-s390x.bin
 export PATH=$PATH:/root/ibm/node/bin
 npm install -g coffee-script@1.12.3
 npm install -g browserify@12.0.1
 ```
-
-Build `protobuf 2.5.0` by following recipe in https://github.com/linux-on-ibm-z/docs/wiki/Building-Google-Protobuf-2.5.0
-
 
 ### Step 2: Build and install RethinkDB
 ```
@@ -191,6 +188,7 @@ const std::string connectivity_cluster_t::cluster_arch_bitsize("32bit");
 
 Install v8-3.28 for s390x, following https://github.com/linux-on-ibm-z/docs/wiki/Building-V8-libraries-3.x. Assuming you have finished the building and installation, and the install directory is `/<source_root>/v8-3.28-z`
 ```
+mkdir /<source_root>/rethinkdb/external/v8_3.30.33.16/
 cp -RL /<source_root>/v8-3.28-z/* /<source_root>/rethinkdb/external/v8_3.30.33.16/
 ```
 
@@ -200,16 +198,17 @@ Make changes to `/usr/include/libplatform/libpliatform.h`,
 +#include "v8-platform.h"
 ```
 
-Rewrite `mk/support/pkg/v8.sh` as following
-```
-pkg_install-include () {
-}
+Make changes to `mk/support/pkg/v8.sh`
+```diff
+@@ -42,6 +42,7 @@ pkg_install () {
+         i?86)   arch=ia32 ;;
+         x86_64) arch=x64 ;;
+         arm*)   arch=arm; arch_gypflags=$raspberry_pi_gypflags ;;
++        s390x)  arch=s390x ;;
+         *)      arch=native ;;
+     esac
+     mode=release
 
-pkg_install () {
-}
-
-pkg_link-flags () {
-}
 ```
 
 Make changes to `src/build.mk`
@@ -225,20 +224,20 @@ else ifeq ($(COMPILER),GCC)
    ifeq ($(STATICFORCE),1)
 ```
 
-Then
+Then, not `n` is the total number of your CPU cores 
 ```
-make -j 8 THREADED_COROUTINES=1
-make install -j 8 THREADED_COROUTINES=1
+make -j <n> THREADED_COROUTINES=1
+make install -j <n> THREADED_COROUTINES=1
 ```
 
 To start a server
 ```
-rethinkdb --bind-all
+rethinkdb --bind all
 ```
 
 For unit testing
 ```
-make -j 8 THREADED_COROUTINES=1 DEBUG=1
-./test/run unit -j 8
+make -j <n> THREADED_COROUTINES=1 DEBUG=1
+./test/run unit -j <n>
 ```
  
