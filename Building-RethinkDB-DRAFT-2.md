@@ -224,7 +224,18 @@ else ifeq ($(COMPILER),GCC)
    ifeq ($(STATICFORCE),1)
 ```
 
-Then, not `n` is the total number of your CPU cores 
+Make changes to `src/perfmon/perfmon.cc`
+```diff
+@@ -159,7 +159,7 @@ stddev_t::stddev_t()
+ stddev_t::stddev_t(size_t n, double mean, double variance)
+     : N(n), M(mean), Q(variance * n) {
+     if (N == 0)
+-        rassert(isnan(M) && isnan(Q));
++        rassert(std::isnan(M) && std::isnan(Q));
+ }
+```
+
+Then, not `n` is the total number of your CPU cores
 ```
 make -j <n> THREADED_COROUTINES=1
 make install -j <n> THREADED_COROUTINES=1
