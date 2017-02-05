@@ -1,5 +1,5 @@
 <!---PACKAGE:rethinkDB--->
-<!---DISTRO:SLES 12 SP2--->
+<!---DISTRO:Ubuntu 16.04--->
 
 # Building RethinkDB v2.3.5
 
