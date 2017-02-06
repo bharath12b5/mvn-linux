@@ -135,7 +135,7 @@ asm(
 #else
 ```
 
-Make changes to `./src/rdb_protocal/datum.cc`
+Make changes to `./src/rdb_protocol/datum.cc`
 ```diff
 @@ -1118,9 +1118,10 @@ std::string datum_t::mangle_secondary(
 std::string datum_t::encode_tag_num(uint64_t tag_num) {
