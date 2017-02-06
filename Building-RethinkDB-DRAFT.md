@@ -182,7 +182,7 @@ mkdir /<source_root>/rethinkdb/external/v8_3.30.33.16/
 cp -RL /<source_root>/v8-3.28-z/* /<source_root>/rethinkdb/external/v8_3.30.33.16/
 ```
 
-Make changes to `/usr/include/libplatform/libpliatform.h`,
+Make changes to `/usr/include/libplatform/libplatform.h`,
 ```diff
 -#include "include/v8-platform.h"
 +#include "v8-platform.h"
