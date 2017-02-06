@@ -62,16 +62,16 @@ Then
 
 Make changes to `./src/arch/runtime/context_switching.cc`
 ```diff
-@@ -101,6 +101,8 @@ artificial_stack_t::artificial_stack_t(void (*initial_fun)(void), size_t _stack_
-#elif defined(__arm__)
+@@ -98,7 +98,7 @@ artificial_stack_t::artificial_stack_t(void (*initial_fun)(void), size_t _stack_
+     the stack by swapcontext; they're callee-saved, so whatever happens to be in
+     them will be ignored. */
+     sp -= 6;
+-#elif defined(__arm__)
++#elif defined(__arm__) || defined(__s390x__)
      /* We must preserve r4, r5, r6, r7, r8, r9, r10, and r11. Because we have to store the LR (r14) in swapcontext as well, we also store r12 in swapcontext to keep the stack double-word-aligned. However, we already accounted for both of those by decrementing sp twice above (once for r14 and once for r12, say). */
      sp -= 8;
-+#elif defined(__s390x__)
-+    sp -= 10;
 #else
-#error "Unsupported architecture."
-#endif
-@@ -262,7 +264,7 @@ void context_switch(artificial_stack_context_ref_t *current_context_out, artific
+@@ -262,7 +262,7 @@ void context_switch(artificial_stack_context_ref_t *current_context_out, artific
 }
 
 asm(
@@ -80,7 +80,7 @@ asm(
 // We keep the i386, x86_64, and ARM stuff interleaved in order to enforce commonality.
 #if defined(__x86_64__)
 #if defined(__LP64__) || defined(__LLP64__)
-@@ -281,6 +283,7 @@ asm(
+@@ -281,6 +281,7 @@ asm(
      /* `current_pointer_out` is in `%rdi`. `dest_pointer` is in `%rsi`. */
 #elif defined(__arm__)
      /* `current_pointer_out` is in `r0`. `dest_pointer` is in `r1` */
@@ -88,61 +88,51 @@ asm(
 #endif
 
      /* Save preserved registers (the return address is already on the stack). */
-@@ -302,6 +305,13 @@ asm(
+@@ -302,6 +303,8 @@ asm(
      "push {r12}\n"
      "push {r14}\n"
      "push {r4-r11}\n"
 +#elif defined(__s390x__)
 +    ""
-+/*    "stmg %r6,%13,-88(%r15)\n"
-+    "stg %r15,-24(%r15)\n"
-+    "stg %r14,-16(%r15)"
-+    "aghi %r15,-88\n"
-+*/
 #endif
 
      /* Save old stack pointer. */
-@@ -316,6 +326,10 @@ asm(
+@@ -316,6 +319,8 @@ asm(
 #elif defined(__arm__)
      /* On ARM, the first argument is in `r0`. `r13` is the stack pointer. */
      "str r13, [r0]\n"
 +#elif defined(__s390x__)
 +    ""
-+/*    "stg %r15,0(%r2)\n"
-+*/
 #endif
 
-@@ -330,6 +344,10 @@ asm(
+     /* Load the new stack pointer and the preserved registers. */
+@@ -330,6 +335,8 @@ asm(
 #elif defined(__arm__)
      /* On ARM, the second argument is in `r1` */
      "mov r13, r1\n"
 +#elif defined(__s390x__)
 +    ""
-+/*    "lgr %r15,%r3\n"
-+*/
 #endif
 
 #if defined(__i386__)
-@@ -348,6 +366,12 @@ asm(
+@@ -348,6 +355,8 @@ asm(
      "pop {r4-r11}\n"
      "pop {r14}\n"
      "pop {r12}\n"
 +#elif defined(__s390x__)
 +    ""
-+/*    "lmg %r14,72(%r15)\n"
-+    "lmg %r6,%r13,0(%r15)\n"
-+    "lmg %r15,64(%r15)\n"
-+*/
 #endif
 
 #if defined(__i386__) || defined(__x86_64__)
-@@ -360,6 +384,8 @@ asm(
+@@ -360,6 +369,8 @@ asm(
      /* Above, we popped `LR` (`r14`) off the stack, so the bx instruction will
      jump to the correct return address. */
      "bx r14\n"
 +#elif defined(__s390x__)
 +    ""
 #endif
+
+#else
 ```
 
 Make changes to `./src/rdb_protocal/datum.cc`
@@ -230,7 +220,7 @@ Make changes to `src/client_protocol/server.cc`
          int32_t client_magic_number;
          conn->read_buffered(
              &client_magic_number, sizeof(client_magic_number), &ct_keepalive);
-+        client_magic_number = __builtin_bswap32(client_magic_number); 
++        client_magic_number = __builtin_bswap32(client_magic_number);
 
          switch (client_magic_number) {
              case VersionDummy::V0_1:
