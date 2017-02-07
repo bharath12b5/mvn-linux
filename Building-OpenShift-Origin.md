@@ -1,9 +1,10 @@
 <!---PACKAGE:OpenShift Origin--->
-<!---DISTRO:RHEL 7.x:1.3.1--->
+<!---DISTRO:RHEL 7.x:1.3.2--->
 
 # Building OpenShift Origin
 
-[OpenShift Origin V3](https://github.com/openshift/origin) is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. The instructions provided below specify the steps to build OpenShift Origin 1.3.1 on Linux on the IBM z Systems for RHEL 7.2.
+[OpenShift Origin V3](https://github.com/openshift/origin) is a distribution of Kubernetes optimized for continuous application development and multi-tenant deployment. The instructions provided below specify the steps to build OpenShift Origin 1.3.2 on IBM z Systems for following distributions:    
+*	RHEL (7.1, 7.2, 7.3)
 
 ### _**General Notes:**_  
 * _When following the steps below please use a standard permission user unless otherwise specified._
@@ -14,12 +15,14 @@
 
 ### Step 1: Install the Dependencies
 
-    sudo yum install git tar which
+    sudo yum install git tar which wget make gcc
 
-### Step 2: Install Docker 1.10.0
-See instructions [here](http://www.ibm.com/developerworks/linux/linux390/docker.html)
+### Step 2: Install Docker
+See instructions [here](http://www.ibm.com/developerworks/linux/linux390/docker.html)    
 
-### Step 3: Install Go 1.7
+_**Note:** The above link provides Docker binaries for RHEL 7.1 and RHEL 7.2 but RHEL 7.3. However, you may use either of them to install Docker on RHEL 7.3 as the binaries are expected to have backward compatibility._
+
+### Step 3: Install Go
 
 See instructions [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Go-1.7).  
 
@@ -35,7 +38,7 @@ See instructions [here](https://github.com/openshift/origin/blob/master/CONTRIBU
      cd $GOPATH/src/github.com/openshift
      git clone https://github.com/openshift/origin.git  
      cd origin  
-     git checkout tags/v1.3.1 -b v1.3.1  
+     git checkout tags/v1.3.2 -b v1.3.2 
 
      cd $GOPATH/src/github.com/openshift/origin/vendor/golang.org/x/ # Replace sys package
      mv sys sys.bk
@@ -47,7 +50,7 @@ See instructions [here](https://github.com/openshift/origin/blob/master/CONTRIBU
 
 Above steps will generate OpenShift Origin executable in the directory specified in the instructions.  You are now ready to use OpenShift Origin.
 
-__Note:__ In order to use OpenShift Origin you must generate core OpenShift Docker images. Here we provide guidance on how to do that on RHEL 7.2. Feel free to adapt it to your environment.
+_**Note:** In order to use OpenShift Origin you must generate core OpenShift Docker images. Here we provide guidance on how to do that on RHEL (7.1, 7.2, 7.3). Feel free to adapt it to your environment._
 
 ### Optional: Build required Docker images
 
@@ -186,7 +189,7 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
          # The standard name for this image is openshift/origin-base
          #
         -FROM centos:centos7
-        +FROM rhel7.2
+        +FROM <RHEL-base-image>
  
         -RUN INSTALL_PKGS="which git tar wget hostname sysvinit-tools util-linux bsdtar epel-release \
         -      socat ethtool device-mapper iptables tree findutils nmap-ncat e2fsprogs xfsprogs lsof" && \
@@ -198,7 +201,8 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
               yum clean all && \
               mkdir -p /var/lib/origin
         ```
-
+	_**Note:** `<RHEL-base-image>`- RHEL base image for required distribution i.e RHEL (7.1, 7.2, 7.3)._
+	
     * `images/builder/docker/custom-docker-builder/Dockerfile`, add scripts for docker installation on s390x:
 
         ```diff
@@ -214,13 +218,15 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
         
         +# Install docker
         +RUN mkdir /docker && cd /docker && \
-        +    wget ftp://ftp.unicamp.br/pub/linuxpatch/s390x/redhat/rhel7.2/docker-1.10.1-rhel7.2-20160408.tar.gz && \
-        +    tar -xvzf docker-1.10.1-rhel7.2-20160408.tar.gz && cp docker-1.10.1-rhel7.2-20160408/docker /usr/bin
+        +    wget ftp://ftp.unicamp.br/pub/linuxpatch/s390x/redhat/rhel7.1/docker/docker-1.12.1-rhel7.1-20161012.tar.gz && \
+        +    tar -xvzf docker-1.12.1-rhel7.1-20161012.tar.gz && cp docker-1.12.1-rhel7.1-20161012/docker /usr/bin
 
         LABEL io.k8s.display-name="OpenShift Origin Custom Builder Example" \
        io.k8s.description="This is an example of a custom builder for use with OpenShift Origin."
 
         ```
+	    _**Note:** Download Docker binaries with version 1.10.0 or higher for required RHEL distributions from [here](ftp://ftp.unicamp.br/pub/linuxpatch/s390x/redhat/). For RHEL 7.3,either of the Docker binaries i.e RHEL 7.1 or RHEL 7.2 may be used due to backward compatibility._
+		
     * `images/ipfailover/keepalived/Dockerfile`, add build steps to install keepalive on s390x.
         ```diff  
         @@ -5,10 +5,17 @@
@@ -290,7 +296,7 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
         +# Install openvswitch from the source
         +RUN mkdir openvswitch && cd ./openvswitch && \
         +    wget http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz && \
-        +    tar -xvf openvswitch-2.4.0.tar.gz && 
+        +    tar -xvf openvswitch-2.4.0.tar.gz && \
         +    cd openvswitch-2.4.0/ && ./configure && make && make install
         +
         +RUN    yum clean all && \
@@ -386,7 +392,8 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
 
 3. Build base images 
  
-    __Note:__ If you want to build your own release, you have to git commit all changes back to your git server so that no dirty version remains.
+    _**Note:** If you want to build your own release, you have to git commit all changes back to your git server so that no dirty version remains._    
+	
     ```
     cd $GOPATH/src/github.com/openshift/origin/
     hack/build-base-images.sh
@@ -447,7 +454,7 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
       cd /<source_root>/
       git clone https://github.com/openshift/origin-metrics.git
       cd /<source_root>/origin-metrics
-      git checkout v1.3.1
+      git checkout v1.3.2
     ```
 
   - Create [wildfly](https://hub.docker.com/r/jboss/wildfly/) images required by origin-metrics. You will also need to build dependent Docker images for wildfly. Dockerfile of hawkular-metrics uses this docker image as base image and should look like as follow:
@@ -502,7 +509,7 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
   
 ### Optional: Run all tests including unit, integration, etc.  
 
-  * Modify `hack/test-go.sh` to remove `-race` check for s390x:  
+  * Modify `$GOPATH/src/github.com/openshift/origin/hack/test-go.sh` to remove `-race` check for s390x:  
 
     ```diff
     @@ -70,8 +70,8 @@ fi
@@ -523,7 +530,7 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
     fi
     ```
 
-  * Add support for s390x in `kubelet_test.go` to fix _nodes_ related test case failures. For this, modify `./vendor/k8s.io/kubernetes/pkg/kubelet/kubelet_test.go` as follows:  
+  * Add support for s390x in `kubelet_test.go` to fix _nodes_ related test case failures. For this, modify `$GOPATH/src/github.com/openshift/origin/vendor/k8s.io/kubernetes/pkg/kubelet/kubelet_test.go` as follows:  
 
 
     ```diff
@@ -573,14 +580,16 @@ __Note:__ In order to use OpenShift Origin you must generate core OpenShift Dock
   * Run all tests  
 
       ```
-      make test PERMISSIVE_GO=y
+      cd $GOPATH/src/github.com/openshift/origin/
+	  make test PERMISSIVE_GO=y
       ```
 
-__Notes:__ 
-  1. PERMISSIVE_GO=y argument is used to bypass a check for Go 1.6.  
-  2. There is one failing test case regarding HTTPProbeChecker, etc. which we can skip for this version. This is believed to be fixed in the newer version of OpenShift.
-  3. If in case you require to rerun `make test` command, run `make update` first to update to clean up cache.
-  4. If in case while running `oc cluster up` command, it starts pulling `openshift/origin:v1.3.1`, tag already created `openshift/origin:latest` image with `openshift/origin:v1.3.1`.
+_**Notes:**_         
+  _1. PERMISSIVE_GO=y argument is used to bypass a check for Go 1.6._     
+  _2. Ensure that you commit all changes back to your git server so that no dirty version remains that may cause error in the `make test` command._     
+  _3. There is one failing test case regarding HTTPProbeChecker, etc. which we can skip for this version. This is believed to be fixed in the newer version of OpenShift._     
+  _4. If in case you require to rerun `make test` command, run `make update` first to update to clean up cache._     
+  _5. If in case while running `oc cluster up` command, it starts pulling `openshift/origin:v1.3.2`, tag already created `openshift/origin:latest` image with `openshift/origin:v1.3.2`._     
    
 ## Reference
 https://github.com/openshift/origin
