@@ -1,7 +1,7 @@
-The following build instructions have been tested with **Python 3.4.3** on **RHEL 6.5, 7.0 and SLES 11.3, 12.0 on IBM z Systems**.
+The following build instructions have been tested with **Python 3.4.3** on **RHEL 6.8, 7.1 and SLES 11.4, 12.0 on IBM z Systems**.
 
 #### Section 1: Install the Dependencies
-All of the usable dependencies are available on the RHEL 6.5, 7.0 and SLES 11.3, 12.0. In particular,
+All of the usable dependencies are available on the RHEL 6.8, 7.1 and SLES 11.4, 12.1. In particular,
 
 1. gcc & g++
 2. make
@@ -54,6 +54,7 @@ Skipping this step will result in installing Python in default location /usr/loc
 #### Section 3: Notes on Verification Test Failures (not specific to Linux on z Systems)
 1. `test_posix` and `test_zipimport`will fail, if the tests are run on NFS where the mounted directory is not on a Linux machine.
 2. `test_gdb` will crash on SLES 12.0. The crash is due to error in the test source code on lines 32 and 33 in file `Python-3.4.3/Lib/test/test_gdb.py`. In particular, with the way the major and minor versions of gdb are extracted.
+3. There is one failing test case `test_os`, which is already fixed in the higher version. 
 
 #### Section 4: References
 1. [Release notes for Python 3.4.3](https://www.python.org/downloads/release/python-343/).
