@@ -1,4 +1,9 @@
-The [MongoDB Ruby Driver](http://docs.mongodb.org/ecosystem/drivers/ruby/) can be built for Linux on z Systems running SLES 12/12-SP1, SLES 11-SP3, RHEL 7.1/7.2, RHEL 6.7 and Ubuntu 16.04 by following these instructions. Versions 2.3.0 have been successfully built & tested this way.
+The instructions provided below specify the steps to build [MongoDB Ruby Driver](http://docs.mongodb.org/ecosystem/drivers/ruby/) version 2.4.0 on IBM z Systems for following distributions:
+
+*    RHEL (6.8, 7.1, 7.2, 7.3)
+*    SLES (11 SP4, 12, 12 SP1, 12 SP2)
+*    Ubuntu (16.04, 16.10)
+
 
 _**General Notes:**_ 	
 _i) When following the steps below please use a standard permission user unless otherwise specified._  
@@ -8,24 +13,26 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
 
 1. Install the build dependencies 
 
-    On RHEL 7.1/7.2 & 6.7 systems:
+ *    RHEL (6.8, 7.1, 7.2)
     ```shell
     sudo yum install ruby ruby-devel make gcc gcc-c++
     ```
-    On SLES 12/12-SP1 & 11-SP3 systems:
+
+ *    SLES (12, 12 SP1, 12 SP2, 11 SP4) 
     ```shell
     sudo zypper install ruby ruby-devel make gcc gcc-c++
     ```
-    On Ubuntu 16.04 systems:
+
+ *    Ubuntu (16.04, 16.10) 
     ```shell
     sudo apt-get update
     sudo apt-get install ruby ruby-dev make gcc g++
     ```
   You may already have some of these packages installed - just install any that are missing.
 
-2. Build Ruby from source (**only for Mongo 2.x and RHEL 6.7 / SLES 11-SP3**)
+2. Build Ruby from source (**only for Mongo 2.x and RHEL 6.8 / SLES 11 SP4**)
 
-    Ruby MongoDB Driver 2.x requires Ruby version >= 1.9.3 and the RPM packages available for RHEL 6.7 and SLES 11-SP3 are too low level. Instructions for building Ruby 2.3.0 are available [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby).
+    Ruby MongoDB Driver 2.x requires Ruby version >= 1.9.3 and the RPM packages available for RHEL 6.8 and SLES 11 SP3 are too low level. Instructions for building Ruby 2.4.0 are available [here](https://github.com/linux-on-ibm-z/docs/wiki/Building-Ruby).
 3. Correct the gem environment for a standard user (skip if on RHEL 7.1/7.2)
 
     ```shell
@@ -36,12 +43,12 @@ _iii) For convenience `vi` has been used in the instructions below when editing 
     _**Note:** Run `gem env` to verify the state of the environment, if later on you have issues installing / running ruby gems please ensure the environment is set correctly._
 4. Install the mongo gem (and dependent bson gem)
 
-	For the 2.3.0 version install mongo gem as given below:
+	For the 2.4.0 version install mongo gem as given below:
 	
     ```shell
-     gem install mongo -v 2.3.0
+     gem install mongo -v 2.4.0
     ```
-    _**Note:** If the `-v` flag is omitted entirely the latest version will be installed
+    _**Note:**_ If the `-v` flag is omitted entirely the latest version will be installed
 
 ### Basic validation test
     
@@ -68,7 +75,7 @@ The example code section given below is used to perform a basic test to ensure t
 	
 	_**Remember**_, if you are connecting to a remote server then you need to substitute the **`localhost`** with the hostname or IP address of the MongoDB server.
    
-   **Mongo Ruby Driver 2.3.0**  
+   **Mongo Ruby Driver 2.4.0**  
    
    ```shell
     require 'mongo'
@@ -85,7 +92,7 @@ The example code section given below is used to perform a basic test to ensure t
 
     db[:collection].drop
 
-    result = db[:collection].insert_one({ company: 'IBM' , project: 'MongoDB Driver', language: 'Ruby', version: '2.3.0'})
+    result = db[:collection].insert_one({ company: 'IBM' , project: 'MongoDB Driver', language: 'Ruby', version: '2.4.0'})
 
     3.times { |i| db[:collection].insert_one({ _id: i+1, line: i+1 }) }
 
@@ -101,7 +108,7 @@ The example code section given below is used to perform a basic test to ensure t
     ```
     Executing the test program should produce output similar to this (the Object Ids will vary, but typically will be consecutive):
     ```shell
-    {"_id"=>BSON::ObjectId('000002aafe4122006d000002'), "company"=>"IBM", "project"=>"MongoDB Driver", "language"=>"Ruby", "version"=>"2.3.0"}
+    {"_id"=>BSON::ObjectId('000002aafe4122006d000002'), "company"=>"IBM", "project"=>"MongoDB Driver", "language"=>"Ruby", "version"=>"2.4.0"}
     {"_id"=>1, "line"=>1}
     {"_id"=>2, "line"=>2}
     {"_id"=>3, "line"=>3}
