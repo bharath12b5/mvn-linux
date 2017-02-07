@@ -237,6 +237,34 @@ stddev_t::stddev_t(size_t n, double mean, double variance)
 }
 ```
 
+Make changes to `src/client_protocol/json.cc`
+```diff
+@@ -55,6 +55,9 @@ scoped_ptr_t<ql::query_params_t> json_protocol_t::parse_query(
+     conn->read_buffered(&size, sizeof(size), interruptor);
+     ql::response_t error;
+
++    token = __builtin_bswap64(token);
++    size = __builtin_bswap32(size);
++
+     if (size >= wire_protocol_t::TOO_LARGE_QUERY_SIZE) {
+         error.fill_error(Response::CLIENT_ERROR,
+                          Response::RESOURCE_LIMIT,
+@@ -226,11 +229,13 @@ void json_protocol_t::send_response(ql::response_t *response,
+
+     // Fill in the token and size
+     char *mutable_buffer = buffer.GetMutableBuffer();
++    token=__builtin_bswap64(token);
+     for (size_t i = 0; i < sizeof(token); ++i) {
+         mutable_buffer[i] = reinterpret_cast<const char *>(&token)[i];
+     }
+
+     data_size = static_cast<uint32_t>(payload_size);
++    data_size=__builtin_bswap32(data_size);
+     for (size_t i = 0; i < sizeof(data_size); ++i) {
+         mutable_buffer[i + sizeof(token)] =
+             reinterpret_cast<const char *>(&data_size)[i];
+```
+
 Then, `n` is the total number of your CPU cores
 ```
 make -j <n> THREADED_COROUTINES=1
