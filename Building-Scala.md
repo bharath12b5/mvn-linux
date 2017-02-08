@@ -56,7 +56,7 @@ iii) _A directory `/<source_root>/` will be referred to in these instructions.  
 	* With Open JDK
 	
 		```shell    
-		sudo yum install wget java-1.8.0-ibm-devel
+		sudo yum install wget java-1_8_0-openjdk-devel
 		
 		```
 
