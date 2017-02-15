@@ -1,7 +1,8 @@
 <!---PACKAGE:Couchbase--->
-<!---DISTRO:SLES 12.x:4.1.0--->
-<!---DISTRO:RHEL 7.x:4.1.0--->
-<!---DISTRO:Ubuntu 16.x:4.1.0--->
+<!---DISTRO:SLES 12.x:4.5.0--->
+<!---DISTRO:RHEL 7.x:4.5.0--->
+<!---DISTRO:RHEL 6.x:4.5.0--->
+<!---DISTRO:Ubuntu 16.x:4.5.0--->
 
 # Building Couchbase
 
@@ -21,7 +22,7 @@ _**General Notes:**_
 
 *	RHEL 6.8 
  
-		sudo yum install wget tar git gcc-c++ make curl openssl-devel libcurl-devel snappy-devel ncurses-devel java-1.7.1-ibm java-1.7.1-ibm-devel openssl unixODBC unixODBC-devel cmake  libevent  libtool bunzip2 git-svn autoconf libbz2-devel bzip2-devel	
+		sudo yum install wget tar git gcc-c++ make curl openssl-devel libcurl-devel snappy-devel ncurses-devel java-1.7.1-ibm java-1.7.1-ibm-devel openssl unixODBC unixODBC-devel cmake  libevent  libtool bunzip2 git-svn autoconf libbz2-devel bzip2-devel gcc patch xz xz-devel 
 
 *	RHEL (7.1 ,7.2, 7.3)
      
@@ -31,7 +32,7 @@ _**General Notes:**_
     
 *	SLES (12, 12 SP1, 12 SP2)
 
-        sudo zypper install cmake wget tar git gcc-c++ make curl libopenssl-devel java-1.7.1-ibm-devel libevent-devel libcurl-devel snappy-devel ncurses-devel openssl unixODBC unixODBC-devel python-xml python-pyOpenSSL subversion autoconf libbz2-devel bzip2-devel	
+        sudo zypper install cmake wget tar git gcc-c++ make curl libopenssl-devel java-1_7_1-ibm-devel libevent-devel libcurl-devel snappy-devel ncurses-devel openssl unixODBC unixODBC-devel python-xml python-pyOpenSSL subversion autoconf libbz2-devel bzip2 gcc patch xz xz-devel
         
        
 *   Ubuntu (16.04, 16.10)
@@ -101,8 +102,6 @@ _**General Notes:**_
   *  To install Python 2.7.12, follow the steps given below for RHEL 6.8, SLES(12, 12 SP1, 12 SP2)
      
       ```bash
-
-       sudo yum install -y gcc gcc-c++ make ncurses patch xz xz-devel wget tar
        wget https://www.python.org/ftp/python/2.7.12/Python-2.7.12.tar.xz
        tar -xvf Python-2.7.12.tar.xz
        cd Python-2.7.12
@@ -130,12 +129,12 @@ _**General Notes:**_
   * To install CMake 3.5 (Only for RHEL & SLES distributions), follow the steps given below:
    
       ```bash
-      wget https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz && \
-      tar xzf cmake-3.5.2.tar.gz && \
-      cd cmake-3.5.2 && \
-      ./configure --prefix=/opt/cmake && \
-      make && \
-      sudo make install && \
+      wget https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz 
+      tar xzf cmake-3.5.2.tar.gz 
+      cd cmake-3.5.2 
+      ./configure --prefix=/opt/cmake 
+      make 
+      sudo make install 
       export PATH=$PATH:/opt/cmake/bin 
       ```
     
@@ -177,7 +176,7 @@ _**General Notes:**_
   
     ```bash
     svn export http://source.icu-project.org/repos/icu/tags/release-54-1/ icu
-    cd <source>/icu/icu4c/source
+    cd /<source_root>/icu/icu4c/source
     ./configure --enable-static --prefix=/usr && make && sudo make install
     ```
     
@@ -198,7 +197,7 @@ _**General Notes:**_
     ```bash    
     export CMAKE_GENERATOR_CC=/opt/gcc4.8/bin/gcc 
     export LD_LIBRARY_PATH=/opt/gcc4.8/lib64/:$LD_LIBRARY_PATH 
-    export GOROOT=/home/test/go 
+    export GOROOT=/<path-to-go>/go 
     export CMAKE_INCLUDE_PATH=/opt/gccgo/lib64 
     export CMAKE_CXX_COMPILER=/opt/gcc4.8/bin/gcc 
     export CC=/opt/gcc4.8/bin/gcc 
