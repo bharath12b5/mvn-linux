@@ -1,9 +1,18 @@
+<!---PACKAGE:OpenResty--->
+<!---DISTRO:SLES 12.x:1.9.15.1--->
+<!---DISTRO:RHEL 7.x:1.9.15.1--->
+<!---DISTRO:Ubuntu 16.x:1.9.15.1--->
+
 # Building OpenResty 
 
 The instructions provided below specify the steps to build OpenResty 1.9.15.1 on IBM z Systems for following distibutions:
 * RHEL (7.1, 7.2, 7.3)
 * SLES (12, 12 SP1, 12 SP2) 
 * Ubuntu (16.04, 16.10) 
+
+### Prerequisites:
+  * LuaJIT 
+  -- Instructions for building LuaJIT can be found [here]( https://github.com/linux-on-ibm-z/docs/wiki/Building-LuaJIT)
 
 _**General Notes:**_  
 * _When following the steps below please use a standard permission user unless otherwise specified._
@@ -29,47 +38,46 @@ _**General Notes:**_
    
     ```
     sudo apt-get update
-	sudo apt-get install -y git tar wget make gcc dos2unix hgview libreadline-dev  patch libpcre3-dev libpcre3 libcurl4-openssl-dev libncursesada*-dev postgresql libpq-dev
+	sudo apt-get install -y git tar wget make gcc dos2unix hgview libreadline-dev patch libpcre3-dev libpcre3 libcurl4-openssl-dev libncursesada*-dev postgresql libpq-dev
     sudo ln -s make /usr/bin/gmake
     ```
 
 ### Step 2: Set environment variables
-
-	export PATH=$PATH:/sbin
+  ```bash
+  export PATH=$PATH:/sbin
+  ```
     
 ### Step 3: Download the source code
+  ```bash
+  cd /<source_root>
+  git clone https://github.com/openresty/openresty.git
+  cd openresty
+  git checkout v1.9.15.1
+  ```
 
-	cd /<source_root>
-    git clone https://github.com/openresty/openresty.git
-    cd openresty
-    git checkout v1.9.15.1
-    cd /<source_root>
-    git clone https://github.com/linux-on-ibm-z/LuaJIT.git
-    cd /<source_root>/LuaJIT/
-    git checkout v2.1
-
-### Step 4: Build and install OpenResty with LuaJIT
-
-	cd /<source_root>/openresty
-	make
-	cd /<source_root>/LuaJIT	
-	make
-	sudo make install
-	rm -rf /<source_root>/openresty/openresty-1.9.15.1/bundle/LuaJIT-2.1-20160517/
-	cp -r /<source_root>/LuaJIT /<source_root>/openresty/openresty-1.9.15.1/bundle/LuaJIT-2.1-20160517/
-	cd /<source_root>/openresty/openresty-1.9.15.1
-	./configure --without-http_redis2_module --with-http_iconv_module --with-http_postgres_module  -j2 
-	make -j2 
-	sudo make install
-
+### Step 4: Build and install OpenResty 
+  ```bash    
+  make	
+  rm -rf /<source_root>/openresty/openresty-1.9.15.1/bundle/LuaJIT-2.1-20160517/
+  cp -r /<source_root>/LuaJIT /<source_root>/openresty/openresty-1.9.15.1/bundle/LuaJIT-2.1-20160517/
+  cd /<source_root>/openresty/openresty-1.9.15.1
+  ./configure --without-http_redis2_module --with-http_iconv_module --with-http_postgres_module  -j2 
+  make -j2 
+  sudo make install
+  ```
+    
 ### Step 5: Configure Nginx module
-
-	cd /<source_root>/openresty/openresty-1.9.15.1/build/nginx-1.9.15
-	./configure && make && sudo make install
+  ```bash
+  cd /<source_root>/openresty/openresty-1.9.15.1/build/nginx-1.9.15
+  ./configure && make && sudo make install
+  ```
 
 ### Step 6: Install cpan modules
-
-	sudo cpan Cwd IPC::Run3 Test::Base Test::LongString
+  ```bash
+  sudo cpan Cwd IPC::Run3 Test::Base Test::LongString
+  ```
+	  
+_Note: For options prompted please select the default option._	
 
 ### Step 7: Edit file `/<source_root>/openresty/t/sanity.t`
 
@@ -127,9 +135,10 @@ _**General Notes:**_
  ```
 
 ### Step 8: Run test cases (Optional)
- 
-	cd /<source_root>/openresty
-	make test
+  ```bash
+  cd /<source_root>/openresty
+  make test
+  ```
 
 ### References
 https://openresty.org/
